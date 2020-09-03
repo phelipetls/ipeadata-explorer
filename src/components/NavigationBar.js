@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import {
   AppBar,
@@ -6,14 +6,11 @@ import {
   Link,
   Typography,
   Hidden,
-  Menu,
-  MenuItem,
-  IconButton
 } from "@material-ui/core";
 
-import { MoreVert } from "@material-ui/icons";
-
 import { makeStyles } from "@material-ui/core/styles";
+
+import NavigationBarMenu from "./NavigationBarMenu";
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -31,16 +28,6 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function NavigationBar() {
-  const [anchorEl, setAnchorEl] = useState(null);
-
-  const useMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const useMenuClose = () => {
-    setAnchorEl(null);
-  };
-
   const classes = useStyles();
   const links = [
     <Link key={1} className={classes.link}>Temas</Link>,
@@ -58,14 +45,7 @@ export default function NavigationBar() {
           <nav className={classes.nav}>{links}</nav>
         </Hidden>
         <Hidden smUp>
-          <IconButton onClick={useMenuOpen}>
-            <MoreVert />
-          </IconButton>
-          <Menu open={Boolean(anchorEl)} anchorEl={anchorEl} onClick={useMenuClose}>
-            {links.map((link, index) => {
-              return <MenuItem key={index}>{link}</MenuItem>;
-            })}
-          </Menu>
+          <NavigationBarMenu links={links} />
         </Hidden>
       </Toolbar>
     </AppBar>
