@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   AppBar,
@@ -7,16 +7,21 @@ import {
   Typography,
   Hidden,
   List,
-  ListItem
+  ListItem,
+  IconButton,
+  TextField
 } from "@material-ui/core";
 
+import { Search } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 
 import NavigationBarMenu from "./NavigationBarMenu";
 
 const useStyles = makeStyles(theme => ({
+  appBar: {
+    height: "4em"
+  },
   toolbar: {
-    height: "4em",
     justifyContent: "space-between"
   },
   link: {
@@ -24,7 +29,7 @@ const useStyles = makeStyles(theme => ({
       marginRight: "1.5em"
     },
     "&:hover": {
-      textDecoration: "none",
+      textDecoration: "none"
     }
   },
   navigationList: {
@@ -33,17 +38,42 @@ const useStyles = makeStyles(theme => ({
   },
   navigationListItem: {
     cursor: "pointer",
-    "&": {
-    },
+    "&": {},
     justifyContent: "center",
     textAlign: "center",
     "&:hover": {
-      backgroundColor: "rgba(0, 0, 0, 0.04)",
+      backgroundColor: "rgba(0, 0, 0, 0.04)"
     }
+  },
+  searchContainer: {
+    height: "100%",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  },
+  search: {
+    padding: "0 1em",
   }
 }));
 
 export default function NavigationBar() {
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+
+  const useSearch = () => setIsSearching(true);
+  const useToolbar = () => setIsSearching(false);
+
+  const handleChange = (e) => {
+    setSearchInput(e.target.value);
+  }
+
+  const handleKeyDown = (e) => {
+    if (e.key === "Escape") {
+      e.target.value = "";
+      e.target.blur();
+    }
+  }
+
   const classes = useStyles();
   const links = [
     <Link key={1} className={classes.link}>
@@ -58,22 +88,51 @@ export default function NavigationBar() {
   ];
 
   return (
-    <AppBar color="transparent" position="static" component="nav">
-      <Toolbar className={classes.toolbar}>
-        <Typography variant="h5" color="primary">
-          IPEA
-        </Typography>
-        <Hidden xsDown>
-          <List className={classes.navigationList}>
-            {links.map(link => (
-              <ListItem className={classes.navigationListItem}>{link}</ListItem>
-            ))}
-          </List>
-        </Hidden>
-        <Hidden smUp>
-          <NavigationBarMenu links={links} />
-        </Hidden>
-      </Toolbar>
+    <AppBar
+      color="transparent"
+      position="static"
+      component="nav"
+      className={classes.appBar}
+    >
+      {isSearching ? (
+        <div className={classes.searchContainer}>
+          <TextField
+            value={searchInput}
+            onChange={handleChange}
+            className={classes.search}
+            onKeyDown={handleKeyDown}
+            onBlur={useToolbar}
+            placeholder="Pesquisar..."
+            type="search"
+            autoFocus
+            fullWidth
+            InputProps={{ disableUnderline: true }}
+          />
+        </div>
+      ) : (
+        <Toolbar className={classes.toolbar}>
+          <Typography variant="h5" color="primary">
+            IPEA
+          </Typography>
+          <Toolbar disableGutters>
+            <Hidden xsDown>
+              <List className={classes.navigationList}>
+                {links.map(link => (
+                  <ListItem className={classes.navigationListItem}>
+                    {link}
+                  </ListItem>
+                ))}
+              </List>
+            </Hidden>
+            <IconButton color="default" onClick={useSearch}>
+              <Search />
+            </IconButton>
+            <Hidden smUp>
+              <NavigationBarMenu links={links} />
+            </Hidden>
+          </Toolbar>
+        </Toolbar>
+      )}
     </AppBar>
   );
 }
