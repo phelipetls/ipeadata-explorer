@@ -22,10 +22,12 @@ const useStyles = makeStyles(theme => ({
   },
   link: {
     margin: "1em",
-    textDecoration: "none",
     "&:hover": {
+      cursor: "pointer",
+      textDecoration: "none",
+      filter: "brightness(130%)",
     }
-  }
+  },
 }));
 
 export default function NavigationBar() {
@@ -53,7 +55,7 @@ export default function NavigationBar() {
           IPEA
         </Typography>
         <Hidden xsDown>
-          <nav>{links}</nav>
+          <nav className={classes.nav}>{links}</nav>
         </Hidden>
         <Hidden smUp>
           <IconButton onClick={useMenuOpen}>
