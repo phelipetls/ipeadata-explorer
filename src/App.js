@@ -7,10 +7,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 
 import NavigationBar from "./components/NavigationBar";
-
-import LandingPageText from "./components/LandingPageText";
-import LandingPageSections from "./components/LandingPageSections";
-import LandingPageSearchBar from "./components/LandingPageSearchBar";
+import LandingPage from "./components/LandingPage";
 
 const useStyles = makeStyles(theme => ({
   mainSection: {},
@@ -23,9 +20,7 @@ function App() {
     <div className="App">
       <NavigationBar />
       <Container component="main" className={classes.mainSection}>
-        <LandingPageText />
-        <LandingPageSearchBar />
-        <LandingPageSections />
+        <LandingPage />
       </Container>
     </div>
   );
