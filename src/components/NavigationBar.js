@@ -15,12 +15,15 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import NavigationBarMenu from "./NavigationBarMenu";
 import SearchButton from "./SearchButton";
+import BackButton from "./BackButton";
 
 const useStyles = makeStyles(theme => ({
   appBar: {
-    height: "4em"
+    height: "4em",
   },
   toolbar: {
+    height: "100%",
+    alignItems: "center",
     justifyContent: "space-between"
   },
   link: {
@@ -66,7 +69,7 @@ export default function NavigationBar() {
     setSearchInput(e.target.value);
   };
 
-  const handleKeyDown = e => {
+  const handleEscape = e => {
     if (e.key === "Escape") {
       e.target.value = "";
       e.target.blur();
@@ -99,13 +102,13 @@ export default function NavigationBar() {
             value={searchInput}
             onChange={handleChange}
             className={classes.search}
-            onKeyDown={handleKeyDown}
+            onKeyDown={handleEscape}
             onBlur={handleBlur}
             placeholder="Pesquisar..."
             type="search"
             autoFocus
             fullWidth
-            InputProps={{ disableUnderline: true, endAdornment: <SearchButton /> }}
+            InputProps={{ disableUnderline: true, startAdornment: <BackButton onClick={handleBlur} /> }}
           />
         </div>
       ) : (
