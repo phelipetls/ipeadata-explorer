@@ -8,14 +8,13 @@ import {
   Hidden,
   List,
   ListItem,
-  IconButton,
   TextField
 } from "@material-ui/core";
 
-import { Search } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 
 import NavigationBarMenu from "./NavigationBarMenu";
+import SearchButton from "./SearchButton";
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -52,7 +51,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center"
   },
   search: {
-    padding: "0 1em",
+    padding: "0 1em"
   }
 }));
 
@@ -60,19 +59,19 @@ export default function NavigationBar() {
   const [isSearching, setIsSearching] = useState(false);
   const [searchInput, setSearchInput] = useState("");
 
-  const useSearch = () => setIsSearching(true);
-  const useToolbar = () => setIsSearching(false);
+  const handleClick = () => setIsSearching(true);
+  const handleBlur = () => setIsSearching(false);
 
-  const handleChange = (e) => {
+  const handleChange = e => {
     setSearchInput(e.target.value);
-  }
+  };
 
-  const handleKeyDown = (e) => {
+  const handleKeyDown = e => {
     if (e.key === "Escape") {
       e.target.value = "";
       e.target.blur();
     }
-  }
+  };
 
   const classes = useStyles();
   const links = [
@@ -101,12 +100,12 @@ export default function NavigationBar() {
             onChange={handleChange}
             className={classes.search}
             onKeyDown={handleKeyDown}
-            onBlur={useToolbar}
+            onBlur={handleBlur}
             placeholder="Pesquisar..."
             type="search"
             autoFocus
             fullWidth
-            InputProps={{ disableUnderline: true }}
+            InputProps={{ disableUnderline: true, endAdornment: <SearchButton /> }}
           />
         </div>
       ) : (
@@ -124,9 +123,7 @@ export default function NavigationBar() {
                 ))}
               </List>
             </Hidden>
-            <IconButton color="default" onClick={useSearch}>
-              <Search />
-            </IconButton>
+            <SearchButton onClick={handleClick} />
             <Hidden smUp>
               <NavigationBarMenu links={links} />
             </Hidden>
