@@ -6,6 +6,8 @@ import {
   Link,
   Typography,
   Hidden,
+  List,
+  ListItem
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,32 +21,54 @@ const useStyles = makeStyles(theme => ({
   },
   link: {
     "&:not(:last-child)": {
-      marginRight: "1.5em",
+      marginRight: "1.5em"
     },
     "&:hover": {
-      cursor: "pointer",
       textDecoration: "none",
-      filter: "brightness(130%)",
     }
   },
+  navigationList: {
+    display: "flex",
+    flexDirection: "row"
+  },
+  navigationListItem: {
+    cursor: "pointer",
+    "&": {
+    },
+    justifyContent: "center",
+    textAlign: "center",
+    "&:hover": {
+      backgroundColor: "rgba(0, 0, 0, 0.04)",
+    }
+  }
 }));
 
 export default function NavigationBar() {
   const classes = useStyles();
   const links = [
-    <Link key={1} className={classes.link}>Temas</Link>,
-    <Link key={2} className={classes.link}>Países</Link>,
-    <Link key={3} className={classes.link}>Níveis Geográficos</Link>
+    <Link key={1} className={classes.link}>
+      Temas
+    </Link>,
+    <Link key={2} className={classes.link}>
+      Países
+    </Link>,
+    <Link key={3} className={classes.link}>
+      Níveis Geográficos
+    </Link>
   ];
 
   return (
-    <AppBar color="transparent" position="static">
+    <AppBar color="transparent" position="static" component="nav">
       <Toolbar className={classes.toolbar}>
         <Typography variant="h5" color="primary">
           IPEA
         </Typography>
         <Hidden xsDown>
-          <nav className={classes.nav}>{links}</nav>
+          <List className={classes.navigationList}>
+            {links.map(link => (
+              <ListItem className={classes.navigationListItem}>{link}</ListItem>
+            ))}
+          </List>
         </Hidden>
         <Hidden smUp>
           <NavigationBarMenu links={links} />
