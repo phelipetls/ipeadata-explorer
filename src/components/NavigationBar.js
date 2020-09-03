@@ -18,7 +18,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "space-between"
   },
   link: {
-    margin: "1em",
+    "&:not(:last-child)": {
+      marginRight: "1.5em",
+    },
     "&:hover": {
       cursor: "pointer",
       textDecoration: "none",
