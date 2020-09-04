@@ -41,7 +41,7 @@ export default function NavigationBarList(props) {
           key={index}
           className={classes.navigationListItem}
         >
-          <Link className={classes.link}>{link.text}</Link>
+          <Link component="div" className={classes.link}>{link.text}</Link>
         </ListItem>
       ))}
     </List>
