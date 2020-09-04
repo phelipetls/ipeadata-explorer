@@ -60,6 +60,7 @@ export default function NavigationBar() {
       color="transparent"
       position="static"
       component="nav"
+      elevation={1}
       className={classes.appBar}
     >
       {isSearching ? (
