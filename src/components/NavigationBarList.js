@@ -35,10 +35,13 @@ export default function NavigationBarList(props) {
   return (
     <List className={classes.navigationList}>
       {props.links.map((link, index) => (
-        <ListItem className={classes.navigationListItem} key={index}>
-          <Link to={link.url} component={RouterLink} className={classes.link}>
-            {link.text}
-          </Link>
+        <ListItem
+          to={link.url}
+          component={RouterLink}
+          key={index}
+          className={classes.navigationListItem}
+        >
+          <Link className={classes.link}>{link.text}</Link>
         </ListItem>
       ))}
     </List>
