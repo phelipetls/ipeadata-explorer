@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import NavigationBar from "./components/NavigationBar";
 import LandingPage from "./components/LandingPage";
 import Themes from "./components/Themes";
+import Countries from "./components/Countries";
 
 const useStyles = makeStyles(theme => ({
   mainSection: {
@@ -26,6 +27,9 @@ function App() {
           </Route>
           <Route path="/temas">
             <Themes />
+          </Route>
+          <Route path="/paises">
+            <Countries />
           </Route>
         </Container>
       </div>
