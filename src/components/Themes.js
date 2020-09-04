@@ -53,10 +53,12 @@ export default function Themes() {
         );
 
         return (
-          <ThemeCard code={TEMCODIGO}>
+          <ThemeCard key={TEMCODIGO}>
             <ThemeName name={TEMNOME} />
             {parent_theme && <ThemeParent name={parent_theme.TEMNOME} />}
-            <ThemeBases macro={MACRO} regional={REGIONAL} social={SOCIAL} />
+            {(MACRO || REGIONAL || SOCIAL) && (
+              <ThemeBases macro={MACRO} regional={REGIONAL} social={SOCIAL} />
+            )}
           </ThemeCard>
         );
       })}

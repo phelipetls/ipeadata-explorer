@@ -1,17 +1,22 @@
 import React from "react";
 
 import {
-  Card,
-  CardContent,
+  Paper,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
-  card: {
+  container: {
+    display: "flex",
+    flexFlow: "column",
+    justifyContent: "center",
     textDecoration: "none",
+    "&:hover": {
+      backgroundColor: theme.palette.action.hover,
+    }
   },
-  cardContent: {
+  content: {
     padding: "1em 0.5em",
   },
 }));
@@ -20,16 +25,15 @@ export default function ThemeCard(props) {
   const classes = useStyles();
 
   return (
-    <Card
+    <Paper
       component={RouterLink}
       to=""
       variant="outlined"
-      className={classes.card}
-      key={props.code}
+      className={classes.container}
     >
-      <CardContent className={classes.cardContent}>
+      <div className={classes.content}>
         {props.children}
-      </CardContent>
-    </Card>
+      </div>
+    </Paper>
   );
 }

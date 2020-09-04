@@ -5,13 +5,15 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   row: {
-    padding: "1em 2em",
+    padding: "1em",
     display: "flex",
-    "&:first-child": {
-      borderRadius: theme.shape.borderRadius
+    "& > *:first-child": {
+      borderTopLeftRadius: theme.shape.borderRadius,
+      borderBottomLeftRadius: theme.shape.borderRadius
     },
-    "&:last-child": {
-      borderRadius: theme.shape.borderRadius
+    "& > *:last-child": {
+      borderTopRightRadius: theme.shape.borderRadius,
+      borderBottomRightRadius: theme.shape.borderRadius
     }
   },
   column: {
