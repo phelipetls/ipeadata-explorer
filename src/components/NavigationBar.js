@@ -1,21 +1,15 @@
 import React, { useState } from "react";
 
-import {
-  AppBar,
-  Toolbar,
-  Link,
-  Typography,
-  Hidden,
-  TextField
-} from "@material-ui/core";
+import { AppBar, Toolbar, Link, Typography, Hidden } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Link as RouterLink } from "react-router-dom";
 
 import NavigationBarMenu from "./NavigationBarMenu";
 import NavigationBarList from "./NavigationBarList";
+import NavigationBarSearch from "./NavigationBarSearch";
+
 import SearchButton from "./SearchButton";
-import BackButton from "./BackButton";
 
 const useStyles = makeStyles(theme => ({
   appBar: {
@@ -26,6 +20,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: "center",
     justifyContent: "space-between"
   },
+  // TODO: create theme with link style
   link: {
     "&:not(:last-child)": {
       marginRight: "1.5em"
@@ -47,21 +42,9 @@ const useStyles = makeStyles(theme => ({
 
 export default function NavigationBar() {
   const [isSearching, setIsSearching] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
 
   const handleClick = () => setIsSearching(true);
   const handleBlur = () => setIsSearching(false);
-
-  const handleChange = e => {
-    setSearchInput(e.target.value);
-  };
-
-  const handleEscape = e => {
-    if (e.key === "Escape") {
-      e.target.value = "";
-      e.target.blur();
-    }
-  };
 
   const navigationBarLinks = [
     { text: "Bases", url: "/bases" },
@@ -80,23 +63,7 @@ export default function NavigationBar() {
       className={classes.appBar}
     >
       {isSearching ? (
-        <div className={classes.searchContainer}>
-          <TextField
-            value={searchInput}
-            onChange={handleChange}
-            className={classes.search}
-            onKeyDown={handleEscape}
-            onBlur={handleBlur}
-            placeholder="Pesquisar..."
-            type="search"
-            autoFocus
-            fullWidth
-            InputProps={{
-              disableUnderline: true,
-              startAdornment: <BackButton onClick={handleBlur} />
-            }}
-          />
-        </div>
+        <NavigationBarSearch onBlur={handleBlur} />
       ) : (
         <Toolbar className={classes.toolbar}>
           <Typography variant="h5" color="primary">
