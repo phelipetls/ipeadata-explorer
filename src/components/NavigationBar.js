@@ -6,8 +6,6 @@ import {
   Link,
   Typography,
   Hidden,
-  List,
-  ListItem,
   TextField
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,6 +13,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link as RouterLink } from "react-router-dom";
 
 import NavigationBarMenu from "./NavigationBarMenu";
+import NavigationBarList from "./NavigationBarList";
 import SearchButton from "./SearchButton";
 import BackButton from "./BackButton";
 
@@ -33,19 +32,6 @@ const useStyles = makeStyles(theme => ({
     },
     "&:hover": {
       textDecoration: "none"
-    }
-  },
-  navigationList: {
-    display: "flex",
-    flexDirection: "row"
-  },
-  navigationListItem: {
-    cursor: "pointer",
-    "&": {},
-    justifyContent: "center",
-    textAlign: "center",
-    "&:hover": {
-      backgroundColor: "rgba(0, 0, 0, 0.04)"
     }
   },
   searchContainer: {
@@ -120,15 +106,7 @@ export default function NavigationBar() {
           </Typography>
           <Toolbar disableGutters>
             <Hidden xsDown>
-              <List className={classes.navigationList}>
-                {navigationBarLinks.map(({ text, url }, index) => (
-                  <ListItem className={classes.navigationListItem} key={index}>
-                    <Link to={url} component={RouterLink} className={classes.link}>
-                      {text}
-                    </Link>
-                  </ListItem>
-                ))}
-              </List>
+              <NavigationBarList links={navigationBarLinks} />
             </Hidden>
             <SearchButton onClick={handleClick} />
             <Hidden smUp>
