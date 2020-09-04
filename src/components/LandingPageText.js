@@ -7,7 +7,7 @@ const useStyles = makeStyles(theme => ({
   landingPageText: {
     margin: "0 auto",
     maxWidth: "73vw",
-    height: "20vh",
+    height: "5em",
     display: "flex",
     alignItems: "center",
     justifyContent: "center"

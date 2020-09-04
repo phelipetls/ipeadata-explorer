@@ -6,10 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(theme => ({
   search: {
     width: "73vw",
-    "&::placeholder": {
-      textAlign: "center"
-    }
-  }
+  },
 }));
 
 export default function LandingPageSearchBar() {

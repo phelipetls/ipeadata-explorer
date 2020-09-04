@@ -7,13 +7,13 @@ const useStyles = makeStyles(theme => ({
   sectionsContainer: {
     margin: "0 auto",
     width: "75vw",
-    paddingTop: "5vh"
+    paddingTop: "2em"
   },
   section: {
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    minHeight: "25vh",
+    minHeight: "5em",
     cursor: "pointer"
   }
 }));
