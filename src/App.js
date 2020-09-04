@@ -10,7 +10,6 @@ import Themes from "./components/Themes";
 
 const useStyles = makeStyles(theme => ({
   mainSection: {
-    textAlign: "center"
   }
 }));
 
