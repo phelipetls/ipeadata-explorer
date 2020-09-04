@@ -38,7 +38,7 @@ export default function LandingPageSections() {
     >
       {Object.entries(sections).map(([section, props]) => {
         return (
-          <Grid xs={12} sm={6} md={3} key={section} alignItems="center" item>
+          <Grid xs={12} sm={6} md={3} key={section} item>
             <Paper className={classes.section}>
               <Typography>{section}</Typography>
             </Paper>
