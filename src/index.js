@@ -5,9 +5,14 @@ import 'fontsource-roboto';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 
+import { ThemeProvider } from "@material-ui/core/styles";
+import { theme } from "./styles/Theme";
+
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );

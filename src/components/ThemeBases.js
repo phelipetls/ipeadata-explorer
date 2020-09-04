@@ -1,7 +1,6 @@
 import React from "react";
 
-import { colors } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   row: {
@@ -23,28 +22,29 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function ThemeBases(props) {
-  const classes = useStyles();
-
   const { macro, regional, social } = props;
+
+  const theme = useTheme();
+  const classes = useStyles();
 
   return (
     <div className={classes.row}>
       {macro && (
         <div
           className={classes.column}
-          style={{ backgroundColor: colors.blue[600] }}
+          style={{ backgroundColor: theme.palette.macro }}
         />
       )}
       {regional && (
         <div
           className={classes.column}
-          style={{ backgroundColor: colors.green[600] }}
+          style={{ backgroundColor: theme.palette.regional }}
         />
       )}
       {social && (
         <div
           className={classes.column}
-          style={{ backgroundColor: colors.red[600] }}
+          style={{ backgroundColor: theme.palette.social }}
         />
       )}
     </div>
