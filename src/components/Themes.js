@@ -7,6 +7,7 @@ import ThemeCard from "./ThemeCard";
 import ThemeName from "./ThemeName";
 import ThemeParent from "./ThemeParent";
 import ThemeBases from "./ThemeBases";
+import ThemeBasesButtons from "./ThemeBasesButtons";
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -23,6 +24,8 @@ const URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Temas";
 
 export default function Themes() {
   const [themes, setThemes] = useState([]);
+  const [bases, setBases] = useState(["MACRO", "REGIONAL", "SOCIAL"]);
+  const classes = useStyles();
 
   useEffect(() => {
     async function getThemes() {
@@ -34,34 +37,39 @@ export default function Themes() {
     getThemes();
   }, []);
 
-  const classes = useStyles();
+  const handleChangeBases = (e, newBases) => {
+    setBases(newBases);
+  }
 
   return (
-    <Container maxWidth="sm" className={classes.grid}>
-      {themes.map(theme => {
-        const {
-          TEMCODIGO,
-          TEMNOME,
-          TEMCODIGO_PAI,
-          MACRO,
-          REGIONAL,
-          SOCIAL
-        } = theme;
+    <div>
+      <ThemeBasesButtons value={bases} onChange={handleChangeBases} />
+      <Container maxWidth="sm" className={classes.grid}>
+        {themes.filter(theme => bases.some(base => theme[base])).map(theme => {
+          const {
+            TEMCODIGO,
+            TEMNOME,
+            TEMCODIGO_PAI,
+            MACRO,
+            REGIONAL,
+            SOCIAL
+          } = theme;
 
-        const parent_theme = themes.find(
-          theme => theme.TEMCODIGO === TEMCODIGO_PAI
-        );
+          const parent_theme = themes.find(
+            theme => theme.TEMCODIGO === TEMCODIGO_PAI
+          );
 
-        return (
-          <ThemeCard key={TEMCODIGO}>
-            <ThemeName name={TEMNOME} />
-            {parent_theme && <ThemeParent name={parent_theme.TEMNOME} />}
-            {(MACRO || REGIONAL || SOCIAL) && (
-              <ThemeBases macro={MACRO} regional={REGIONAL} social={SOCIAL} />
-            )}
-          </ThemeCard>
-        );
-      })}
-    </Container>
+          return (
+            <ThemeCard key={TEMCODIGO}>
+              <ThemeName name={TEMNOME} />
+              {parent_theme && <ThemeParent name={parent_theme.TEMNOME} />}
+              {(MACRO || REGIONAL || SOCIAL) && (
+                <ThemeBases macro={MACRO} regional={REGIONAL} social={SOCIAL} />
+              )}
+            </ThemeCard>
+          );
+        })}
+      </Container>
+    </div>
   );
 }
