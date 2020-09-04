@@ -1,5 +1,4 @@
 import React from "react";
-import "./App.css";
 
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Container } from "@material-ui/core";
@@ -9,7 +8,9 @@ import NavigationBar from "./components/NavigationBar";
 import LandingPage from "./components/LandingPage";
 
 const useStyles = makeStyles(theme => ({
-  mainSection: {}
+  mainSection: {
+    textAlign: "center"
+  }
 }));
 
 function App() {
