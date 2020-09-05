@@ -47,7 +47,7 @@ export default function SortableTable(props) {
     }
   };
 
-  const columnType = columns[orderBy].type;
+  const columnType = columns.find(column => column.key === orderBy).type;
 
   const sortOrder = order === "asc" ? 1 : -1;
   const sortFunction = sortFunctions[columnType];
@@ -60,19 +60,19 @@ export default function SortableTable(props) {
       <Table className={classes.table}>
         <TableHead>
           <TableRow>
-            {Object.entries(columns).map(([column, props]) => (
+            {columns.map(column => (
               <TableCell
-                key={column}
-                value={column}
-                align={props.type === "numeric" ? "right" : "left"}
-                sortDirection={orderBy === column ? order : false}
+                key={column.key}
+                value={column.key}
+                align={column.type === "numeric" ? "right" : "left"}
+                sortDirection={orderBy === column.key ? order : false}
               >
                 <TableSortLabel
-                  active={orderBy === column}
-                  direction={orderBy === column ? order : "asc"}
-                  onClick={e => handleSort(e, column)}
+                  active={orderBy === column.key}
+                  direction={orderBy === column.key ? order : "asc"}
+                  onClick={e => handleSort(e, column.key)}
                 >
-                  {props.label}
+                  {column.label}
                 </TableSortLabel>
               </TableCell>
             ))}
@@ -83,12 +83,12 @@ export default function SortableTable(props) {
             .sort((a, b) => sorter(a[orderBy], b[orderBy]))
             .map(row => (
               <TableRow key={row[rowKey]}>
-                {Object.entries(columns).map(([column, props], index) => (
+                {columns.map((column, index) => (
                   <TableCell
                     key={index}
-                    align={props.type === "numeric" ? "right" : "left"}
+                    align={column.type === "numeric" ? "right" : "left"}
                   >
-                    {row[column]}
+                    {row[column.key]}
                   </TableCell>
                 ))}
               </TableRow>

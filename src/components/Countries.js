@@ -141,10 +141,14 @@ const URL =
 //   }
 // ]
 
-const columns = {
-  PAINOME: { type: "string", label: "País" },
-  "Metadados@odata.count": { type: "numeric", label: "Qtd. de séries" }
-};
+const columns = [
+  { key: "PAINOME", type: "string", label: "País" },
+  {
+    key: "Metadados@odata.count",
+    type: "numeric",
+    label: "Qtd. de séries"
+  }
+];
 
 export default function Countries() {
   const [countries, setCountries] = useState([]);
