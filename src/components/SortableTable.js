@@ -28,11 +28,13 @@ const invertSortDirections = {
 
 const sortFunctions = {
   string: (a, b) => a.localeCompare(b),
-  numeric: (a, b) => a - b
+  numeric: (a, b) => a - b,
+  date: (a, b) => new Date(a) - new Date(b),
 };
 
 export default function SortableTable(props) {
   const classes = useStyles();
+
   const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState(props.defaultOrderBy);
 
@@ -47,21 +49,29 @@ export default function SortableTable(props) {
     }
   };
 
-  const columnType = columns.find(column => column.key === orderBy).type;
+  const sortedColumn = columns.find(column => column.key === orderBy);
 
-  const sortOrder = order === "asc" ? 1 : -1;
-  const sortFunction = sortFunctions[columnType];
-  const sorter = (a, b) => {
-    return sortOrder * sortFunction(a, b);
-  };
+  if (sortedColumn) {
+    const sortedColumnType = sortedColumn.type;
+
+    const sortOrder = order === "asc" ? 1 : -1;
+    const sortFunction = sortFunctions[sortedColumnType];
+
+    const sorter = (a, b) => {
+      return sortOrder * sortFunction(a, b);
+    };
+
+    data.sort((a, b) => sorter(a[orderBy], b[orderBy]));
+  }
 
   return (
     <TableContainer component={Paper} className={classes.tableContainer}>
-      <Table className={classes.table}>
+      <Table className={classes.table} size="small">
         <TableHead>
           <TableRow>
             {columns.map(column => (
               <TableCell
+                component="th"
                 key={column.key}
                 value={column.key}
                 align={column.type === "numeric" ? "right" : "left"}
@@ -79,20 +89,20 @@ export default function SortableTable(props) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {data
-            .sort((a, b) => sorter(a[orderBy], b[orderBy]))
-            .map(row => (
-              <TableRow key={row[rowKey]}>
-                {columns.map((column, index) => (
-                  <TableCell
-                    key={index}
-                    align={column.type === "numeric" ? "right" : "left"}
-                  >
-                    {row[column.key]}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
+          {data.map(row => (
+            <TableRow key={row[rowKey]}>
+              {columns.map((column, index) => (
+                <TableCell
+                  key={index}
+                  align={column.type === "numeric" ? "right" : "left"}
+                >
+                  {column.type === "date"
+                    ? new Date(row[column.key]).getFullYear()
+                    : row[column.key]}
+                </TableCell>
+              ))}
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
     </TableContainer>
