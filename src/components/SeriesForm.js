@@ -31,6 +31,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function SeriesForm(props) {
   const classes = useStyles();
+
   const [parameters, setParameters] = useState({
     SERNOME: "",
     FNTNOME: "",
@@ -45,14 +46,14 @@ export default function SeriesForm(props) {
     SERNUMERICA: ""
   });
 
-  const { setUrl } = props;
+  const { setUrl, setOpen } = props;
 
   function handleSubmit(e) {
     e.preventDefault();
-
     const url = urlBuilder(e.target.elements);
-    console.log(url);
+
     setUrl(url);
+    setOpen(false);
   }
 
   function handleChange(e) {

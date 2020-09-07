@@ -35,17 +35,16 @@ export default function SeriesList(props) {
 
   const [data, setData] = useState([]);
   const [url, setUrl] = useState(URL);
-
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     async function fetchDataList() {
       const response = await fetch(url);
       const json = await response.json();
-      setData(data => data.concat(json.value));
+      setData(json.value);
     }
 
-    // fetchDataList();
+    fetchDataList();
   }, [url]);
 
   return (
@@ -66,7 +65,7 @@ export default function SeriesList(props) {
         </Grid>
 
         <Collapse in={open} unmountOnExit>
-          <SeriesForm setUrl={setUrl} />
+          <SeriesForm setOpen={setOpen} setUrl={setUrl} />
         </Collapse>
       </Paper>
 
