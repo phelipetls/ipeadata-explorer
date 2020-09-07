@@ -8,14 +8,10 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  TableFooter,
-  TablePagination,
   TableSortLabel
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
-
-import TablePaginationActions from "./TablePaginationActions";
 
 const useStyles = makeStyles(theme => ({
   tableContainer: {
@@ -51,10 +47,7 @@ export default function SortableTable(props) {
     columns,
     rows,
     rowKey,
-    page,
-    rowsPerPage,
-    onChangePage,
-    onChangeRowsPerPage
+    children
   } = props;
 
   const handleSort = (e, column) => {
@@ -119,28 +112,7 @@ export default function SortableTable(props) {
           <TableRow>{tableHeaders}</TableRow>
         </TableHead>
         <TableBody>{tableRows}</TableBody>
-        {page !== undefined && (
-          <TableFooter>
-            <TableRow>
-              <TablePagination
-                rowsPerPageOptions={[5, 10, 15]}
-                colSpan={6}
-                count={rows.length}
-                rowsPerPage={rowsPerPage}
-                page={page}
-                labelDisplayedRows={() => ""}
-                onChangePage={onChangePage}
-                onChangeRowsPerPage={onChangeRowsPerPage}
-                labelRowsPerPage="Por página:"
-                SelectProps={{
-                  inputProps: { "aria-label": "Linhas por página" },
-                  native: true
-                }}
-                ActionsComponent={TablePaginationActions}
-              />
-            </TableRow>
-          </TableFooter>
-        )}
+        {children}
       </Table>
     </TableContainer>
   );

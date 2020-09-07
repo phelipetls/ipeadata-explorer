@@ -1,19 +1,21 @@
 import React, { useState, useEffect } from "react";
-
 import {
   Grid,
   Typography,
   Paper,
   Collapse,
-  IconButton
+  IconButton,
+  TableRow,
+  TableFooter,
+  TablePagination
 } from "@material-ui/core";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
-
 import { makeStyles } from "@material-ui/core/styles";
 import { queryBuilder, queryLimit, queryOffset } from "../api/odata";
 
 import SortableTable from "./SortableTable";
 import SeriesForm from "./SeriesForm";
+import TablePaginationActions from "./TablePaginationActions";
 
 const useStyles = makeStyles(theme => ({
   filterContainer: {
@@ -102,6 +104,29 @@ export default function SeriesList(props) {
     page * rowsPerPage + rowsPerPage
   );
 
+  const paginationActions = (
+    <TableFooter>
+      <TableRow>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 15]}
+          colSpan={6}
+          count={data.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          labelDisplayedRows={() => ""}
+          onChangePage={handlePageChange}
+          onChangeRowsPerPage={handleRowsPerPageChange}
+          labelRowsPerPage="Por página:"
+          SelectProps={{
+            inputProps: { "aria-label": "Linhas por página" },
+            native: true
+          }}
+          ActionsComponent={TablePaginationActions}
+        />
+      </TableRow>
+    </TableFooter>
+  );
+
   return (
     <>
       <Paper className={classes.filterContainer}>
@@ -130,7 +155,9 @@ export default function SeriesList(props) {
         rowsPerPage={rowsPerPage}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleRowsPerPageChange}
-      />
+      >
+        {paginationActions}
+      </SortableTable>
     </>
   );
 }
