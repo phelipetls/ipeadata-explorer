@@ -1,8 +1,6 @@
 import React from "react";
 
-import {
-  Paper,
-} from "@material-ui/core";
+import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { Link as RouterLink } from "react-router-dom";
 
@@ -13,12 +11,12 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     textDecoration: "none",
     "&:hover": {
-      backgroundColor: theme.palette.action.hover,
+      backgroundColor: theme.palette.action.hover
     }
   },
   content: {
-    padding: "1em 0.5em",
-  },
+    padding: "1em 0.5em"
+  }
 }));
 
 export default function ThemeCard(props) {
@@ -31,9 +29,7 @@ export default function ThemeCard(props) {
       variant="outlined"
       className={classes.container}
     >
-      <div className={classes.content}>
-        {props.children}
-      </div>
+      <div className={classes.content}>{props.children}</div>
     </Paper>
   );
 }
