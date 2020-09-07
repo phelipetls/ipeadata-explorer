@@ -57,6 +57,7 @@ function buildFilter(parameters) {
           .join(" or ");
         filters.push(`(${bases})`);
         break;
+      case "PAICODIGO":
       case "SERSTATUS":
         filters.push(`${name} eq '${value}'`);
         break;
