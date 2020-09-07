@@ -1,5 +1,12 @@
 html {
+  box-sizing: border-box;
   font-family: "Roboto";
+}
+
+*,
+*:before,
+*::after {
+  box-sizing: inherit;
 }
 
 body {
