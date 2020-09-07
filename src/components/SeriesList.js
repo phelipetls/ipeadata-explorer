@@ -68,7 +68,7 @@ export default function SeriesList(props) {
   let [url, setUrl] = useState(searchUrl || URL);
   url = limitQuery(url, rowsPerPage);
 
-  const handleSubmit = e => {
+  function handleSubmit(e) {
     e.preventDefault();
 
     let url = buildQueryFromForm(e.target.elements);
@@ -76,7 +76,7 @@ export default function SeriesList(props) {
     setFormOpen(false);
   };
 
-  const handlePageChange = (e, newPage) => {
+  function handlePageChange(e, newPage) {
     setPage(newPage);
 
     const totalRows = (newPage + 1) * rowsPerPage;
@@ -86,7 +86,7 @@ export default function SeriesList(props) {
     }
   };
 
-  const handleRowsPerPageChange = e => {
+  function handleRowsPerPageChange(e) {
     const newRowsPerPage = parseInt(e.target.value, 10);
 
     setPage(0);
