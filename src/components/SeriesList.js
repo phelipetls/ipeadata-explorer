@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
 
-import { Grid, Typography, Paper, Collapse, IconButton } from "@material-ui/core";
+import {
+  Grid,
+  Typography,
+  Paper,
+  Collapse,
+  IconButton
+} from "@material-ui/core";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 
 import { makeStyles } from "@material-ui/core/styles";
+import { queryBuilder, queryLimit, queryOffset } from "../api/odata";
 
 import SortableTable from "./SortableTable";
 import SeriesForm from "./SeriesForm";
@@ -15,12 +22,13 @@ const useStyles = makeStyles(theme => ({
     margin: "2em auto"
   },
   collapsed: {
-    marginTop: theme.spacing(2),
+    marginTop: theme.spacing(2)
   }
 }));
 
-const URL =
-  "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$orderby=SERATUALIZACAO%20desc&$top=10";
+const ROWS_PER_PAGE = 1;
+
+const URL = `http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$orderby=SERATUALIZACAO%20desc&$top=${ROWS_PER_PAGE}`;
 
 const columns = [
   { key: "SERNOME", type: "string", label: "Nome" },
@@ -33,43 +41,91 @@ const columns = [
 export default function SeriesList(props) {
   const classes = useStyles();
 
+  const [formOpen, setFormOpen] = useState(false);
   const [data, setData] = useState([]);
   const [url, setUrl] = useState(URL);
-  const [open, setOpen] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(ROWS_PER_PAGE);
+  const [newPageUrl, setNewPageUrl] = useState("");
 
-  useEffect(() => {
-    async function fetchDataList() {
-      const response = await fetch(url);
-      const json = await response.json();
-      setData(json.value);
+  const handleSubmit = e => {
+    e.preventDefault();
+
+    let url = queryBuilder(e.target.elements);
+    url = queryLimit(url, page + 1);
+
+    setUrl(url);
+    setFormOpen(false);
+  };
+
+  const handlePageChange = (e, newPage) => {
+    setPage(newPage);
+
+    const totalRows = (newPage + 1) * rowsPerPage;
+
+    if (totalRows >= data.length) {
+      setNewPageUrl(queryOffset(url, (page + 1) * rowsPerPage));
     }
+  };
 
-    fetchDataList();
-  }, [url]);
+  const handleRowsPerPageChange = e => {
+    const newRowsPerPage = parseInt(e.target.value, 10)
+
+    setPage(0);
+    setRowsPerPage(newRowsPerPage);
+    setUrl(url => url.replace(/top=[0-9]+/, `top=${newRowsPerPage}`));
+  };
+
+  useEffect(
+    function fetchNewRows() {
+      fetch(url)
+        .then(response => response.json())
+        .then(json => setData(json.value));
+    },
+    [url]
+  );
+
+  useEffect(
+    function fetchMoreRows() {
+      if (newPageUrl === "") {
+        return;
+      }
+      fetch(newPageUrl)
+        .then(response => response.json())
+        .then(json => setData(data => data.concat(json.value)));
+    },
+    [newPageUrl]
+  );
 
   return (
     <>
       <Paper className={classes.filterContainer}>
         <Grid container>
-          <Typography variant="h5">
-            Filtros
-          </Typography>
+          <Typography variant="h6">Filtros</Typography>
 
           <IconButton
             aria-label="Expande filtros"
             size="small"
-            onClick={() => setOpen(!open)}
+            onClick={() => setFormOpen(!formOpen)}
           >
-            {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+            {formOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
           </IconButton>
         </Grid>
 
-        <Collapse in={open} unmountOnExit>
-          <SeriesForm setOpen={setOpen} setUrl={setUrl} />
+        <Collapse in={formOpen}>
+          <SeriesForm onSubmit={handleSubmit} />
         </Collapse>
       </Paper>
 
-      <SortableTable data={data} columns={columns} rowKey="SERCODIGO" />
+      <SortableTable
+        data={data}
+        columns={columns}
+        rowKey="SERCODIGO"
+        page={page}
+        rowsPerPage={rowsPerPage}
+        onChangePage={handlePageChange}
+        onChangeRowsPerPage={handleRowsPerPageChange}
+      />
     </>
   );
 }

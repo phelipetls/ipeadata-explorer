@@ -1,12 +1,21 @@
 const URL =
-  "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$top=1&$expand=Pais";
+  "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados";
 
-export function urlBuilder(formElements) {
+export function queryBuilder(formElements) {
   return URL + buildFilter(formElements);
+}
+
+export function queryLimit(url, limit) {
+  return url + `&$top=${limit}`;
+}
+
+export function queryOffset(url, offset) {
+  return url + `&$skip=${offset}`;
 }
 
 function buildFilter(formElements) {
   const filters = [];
+  let helper_query = "";
 
   const filledElements = Array.from(formElements).filter(elem =>
     Boolean(elem.value)
@@ -22,13 +31,16 @@ function buildFilter(formElements) {
         break;
       case "FNTNOME":
         filters.push(
-          `(contains(FNTNOME,'${elem.value}') or contains(FNTSIGLA,'${elem.value}'))`
+          `(contains(FNTNOME,'${elem.value}') or ` +
+            `contains(FNTSIGLA,'${elem.value}'))`
         );
         break;
       case "PAINOME":
         filters.push(
-          `(contains(Pais/PAINOME,'${elem.value}') or contains(PAICODIGO,'${elem.value}'))`
+          `(contains(Pais/PAINOME,'${elem.value}') or ` +
+            `contains(PAICODIGO,'${elem.value}'))`
         );
+        helper_query = "&$expand=Pais";
         break;
       case "SERMINDATA":
         filters.push(`SERMINDATA ge ${formatDate(elem.value)}`);
@@ -55,9 +67,8 @@ function buildFilter(formElements) {
   }
 
   if (filters.length > 0) {
-    return `&$filter=${filters.join(" and ")}`;
+    return `?$filter=${filters.join(" and ")}${helper_query}`;
   }
-
   return "";
 }
 

@@ -11,7 +11,6 @@ import {
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
-import { urlBuilder } from "../api/odata";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -46,15 +45,7 @@ export default function SeriesForm(props) {
     SERNUMERICA: ""
   });
 
-  const { setUrl, setOpen } = props;
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    const url = urlBuilder(e.target.elements);
-
-    setUrl(url);
-    setOpen(false);
-  }
+  const { onSubmit } = props;
 
   function handleChange(e) {
     setParameters({ ...parameters, [e.target.name]: e.target.value });
@@ -84,7 +75,7 @@ export default function SeriesForm(props) {
       container
       spacing={3}
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={onSubmit}
       className={classes.form}
     >
       <Grid container item spacing={3} justify="center" name="text">

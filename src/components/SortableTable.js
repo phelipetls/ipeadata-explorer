@@ -8,10 +8,14 @@ import {
   TableBody,
   TableRow,
   TableCell,
+  TableFooter,
+  TablePagination,
   TableSortLabel
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
+
+import TablePaginationActions from "./TablePaginationActions";
 
 const useStyles = makeStyles(theme => ({
   tableContainer: {
@@ -29,7 +33,12 @@ const invertSortDirections = {
 const sortFunctions = {
   string: (a, b) => a.localeCompare(b),
   numeric: (a, b) => a - b,
-  date: (a, b) => new Date(a) - new Date(b),
+  date: (a, b) => new Date(a) - new Date(b)
+};
+
+const formatColumnValue = (value, type) => {
+  if (type === "date") return new Date(value).getFullYear();
+  return value;
 };
 
 export default function SortableTable(props) {
@@ -38,7 +47,20 @@ export default function SortableTable(props) {
   const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState(props.defaultOrderBy);
 
-  const { columns, data, rowKey } = props;
+  const {
+    columns,
+    data,
+    rowKey,
+    page,
+    rowsPerPage,
+    onChangePage,
+    onChangeRowsPerPage
+  } = props;
+
+  const rows =
+    page !== undefined
+      ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+      : data;
 
   const handleSort = (e, column) => {
     if (column === orderBy) {
@@ -61,49 +83,69 @@ export default function SortableTable(props) {
       return sortOrder * sortFunction(a, b);
     };
 
-    data.sort((a, b) => sorter(a[orderBy], b[orderBy]));
+    rows.sort((a, b) => sorter(a[orderBy], b[orderBy]));
   }
+
+  const tableHeaders = columns.map(column => (
+    <TableCell
+      component="th"
+      key={column.key}
+      value={column.key}
+      align={column.type === "numeric" ? "right" : "left"}
+      sortDirection={orderBy === column.key ? order : false}
+    >
+      <TableSortLabel
+        active={orderBy === column.key}
+        direction={orderBy === column.key ? order : "asc"}
+        onClick={e => handleSort(e, column.key)}
+      >
+        {column.label}
+      </TableSortLabel>
+    </TableCell>
+  ));
+
+  const tableRows = rows.map(row => (
+    <TableRow key={row[rowKey]}>
+      {columns.map((column, index) => (
+        <TableCell
+          key={index}
+          align={column.type === "numeric" ? "right" : "left"}
+        >
+          {formatColumnValue(row[column.key], column.type)}
+        </TableCell>
+      ))}
+    </TableRow>
+  ));
 
   return (
     <TableContainer component={Paper} className={classes.tableContainer}>
       <Table className={classes.table} size="small">
         <TableHead>
-          <TableRow>
-            {columns.map(column => (
-              <TableCell
-                component="th"
-                key={column.key}
-                value={column.key}
-                align={column.type === "numeric" ? "right" : "left"}
-                sortDirection={orderBy === column.key ? order : false}
-              >
-                <TableSortLabel
-                  active={orderBy === column.key}
-                  direction={orderBy === column.key ? order : "asc"}
-                  onClick={e => handleSort(e, column.key)}
-                >
-                  {column.label}
-                </TableSortLabel>
-              </TableCell>
-            ))}
-          </TableRow>
+          <TableRow>{tableHeaders}</TableRow>
         </TableHead>
-        <TableBody>
-          {data.map(row => (
-            <TableRow key={row[rowKey]}>
-              {columns.map((column, index) => (
-                <TableCell
-                  key={index}
-                  align={column.type === "numeric" ? "right" : "left"}
-                >
-                  {column.type === "date"
-                    ? new Date(row[column.key]).getFullYear()
-                    : row[column.key]}
-                </TableCell>
-              ))}
+        <TableBody>{tableRows}</TableBody>
+        {page !== undefined && (
+          <TableFooter>
+            <TableRow>
+              <TablePagination
+                rowsPerPageOptions={[rowsPerPage, 5, 10, 15]}
+                colSpan={6}
+                count={data.length}
+                rowsPerPage={rowsPerPage}
+                page={page}
+                labelDisplayedRows={() => ""}
+                onChangePage={onChangePage}
+                onChangeRowsPerPage={onChangeRowsPerPage}
+                labelRowsPerPage="Por página:"
+                SelectProps={{
+                  inputProps: { "aria-label": "Linhas por página" },
+                  native: true
+                }}
+                ActionsComponent={TablePaginationActions}
+              />
             </TableRow>
-          ))}
-        </TableBody>
+          </TableFooter>
+        )}
       </Table>
     </TableContainer>
   );
