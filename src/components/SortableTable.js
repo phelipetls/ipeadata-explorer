@@ -99,7 +99,7 @@ export default function SortableTable(props) {
           key={column.key}
           align={column.type === "numeric" ? "right" : "left"}
         >
-          {formatColumnValue(row[column.key], column.type)}
+          {column.render ? column.render(row, column) : row[column.key]}
         </TableCell>
       ))}
     </TableRow>

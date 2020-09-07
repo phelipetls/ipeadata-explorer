@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+
 import {
   Grid,
   Typography,
@@ -11,7 +12,14 @@ import {
 } from "@material-ui/core";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { queryBuilder, queryLimit, queryOffset } from "../api/odata";
+
+import {
+  buildQueryFromForm,
+  buildQueryFromUrl,
+  limitQuery,
+  offsetQuery
+} from "../api/odata";
+import { useLocation } from "react-router-dom";
 
 import SortableTable from "./SortableTable";
 import SeriesForm from "./SeriesForm";
@@ -40,22 +48,34 @@ const columns = [
   { key: "SERMAXDATA", type: "date", label: "Fim" }
 ];
 
+function useSearchParams() {
+  return new URLSearchParams(useLocation().search);
+}
+
 export default function SeriesList(props) {
   const classes = useStyles();
 
   const [data, setData] = useState([]);
-  const [url, setUrl] = useState(URL);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(ROWS_PER_PAGE);
   const [newPageUrl, setNewPageUrl] = useState("");
   const [formOpen, setFormOpen] = useState(false);
 
+  const searchParams = useSearchParams();
+  const searchUrl = buildQueryFromUrl(searchParams);
+
+  let [url, setUrl] = useState(searchUrl || URL);
+  url = limitQuery(url, rowsPerPage);
+
+  const currentPage = data.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
   const handleSubmit = e => {
     e.preventDefault();
 
-    let url = queryBuilder(e.target.elements);
-    url = queryLimit(url, rowsPerPage);
-
+    let url = buildQueryFromForm(e.target.elements);
     setUrl(url);
     setFormOpen(false);
   };
@@ -66,7 +86,7 @@ export default function SeriesList(props) {
     const totalRows = (newPage + 1) * rowsPerPage;
 
     if (totalRows >= data.length) {
-      setNewPageUrl(queryOffset(url, (page + 1) * rowsPerPage));
+      setNewPageUrl(offsetQuery(url, (page + 1) * rowsPerPage));
     }
   };
 
@@ -97,11 +117,6 @@ export default function SeriesList(props) {
         .then(json => setData(data => data.concat(json.value)));
     },
     [newPageUrl]
-  );
-
-  const currentPage = data.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
   );
 
   const paginationActions = (

@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from "react";
 
+import { Link } from "@material-ui/core";
+import { Link as RouterLink } from "react-router-dom";
+
 import SortableTable from "./SortableTable";
 import Loading from "./Loading";
 
@@ -7,7 +10,16 @@ const URL =
   "http://ipeadata2-homologa.ipea.gov.br/api/v1/Paises?$expand=Metadados($select=SERCODIGO;$count=true)";
 
 const columns = [
-  { key: "PAINOME", type: "string", label: "País" },
+  {
+    key: "PAINOME",
+    type: "string",
+    label: "País",
+    render: (row, column) => (
+      <Link component={RouterLink} to={`/series?PAINOME=${row[column.key]}`}>
+        {row[column.key]}
+      </Link>
+    )
+  },
   {
     key: "Metadados@odata.count",
     type: "numeric",
@@ -37,8 +49,8 @@ export default function Countries() {
     <Loading />
   ) : (
     <SortableTable
+      rows={countries}
       columns={columns}
-      data={countries}
       rowKey="PAICODIGO"
       defaultOrderBy="Metadados@odata.count"
     />
