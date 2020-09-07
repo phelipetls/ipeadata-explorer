@@ -49,18 +49,13 @@ export default function SortableTable(props) {
 
   const {
     columns,
-    data,
+    rows,
     rowKey,
     page,
     rowsPerPage,
     onChangePage,
     onChangeRowsPerPage
   } = props;
-
-  const rows =
-    page !== undefined
-      ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-      : data;
 
   const handleSort = (e, column) => {
     if (column === orderBy) {
@@ -108,7 +103,7 @@ export default function SortableTable(props) {
     <TableRow key={row[rowKey]}>
       {columns.map((column, index) => (
         <TableCell
-          key={index}
+          key={column.key}
           align={column.type === "numeric" ? "right" : "left"}
         >
           {formatColumnValue(row[column.key], column.type)}
@@ -128,9 +123,9 @@ export default function SortableTable(props) {
           <TableFooter>
             <TableRow>
               <TablePagination
-                rowsPerPageOptions={[rowsPerPage, 5, 10, 15]}
+                rowsPerPageOptions={[5, 10, 15]}
                 colSpan={6}
-                count={data.length}
+                count={rows.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 labelDisplayedRows={() => ""}

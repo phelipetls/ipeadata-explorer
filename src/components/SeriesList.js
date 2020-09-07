@@ -26,7 +26,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const ROWS_PER_PAGE = 1;
+const ROWS_PER_PAGE = 5;
 
 const URL = `http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$orderby=SERATUALIZACAO%20desc&$top=${ROWS_PER_PAGE}`;
 
@@ -41,18 +41,18 @@ const columns = [
 export default function SeriesList(props) {
   const classes = useStyles();
 
-  const [formOpen, setFormOpen] = useState(false);
   const [data, setData] = useState([]);
   const [url, setUrl] = useState(URL);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(ROWS_PER_PAGE);
   const [newPageUrl, setNewPageUrl] = useState("");
+  const [formOpen, setFormOpen] = useState(false);
 
   const handleSubmit = e => {
     e.preventDefault();
 
     let url = queryBuilder(e.target.elements);
-    url = queryLimit(url, page + 1);
+    url = queryLimit(url, rowsPerPage);
 
     setUrl(url);
     setFormOpen(false);
@@ -69,11 +69,11 @@ export default function SeriesList(props) {
   };
 
   const handleRowsPerPageChange = e => {
-    const newRowsPerPage = parseInt(e.target.value, 10)
+    const newRowsPerPage = parseInt(e.target.value, 10);
 
     setPage(0);
     setRowsPerPage(newRowsPerPage);
-    setUrl(url => url.replace(/top=[0-9]+/, `top=${newRowsPerPage}`));
+    setUrl(url.replace(/top=[0-9]+/, `top=${newRowsPerPage}`));
   };
 
   useEffect(
@@ -97,6 +97,11 @@ export default function SeriesList(props) {
     [newPageUrl]
   );
 
+  const currentPage = data.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
+  );
+
   return (
     <>
       <Paper className={classes.filterContainer}>
@@ -118,7 +123,7 @@ export default function SeriesList(props) {
       </Paper>
 
       <SortableTable
-        data={data}
+        rows={currentPage}
         columns={columns}
         rowKey="SERCODIGO"
         page={page}
