@@ -32,23 +32,13 @@ const sortFunctions = {
   date: (a, b) => new Date(a) - new Date(b)
 };
 
-const formatColumnValue = (value, type) => {
-  if (type === "date") return new Date(value).getFullYear();
-  return value;
-};
-
 export default function SortableTable(props) {
   const classes = useStyles();
 
   const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState(props.defaultOrderBy);
 
-  const {
-    columns,
-    rows,
-    rowKey,
-    children
-  } = props;
+  const { columns, rows, rowKey, children } = props;
 
   const handleSort = (e, column) => {
     if (column === orderBy) {
@@ -62,10 +52,8 @@ export default function SortableTable(props) {
   const sortedColumn = columns.find(column => column.key === orderBy);
 
   if (sortedColumn) {
-    const sortedColumnType = sortedColumn.type;
-
     const sortOrder = order === "asc" ? 1 : -1;
-    const sortFunction = sortFunctions[sortedColumnType];
+    const sortFunction = sortFunctions[sortedColumn.type];
 
     const sorter = (a, b) => {
       return sortOrder * sortFunction(a, b);
