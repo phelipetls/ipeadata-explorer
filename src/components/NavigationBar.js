@@ -47,7 +47,7 @@ export default function NavigationBar() {
   const handleBlur = () => setIsSearching(false);
 
   const navigationBarLinks = [
-    { text: "Bases", url: "/bases" },
+    { text: "Séries", url: "/series" },
     { text: "Temas", url: "/temas" },
     { text: "Países", url: "/paises" },
     { text: "Níveis Geográficos", url: "/niveis-geograficos" }
