@@ -37,15 +37,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const ROWS_PER_PAGE = 5;
+const URL = `http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$orderby=SERATUALIZACAO%20desc`;
 
-const URL = `http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$orderby=SERATUALIZACAO%20desc&$top=${ROWS_PER_PAGE}`;
+const getYear = (row, column) => new Date(row[column.key]).getFullYear();
 
 const columns = [
   { key: "SERNOME", type: "string", label: "Nome" },
   { key: "PERNOME", type: "string", label: "Frequência" },
   { key: "UNINOME", type: "string", label: "Unidade" },
-  { key: "SERMINDATA", type: "date", label: "Início" },
-  { key: "SERMAXDATA", type: "date", label: "Fim" }
+  { key: "SERMINDATA", type: "date", label: "Início", render: getYear },
+  { key: "SERMAXDATA", type: "date", label: "Fim", render: getYear }
 ];
 
 function useSearchParams() {
@@ -66,11 +67,6 @@ export default function SeriesList(props) {
 
   let [url, setUrl] = useState(searchUrl || URL);
   url = limitQuery(url, rowsPerPage);
-
-  const currentPage = data.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
 
   const handleSubmit = e => {
     e.preventDefault();
@@ -140,6 +136,11 @@ export default function SeriesList(props) {
         />
       </TableRow>
     </TableFooter>
+  );
+
+  const currentPage = data.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
   );
 
   return (

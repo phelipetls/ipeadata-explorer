@@ -8,7 +8,9 @@ export function buildQueryFromForm(formElements) {
 }
 
 export function buildQueryFromUrl(searchParams) {
-  return URL + buildFilter(searchParams);
+  if (searchParams.toString() !== "") {
+    return URL + buildFilter(searchParams);
+  }
 }
 
 export function limitQuery(url, limit) {
@@ -66,7 +68,7 @@ function buildFilter(parameters) {
         filters.push(`${name} eq ${value}`);
         break;
       default:
-      // no default
+        throw new Error("Este parâmetro não é suportado para filtragem.");
     }
   }
 
