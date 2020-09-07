@@ -62,6 +62,7 @@ function buildFilter(parameters) {
         filters.push(`${name} eq '${value}'`);
         break;
       case "SERNUMERICA":
+      case "TEMCODIGO":
         filters.push(`${name} eq ${value}`);
         break;
       default:
