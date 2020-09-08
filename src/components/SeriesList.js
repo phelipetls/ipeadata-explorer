@@ -119,14 +119,13 @@ export default function SeriesList(props) {
       <SortableTable
         rows={currentPage}
         columns={columns}
+        footer={paginationActions}
         rowKey="SERCODIGO"
         page={page}
         rowsPerPage={rowsPerPage}
         onChangePage={handlePageChange}
         onChangeRowsPerPage={handleRowsPerPageChange}
-      >
-        {paginationActions}
-      </SortableTable>
+      />
     </>
   );
 }

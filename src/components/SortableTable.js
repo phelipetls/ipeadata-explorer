@@ -43,7 +43,7 @@ export default function SortableTable(props) {
   const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState(props.defaultOrderBy);
 
-  const { columns, rows, rowKey, children } = props;
+  const { columns, rows, rowKey, footer } = props;
 
   const handleSort = (e, column) => {
     if (column === orderBy) {
@@ -105,7 +105,7 @@ export default function SortableTable(props) {
           <TableRow>{tableHeaders}</TableRow>
         </TableHead>
         <TableBody>{tableRows}</TableBody>
-        {children}
+        {footer}
       </Table>
     </TableContainer>
   );
