@@ -50,7 +50,6 @@ export default function NavigationBar() {
     { text: "Séries", url: "/series" },
     { text: "Temas", url: "/temas" },
     { text: "Países", url: "/paises" },
-    { text: "Níveis Geográficos", url: "/niveis-geograficos" }
   ];
 
   const classes = useStyles();
