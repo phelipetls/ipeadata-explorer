@@ -1,4 +1,4 @@
-const URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados";
+const URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$count=true";
 
 export function buildQueryFromForm(formElements) {
   return (
@@ -23,7 +23,7 @@ export function offsetQuery(url, offset) {
 
 function buildFilter(parameters) {
   const filters = [];
-  let helper_query = "";
+  let helperQuery = "";
 
   for (const [name, value] of parameters) {
     if (!value) continue;
@@ -44,7 +44,7 @@ function buildFilter(parameters) {
         filters.push(
           `(contains(Pais/PAINOME,'${value}') or contains(PAICODIGO,'${value}'))`
         );
-        helper_query = "&$expand=Pais";
+        helperQuery = "&$expand=Pais";
         break;
       case "SERMINDATA":
         filters.push(`SERMINDATA ge ${formatDate(value)}`);
@@ -73,7 +73,7 @@ function buildFilter(parameters) {
   }
 
   if (filters.length > 0) {
-    return `?$filter=${filters.join(" and ")}${helper_query}`;
+    return `&$filter=${filters.join(" and ")}${helperQuery}`;
   }
 
   return "";

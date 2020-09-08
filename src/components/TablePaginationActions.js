@@ -35,6 +35,7 @@ export default function TablePaginationActions(props) {
         <KeyboardArrowLeft />
       </IconButton>
       <IconButton
+        disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         onClick={handleNextButtonClick}
         aria-label="Próxima página"
       >

@@ -12,7 +12,8 @@ import SortableTable from "./SortableTable";
 import SeriesFilter from "./SeriesFilter";
 import TablePaginationFooter from "./TablePaginationFooter";
 
-const URL = `http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$orderby=SERATUALIZACAO%20desc`;
+const BASE_URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados"
+const URL = `${BASE_URL}?$count=true&$orderby=SERATUALIZACAO%20desc`;
 
 const getYear = (row, column) => new Date(row[column.key]).getFullYear();
 
@@ -29,7 +30,8 @@ function useSearchParams() {
 }
 
 export default function SeriesList(props) {
-  const [data, setData] = useState([]);
+  const [rows, setRows] = useState([]);
+  const [totalRows, setTotalRows] = useState(0);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [newPageUrl, setNewPageUrl] = useState("");
@@ -54,7 +56,7 @@ export default function SeriesList(props) {
 
     const totalRows = (newPage + 1) * rowsPerPage;
 
-    if (totalRows >= data.length) {
+    if (totalRows >= rows.length) {
       setNewPageUrl(offsetQuery(url, (page + 1) * rowsPerPage));
     }
   }
@@ -71,7 +73,10 @@ export default function SeriesList(props) {
     function fetchNewRows() {
       fetch(url)
         .then(response => response.json())
-        .then(json => setData(json.value));
+        .then(json => {
+          setRows(json.value);
+          setTotalRows(json["@odata.count"]);
+        });
     },
     [url]
   );
@@ -83,22 +88,22 @@ export default function SeriesList(props) {
       }
       fetch(newPageUrl)
         .then(response => response.json())
-        .then(json => setData(data => data.concat(json.value)));
+        .then(json => setRows(rows => rows.concat(json.value)));
     },
     [newPageUrl]
   );
 
   const paginationActions = (
     <TablePaginationFooter
-      data={data}
       page={page}
+      count={totalRows}
       rowsPerPage={rowsPerPage}
       onChangePage={handlePageChange}
       onChangeRowsPerPage={handleRowsPerPageChange}
     />
   );
 
-  const currentPage = data.slice(
+  const currentPage = rows.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
   );
