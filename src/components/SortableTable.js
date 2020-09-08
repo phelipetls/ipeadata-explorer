@@ -15,7 +15,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   tableContainer: {
-    maxWidth: theme.breakpoints.values.sm,
+    maxWidth: theme.breakpoints.values.md,
     margin: "0 auto",
     marginBottom: "2em"
   }
