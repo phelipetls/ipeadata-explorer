@@ -18,6 +18,11 @@ const useStyles = makeStyles(theme => ({
     maxWidth: theme.breakpoints.values.md,
     margin: "0 auto",
     marginBottom: "2em"
+  },
+  table: {
+    'thead tr th:first-child': {
+      width: "50%",
+    }
   }
 }));
 
