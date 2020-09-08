@@ -1,6 +1,6 @@
 import React from "react";
 
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
@@ -24,18 +24,12 @@ function App() {
       <div className="App">
         <NavigationBar />
         <Container component="main" className={classes.mainSection}>
-          <Route exact path="/">
-            <LandingPage />
-          </Route>
-          <Route path="/temas">
-            <Themes />
-          </Route>
-          <Route path="/paises">
-            <Countries />
-          </Route>
-          <Route path="/series">
-            <SeriesList />
-          </Route>
+          <Switch>
+            <Route exact path="/" component={LandingPage} />
+            <Route path="/temas" component={Themes} />
+            <Route path="/paises" component={Countries} />
+            <Route path="/series" component={SeriesList} />
+          </Switch>
         </Container>
       </div>
     </Router>
