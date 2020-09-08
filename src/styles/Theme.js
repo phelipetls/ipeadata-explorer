@@ -6,5 +6,8 @@ export const theme = createMuiTheme({
     "macro": colors.blue[600],
     "regional": colors.green[600],
     "social": colors.red[600],
+  },
+  link: {
+    textDecoration: "none",
   }
 })

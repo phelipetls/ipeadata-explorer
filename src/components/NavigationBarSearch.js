@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 
-import {
-  TextField
-} from "@material-ui/core";
+import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import BackButton from "./BackButton";
@@ -18,8 +16,6 @@ const useStyles = makeStyles(theme => ({
     padding: "0 1em"
   }
 }));
-
-
 
 export default function NavigationBarSearch(props) {
   const [searchInput, setSearchInput] = useState("");

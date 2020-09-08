@@ -5,7 +5,11 @@ import { Search } from "@material-ui/icons";
 
 export default function SearchButton(props) {
   return (
-    <IconButton color="default" onClick={props.onClick}>
+    <IconButton
+      color="default"
+      onClick={props.onClick}
+      style={{ alignSelf: "center" }}
+    >
       <Search />
     </IconButton>
   );

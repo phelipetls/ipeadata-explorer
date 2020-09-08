@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { AppBar, Toolbar, Link, Typography, Hidden } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import { Link as RouterLink } from "react-router-dom";
 
@@ -15,32 +15,18 @@ const useStyles = makeStyles(theme => ({
   appBar: {
     height: "4em"
   },
-  toolbar: {
+  mainToolbar: {
     height: "100%",
-    alignItems: "center",
     justifyContent: "space-between"
   },
-  // TODO: create theme with link style
-  link: {
-    "&:not(:last-child)": {
-      marginRight: "1.5em"
-    },
-    "&:hover": {
-      textDecoration: "none"
-    }
+  secondaryToolbar: {
+    alignItems: "stretch",
   },
-  searchContainer: {
-    height: "100%",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  search: {
-    padding: "0 1em"
-  }
 }));
 
 export default function NavigationBar() {
+  const theme = useTheme();
+
   const [isSearching, setIsSearching] = useState(false);
 
   const handleClick = () => setIsSearching(true);
@@ -65,21 +51,25 @@ export default function NavigationBar() {
       {isSearching ? (
         <NavigationBarSearch onBlur={handleBlur} />
       ) : (
-        <Toolbar className={classes.toolbar}>
+        <Toolbar className={classes.mainToolbar}>
           <Typography variant="h5" color="primary">
-            <Link component={RouterLink} to="/" className={classes.link}>
+            <Link component={RouterLink} to="/" style={theme.link}>
               IPEA
             </Link>
           </Typography>
-          <Toolbar disableGutters>
+
+          <Toolbar className={classes.secondaryToolbar} disableGutters>
             <Hidden xsDown>
               <NavigationBarList links={navigationBarLinks} />
             </Hidden>
+
             <SearchButton onClick={handleClick} />
+
             <Hidden smUp>
               <NavigationBarMenu links={navigationBarLinks} />
             </Hidden>
           </Toolbar>
+
         </Toolbar>
       )}
     </AppBar>

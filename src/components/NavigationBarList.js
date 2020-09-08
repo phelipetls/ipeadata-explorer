@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Link, List, ListItem } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import { Link as RouterLink } from "react-router-dom";
 
@@ -10,9 +10,6 @@ const useStyles = makeStyles(theme => ({
     "&:not(:last-child)": {
       marginRight: "1.5em"
     },
-    "&:hover": {
-      textDecoration: "none"
-    }
   },
   navigationList: {
     display: "flex",
@@ -31,6 +28,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function NavigationBarList(props) {
   const classes = useStyles();
+  const theme = useTheme();
 
   return (
     <List className={classes.navigationList}>
@@ -41,7 +39,7 @@ export default function NavigationBarList(props) {
           key={index}
           className={classes.navigationListItem}
         >
-          <Link component="div" className={classes.link}>{link.text}</Link>
+          <Link component="div" className={classes.link} style={theme.link}>{link.text}</Link>
         </ListItem>
       ))}
     </List>
