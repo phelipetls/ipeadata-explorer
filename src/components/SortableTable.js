@@ -43,7 +43,7 @@ export default function SortableTable(props) {
   const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState(props.defaultOrderBy);
 
-  const { columns, rows, rowKey, footer } = props;
+  const { columns, rows, body, footer } = props;
 
   const handleSort = (e, column) => {
     if (column === orderBy) {
@@ -67,7 +67,7 @@ export default function SortableTable(props) {
     rows.sort((a, b) => sorter(a[orderBy], b[orderBy]));
   }
 
-  const tableHeaders = columns.map(column => (
+  const headers = columns.map(column => (
     <TableCell
       component="th"
       key={column.key}
@@ -85,26 +85,13 @@ export default function SortableTable(props) {
     </TableCell>
   ));
 
-  const tableRows = rows.map(row => (
-    <TableRow key={row[rowKey]}>
-      {columns.map((column, index) => (
-        <TableCell
-          key={column.key}
-          align={column.type === "numeric" ? "right" : "left"}
-        >
-          {column.render ? column.render(row, column) : row[column.key]}
-        </TableCell>
-      ))}
-    </TableRow>
-  ));
-
   return (
     <TableContainer component={Paper} className={classes.tableContainer}>
       <Table className={classes.table} size="small">
         <TableHead>
-          <TableRow>{tableHeaders}</TableRow>
+          <TableRow>{headers}</TableRow>
         </TableHead>
-        <TableBody>{tableRows}</TableBody>
+        <TableBody>{body}</TableBody>
         {footer}
       </Table>
     </TableContainer>

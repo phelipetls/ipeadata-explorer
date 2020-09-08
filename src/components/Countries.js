@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import { Link } from "@material-ui/core";
+import { Link, TableRow, TableCell } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 
 import SortableTable from "./SortableTable";
-import Loading from "./Loading";
+import TableSkeleton from "./TableSkeleton";
 
 const URL =
   "http://ipeadata2-homologa.ipea.gov.br/api/v1/Paises?$expand=Metadados($select=SERCODIGO;$count=true)";
@@ -40,13 +40,26 @@ export default function Countries() {
       .then(() => setIsLoading(false));
   }, []);
 
-  return isLoading ? (
-    <Loading />
-  ) : (
+  const body = isLoading
+    ? <TableSkeleton rows={10} columns={columns.length} />
+    : countries.map(row => (
+        <TableRow key={row["PAICODIGO"]}>
+          {columns.map((column, index) => (
+            <TableCell
+              key={column.key}
+              align={column.type === "numeric" ? "right" : "left"}
+            >
+              {column.render ? column.render(row, column) : row[column.key]}
+            </TableCell>
+          ))}
+        </TableRow>
+      ));
+
+  return (
     <SortableTable
       rows={countries}
       columns={columns}
-      rowKey="PAICODIGO"
+      body={body}
       defaultOrderBy="Metadados@odata.count"
     />
   );

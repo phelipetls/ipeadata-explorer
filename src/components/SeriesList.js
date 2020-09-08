@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { TableRow, TableCell } from "@material-ui/core";
+
 import {
   buildQueryFromForm,
   buildQueryFromUrl,
@@ -11,8 +13,9 @@ import { useLocation } from "react-router-dom";
 import SortableTable from "./SortableTable";
 import SeriesFilter from "./SeriesFilter";
 import TablePaginationFooter from "./TablePaginationFooter";
+import TableSkeleton from "./TableSkeleton";
 
-const BASE_URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados"
+const BASE_URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados";
 const URL = `${BASE_URL}?$count=true&$orderby=SERATUALIZACAO%20desc`;
 
 const getYear = (row, column) => new Date(row[column.key]).getFullYear();
@@ -36,6 +39,7 @@ export default function SeriesList(props) {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [newPageUrl, setNewPageUrl] = useState("");
   const [formOpen, setFormOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const searchParams = useSearchParams();
   const searchUrl = buildQueryFromUrl(searchParams);
@@ -72,12 +76,15 @@ export default function SeriesList(props) {
 
   useEffect(
     function fetchNewRows() {
+      setIsLoading(true);
+
       fetch(url)
         .then(response => response.json())
         .then(json => {
           setRows(json.value);
           setTotalRows(json["@odata.count"]);
-        });
+        })
+        .then(() => setIsLoading(false));
     },
     [url]
   );
@@ -87,9 +94,13 @@ export default function SeriesList(props) {
       if (newPageUrl === "") {
         return;
       }
+
+      setIsLoading(true);
+
       fetch(newPageUrl)
         .then(response => response.json())
-        .then(json => setRows(rows => rows.concat(json.value)));
+        .then(json => setRows(rows => rows.concat(json.value)))
+        .then(() => setIsLoading(false));
     },
     [newPageUrl]
   );
@@ -104,9 +115,26 @@ export default function SeriesList(props) {
     />
   );
 
-  const currentPage = rows.slice(
+  const currentPageRows = rows.slice(
     page * rowsPerPage,
     page * rowsPerPage + rowsPerPage
+  );
+
+  const tableRows = isLoading ? (
+    <TableSkeleton rows={rowsPerPage} columns={columns.length} />
+  ) : (
+    currentPageRows.map(row => (
+      <TableRow key={row["SERCODIGO"]}>
+        {columns.map((column, index) => (
+          <TableCell
+            key={column.key}
+            align={column.type === "numeric" ? "right" : "left"}
+          >
+            {column.render ? column.render(row, column) : row[column.key]}
+          </TableCell>
+        ))}
+      </TableRow>
+    ))
   );
 
   return (
@@ -118,10 +146,10 @@ export default function SeriesList(props) {
       />
 
       <SortableTable
-        rows={currentPage}
+        rows={currentPageRows}
         columns={columns}
+        body={tableRows}
         footer={paginationActions}
-        rowKey="SERCODIGO"
         page={page}
         rowsPerPage={rowsPerPage}
         onChangePage={handlePageChange}

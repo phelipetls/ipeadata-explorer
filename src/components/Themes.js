@@ -42,7 +42,9 @@ export default function Themes() {
     setBases(newBases);
   };
 
-  return (isLoading ? <Loading /> :
+  return isLoading ? (
+    <Loading />
+  ) : (
     <div>
       <ThemeBasesButtons value={bases} onChange={handleChangeBases} />
       <Container maxWidth="sm" className={classes.grid}>
