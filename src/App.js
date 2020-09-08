@@ -8,6 +8,7 @@ import NavigationBar from "./components/NavigationBar";
 import LandingPage from "./components/LandingPage";
 import Themes from "./components/Themes";
 import Countries from "./components/Countries";
+import SeriesList from "./components/SeriesList";
 
 const useStyles = makeStyles(theme => ({
   mainSection: {
@@ -30,6 +31,9 @@ function App() {
           </Route>
           <Route path="/paises">
             <Countries />
+          </Route>
+          <Route path="/series">
+            <SeriesList />
           </Route>
         </Container>
       </div>
