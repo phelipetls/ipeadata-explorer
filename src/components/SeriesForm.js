@@ -242,7 +242,6 @@ export default function SeriesForm(props) {
 
       <Grid container item xs={12} justify="center">
         <Button
-          size="small"
           variant="contained"
           color="primary"
           type="submit"
