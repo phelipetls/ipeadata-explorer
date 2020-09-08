@@ -12,6 +12,7 @@ import SeriesList from "./components/SeriesList";
 
 const useStyles = makeStyles(theme => ({
   mainSection: {
+    marginTop: "2em",
   }
 }));
 
