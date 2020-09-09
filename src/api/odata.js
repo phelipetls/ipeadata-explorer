@@ -1,4 +1,6 @@
-const URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$count=true";
+const URL =
+  "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$count=true";
+
 
 export function buildQueryFromForm(formElements) {
   return (

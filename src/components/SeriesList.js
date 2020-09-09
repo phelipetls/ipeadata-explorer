@@ -15,6 +15,10 @@ import SeriesFilter from "./SeriesFilter";
 import TablePaginationFooter from "./TablePaginationFooter";
 import TableSkeleton from "./TableSkeleton";
 
+function useSearchParams() {
+  return new URLSearchParams(useLocation().search);
+}
+
 const BASE_URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados";
 const URL = `${BASE_URL}?$count=true&$orderby=SERATUALIZACAO%20desc`;
 
@@ -36,10 +40,6 @@ const columns = [
   { key: "SERMINDATA", type: "date", label: "Início", render: getYear },
   { key: "SERMAXDATA", type: "date", label: "Fim", render: getYear }
 ];
-
-function useSearchParams() {
-  return new URLSearchParams(useLocation().search);
-}
 
 export default function SeriesList(props) {
   const [rows, setRows] = useState([]);

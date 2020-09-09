@@ -40,20 +40,22 @@ export default function Countries() {
       .then(() => setIsLoading(false));
   }, []);
 
-  const body = isLoading
-    ? <TableSkeleton rows={10} columns={columns.length} />
-    : countries.map(row => (
-        <TableRow key={row["PAICODIGO"]}>
-          {columns.map((column, index) => (
-            <TableCell
-              key={column.key}
-              align={column.type === "numeric" ? "right" : "left"}
-            >
-              {column.render ? column.render(row, column) : row[column.key]}
-            </TableCell>
-          ))}
-        </TableRow>
-      ));
+  const body = isLoading ? (
+    <TableSkeleton rows={10} columns={columns.length} />
+  ) : (
+    countries.map(row => (
+      <TableRow key={row["PAICODIGO"]}>
+        {columns.map((column, index) => (
+          <TableCell
+            key={column.key}
+            align={column.type === "numeric" ? "right" : "left"}
+          >
+            {column.render ? column.render(row, column) : row[column.key]}
+          </TableCell>
+        ))}
+      </TableRow>
+    ))
+  );
 
   return (
     <SortableTable
