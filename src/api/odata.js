@@ -1,6 +1,16 @@
 const URL =
   "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$count=true";
 
+export function buildMetadataUrl(code) {
+  return `http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados('${code}')`;
+}
+
+export function buildSeriesUrl(code) {
+  return (
+    buildMetadataUrl(code) +
+    "/Valores?$select=VALDATA,VALVALOR,TERCODIGO,TERNOME"
+  );
+}
 
 export function buildQueryFromForm(formElements) {
   return (
