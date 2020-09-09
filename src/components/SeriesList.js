@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { TableRow, TableCell } from "@material-ui/core";
+import { Link, TableRow, TableCell } from "@material-ui/core";
 
 import {
   buildQueryFromForm,
@@ -8,7 +8,7 @@ import {
   limitQuery,
   offsetQuery
 } from "../api/odata";
-import { useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 
 import SortableTable from "./SortableTable";
 import SeriesFilter from "./SeriesFilter";
@@ -21,7 +21,16 @@ const URL = `${BASE_URL}?$count=true&$orderby=SERATUALIZACAO%20desc`;
 const getYear = (row, column) => new Date(row[column.key]).getFullYear();
 
 const columns = [
-  { key: "SERNOME", type: "string", label: "Nome" },
+  {
+    key: "SERNOME",
+    type: "string",
+    label: "Nome",
+    render: (row, column) => (
+      <Link component={RouterLink} to={`/serie/${row.SERCODIGO}`}>
+        {row.SERNOME}
+      </Link>
+    )
+  },
   { key: "PERNOME", type: "string", label: "Frequência" },
   { key: "UNINOME", type: "string", label: "Unidade" },
   { key: "SERMINDATA", type: "date", label: "Início", render: getYear },

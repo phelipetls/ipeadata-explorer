@@ -9,9 +9,11 @@ import LandingPage from "./components/LandingPage";
 import Themes from "./components/Themes";
 import Countries from "./components/Countries";
 import SeriesList from "./components/SeriesList";
+import SeriesViewer from "./components/SeriesViewer";
 
 const useStyles = makeStyles(theme => ({
   mainSection: {
+    maxWidth: theme.breakpoints.values.md,
     marginTop: "2em",
   }
 }));
@@ -29,6 +31,7 @@ function App() {
             <Route path="/temas" component={Themes} />
             <Route path="/paises" component={Countries} />
             <Route path="/series" component={SeriesList} />
+            <Route path="/serie/:code" component={SeriesViewer} />
           </Switch>
         </Container>
       </div>

@@ -14,13 +14,9 @@ import SeriesForm from "./SeriesForm";
 
 const useStyles = makeStyles(theme => ({
   filterContainer: {
-    maxWidth: theme.breakpoints.values.md,
     padding: theme.spacing(2),
-    margin: "2em auto"
+    marginBottom: "2em"
   },
-  collapsed: {
-    marginTop: theme.spacing(2)
-  }
 }));
 
 export default function SeriesFilter(props) {
