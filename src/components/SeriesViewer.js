@@ -8,19 +8,17 @@ import SeriesMetadata from "./SeriesMetadata";
 import ChartContainer from "./ChartContainer";
 
 export default function SeriesViewer() {
-  const [metadata, setMetadata] = useState({});
+  const [metadata, setMetadata] = useState(null);
 
   let { code } = useParams();
-  let url = buildMetadataUrl(code);
 
-  useEffect(
-    function fetchMetadata() {
-      fetch(url)
-        .then(response => response.json())
-        .then(json => setMetadata(json.value[0]));
-    },
-    [url]
-  );
+  useEffect(() => {
+    fetch(buildMetadataUrl(code))
+      .then(response => response.json())
+      .then(json => setMetadata(json.value[0]));
+  }, [code]);
+
+  if (metadata === null) return null;
 
   return (
     <>

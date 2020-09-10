@@ -14,7 +14,7 @@ export default function ChartContainer({ children }) {
   const classes = useStyles();
 
   return (
-    <Grid container component={Paper} xs={12} className={classes.container}>
+    <Grid container component={Paper} className={classes.container}>
       {children}
     </Grid>
   );

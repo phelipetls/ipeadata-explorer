@@ -47,11 +47,11 @@ export default function SeriesMetadataTable(props) {
 
       <TableBody>
         {metadataFields.map(({ label, key, render }) => (
-          <TableRow>
-            <TableCell component="th" scope="row">
+          <TableRow key={label}>
+            <TableCell component="th" scope="row" key="label">
               {label}
             </TableCell>
-            <TableCell>
+            <TableCell key="valor">
               {key ? metadata[key] : render(metadata)}
             </TableCell>
           </TableRow>
