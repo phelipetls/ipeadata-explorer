@@ -1,3 +1,5 @@
+import { formatISO } from "date-fns";
+
 const URL =
   "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$count=true";
 
@@ -16,6 +18,10 @@ export function limitQuery(url, limit) {
   return url + `&$top=${limit}`;
 }
 
+export function offsetQuery(url, offset) {
+  return url + `&$skip=${offset}`;
+}
+
 export function limitByDate(url, initialDate, finalDate) {
   return (
     url +
@@ -25,11 +31,8 @@ export function limitByDate(url, initialDate, finalDate) {
 }
 
 function formatDate(date) {
-  return date + "T00:00:00-00:00";
-}
-
-export function offsetQuery(url, offset) {
-  return url + `&$skip=${offset}`;
+  if (!(date instanceof Date)) date = new Date(date);
+  return formatISO(date, { representation: "complete" });
 }
 
 export function buildQueryFromForm(formElements) {

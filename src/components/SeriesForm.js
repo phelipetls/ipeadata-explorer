@@ -8,6 +8,7 @@ import {
   Select,
   MenuItem
 } from "@material-ui/core";
+import { DatePicker } from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
@@ -29,43 +30,26 @@ const useStyles = makeStyles(theme => ({
 export default function SeriesForm(props) {
   const classes = useStyles();
 
-  const [parameters, setParameters] = useState({
-    SERNOME: "",
-    FNTNOME: "",
-    UNINOME: "",
-    PERNOME: "",
-    TEMNOME: "",
-    PAINOME: "",
-    SERMINDATA: "",
-    SERMAXDATA: "",
-    BASNOME: [],
-    SERSTATUS: "",
-    SERNUMERICA: ""
-  });
+  const [name, setName] = useState("");
+  const [source, setSource] = useState("");
+  const [unit, setUnit] = useState("");
+  const [periodicty, setPeriodicty] = useState("");
+  const [theme, setTheme] = useState("");
+  const [country, setCountry] = useState("");
+  const [initialDate, setInitialDate] = useState(null);
+  const [finalDate, setFinalDate] = useState(null);
+  const [bases, setBases] = useState([]);
+  const [status, setStatus] = useState([]);
+  const [isNumeric, setIsNumeric] = useState([]);
 
   const { onSubmit } = props;
 
-  function handleChange(e) {
-    setParameters({ ...parameters, [e.target.name]: e.target.value });
-  }
-
-  function handleMultipleSelectChange(e) {
-    let oldOptions = e.target.options || [];
-    const newOption = e.target.value;
-
-    oldOptions = [].filter.call(oldOptions, option => option.selected);
-
-    setParameters({
-      ...parameters,
-      [e.target.name]: oldOptions.concat(newOption)
-    });
-  }
-
-  function handleSelectChange(e) {
-    setParameters({
-      ...parameters,
-      [e.target.name]: e.target.value
-    });
+  function handleChangeBases(e) {
+    setBases(
+      Array.from(e.target.options || [])
+        .filter(option => option.selected)
+        .concat(e.target.value)
+    );
   }
 
   return (
@@ -81,8 +65,8 @@ export default function SeriesForm(props) {
           <TextField
             size="small"
             name="SERNOME"
-            value={parameters.SERNOME}
-            onChange={handleChange}
+            value={name}
+            onChange={e => setName(e.target.value)}
             id="SERNOME"
             label="Nome da série"
             variant="outlined"
@@ -93,8 +77,8 @@ export default function SeriesForm(props) {
           <TextField
             size="small"
             name="FNTNOME"
-            value={parameters.FNTNOME}
-            onChange={handleChange}
+            value={source}
+            onChange={e => setSource(e.target.value)}
             id="FNTNOME"
             label="Fonte"
             variant="outlined"
@@ -105,8 +89,8 @@ export default function SeriesForm(props) {
           <TextField
             size="small"
             name="UNINOME"
-            value={parameters.UNINOME}
-            onChange={handleChange}
+            value={unit}
+            onChange={e => setUnit(e.target.value)}
             id="UNINOME"
             label="Unidade"
             variant="outlined"
@@ -117,8 +101,8 @@ export default function SeriesForm(props) {
           <TextField
             size="small"
             name="PERNOME"
-            value={parameters.PERNOME}
-            onChange={handleChange}
+            value={periodicty}
+            onChange={e => setPeriodicty(e.target.value)}
             id="PERNOME"
             label="Periodicidade"
             variant="outlined"
@@ -129,8 +113,8 @@ export default function SeriesForm(props) {
           <TextField
             size="small"
             name="TEMNOME"
-            value={parameters.TEMNOME}
-            onChange={handleChange}
+            value={theme}
+            onChange={e => setTheme(e.target.value)}
             id="TEMNOME"
             label="Tema"
             variant="outlined"
@@ -141,8 +125,8 @@ export default function SeriesForm(props) {
           <TextField
             size="small"
             name="PAINOME"
-            value={parameters.PAINOME}
-            onChange={handleChange}
+            value={country}
+            onChange={e => setCountry(e.target.value)}
             id="PAINOME"
             label="País"
             variant="outlined"
@@ -152,32 +136,24 @@ export default function SeriesForm(props) {
 
       <Grid container item spacing={3} justify="center">
         <Grid item>
-          <TextField
-            size="small"
-            label="Data inicial"
+          <DatePicker
+            inputVariant="outlined"
             name="SERMINDATA"
-            value={parameters.SERMINDATA}
-            onChange={handleChange}
-            variant="outlined"
-            type="date"
-            InputLabelProps={{
-              shrink: true
-            }}
+            label="Data inicial"
+            value={initialDate}
+            onChange={setInitialDate}
+            format="dd/MM/yyyy"
           />
         </Grid>
 
         <Grid item>
-          <TextField
-            size="small"
-            label="Data final"
+          <DatePicker
+            inputVariant="outlined"
             name="SERMAXDATA"
-            value={parameters.SERMAXDATA}
-            onChange={handleChange}
-            variant="outlined"
-            type="date"
-            InputLabelProps={{
-              shrink: true
-            }}
+            label="Data final"
+            value={finalDate}
+            onChange={setFinalDate}
+            format="dd/MM/yyyy"
           />
         </Grid>
       </Grid>
@@ -193,8 +169,8 @@ export default function SeriesForm(props) {
             <Select
               size="small"
               multiple
-              value={parameters.BASNOME}
-              onChange={handleMultipleSelectChange}
+              value={bases}
+              onChange={handleChangeBases}
               label="Base"
               inputProps={{ name: "BASNOME", id: "BASNOME" }}
             >
@@ -212,7 +188,7 @@ export default function SeriesForm(props) {
               native
               size="small"
               label="Status"
-              onChange={handleSelectChange}
+              onChange={e => setStatus(e.target.value)}
               inputProps={{ name: "SERSTATUS", id: "SERSTATUS" }}
             >
               <option value=""></option>
@@ -229,7 +205,7 @@ export default function SeriesForm(props) {
               native
               size="small"
               label="Tipo"
-              onChange={handleSelectChange}
+              onChange={e => setIsNumeric(e.target.value)}
               inputProps={{ name: "SERNUMERICA", id: "SERNUMERICA" }}
             >
               <option value=""></option>
