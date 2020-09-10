@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 
 function formatDate(date) {
-  return new Date(date).toLocaleString();
+  return new Date(date).toLocaleDateString();
 }
 
 const metadataFields = [

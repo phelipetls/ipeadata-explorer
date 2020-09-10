@@ -8,8 +8,28 @@ export function buildMetadataUrl(code) {
 export function buildSeriesUrl(code) {
   return (
     buildMetadataUrl(code) +
-    "/Valores?$select=VALDATA,VALVALOR,TERCODIGO,TERNOME"
+    "/Valores?$select=VALDATA,VALVALOR,TERCODIGO,TERNOME&$orderby=VALDATA desc"
   );
+}
+
+export function limitQuery(url, limit) {
+  return url + `&$top=${limit}`;
+}
+
+export function limitByDate(url, initialDate, finalDate) {
+  return (
+    url +
+    `&$filter=VALDATA ge ${formatDate(initialDate)}` +
+    ` and VALDATA le ${formatDate(finalDate)}`
+  );
+}
+
+function formatDate(date) {
+  return date + "T00:00:00-00:00";
+}
+
+export function offsetQuery(url, offset) {
+  return url + `&$skip=${offset}`;
 }
 
 export function buildQueryFromForm(formElements) {
@@ -23,14 +43,6 @@ export function buildQueryFromUrl(searchParams) {
   if (searchParams.toString() !== "") {
     return URL + buildFilter(searchParams);
   }
-}
-
-export function limitQuery(url, limit) {
-  return url + `&$top=${limit}`;
-}
-
-export function offsetQuery(url, offset) {
-  return url + `&$skip=${offset}`;
 }
 
 function buildFilter(parameters) {
@@ -76,6 +88,11 @@ function buildFilter(parameters) {
         filters.push(`${name} eq '${value}'`);
         break;
       case "SERNUMERICA":
+      case "SERTEMAMC":
+      case "SERTEMBR":
+      case "SERTEMEST":
+      case "SERTEMMUN":
+      case "SERTEMMET":
       case "TEMCODIGO":
         filters.push(`${name} eq ${value}`);
         break;
@@ -89,8 +106,4 @@ function buildFilter(parameters) {
   }
 
   return "";
-}
-
-function formatDate(date) {
-  return date + "T00:00:00-00:00";
 }
