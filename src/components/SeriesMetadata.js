@@ -8,6 +8,9 @@ import SeriesMetadataTable from "./SeriesMetadataTable";
 const useStyles = makeStyles(theme => ({
   metadata: {
     padding: theme.spacing(2),
+    '& > *': {
+      padding: theme.spacing(2)
+    }
   }
 }));
 
