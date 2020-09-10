@@ -20,9 +20,11 @@ export default function SeriesMetadata({ metadata }) {
         <Typography variant="h4" component="h1" gutterBottom>
           {metadata.SERNOME}
         </Typography>
-        <Typography variant="body1" paragraph>
-          {metadata.SERCOMENTARIO}
-        </Typography>
+        <Typography
+          variant="body1"
+          paragraph
+          dangerouslySetInnerHTML={{ __html: metadata.SERCOMENTARIO }}
+        />
       </Grid>
 
       <Grid item xs={12} md={6}>
