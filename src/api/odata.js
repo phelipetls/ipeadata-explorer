@@ -23,16 +23,14 @@ export function offsetQuery(url, offset) {
 }
 
 export function limitByDate(url, initialDate, finalDate) {
-  return (
-    url +
-    `&$filter=VALDATA ge ${formatDate(initialDate)}` +
-    ` and VALDATA le ${formatDate(finalDate)}`
-  );
+  const filters = []
+  if (initialDate) filters.push(`VALDATA ge ${formatDate(initialDate)}`);
+  if (finalDate) filters.push(`VALDATA le ${formatDate(finalDate)}`);
+  return url + "&$filter=" + filters.join(" and ");
 }
 
-function formatDate(date) {
-  if (!(date instanceof Date)) date = new Date(date);
-  return formatISO(date, { representation: "complete" });
+function formatDate(dateStr) {
+  return formatISO(new Date(dateStr), { representation: "complete" });
 }
 
 export function buildQueryFromForm(formElements) {

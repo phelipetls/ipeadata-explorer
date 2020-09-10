@@ -5,25 +5,37 @@ import {
   Typography,
   FormControlLabel,
   Checkbox,
-  TextField,
-  Button
+  Button,
+  TextField
 } from "@material-ui/core";
+import { DatePicker } from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/core/styles";
 import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
 
 const useStyles = makeStyles(theme => ({
-  formContainer: {
+  canvasContainer: {
+    position: "relative",
+    minHeight: 512,
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4)
+  },
+  form: {
     width: "100%",
     display: "flex",
-    justifyContent: "space-between",
-    marginBottom: theme.spacing(2)
-  },
-  dates: {
+    flexFlow: "column",
+    [theme.breakpoints.up("md")]: {
+      flexFlow: "row wrap"
+    },
     "& > *": {
       margin: theme.spacing(1)
     }
   }
 }));
+
+const dateViewsByPeriodicity = {
+  Mensal: ["year", "month"],
+  Anual: ["year"]
+};
 
 export default function LineChart({ code, metadata }) {
   const classes = useStyles();
@@ -31,27 +43,34 @@ export default function LineChart({ code, metadata }) {
   const [series, setSeries] = useState([]);
   const [isLog, setIsLog] = useState(false);
 
-  const [initialDate, setInitialDate] = useState("");
-  const [finalDate, setFinalDate] = useState("");
+  const [initialDate, setInitialDate] = useState(null);
+  const [finalDate, setFinalDate] = useState(null);
+  const [lastN, setLastN] = useState(null);
 
   const chartRef = useRef();
 
-  useEffect(() => {
-    const url = buildSeriesUrl(code);
+  useEffect(
+    function fetchSeriesValues() {
+      const url = buildSeriesUrl(code);
 
-    fetch(limitQuery(url, 50))
-      .then(response => response.json())
-      .then(json => {
-        const series = json.value;
-        setSeries(series);
+      fetch(limitQuery(url, 50))
+        .then(response => response.json())
+        .then(json => {
+          const series = json.value;
 
-        const firstDate = series[series.length - 1].VALDATA;
-        const lastDate = series[0].VALDATA;
+          setSeries(series);
 
-        setInitialDate(firstDate);
-        setFinalDate(lastDate);
-      });
-  }, [code]);
+          if (series.length > 0) {
+            const initialDate = series[series.length - 1].VALDATA;
+            const finalDate = series[0].VALDATA;
+
+            setInitialDate(new Date(initialDate));
+            setFinalDate(new Date(finalDate));
+          }
+        });
+    },
+    [code]
+  );
 
   useEffect(() => {
     if (!series) return;
@@ -69,6 +88,7 @@ export default function LineChart({ code, metadata }) {
       },
       options: {
         title: metadata.SERNOME,
+        maintainAspectRatio: false,
         scales: {
           xAxes: [
             {
@@ -97,6 +117,27 @@ export default function LineChart({ code, metadata }) {
     return () => chartRef.current.destroy();
   }, [series, code, metadata]);
 
+  function handleSubmit(e) {
+    e.preventDefault();
+
+    const { initialDate, finalDate } = e.target.elements;
+
+    let url;
+    const baseUrl = buildSeriesUrl(code);
+
+    if (lastN) {
+      url = limitQuery(baseUrl, lastN);
+    } else if (initialDate.value || finalDate.value) {
+      url = limitByDate(baseUrl, initialDate.value, finalDate.value);
+    } else {
+      return;
+    }
+
+    fetch(url)
+      .then(response => response.json())
+      .then(json => setSeries(json.value));
+  }
+
   useEffect(() => {
     if (chartRef.current === undefined) return;
 
@@ -106,81 +147,66 @@ export default function LineChart({ code, metadata }) {
     chartRef.current.update(0);
   }, [isLog]);
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    const url = buildSeriesUrl(code);
-
-    const { initial, final } = e.target.elements;
-
-    const initialDate = initial.value;
-    const finalDate = final.value;
-
-    setInitialDate(initialDate);
-    setFinalDate(finalDate);
-
-    fetch(limitByDate(url, initialDate, finalDate))
-      .then(response => response.json())
-      .then(json => setSeries(json.value));
-  }
-
   return (
     <>
-      <div className={classes.formContainer}>
-        <form className={classes.dates} onSubmit={handleSubmit}>
-          <TextField
-            size="small"
-            label="Data inicial"
-            name="initial"
-            value={initialDate.slice(0, 10)}
-            onChange={e => setInitialDate(e.target.value)}
-            variant="outlined"
-            type="date"
-            inputProps={{
-              min: metadata.SERMINDATA.slice(0, 10)
-            }}
-            InputLabelProps={{
-              shrink: true
-            }}
-          />
-
-          <TextField
-            size="small"
-            label="Data final"
-            name="final"
-            value={finalDate.slice(0, 10)}
-            onChange={e => setFinalDate(e.target.value)}
-            variant="outlined"
-            type="date"
-            InputLabelProps={{
-              shrink: true
-            }}
-            inputProps={{
-              max: metadata.SERMAXDATA.slice(0, 10)
-            }}
-          />
-
-          <Button type="submit" variant="contained" color="primary">
-            Filtrar
-          </Button>
-        </form>
-
-        <FormControlLabel
-          control={
-            <Checkbox
-              checked={isLog}
-              onChange={() => setIsLog(isLog => !isLog)}
-              name="log"
-              color="primary"
-              size="small"
-            />
-          }
-          label="Log"
+      <form className={classes.form} onSubmit={handleSubmit}>
+        <DatePicker
+          name="initialDate"
+          label="Data inicial"
+          value={initialDate}
+          onChange={setInitialDate}
+          minDate={metadata.SERMINDATA.slice(0, 10)}
+          format="dd/MM/yyyy"
+          views={dateViewsByPeriodicity[metadata.PERNOME]}
+          disabled={Boolean(lastN)}
+          inputVariant="outlined"
+          clearable
         />
+
+        <DatePicker
+          name="finalDate"
+          label="Data final"
+          value={finalDate}
+          onChange={setFinalDate}
+          maxDate={new Date(metadata.SERMAXDATA)}
+          format="dd/MM/yyyy"
+          views={dateViewsByPeriodicity[metadata.PERNOME]}
+          inputVariant="outlined"
+          disabled={Boolean(lastN)}
+          clearable
+        />
+
+        <TextField
+          type="number"
+          value={lastN}
+          onChange={e => setLastN(e.target.value)}
+          variant="outlined"
+          label="Últimas N observações"
+        />
+
+        <Button type="submit" variant="contained" color="primary">
+          Filtrar
+        </Button>
+      </form>
+
+      <div className={classes.canvasContainer}>
+        <canvas id="line-chart" aria-label="Gráfico">
+          <Typography paragraph>Gráfico da série de código {code}</Typography>
+        </canvas>
       </div>
 
-      <canvas id="line-chart" aria-label="Gráfico">
-        <Typography paragraph>Gráfico da série de código {code}</Typography>
-      </canvas>
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={isLog}
+            onChange={() => setIsLog(isLog => !isLog)}
+            name="log"
+            color="primary"
+            size="small"
+          />
+        }
+        label="Log"
+      />
     </>
   );
 }
