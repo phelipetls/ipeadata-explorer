@@ -1,16 +1,11 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import Chart from "chart.js";
-import {
-  Typography,
-  FormControlLabel,
-  Checkbox,
-  Button,
-  TextField
-} from "@material-ui/core";
-import { DatePicker } from "@material-ui/pickers";
+import { Typography, FormControlLabel, Checkbox } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
+
+import LineChartForm from "./LineChartForm";
 
 const useStyles = makeStyles(theme => ({
   canvasContainer: {
@@ -19,33 +14,13 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4)
   },
-  form: {
-    width: "100%",
-    display: "flex",
-    flexFlow: "column",
-    [theme.breakpoints.up("md")]: {
-      flexFlow: "row wrap"
-    },
-    "& > *": {
-      margin: theme.spacing(1)
-    }
-  }
 }));
-
-const dateViewsByPeriodicity = {
-  Mensal: ["year", "month"],
-  Anual: ["year"]
-};
 
 export default function LineChart({ code, metadata }) {
   const classes = useStyles();
 
   const [series, setSeries] = useState([]);
   const [isLog, setIsLog] = useState(false);
-
-  const [initialDate, setInitialDate] = useState(null);
-  const [finalDate, setFinalDate] = useState(null);
-  const [lastN, setLastN] = useState(null);
 
   const chartRef = useRef();
 
@@ -55,78 +30,71 @@ export default function LineChart({ code, metadata }) {
 
       fetch(limitQuery(url, 50))
         .then(response => response.json())
-        .then(json => {
-          const series = json.value;
-
-          setSeries(series);
-
-          if (series.length > 0) {
-            const initialDate = series[series.length - 1].VALDATA;
-            const finalDate = series[0].VALDATA;
-
-            setInitialDate(new Date(initialDate));
-            setFinalDate(new Date(finalDate));
-          }
-        });
+        .then(json => setSeries(json.value));
     },
     [code]
   );
 
-  useEffect(() => {
-    if (!series) return;
+  useEffect(
+    function drawChart() {
+      if (!series) return;
 
-    chartRef.current = new Chart("line-chart", {
-      type: "line",
-      data: {
-        labels: series.map(series => series.VALDATA),
-        datasets: [
-          {
-            label: code,
-            data: series.map(series => series.VALVALOR)
-          }
-        ]
-      },
-      options: {
-        title: metadata.SERNOME,
-        maintainAspectRatio: false,
-        scales: {
-          xAxes: [
+      chartRef.current = new Chart("line-chart", {
+        type: "line",
+        data: {
+          labels: series.map(series => series.VALDATA),
+          datasets: [
             {
-              type: "time",
-              ticks: {
-                min: 0
-              },
-              time: {
-                unit: "month"
-              }
-            }
-          ],
-          yAxes: [
-            {
-              type: "linear",
-              scaleLabel: {
-                display: true,
-                labelString: metadata.UNINOME
-              }
+              label: code,
+              data: series.map(series => series.VALVALOR)
             }
           ]
+        },
+        options: {
+          title: {
+            text: metadata.SERNOME
+          },
+          maintainAspectRatio: false,
+          scales: {
+            xAxes: [
+              {
+                type: "time",
+                ticks: {
+                  min: 0
+                },
+                time: {
+                  unit: "month"
+                }
+              }
+            ],
+            yAxes: [
+              {
+                type: "linear",
+                scaleLabel: {
+                  display: true,
+                  labelString: metadata.UNINOME
+                }
+              }
+            ]
+          }
         }
-      }
-    });
+      });
 
-    return () => chartRef.current.destroy();
-  }, [series, code, metadata]);
+      return () => chartRef.current.destroy();
+    },
+    [series, code, metadata]
+  );
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    const { initialDate, finalDate } = e.target.elements;
+    const { initialDate, finalDate, lastN } = e.target.elements;
 
     let url;
     const baseUrl = buildSeriesUrl(code);
 
-    if (lastN) {
-      url = limitQuery(baseUrl, lastN);
+    if (lastN.value) {
+      url = limitQuery(baseUrl, lastN.value);
     } else if (initialDate.value || finalDate.value) {
       url = limitByDate(baseUrl, initialDate.value, finalDate.value);
     } else {
@@ -149,45 +117,7 @@ export default function LineChart({ code, metadata }) {
 
   return (
     <>
-      <form className={classes.form} onSubmit={handleSubmit}>
-        <DatePicker
-          name="initialDate"
-          label="Data inicial"
-          value={initialDate}
-          onChange={setInitialDate}
-          minDate={metadata.SERMINDATA.slice(0, 10)}
-          format="dd/MM/yyyy"
-          views={dateViewsByPeriodicity[metadata.PERNOME]}
-          disabled={Boolean(lastN)}
-          inputVariant="outlined"
-          clearable
-        />
-
-        <DatePicker
-          name="finalDate"
-          label="Data final"
-          value={finalDate}
-          onChange={setFinalDate}
-          maxDate={new Date(metadata.SERMAXDATA)}
-          format="dd/MM/yyyy"
-          views={dateViewsByPeriodicity[metadata.PERNOME]}
-          inputVariant="outlined"
-          disabled={Boolean(lastN)}
-          clearable
-        />
-
-        <TextField
-          type="number"
-          value={lastN}
-          onChange={e => setLastN(e.target.value)}
-          variant="outlined"
-          label="Últimas N observações"
-        />
-
-        <Button type="submit" variant="contained" color="primary">
-          Filtrar
-        </Button>
-      </form>
+      <LineChartForm metadata={metadata} onSubmit={handleSubmit} />
 
       <div className={classes.canvasContainer}>
         <canvas id="line-chart" aria-label="Gráfico">

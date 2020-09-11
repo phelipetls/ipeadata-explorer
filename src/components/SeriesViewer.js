@@ -8,7 +8,7 @@ import SeriesMetadata from "./SeriesMetadata";
 import ChartContainer from "./ChartContainer";
 
 export default function SeriesViewer() {
-  const [metadata, setMetadata] = useState();
+  const [metadata, setMetadata] = useState(null);
 
   let { code } = useParams();
 
@@ -18,7 +18,7 @@ export default function SeriesViewer() {
       .then(json => setMetadata(json.value[0]));
   }, [code]);
 
-  if (!metadata) return null;
+  if (metadata === null) return null;
 
   return (
     <>
