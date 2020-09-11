@@ -2,23 +2,12 @@ import React, { useState, useEffect, useRef } from "react";
 
 import Chart from "chart.js";
 import { Typography, FormControlLabel, Checkbox } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
 import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
 
 import LineChartForm from "./LineChartForm";
-
-const useStyles = makeStyles(theme => ({
-  canvasContainer: {
-    position: "relative",
-    minHeight: 512,
-    marginTop: theme.spacing(4),
-    marginBottom: theme.spacing(4)
-  },
-}));
+import ChartContainer from "./ChartContainer";
 
 export default function LineChart({ code, metadata }) {
-  const classes = useStyles();
-
   const [series, setSeries] = useState([]);
   const [isLog, setIsLog] = useState(false);
 
@@ -119,11 +108,11 @@ export default function LineChart({ code, metadata }) {
     <>
       <LineChartForm metadata={metadata} onSubmit={handleSubmit} />
 
-      <div className={classes.canvasContainer}>
+      <ChartContainer>
         <canvas id="line-chart" aria-label="Gráfico">
           <Typography paragraph>Gráfico da série de código {code}</Typography>
         </canvas>
-      </div>
+      </ChartContainer>
 
       <FormControlLabel
         control={

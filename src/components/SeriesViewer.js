@@ -5,7 +5,7 @@ import { buildMetadataUrl } from "../api/odata";
 
 import LineChart from "./LineChart";
 import SeriesMetadata from "./SeriesMetadata";
-import ChartContainer from "./ChartContainer";
+import ChartSection from "./ChartSection";
 
 export default function SeriesViewer() {
   const [metadata, setMetadata] = useState(null);
@@ -24,9 +24,9 @@ export default function SeriesViewer() {
     <>
       <SeriesMetadata metadata={metadata} />
 
-      <ChartContainer>
+      <ChartSection>
         <LineChart code={code} metadata={metadata} />
-      </ChartContainer>
+      </ChartSection>
     </>
   );
 }
