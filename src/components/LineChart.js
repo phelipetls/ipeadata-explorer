@@ -26,7 +26,7 @@ export default function LineChart({ code, metadata }) {
 
   useEffect(
     function drawChart() {
-      if (!series) return;
+      if (series.length === 0) return;
 
       chartRef.current = new Chart("line-chart", {
         type: "line",
