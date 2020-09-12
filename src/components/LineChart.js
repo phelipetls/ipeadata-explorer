@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 
 import Chart from "chart.js";
-import { Typography, FormControlLabel, Checkbox } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
 
 import LineChartForm from "./LineChartForm";
@@ -9,13 +9,12 @@ import ChartContainer from "./ChartContainer";
 
 export default function LineChart({ code, metadata }) {
   const [series, setSeries] = useState([]);
-  const [isLog, setIsLog] = useState(false);
 
   const chartRef = useRef();
 
   useEffect(
     function fetchSeriesValues() {
-      const url = buildSeriesUrl(code);
+      let url = buildSeriesUrl(code);
 
       fetch(limitQuery(url, 50))
         .then(response => response.json())
@@ -95,15 +94,6 @@ export default function LineChart({ code, metadata }) {
       .then(json => setSeries(json.value));
   }
 
-  useEffect(() => {
-    if (chartRef.current === undefined) return;
-
-    chartRef.current.options.scales.yAxes[0].type = isLog
-      ? "logarithmic"
-      : "linear";
-    chartRef.current.update(0);
-  }, [isLog]);
-
   return (
     <>
       <LineChartForm metadata={metadata} onSubmit={handleSubmit} />
@@ -113,19 +103,6 @@ export default function LineChart({ code, metadata }) {
           <Typography paragraph>Gráfico da série de código {code}</Typography>
         </canvas>
       </ChartContainer>
-
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={isLog}
-            onChange={() => setIsLog(isLog => !isLog)}
-            name="log"
-            color="primary"
-            size="small"
-          />
-        }
-        label="Log"
-      />
     </>
   );
 }
