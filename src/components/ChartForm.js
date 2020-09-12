@@ -23,7 +23,7 @@ const dateViewsByPeriodicity = {
   Anual: ["year"]
 };
 
-export default function LineChartForm({ metadata, onSubmit, children }) {
+export default function ChartForm({ metadata, onSubmit, children }) {
   const classes = useStyles();
 
   const [initialDate, setInitialDate] = useState(null);

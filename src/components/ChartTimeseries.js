@@ -6,7 +6,7 @@ import ChartContainer from "./ChartContainer";
 
 Chart.defaults.global.elements.line.fill = false
 
-export default function TimeseriesChart({ labels, datasets, metadata }) {
+export default function ChartTimeseries({ labels, datasets, metadata }) {
   const chartRef = useRef();
 
   useEffect(() => {

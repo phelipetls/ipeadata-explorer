@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 
 import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
 
-import LineChartForm from "./LineChartForm";
-import TimeseriesChart from "./TimeseriesChart";
+import ChartForm from "./ChartForm";
+import ChartSection from "./ChartSection";
+import ChartTimeseries from "./ChartTimeseries";
 
-export default function LineChart({ code, metadata }) {
+export default function ChartMacro({ code, metadata }) {
   const [series, setSeries] = useState([]);
 
   useEffect(() => {
@@ -17,10 +18,12 @@ export default function LineChart({ code, metadata }) {
   }, [code]);
 
   const labels = series.map(series => series.VALDATA);
-  const datasets = [{
-    label: code,
-    data: series.map(series => series.VALVALOR)
-  }];
+  const datasets = [
+    {
+      label: code,
+      data: series.map(series => series.VALVALOR)
+    }
+  ];
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -44,14 +47,14 @@ export default function LineChart({ code, metadata }) {
   }
 
   return (
-    <>
-      <LineChartForm metadata={metadata} onSubmit={handleSubmit} />
+    <ChartSection>
+      <ChartForm metadata={metadata} onSubmit={handleSubmit} />
 
-      <TimeseriesChart
+      <ChartTimeseries
         labels={labels}
         datasets={datasets}
         metadata={metadata}
       />
-    </>
+    </ChartSection>
   );
 }

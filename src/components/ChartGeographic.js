@@ -4,10 +4,11 @@ import groupBy from "lodash.groupby";
 import { Select, InputLabel, FormControl } from "@material-ui/core";
 import { buildSeriesUrl, buildGeographicLevelsUrl } from "../api/odata";
 
-import TimeseriesChart from "./TimeseriesChart";
-import LineChartForm from "./LineChartForm";
+import ChartForm from "./ChartForm";
+import ChartSection from "./ChartSection";
+import ChartTimeseries from "./ChartTimeseries";
 
-export default function LineChartTerritories({ code, metadata }) {
+export default function ChartGeographic({ code, metadata }) {
   const [series, setSeries] = useState([]);
   const [geoLevels, setGeoLevels] = useState([]);
   const [geoLevel, setGeoLevel] = useState("");
@@ -57,8 +58,8 @@ export default function LineChartTerritories({ code, metadata }) {
   }
 
   return (
-    <>
-      <LineChartForm metadata={metadata} onSubmit={handleSubmit}>
+    <ChartSection>
+      <ChartForm metadata={metadata} onSubmit={handleSubmit}>
         <FormControl variant="outlined">
           <InputLabel htmlFor="geographicLevel">Nível geográfico</InputLabel>
           <Select
@@ -73,13 +74,13 @@ export default function LineChartTerritories({ code, metadata }) {
             ))}
           </Select>
         </FormControl>
-      </LineChartForm>
+      </ChartForm>
 
-      <TimeseriesChart
+      <ChartTimeseries
         labels={labels}
         datasets={datasets}
         metadata={metadata}
       />
-    </>
+    </ChartSection>
   );
 }

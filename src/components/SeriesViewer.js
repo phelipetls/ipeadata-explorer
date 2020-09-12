@@ -3,10 +3,9 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { buildMetadataUrl } from "../api/odata";
 
-import LineChart from "./LineChart";
-import LineChartTerritories from "./LineChartTerritories";
+import ChartMacro from "./ChartMacro";
+import ChartGeographic from "./ChartGeographic";
 import SeriesMetadata from "./SeriesMetadata";
-import ChartSection from "./ChartSection";
 
 export default function SeriesViewer() {
   const [metadata, setMetadata] = useState(null);
@@ -25,13 +24,11 @@ export default function SeriesViewer() {
     <>
       <SeriesMetadata metadata={metadata} />
 
-      <ChartSection>
-        {metadata.BASNOME === "Regional" ? (
-          <LineChartTerritories code={code} metadata={metadata} />
-        ) : (
-          <LineChart code={code} metadata={metadata} />
-        )}
-      </ChartSection>
+      {metadata.BASNOME === "Macroeconômico" ? (
+        <ChartMacro code={code} metadata={metadata} />
+      ) : (
+        <ChartGeographic code={code} metadata={metadata} />
+      )}
     </>
   );
 }
