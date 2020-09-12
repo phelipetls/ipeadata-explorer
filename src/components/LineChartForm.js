@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexFlow: "column",
     [theme.breakpoints.up("md")]: {
-      flexFlow: "row wrap"
+      flexFlow: "row"
     },
     "& > *": {
       margin: theme.spacing(1)
@@ -23,14 +23,15 @@ const dateViewsByPeriodicity = {
   Anual: ["year"]
 };
 
-export default function LineChartForm({ metadata, onSubmit }) {
+export default function LineChartForm({ metadata, onSubmit, children }) {
   const classes = useStyles();
 
   const [initialDate, setInitialDate] = useState(null);
   const [finalDate, setFinalDate] = useState(null);
   const [lastN, setLastN] = useState("");
 
-  const setToFirstDay = date => metadata.PERNOME !== "Diária" && date.setDate(1);
+  const setToFirstDay = date =>
+    metadata.PERNOME !== "Diária" && date.setDate(1);
 
   return (
     <form className={classes.form} onSubmit={onSubmit}>
@@ -70,6 +71,8 @@ export default function LineChartForm({ metadata, onSubmit }) {
         variant="outlined"
         label="Últimas N observações"
       />
+
+      {children}
 
       <Button type="submit" variant="contained" color="primary">
         Filtrar

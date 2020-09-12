@@ -23,7 +23,7 @@ export function offsetQuery(url, offset) {
 }
 
 export function limitByDate(url, initialDate, finalDate) {
-  const filters = []
+  const filters = [];
   if (initialDate) filters.push(`VALDATA ge ${formatDate(initialDate)}`);
   if (finalDate) filters.push(`VALDATA le ${formatDate(finalDate)}`);
   return url + "&$filter=" + filters.join(" and ");
@@ -107,4 +107,11 @@ function buildFilter(parameters) {
   }
 
   return "";
+}
+
+export function buildGeographicLevelsUrl(code) {
+  return (
+    buildMetadataUrl(code) +
+    "/Valores?$apply=groupby((NIVNOME),aggregate($count%20as%20total))&$orderby=total asc"
+  );
 }

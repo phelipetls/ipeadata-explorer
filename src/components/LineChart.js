@@ -1,77 +1,26 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 
-import Chart from "chart.js";
-import { Typography } from "@material-ui/core";
 import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
 
 import LineChartForm from "./LineChartForm";
-import ChartContainer from "./ChartContainer";
+import TimeseriesChart from "./TimeseriesChart";
 
 export default function LineChart({ code, metadata }) {
   const [series, setSeries] = useState([]);
 
-  const chartRef = useRef();
+  useEffect(() => {
+    let url = buildSeriesUrl(code);
 
-  useEffect(
-    function fetchSeriesValues() {
-      let url = buildSeriesUrl(code);
+    fetch(limitQuery(url, 50))
+      .then(response => response.json())
+      .then(json => setSeries(json.value));
+  }, [code]);
 
-      fetch(limitQuery(url, 50))
-        .then(response => response.json())
-        .then(json => setSeries(json.value));
-    },
-    [code]
-  );
-
-  useEffect(
-    function drawChart() {
-      if (series.length === 0) return;
-
-      chartRef.current = new Chart("line-chart", {
-        type: "line",
-        data: {
-          labels: series.map(series => series.VALDATA),
-          datasets: [
-            {
-              label: code,
-              data: series.map(series => series.VALVALOR)
-            }
-          ]
-        },
-        options: {
-          title: {
-            text: metadata.SERNOME
-          },
-          maintainAspectRatio: false,
-          scales: {
-            xAxes: [
-              {
-                type: "time",
-                ticks: {
-                  min: 0
-                },
-                time: {
-                  unit: "month"
-                }
-              }
-            ],
-            yAxes: [
-              {
-                type: "linear",
-                scaleLabel: {
-                  display: true,
-                  labelString: metadata.UNINOME
-                }
-              }
-            ]
-          }
-        }
-      });
-
-      return () => chartRef.current.destroy();
-    },
-    [series, code, metadata]
-  );
+  const labels = series.map(series => series.VALDATA);
+  const datasets = [{
+    label: code,
+    data: series.map(series => series.VALVALOR)
+  }];
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -98,11 +47,11 @@ export default function LineChart({ code, metadata }) {
     <>
       <LineChartForm metadata={metadata} onSubmit={handleSubmit} />
 
-      <ChartContainer>
-        <canvas id="line-chart" aria-label="Gráfico">
-          <Typography paragraph>Gráfico da série de código {code}</Typography>
-        </canvas>
-      </ChartContainer>
+      <TimeseriesChart
+        labels={labels}
+        datasets={datasets}
+        metadata={metadata}
+      />
     </>
   );
 }

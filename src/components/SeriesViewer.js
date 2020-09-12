@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { buildMetadataUrl } from "../api/odata";
 
 import LineChart from "./LineChart";
+import LineChartTerritories from "./LineChartTerritories";
 import SeriesMetadata from "./SeriesMetadata";
 import ChartSection from "./ChartSection";
 
@@ -25,7 +26,11 @@ export default function SeriesViewer() {
       <SeriesMetadata metadata={metadata} />
 
       <ChartSection>
-        <LineChart code={code} metadata={metadata} />
+        {metadata.BASNOME === "Regional" ? (
+          <LineChartTerritories code={code} metadata={metadata} />
+        ) : (
+          <LineChart code={code} metadata={metadata} />
+        )}
       </ChartSection>
     </>
   );
