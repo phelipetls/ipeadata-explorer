@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 import groupBy from "lodash.groupby";
 
-import { Select, InputLabel, FormControl } from "@material-ui/core";
 import { buildSeriesUrl, buildGeographicLevelsUrl } from "../api/odata";
 
 import ChartForm from "./ChartForm";
+import ChartFormDates from "./ChartFormDates";
+import ChartFormGeography from "./ChartFormGeography";
 import ChartSection from "./ChartSection";
 import ChartTimeseries from "./ChartTimeseries";
 
 export default function ChartGeographic({ code, metadata }) {
   const [series, setSeries] = useState([]);
   const [geoLevels, setGeoLevels] = useState([]);
-  const [geoLevel, setGeoLevel] = useState("");
 
   useEffect(() => {
     async function fetchValues() {
@@ -23,12 +23,9 @@ export default function ChartGeographic({ code, metadata }) {
       setGeoLevels(allGeoLevels);
 
       const selectedGeoLevel = allGeoLevels[0];
-      setGeoLevel(selectedGeoLevel);
 
       const seriesUrl =
         buildSeriesUrl(code) + `&$filter=NIVNOME eq '${selectedGeoLevel}'`;
-
-      console.log(JSON.stringify(seriesUrl));
 
       const seriesResponse = await fetch(seriesUrl);
       const seriesJson = await seriesResponse.json();
@@ -50,30 +47,13 @@ export default function ChartGeographic({ code, metadata }) {
 
   function handleSubmit(e) {
     e.preventDefault();
-    console.log(e.target.elements);
-
-    const { initialDate, finalDate, geographicLevel } = e.target.elements;
-
-    console.log(initialDate.value, finalDate.value, geographicLevel.value);
   }
 
   return (
     <ChartSection>
-      <ChartForm metadata={metadata} onSubmit={handleSubmit}>
-        <FormControl variant="outlined">
-          <InputLabel htmlFor="geographicLevel">Nível geográfico</InputLabel>
-          <Select
-            native
-            variant="outlined"
-            value={geoLevel}
-            onChange={e => setGeoLevel(e.target.value)}
-            inputProps={{ name: "geographicLevel", id: "geographicLevel" }}
-          >
-            {geoLevels.map(level => (
-              <option value={level}>{level}</option>
-            ))}
-          </Select>
-        </FormControl>
+      <ChartForm onSubmit={handleSubmit}>
+        <ChartFormDates metadata={metadata} />
+        <ChartFormGeography geoLevels={geoLevels} />
       </ChartForm>
 
       <ChartTimeseries

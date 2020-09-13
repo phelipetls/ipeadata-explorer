@@ -3,6 +3,8 @@ import React, { useState, useEffect } from "react";
 import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
 
 import ChartForm from "./ChartForm";
+import ChartFormDates from "./ChartFormDates";
+import ChartFormTopN from "./ChartFormTopN";
 import ChartSection from "./ChartSection";
 import ChartTimeseries from "./ChartTimeseries";
 
@@ -28,13 +30,13 @@ export default function ChartMacro({ code, metadata }) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const { initialDate, finalDate, lastN } = e.target.elements;
+    const { initialDate, finalDate, topN } = e.target.elements;
 
     let url;
     const baseUrl = buildSeriesUrl(code);
 
-    if (lastN.value) {
-      url = limitQuery(baseUrl, lastN.value);
+    if (topN.value) {
+      url = limitQuery(baseUrl, topN.value);
     } else if (initialDate.value || finalDate.value) {
       url = limitByDate(baseUrl, initialDate.value, finalDate.value);
     } else {
@@ -48,7 +50,10 @@ export default function ChartMacro({ code, metadata }) {
 
   return (
     <ChartSection>
-      <ChartForm metadata={metadata} onSubmit={handleSubmit} />
+      <ChartForm onSubmit={handleSubmit}>
+        <ChartFormDates metadata={metadata} />
+        <ChartFormTopN />
+      </ChartForm>
 
       <ChartTimeseries
         labels={labels}
