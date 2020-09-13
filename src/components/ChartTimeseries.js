@@ -4,7 +4,10 @@ import Chart from "chart.js";
 import { Typography } from "@material-ui/core";
 import ChartContainer from "./ChartContainer";
 
-Chart.defaults.global.elements.line.fill = false
+import "chartjs-plugin-colorschemes/src/plugins/plugin.colorschemes";
+import { Paired12 } from "chartjs-plugin-colorschemes/src/colorschemes/colorschemes.brewer";
+
+Chart.defaults.global.elements.line.fill = false;
 
 export default function ChartTimeseries({ labels, datasets, metadata }) {
   const chartRef = useRef();
@@ -39,6 +42,11 @@ export default function ChartTimeseries({ labels, datasets, metadata }) {
               }
             }
           ]
+        },
+        plugins: {
+          colorschemes: {
+            scheme: Paired12
+          }
         }
       }
     });
