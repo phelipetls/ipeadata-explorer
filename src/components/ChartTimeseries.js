@@ -1,8 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
 import Chart from "chart.js";
-import { Typography } from "@material-ui/core";
-import ChartContainer from "./ChartContainer";
+import ChartCanvas from "./ChartCanvas";
 
 import "chartjs-plugin-colorschemes/src/plugins/plugin.colorschemes";
 import { Paired12 } from "chartjs-plugin-colorschemes/src/colorschemes/colorschemes.brewer";
@@ -54,13 +53,5 @@ export default function ChartTimeseries({ labels, datasets, metadata }) {
     return () => chartRef.current.destroy();
   }, [labels, datasets, metadata]);
 
-  return (
-    <ChartContainer>
-      <canvas id="lineChart" aria-label="Gráfico">
-        <Typography paragraph>
-          Gráfico da série de código {metadata.SERCODIGO}
-        </Typography>
-      </canvas>
-    </ChartContainer>
-  );
+  return <ChartCanvas id="lineChart" />;
 }

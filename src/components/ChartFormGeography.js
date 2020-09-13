@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { Select, InputLabel, FormControl } from "@material-ui/core";
 
-export default function ChartFormGeography({ geoLevels }) {
-  const [geoLevel, setGeoLevel] = useState(geoLevels[0]);
+export default function ChartFormGeography(props) {
+  const [geoLevel, setGeoLevel] = useState(props.geoLevel);
 
   return (
-    geoLevels.length > 0 && (
+    props.geoLevels.length > 0 && (
       <FormControl required variant="outlined">
         <InputLabel htmlFor="geoLevel" shrink>
           Nível geográfico
@@ -17,7 +17,7 @@ export default function ChartFormGeography({ geoLevels }) {
           onChange={e => setGeoLevel(e.target.value)}
           inputProps={{ name: "geoLevel", id: "geoLevel" }}
         >
-          {geoLevels.map(level => (
+          {props.geoLevels.map(level => (
             <option value={level}>{level}</option>
           ))}
         </Select>

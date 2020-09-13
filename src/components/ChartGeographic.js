@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import groupBy from "lodash.groupby";
 
 import {
   buildSeriesUrl,
@@ -13,10 +12,12 @@ import ChartFormDates from "./ChartFormDates";
 import ChartFormTopN from "./ChartFormTopN";
 import ChartFormGeography from "./ChartFormGeography";
 import ChartSection from "./ChartSection";
-import ChartTimeseries from "./ChartTimeseries";
+import ChartGeographicMap from "./ChartGeographicMap";
+import ChartGeographicTimeseries from "./ChartGeographicTimeseries";
 
 export default function ChartGeographic({ code, metadata }) {
   const [series, setSeries] = useState([]);
+  const [geoLevel, setGeoLevel] = useState("");
   const [geoLevels, setGeoLevels] = useState([]);
 
   useEffect(() => {
@@ -28,7 +29,8 @@ export default function ChartGeographic({ code, metadata }) {
       const allGeoLevels = levelsJson.value;
       setGeoLevels(allGeoLevels);
 
-      const selectedGeoLevel = allGeoLevels[0];
+      const selectedGeoLevel = allGeoLevels[2];
+      setGeoLevel(selectedGeoLevel.NIVNOME);
 
       const seriesUrl =
         buildSeriesUrl(code) +
@@ -44,20 +46,12 @@ export default function ChartGeographic({ code, metadata }) {
     fetchValues();
   }, [code]);
 
-  const datasets = Object.entries(groupBy(series, "TERNOME")).map(
-    ([level, values]) => ({
-      label: level,
-      data: values.map(series => series.VALVALOR)
-    })
-  );
-
-  const labels = Array.from(new Set(series.map(series => series.VALDATA)));
-
   function handleSubmit(e) {
     e.preventDefault();
 
     const { initialDate, finalDate, topN, geoLevel } = e.target.elements;
 
+    setGeoLevel(geoLevel.value);
     const selectedGeoLevel = geoLevels.find(
       level => level.NIVNOME === geoLevel.value
     );
@@ -85,14 +79,24 @@ export default function ChartGeographic({ code, metadata }) {
       <ChartForm onSubmit={handleSubmit}>
         <ChartFormDates metadata={metadata} />
         <ChartFormTopN />
-        <ChartFormGeography geoLevels={geoLevels.map(level => level.NIVNOME)} />
+        <ChartFormGeography
+          geoLevel={geoLevel}
+          geoLevels={geoLevels.map(level => level.NIVNOME)}
+        />
       </ChartForm>
 
-      <ChartTimeseries
-        labels={labels}
-        datasets={datasets}
-        metadata={metadata}
-      />
+      {geoLevel === "Brasil" || geoLevel === "Estados" ? (
+        <ChartGeographicTimeseries
+          series={series}
+          metadata={metadata}
+        />
+      ) : (
+        <ChartGeographicMap
+          series={series}
+          metadata={metadata}
+          geoLevel={geoLevel}
+        />
+      )}
     </ChartSection>
   );
 }
