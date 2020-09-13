@@ -188,10 +188,11 @@ export default function SeriesForm(props) {
               native
               size="small"
               label="Status"
+              value={status}
               onChange={e => setStatus(e.target.value)}
               inputProps={{ name: "SERSTATUS", id: "SERSTATUS" }}
             >
-              <option value=""></option>
+              <option aria-label="Não selecionado" value=""></option>
               <option value="A">Ativa</option>
               <option value="I">Inativa</option>
             </Select>
@@ -205,10 +206,11 @@ export default function SeriesForm(props) {
               native
               size="small"
               label="Tipo"
+              value={isNumeric}
               onChange={e => setIsNumeric(e.target.value)}
               inputProps={{ name: "SERNUMERICA", id: "SERNUMERICA" }}
             >
-              <option value=""></option>
+              <option aria-label="Não selecionado" value=""></option>
               <option value="true">Numérica</option>
               <option value="false">Alfanumérica</option>
             </Select>
