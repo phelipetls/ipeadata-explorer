@@ -20,13 +20,18 @@ export default function ChartFormDates({ metadata }) {
     }
   };
 
+  const minDate = new Date(metadata.SERMINDATA)
+  const maxDate = new Date(metadata.SERMAXDATA)
+
   return (
     <>
       <DatePicker
         name="initialDate"
         label="Data inicial"
         value={initialDate}
-        minDate={new Date(metadata.SERMINDATA)}
+        initialFocusedDate={maxDate}
+        minDate={minDate}
+        maxDate={maxDate}
         onChange={setInitialDate}
         onAccept={resetDate}
         format="dd/MM/yyyy"
@@ -39,7 +44,9 @@ export default function ChartFormDates({ metadata }) {
         name="finalDate"
         label="Data final"
         value={finalDate}
-        maxDate={new Date(metadata.SERMAXDATA)}
+        initialFocusedDate={maxDate}
+        minDate={minDate}
+        maxDate={maxDate}
         onChange={setFinalDate}
         onAccept={resetDate}
         format="dd/MM/yyyy"
