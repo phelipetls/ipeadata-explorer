@@ -112,6 +112,9 @@ function buildFilter(parameters) {
 export function buildGeographicLevelsUrl(code) {
   return (
     buildMetadataUrl(code) +
-    "/Valores?$apply=groupby((NIVNOME),aggregate($count%20as%20total))&$orderby=total asc"
+    "/Valores?" +
+    "$apply=groupby((NIVNOME),aggregate(TERNOME with countdistinct as distinctCount))" +
+    "&$orderby=distinctCount asc"
   );
 }
+
