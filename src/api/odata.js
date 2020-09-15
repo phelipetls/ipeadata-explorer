@@ -113,7 +113,8 @@ export function buildGeographicLevelsUrl(code) {
   return (
     buildMetadataUrl(code) +
     "/Valores?" +
-    "$apply=groupby((NIVNOME),aggregate(TERNOME with countdistinct as distinctCount))" +
+    "$apply=filter(not startswith(NIVNOME,'AMC'))" +
+    "/groupby((NIVNOME),aggregate(TERNOME with countdistinct as distinctCount))" +
     "&$orderby=distinctCount asc"
   );
 }

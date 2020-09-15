@@ -53,12 +53,6 @@ export default function ChartGeographicMap({ series, metadata, geoLevel }) {
         const regions = topojson.feature(regionsJson, regionsJson.objects.foo)
           .features;
 
-        regions.forEach(region => {
-          region.properties.name = series.find(
-            s => s.TERCODIGO === region.properties.codarea
-          ).TERNOME;
-        });
-
         setBrazil(brazil);
         setRegions(regions);
       });
@@ -74,9 +68,16 @@ export default function ChartGeographicMap({ series, metadata, geoLevel }) {
     [series, metadata]
   );
 
+  if (series.length === 0) return null;
+
   const periods = Object.keys(seriesByPeriod).reverse();
   const selectedSeries = seriesByPeriod[period || periods[0]];
-  const labels = regions.map(region => region.properties.name);
+
+  const labels = regions.map(
+    region =>
+      series.find(series => series.TERCODIGO === region.properties.codarea)
+        .TERNOME
+  );
 
   const datasets = [
     {

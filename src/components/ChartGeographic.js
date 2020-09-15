@@ -19,6 +19,7 @@ import ChartContainer from "./ChartContainer";
 
 export default function ChartGeographic({ code, metadata }) {
   const [series, setSeries] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [geoLevel, setGeoLevel] = useState("");
   const [geoLevels, setGeoLevels] = useState([]);
 
@@ -44,8 +45,12 @@ export default function ChartGeographic({ code, metadata }) {
         `&$filter=NIVNOME eq '${selectedGeoLevel.NIVNOME}'` +
         `&$top=${selectedGeoLevel.distinctCount * 25}`;
 
+      setIsLoading(true);
+
       const seriesResponse = await fetch(seriesUrl);
       const seriesJson = await seriesResponse.json();
+
+      setIsLoading(false);
 
       setSeries(seriesJson.value);
     }
@@ -53,8 +58,9 @@ export default function ChartGeographic({ code, metadata }) {
     fetchSeries();
   }, [code]);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
+
     const { initialDate, finalDate, topN, geoLevel } = e.target.elements;
     setGeoLevel(geoLevel.value);
 
@@ -75,9 +81,11 @@ export default function ChartGeographic({ code, metadata }) {
       url = limitQuery(baseUrl, 25 * selectedGeoLevel.distinctCount);
     }
 
-    fetch(url)
-      .then(response => response.json())
-      .then(json => setSeries(json.value));
+    setIsLoading(true);
+    const response = await fetch(url);
+    const json = await response.json();
+    setSeries(json.value);
+    setIsLoading(false);
   }
 
   return (
@@ -95,7 +103,7 @@ export default function ChartGeographic({ code, metadata }) {
         )}
       </ChartForm>
 
-      {series.length === 0 ? (
+      {isLoading ? (
         <ChartContainer>
           <Loading />
         </ChartContainer>
