@@ -30,7 +30,8 @@ export function limitByDate(url, initialDate, finalDate) {
 }
 
 function formatDate(dateStr) {
-  return formatISO(new Date(dateStr), { representation: "complete" });
+  const [day, month, year] = dateStr.split("/");
+  return formatISO(new Date(year, month - 1, day), { representation: "complete" });
 }
 
 export function buildQueryFromForm(formElements) {
