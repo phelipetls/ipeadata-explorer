@@ -31,7 +31,8 @@ export function limitByDate(url, initialDate, finalDate) {
 
 function formatDate(dateStr) {
   const [day, month, year] = dateStr.split("/");
-  return formatISO(new Date(year, month - 1, day), { representation: "complete" });
+  const date = new Date(year, month - 1, day);
+  return formatISO(date, { representation: "complete" });
 }
 
 export function buildQueryFromForm(formElements) {
@@ -114,9 +115,7 @@ export function buildGeographicLevelsUrl(code) {
   return (
     buildMetadataUrl(code) +
     "/Valores?" +
-    "$apply=filter(not startswith(NIVNOME,'AMC'))" +
-    "/groupby((NIVNOME),aggregate(TERNOME with countdistinct as distinctCount))" +
-    "&$orderby=distinctCount asc"
+    "$apply=groupby((NIVNOME),aggregate(TERNOME with countdistinct as regionCount))" +
+    "&$orderby=regionCount asc"
   );
 }
-

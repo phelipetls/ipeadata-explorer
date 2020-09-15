@@ -15,7 +15,6 @@ import ChartFormGeography from "./ChartFormGeography";
 import ChartSection from "./ChartSection";
 import ChartGeographicMap from "./ChartGeographicMap";
 import ChartGeographicTimeseries from "./ChartGeographicTimeseries";
-import ChartContainer from "./ChartContainer";
 
 export default function ChartGeographic({ code, metadata }) {
   const [series, setSeries] = useState([]);
@@ -43,7 +42,7 @@ export default function ChartGeographic({ code, metadata }) {
       const seriesUrl =
         buildSeriesUrl(code) +
         `&$filter=NIVNOME eq '${selectedGeoLevel.NIVNOME}'` +
-        `&$top=${selectedGeoLevel.distinctCount * 25}`;
+        `&$top=${selectedGeoLevel.regionCount * 25}`;
 
       setIsLoading(true);
 
@@ -74,11 +73,11 @@ export default function ChartGeographic({ code, metadata }) {
 
     let url;
     if (topN.value) {
-      url = limitQuery(baseUrl, topN.value * selectedGeoLevel.distinctCount);
+      url = limitQuery(baseUrl, topN.value * selectedGeoLevel.regionCount);
     } else if (initialDate.value || finalDate.value) {
       url = limitByDate(baseUrl, initialDate.value, finalDate.value);
     } else {
-      url = limitQuery(baseUrl, 25 * selectedGeoLevel.distinctCount);
+      url = limitQuery(baseUrl, 25 * selectedGeoLevel.regionCount);
     }
 
     setIsLoading(true);
@@ -104,10 +103,10 @@ export default function ChartGeographic({ code, metadata }) {
       </ChartForm>
 
       {isLoading ? (
-        <ChartContainer>
-          <Loading />
-        </ChartContainer>
-      ) : geoLevel === "Brasil" || geoLevel === "Regiões" ? (
+        <Loading style={{ minHeight: 512 }}/>
+      ) : geoLevel === "Brasil" ||
+        geoLevel === "Regiões" ||
+        geoLevel === "Área metropolitana" ? (
         <ChartGeographicTimeseries series={series} metadata={metadata} />
       ) : (
         <ChartGeographicMap

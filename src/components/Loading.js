@@ -14,7 +14,7 @@ export default function Loading(props) {
   const classes = useStyles();
 
   return (
-    <div className={classes.center}>
+    <div className={classes.center} style={{...props.style}}>
       <CircularProgress />
     </div>
   );
