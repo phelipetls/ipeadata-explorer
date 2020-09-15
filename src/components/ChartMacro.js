@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
 
 import ChartForm from "./ChartForm";
+import ChartContainer from "./ChartContainer";
 import ChartFormDates from "./ChartFormDates";
 import ChartFormTopN from "./ChartFormTopN";
 import ChartSection from "./ChartSection";
@@ -55,11 +56,13 @@ export default function ChartMacro({ code, metadata }) {
         <ChartFormTopN />
       </ChartForm>
 
-      <ChartTimeseries
-        labels={labels}
-        datasets={datasets}
-        metadata={metadata}
-      />
+      <ChartContainer>
+        <ChartTimeseries
+          labels={labels}
+          datasets={datasets}
+          metadata={metadata}
+        />
+      </ChartContainer>
     </ChartSection>
   );
 }

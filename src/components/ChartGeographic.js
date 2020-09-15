@@ -7,6 +7,7 @@ import {
   limitByDate
 } from "../api/odata";
 
+import Loading from "./Loading";
 import ChartForm from "./ChartForm";
 import ChartFormDates from "./ChartFormDates";
 import ChartFormTopN from "./ChartFormTopN";
@@ -14,6 +15,7 @@ import ChartFormGeography from "./ChartFormGeography";
 import ChartSection from "./ChartSection";
 import ChartGeographicMap from "./ChartGeographicMap";
 import ChartGeographicTimeseries from "./ChartGeographicTimeseries";
+import ChartContainer from "./ChartContainer";
 
 export default function ChartGeographic({ code, metadata }) {
   const [series, setSeries] = useState([]);
@@ -21,15 +23,20 @@ export default function ChartGeographic({ code, metadata }) {
   const [geoLevels, setGeoLevels] = useState([]);
 
   useEffect(() => {
-    async function fetchValues() {
+    async function fetchGeographicLevels() {
       const levelsUrl = buildGeographicLevelsUrl(code);
       const levelsResponse = await fetch(levelsUrl);
-      const levelsJson = await levelsResponse.json();
+      const json = await levelsResponse.json();
 
-      const allGeoLevels = levelsJson.value;
+      return json.value;
+    }
+
+    async function fetchSeries() {
+      const allGeoLevels = await fetchGeographicLevels();
       setGeoLevels(allGeoLevels);
 
-      const selectedGeoLevel = allGeoLevels[2];
+      // TODO: change the following value to zero
+      const selectedGeoLevel = allGeoLevels[3];
       setGeoLevel(selectedGeoLevel.NIVNOME);
 
       const seriesUrl =
@@ -43,15 +50,14 @@ export default function ChartGeographic({ code, metadata }) {
       setSeries(seriesJson.value);
     }
 
-    fetchValues();
+    fetchSeries();
   }, [code]);
 
   function handleSubmit(e) {
     e.preventDefault();
-
     const { initialDate, finalDate, topN, geoLevel } = e.target.elements;
-
     setGeoLevel(geoLevel.value);
+
     const selectedGeoLevel = geoLevels.find(
       level => level.NIVNOME === geoLevel.value
     );
@@ -79,17 +85,22 @@ export default function ChartGeographic({ code, metadata }) {
       <ChartForm onSubmit={handleSubmit}>
         <ChartFormDates metadata={metadata} />
         <ChartFormTopN />
-        <ChartFormGeography
-          geoLevel={geoLevel}
-          geoLevels={geoLevels.map(level => level.NIVNOME)}
-        />
+        {!geoLevel ? (
+          <Loading />
+        ) : (
+          <ChartFormGeography
+            geoLevel={geoLevel}
+            geoLevels={geoLevels.map(level => level.NIVNOME)}
+          />
+        )}
       </ChartForm>
 
-      {geoLevel === "Brasil" || geoLevel === "Estados" ? (
-        <ChartGeographicTimeseries
-          series={series}
-          metadata={metadata}
-        />
+      {series.length === 0 ? (
+        <ChartContainer>
+          <Loading />
+        </ChartContainer>
+      ) : geoLevel === "Brasil" || geoLevel === "Regiões" ? (
+        <ChartGeographicTimeseries series={series} metadata={metadata} />
       ) : (
         <ChartGeographicMap
           series={series}

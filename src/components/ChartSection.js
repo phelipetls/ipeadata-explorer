@@ -9,12 +9,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function ChartContainer({ children }) {
+export default function ChartSection({ children }) {
   const classes = useStyles();
-
-  return (
-    <Paper className={classes.container}>
-      {children}
-    </Paper>
-  );
+  return <Paper className={classes.container}>{children}</Paper>;
 }
