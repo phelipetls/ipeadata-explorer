@@ -82,12 +82,13 @@ export default function ChartGeographicMap({ series, metadata, geoLevel }) {
   const datasets = [
     {
       outline: brazil,
-      data: regions.map(region => ({
-        feature: region,
-        value: selectedSeries.find(
+      data: regions.map(region => {
+        const regionData = selectedSeries.find(
           series => series.TERCODIGO === region.properties.codarea
-        ).VALVALOR
-      }))
+        );
+        const value = regionData !== undefined ? regionData.VALVALOR : 0;
+        return { feature: region, value };
+      })
     }
   ];
 
