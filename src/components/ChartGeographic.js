@@ -35,8 +35,7 @@ export default function ChartGeographic({ code, metadata }) {
       const allGeoLevels = await fetchGeographicLevels();
       setGeoLevels(allGeoLevels);
 
-      // TODO: change the following value to zero
-      const selectedGeoLevel = allGeoLevels[3];
+      const selectedGeoLevel = allGeoLevels[0];
       setGeoLevel(selectedGeoLevel.NIVNOME);
 
       const seriesUrl =
