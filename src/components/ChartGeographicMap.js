@@ -41,11 +41,12 @@ export default function ChartGeographicMap({ series, metadata, geoLevel }) {
       });
   }, [series, geoLevel]);
 
-  const labels = regions.map(
-    region =>
-      series.find(series => series.TERCODIGO === region.properties.codarea)
-        .TERNOME
-  );
+  const labels = regions.map(region => {
+    const regionSeries = series.find(
+      series => series.TERCODIGO === region.properties.codarea
+    );
+    return regionSeries ? regionSeries.TERNOME : "Não disponível";
+  });
 
   const datasets = [
     {
