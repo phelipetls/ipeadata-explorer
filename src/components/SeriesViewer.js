@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { buildMetadataUrl } from "../api/odata";
 
 import ChartMacro from "./ChartMacro";
+import Loading from "./Loading";
 import ChartGeographic from "./ChartGeographic";
 import SeriesMetadata from "./SeriesMetadata";
 
@@ -18,9 +19,9 @@ export default function SeriesViewer() {
       .then(json => setMetadata(json.value[0]));
   }, [code]);
 
-  if (metadata === null) return null;
-
-  return (
+  return !metadata ? (
+    <Loading style={{ minHeight: 512 }} />
+  ) : (
     <>
       <SeriesMetadata metadata={metadata} />
 
