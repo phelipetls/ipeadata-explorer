@@ -46,7 +46,14 @@ export default function ChartTimeseries({ labels, datasets, metadata }) {
           colorschemes: {
             scheme: Paired12
           }
-        }
+        },
+        tooltips: {
+          callbacks: {
+            title: function(tooltipItem, data) {
+              return new Date(tooltipItem[0].label).toLocaleString();
+            },
+          },
+        },
       }
     });
 
