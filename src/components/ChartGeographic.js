@@ -45,10 +45,8 @@ export default function ChartGeographic({ code, metadata }) {
         `&$top=${selectedGeoLevel.regionCount * 25}`;
 
       setIsLoading(true);
-
       const seriesResponse = await fetch(seriesUrl);
       const seriesJson = await seriesResponse.json();
-
       setIsLoading(false);
 
       setSeries(seriesJson.value);

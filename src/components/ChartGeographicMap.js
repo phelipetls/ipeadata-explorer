@@ -1,17 +1,6 @@
-import React, { useState, useEffect, useMemo } from "react";
-import { Select } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
 import { topojson } from "chartjs-chart-geo";
-import { makeStyles } from "@material-ui/core/styles";
-import groupBy from "lodash.groupby";
 import ChartMapChoropleth from "./ChartMapChoropleth";
-
-const useStyles = makeStyles(theme => ({
-  center: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center"
-  }
-}));
 
 const IbgeMapResolution = {
   Estados: 2,
@@ -20,13 +9,7 @@ const IbgeMapResolution = {
   Municípios: 5
 };
 
-const getYearIsoDate = date => date.slice(0, 4);
-const getYearAndMonthIsoDate = date => date.slice(0, 7);
-
 export default function ChartGeographicMap({ series, metadata, geoLevel }) {
-  const classes = useStyles();
-
-  const [period, setPeriod] = useState("");
   const [regions, setRegions] = useState([]);
   const [brazil, setBrazil] = useState([]);
 
@@ -58,21 +41,6 @@ export default function ChartGeographicMap({ series, metadata, geoLevel }) {
       });
   }, [series, geoLevel]);
 
-  const seriesByPeriod = useMemo(
-    () =>
-      groupBy(series, row =>
-        metadata.PERNOME === "Anual" || metadata.PERNOME === "Decenal"
-          ? getYearIsoDate(row.VALDATA)
-          : getYearAndMonthIsoDate(row.VALDATA)
-      ),
-    [series, metadata]
-  );
-
-  if (series.length === 0) return null;
-
-  const periods = Object.keys(seriesByPeriod).reverse();
-  const selectedSeries = seriesByPeriod[period || periods[0]];
-
   const labels = regions.map(
     region =>
       series.find(series => series.TERCODIGO === region.properties.codarea)
@@ -83,34 +51,17 @@ export default function ChartGeographicMap({ series, metadata, geoLevel }) {
     {
       outline: brazil,
       data: regions.map(region => {
-        const regionData = selectedSeries.find(
-          series => series.TERCODIGO === region.properties.codarea
-        );
-        const value = regionData !== undefined ? regionData.VALVALOR : 0;
-        return { feature: region, value };
+        return { feature: region, value: 0 };
       })
     }
   ];
 
   return (
-    <>
-      <ChartMapChoropleth labels={labels} datasets={datasets} />
-
-      <div className={classes.center}>
-        <Select
-          native
-          variant="outlined"
-          label="Períodos"
-          value={period}
-          onChange={e => setPeriod(e.target.value)}
-        >
-          {periods.map(period => (
-            <option key={period} value={period}>
-              {period}
-            </option>
-          ))}
-        </Select>
-      </div>
-    </>
+    <ChartMapChoropleth
+      series={series}
+      metadata={metadata}
+      labels={labels}
+      datasets={datasets}
+    />
   );
 }
