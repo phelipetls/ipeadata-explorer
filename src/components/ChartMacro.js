@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
 
+import Loading from "./Loading";
 import ChartForm from "./ChartForm";
 import ChartContainer from "./ChartContainer";
 import ChartFormDates from "./ChartFormDates";
@@ -11,16 +12,19 @@ import ChartTimeseries from "./ChartTimeseries";
 
 export default function ChartMacro({ code, metadata }) {
   const [series, setSeries] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     let url = buildSeriesUrl(code);
 
+    setIsLoading(true);
     fetch(limitQuery(url, 50))
       .then(response => response.json())
-      .then(json => setSeries(json.value));
+      .then(json => setSeries(json.value))
+      .then(() => setIsLoading(false));
   }, [code]);
 
-  const labels = series.map(series => series.VALDATA);
+  const labels = series.map(series => series.VALDATA.slice(0, 10));
   const datasets = [
     {
       label: code,
@@ -56,13 +60,17 @@ export default function ChartMacro({ code, metadata }) {
         <ChartFormTopN />
       </ChartForm>
 
-      <ChartContainer>
-        <ChartTimeseries
-          labels={labels}
-          datasets={datasets}
-          metadata={metadata}
-        />
-      </ChartContainer>
+      {isLoading ? (
+        <Loading style={{ minHeight: 512 }} />
+      ) : (
+        <ChartContainer>
+          <ChartTimeseries
+            labels={labels}
+            datasets={datasets}
+            metadata={metadata}
+          />
+        </ChartContainer>
+      )}
     </ChartSection>
   );
 }
