@@ -76,7 +76,7 @@ export default function ChartTimeseries({ labels, datasets, metadata }) {
         tooltips: {
           callbacks: {
             title: function(tooltipItem, data) {
-              return new Date(tooltipItem[0].label).toLocaleString();
+              return new Date(tooltipItem[0].label).toLocaleDateString();
             }
           }
         }
