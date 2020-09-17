@@ -53,8 +53,7 @@ export default function SeriesList(props) {
   const searchParams = useSearchParams();
   const searchUrl = buildQueryFromUrl(searchParams);
 
-  let [url, setUrl] = useState(searchUrl || URL);
-  url = limitQuery(url, rowsPerPage);
+  let [url, setUrl] = useState(limitQuery(searchUrl || URL, rowsPerPage));
 
   function handleSubmit(e) {
     e.preventDefault();
