@@ -103,7 +103,7 @@ export default function ChartTimeseries({ labels, datasets, metadata }) {
         min={min}
         max={max}
         value={bounds}
-        step={steps[metadata.PERNOME] * 1000}
+        step={(steps[metadata.PERNOME] || 24 * 3600) * 1000}
         onChange={(e, newBounds) => setBounds(newBounds)}
         valueLabelDisplay="auto"
         valueLabelFormat={value => new Date(value).toLocaleString()}
