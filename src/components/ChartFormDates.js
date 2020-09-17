@@ -11,6 +11,8 @@ export default function ChartFormDates({ metadata }) {
   const [finalDate, setFinalDate] = useState(null);
 
   const resetDate = date => {
+    if (!date) return;
+
     if (metadata.PERNOME !== "Diária") {
       date.setDate(1);
     }
