@@ -24,7 +24,7 @@ export default function ChartMacro({ code, metadata }) {
       .then(() => setIsLoading(false));
   }, [code]);
 
-  const labels = series.map(series => series.VALDATA.slice(0, 10));
+  const labels = series.map(series => series.VALDATA);
   const datasets = [
     {
       label: code,

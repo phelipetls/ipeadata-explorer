@@ -4,6 +4,7 @@ import Chart from "chart.js";
 import ChartCanvas from "./ChartCanvas";
 
 import { Slider, Tooltip } from "@material-ui/core";
+import { withStyles } from "@material-ui/core/styles";
 
 import "chartjs-plugin-colorschemes/src/plugins/plugin.colorschemes";
 import { Paired12 } from "chartjs-plugin-colorschemes/src/colorschemes/colorschemes.brewer";
@@ -28,6 +29,44 @@ function ValueLabelComponent(props) {
     </Tooltip>
   );
 }
+
+const DateSlider = withStyles(theme => ({
+  root: {
+    color: Paired12[0],
+    height: 3,
+    padding: "13px 0"
+  },
+  thumb: {
+    height: 27,
+    width: 27,
+    backgroundColor: "#fff",
+    border: "1px solid currentColor",
+    marginTop: -12,
+    marginLeft: -13,
+    boxShadow: "#ebebeb 0 2px 2px",
+    "&:focus, &:hover, &$active": {
+      boxShadow: "#ccc 0 2px 3px 1px"
+    },
+    "& .bar": {
+      height: 9,
+      width: 1,
+      backgroundColor: "currentColor",
+      marginLeft: 1,
+      marginRight: 1
+    }
+  },
+  active: {},
+  track: {
+    height: 16,
+    marginTop: -6,
+  },
+  rail: {
+    color: theme.palette.grey[300],
+    opacity: 1,
+    height: 16,
+    marginTop: -6,
+  }
+}))(Slider);
 
 export default function ChartTimeseries({ labels, datasets, metadata }) {
   const chartRef = useRef();
@@ -99,14 +138,14 @@ export default function ChartTimeseries({ labels, datasets, metadata }) {
   return (
     <>
       <ChartCanvas id="lineChart" />
-      <Slider
+      <DateSlider
         min={min}
         max={max}
         value={bounds}
         step={(steps[metadata.PERNOME] || 24 * 3600) * 1000}
         onChange={(e, newBounds) => setBounds(newBounds)}
         valueLabelDisplay="auto"
-        valueLabelFormat={value => new Date(value).toLocaleString()}
+        valueLabelFormat={value => new Date(value).toLocaleDateString()}
         ValueLabelComponent={ValueLabelComponent}
       />
     </>
