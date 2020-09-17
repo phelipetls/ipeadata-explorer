@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+
+import { TextField } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 
 const dateViewsByPeriodicity = {
@@ -6,9 +8,10 @@ const dateViewsByPeriodicity = {
   Anual: ["year"]
 };
 
-export default function ChartFormDates({ metadata }) {
+export default function ChartFormTimeInterval({ metadata }) {
   const [initialDate, setInitialDate] = useState(null);
   const [finalDate, setFinalDate] = useState(null);
+  const [topN, setTopN] = useState("");
 
   const resetDate = date => {
     if (!date) return;
@@ -22,8 +25,8 @@ export default function ChartFormDates({ metadata }) {
     }
   };
 
-  const minDate = new Date(metadata.SERMINDATA)
-  const maxDate = new Date(metadata.SERMAXDATA)
+  const minDate = new Date(metadata.SERMINDATA);
+  const maxDate = new Date(metadata.SERMAXDATA);
 
   return (
     <>
@@ -39,6 +42,7 @@ export default function ChartFormDates({ metadata }) {
         format="dd/MM/yyyy"
         views={dateViewsByPeriodicity[metadata.PERNOME]}
         inputVariant="outlined"
+        disabled={topN}
         clearable
       />
 
@@ -54,7 +58,17 @@ export default function ChartFormDates({ metadata }) {
         format="dd/MM/yyyy"
         views={dateViewsByPeriodicity[metadata.PERNOME]}
         inputVariant="outlined"
+        disabled={topN}
         clearable
+      />
+
+      <TextField
+        type="number"
+        value={topN}
+        name="topN"
+        onChange={e => setTopN(e.target.value)}
+        variant="outlined"
+        label="Top N"
       />
     </>
   );

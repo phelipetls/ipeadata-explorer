@@ -9,8 +9,7 @@ import {
 
 import Loading from "./Loading";
 import ChartForm from "./ChartForm";
-import ChartFormDates from "./ChartFormDates";
-import ChartFormTopN from "./ChartFormTopN";
+import ChartFormTimeInterval from "./ChartFormTimeInterval";
 import ChartFormGeography from "./ChartFormGeography";
 import ChartSection from "./ChartSection";
 import ChartGeographicMap from "./ChartGeographicMap";
@@ -85,8 +84,7 @@ export default function ChartGeographic({ code, metadata }) {
   return (
     <ChartSection>
       <ChartForm onSubmit={handleSubmit}>
-        <ChartFormDates metadata={metadata} />
-        <ChartFormTopN />
+        <ChartFormTimeInterval metadata={metadata} />
         {!geoLevel ? (
           <Loading />
         ) : (
