@@ -1,5 +1,7 @@
 import React from "react";
 
+import { Link as RouterLink } from "react-router-dom";
+
 import {
   Link,
   Table,
@@ -17,7 +19,12 @@ const metadataFields = [
   {
     label: "Fonte",
     render: metadata => (
-      <Link href={metadata.FNTURL}>{metadata.FNTNOME}</Link>
+      <Link
+        component={RouterLink}
+        to={`/series?FNTNOME=${metadata.FNTNOME}`}
+      >
+        {metadata.FNTNOME}
+      </Link>
     )
   },
   { label: "Base", key: "BASNOME" },
