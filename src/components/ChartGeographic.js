@@ -24,10 +24,9 @@ export default function ChartGeographic({ code, metadata }) {
 
   useEffect(() => {
     async function fetchGeographicLevels() {
-      const levelsUrl = buildGeographicLevelsUrl(code);
-      const levelsResponse = await fetch(levelsUrl);
-      const json = await levelsResponse.json();
-
+      const url = buildGeographicLevelsUrl(code);
+      const response = await fetch(url);
+      const json = await response.json();
       return json.value;
     }
 
@@ -44,9 +43,9 @@ export default function ChartGeographic({ code, metadata }) {
         `&$top=${selectedGeoLevel.regionCount * 25}`;
 
       setIsLoading(true);
-      const seriesResponse = await fetch(seriesUrl);
-      const seriesJson = await seriesResponse.json();
-      setSeries(seriesJson.value);
+      const response = await fetch(seriesUrl);
+      const json = await response.json();
+      setSeries(json.value);
       setIsLoading(false);
     }
 
