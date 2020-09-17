@@ -46,9 +46,8 @@ export default function ChartGeographic({ code, metadata }) {
       setIsLoading(true);
       const seriesResponse = await fetch(seriesUrl);
       const seriesJson = await seriesResponse.json();
-      setIsLoading(false);
-
       setSeries(seriesJson.value);
+      setIsLoading(false);
     }
 
     fetchSeries();
