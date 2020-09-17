@@ -11,16 +11,6 @@ import { Paired12 } from "chartjs-plugin-colorschemes/src/colorschemes/colorsche
 
 Chart.defaults.global.elements.line.fill = false;
 
-const steps = {
-  Decenal: 3600 * 24 * 365 * 10,
-  Quadrienal: 3600 * 24 * 365 * 4,
-  Quinquenal: 3600 * 24 * 365 * 5,
-  Anual: 3600 * 24 * 365,
-  Mensal: 3600 * 24 * 30,
-  Trimestral: 3600 * 24 * 30 * 4,
-  Diária: 3600 * 24
-};
-
 function ValueLabelComponent(props) {
   const { children, open, value } = props;
   return (
@@ -142,7 +132,7 @@ export default function ChartTimeseries({ labels, datasets, metadata }) {
         min={min}
         max={max}
         value={bounds}
-        step={(steps[metadata.PERNOME] || 24 * 3600) * 1000}
+        step={1000}
         onChange={(e, newBounds) => setBounds(newBounds)}
         valueLabelDisplay="auto"
         valueLabelFormat={value => new Date(value).toLocaleDateString()}
