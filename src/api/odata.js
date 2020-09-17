@@ -26,7 +26,13 @@ export function limitByDate(url, initialDate, finalDate) {
   const filters = [];
   if (initialDate) filters.push(`VALDATA ge ${formatDate(initialDate)}`);
   if (finalDate) filters.push(`VALDATA le ${formatDate(finalDate)}`);
-  return url + "&$filter=" + filters.join(" and ");
+  const joinedFilters = filters.join(" and ");
+
+  if (url.includes("filter")) {
+    return url.replace(/filter=(.*?)(?=&|$)/, `$& and ${joinedFilters}`);
+  }
+
+  return url + `&$filter=${joinedFilters}`;
 }
 
 function formatDate(dateStr) {
