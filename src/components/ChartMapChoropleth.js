@@ -79,8 +79,8 @@ export default function ChartMapChoropleth(props) {
     const seriesInCurrentPeriod = seriesByGroup[period || periods[0]];
 
     chartRef.current.data.datasets[0].data.forEach(region => {
-      const regionCode = region.feature.properties.codarea
-      const regionValues = seriesInCurrentPeriod[regionCode]
+      const regionCode = region.feature.properties.codarea;
+      const regionValues = seriesInCurrentPeriod[regionCode];
       region.value = regionValues ? regionValues.VALVALOR : 0;
     });
 
@@ -89,7 +89,7 @@ export default function ChartMapChoropleth(props) {
 
   return (
     <>
-      <ChartCanvas id="mapChart" />;
+      <ChartCanvas id="mapChart" />
       <div className={classes.center}>
         <Select
           native

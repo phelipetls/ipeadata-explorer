@@ -14,6 +14,13 @@ export function buildSeriesUrl(code) {
   );
 }
 
+export function buildCategoricalSeriesUrl(code) {
+  return (
+    buildMetadataUrl(code) +
+    "/ValoresStr?$select=VALDATA,VALVALOR,TERCODIGO&$orderby=VALDATA desc"
+  );
+}
+
 export function limitQuery(url, limit) {
   return url + `&$top=${limit}`;
 }

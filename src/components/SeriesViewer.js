@@ -6,6 +6,7 @@ import { buildMetadataUrl } from "../api/odata";
 import ChartMacro from "./ChartMacro";
 import Loading from "./Loading";
 import ChartGeographic from "./ChartGeographic";
+import ChartCategorical from "./ChartCategorical";
 import SeriesMetadata from "./SeriesMetadata";
 
 export default function SeriesViewer() {
@@ -25,7 +26,9 @@ export default function SeriesViewer() {
     <>
       <SeriesMetadata metadata={metadata} />
 
-      {metadata.BASNOME === "Macroeconômico" ? (
+      {!metadata.SERNUMERICA ? (
+        <ChartCategorical code={code} metadata={metadata} />
+      ) : metadata.BASNOME === "Macroeconômico" ? (
         <ChartMacro code={code} metadata={metadata} />
       ) : (
         <ChartGeographic code={code} metadata={metadata} />

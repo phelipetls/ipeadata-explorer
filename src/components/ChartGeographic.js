@@ -96,7 +96,7 @@ export default function ChartGeographic({ code, metadata }) {
       </ChartForm>
 
       {isLoading ? (
-        <Loading style={{ minHeight: 512 }}/>
+        <Loading style={{ minHeight: 512 }} />
       ) : geoLevel === "Brasil" ||
         geoLevel === "Regiões" ||
         geoLevel === "Área metropolitana" ? (
