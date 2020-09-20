@@ -47,7 +47,7 @@ export default function ChartFormTimeInterval({ metadata }) {
         format="dd/MM/yyyy"
         views={dateViewsByPeriodicity[metadata.PERNOME]}
         inputVariant="outlined"
-        disabled={topN}
+        disabled={Boolean(topN)}
         clearable
       />
 
@@ -63,7 +63,7 @@ export default function ChartFormTimeInterval({ metadata }) {
         format="dd/MM/yyyy"
         views={dateViewsByPeriodicity[metadata.PERNOME]}
         inputVariant="outlined"
-        disabled={topN}
+        disabled={Boolean(topN)}
         clearable
       />
 
