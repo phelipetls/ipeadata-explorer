@@ -14,7 +14,7 @@ import SeriesViewer from "./components/SeriesViewer";
 const useStyles = makeStyles(theme => ({
   mainSection: {
     maxWidth: theme.breakpoints.values.md,
-    marginTop: "2em",
+    marginTop: "2em"
   }
 }));
 

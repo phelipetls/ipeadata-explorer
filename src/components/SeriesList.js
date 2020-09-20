@@ -45,7 +45,7 @@ export default function SeriesList(props) {
   const [rows, setRows] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   const [newPageUrl, setNewPageUrl] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
