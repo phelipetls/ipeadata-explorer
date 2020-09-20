@@ -25,22 +25,22 @@ export default function ChartMapChoropleth(props) {
 
   const { series, metadata, labels, datasets } = props;
 
-  const seriesByGroup = useMemo(
-    () => {
-      const seriesByGroup = groupBy(series, row =>
-        metadata.PERNOME === "Anual" || metadata.PERNOME === "Decenal"
-          ? getYearIsoDate(row.VALDATA)
-          : getYearAndMonthIsoDate(row.VALDATA)
-      )
+  const seriesByGroup = useMemo(() => {
+    const seriesByGroup = groupBy(series, row =>
+      metadata.PERNOME === "Anual" ||
+      metadata.PERNOME === "Decenal" ||
+      metadata.PERNOME === "Quadrienal" ||
+      metadata.PERNOME === "Quinquenal"
+        ? getYearIsoDate(row.VALDATA)
+        : getYearAndMonthIsoDate(row.VALDATA)
+    );
 
-      for (const [year, value] of Object.entries(seriesByGroup)) {
-        seriesByGroup[year] = keyBy(value, "TERCODIGO");
-      };
+    for (const [year, value] of Object.entries(seriesByGroup)) {
+      seriesByGroup[year] = keyBy(value, "TERCODIGO");
+    }
 
-      return seriesByGroup;
-    },
-    [series, metadata]
-  );
+    return seriesByGroup;
+  }, [series, metadata]);
 
   const periods = Object.keys(seriesByGroup).reverse();
 

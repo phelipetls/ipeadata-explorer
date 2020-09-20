@@ -5,7 +5,12 @@ import { DatePicker } from "@material-ui/pickers";
 
 const dateViewsByPeriodicity = {
   Mensal: ["year", "month"],
-  Anual: ["year"]
+  Trimestral: ["year", "month"],
+  Semestral: ["year", "month"],
+  Anual: ["year"],
+  Decenal: ["year"],
+  Quadrienal: ["year"],
+  Quinquenal: ["year"]
 };
 
 export default function ChartFormTimeInterval({ metadata }) {
