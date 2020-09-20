@@ -148,6 +148,7 @@ export default function SeriesList(props) {
   return (
     <>
       <SeriesFilter
+        searchParams={searchParams}
         formOpen={formOpen}
         setFormOpen={setFormOpen}
         onSubmit={handleSubmit}

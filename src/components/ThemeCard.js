@@ -19,13 +19,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function ThemeCard({ themeCode, children }) {
+export default function ThemeCard({ themeName, children }) {
   const classes = useStyles();
 
   return (
     <Paper
       component={RouterLink}
-      to={`/series?TEMCODIGO=${themeCode}`}
+      to={`/series?TEMNOME=${themeName}`}
       variant="outlined"
       className={classes.container}
     >

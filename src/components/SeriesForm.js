@@ -30,17 +30,29 @@ const useStyles = makeStyles(theme => ({
 export default function SeriesForm(props) {
   const classes = useStyles();
 
-  const [name, setName] = useState("");
-  const [source, setSource] = useState("");
-  const [unit, setUnit] = useState("");
-  const [periodicty, setPeriodicty] = useState("");
-  const [theme, setTheme] = useState("");
-  const [country, setCountry] = useState("");
+  const {
+    SERNOME,
+    FNTNOME,
+    UNINOME,
+    PERNOME,
+    TEMNOME,
+    BASNOME,
+    SERNUMERICA,
+    SERSTATUS,
+    PAINOME
+  } = Object.fromEntries(props.searchParams);
+
+  const [name, setName] = useState(SERNOME || "");
+  const [source, setSource] = useState(FNTNOME || "");
+  const [unit, setUnit] = useState(UNINOME || "");
+  const [periodicty, setPeriodicty] = useState(PERNOME || "");
+  const [theme, setTheme] = useState(TEMNOME || "");
+  const [country, setCountry] = useState(PAINOME || "");
   const [initialDate, setInitialDate] = useState(null);
   const [finalDate, setFinalDate] = useState(null);
-  const [bases, setBases] = useState([]);
-  const [status, setStatus] = useState([]);
-  const [isNumeric, setIsNumeric] = useState([]);
+  const [bases, setBases] = useState([BASNOME] || []);
+  const [status, setStatus] = useState(SERSTATUS || "");
+  const [isNumeric, setIsNumeric] = useState(SERNUMERICA || "");
 
   const { onSubmit } = props;
 

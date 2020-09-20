@@ -52,7 +52,6 @@ export default function Themes() {
           .filter(theme => bases.some(base => theme[base]))
           .map(theme => {
             const {
-              TEMCODIGO,
               TEMNOME,
               TEMCODIGO_PAI,
               MACRO,
@@ -65,7 +64,7 @@ export default function Themes() {
             );
 
             return (
-              <ThemeCard themeCode={TEMCODIGO}>
+              <ThemeCard themeName={TEMNOME}>
                 <ThemeName name={TEMNOME} />
                 {parent_theme && <ThemeParent name={parent_theme.TEMNOME} />}
                 {(MACRO || REGIONAL || SOCIAL) && (

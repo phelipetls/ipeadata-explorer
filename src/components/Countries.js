@@ -15,7 +15,7 @@ const columns = [
     type: "string",
     label: "País",
     render: (row, column) => (
-      <Link component={RouterLink} to={`/series?PAICODIGO=${row["PAICODIGO"]}`}>
+      <Link component={RouterLink} to={`/series?PAINOME=${row["PAINOME"]}`}>
         {row[column.key]}
       </Link>
     )

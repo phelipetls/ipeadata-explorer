@@ -16,12 +16,12 @@ const useStyles = makeStyles(theme => ({
   filterContainer: {
     padding: theme.spacing(2),
     marginBottom: "2em"
-  },
+  }
 }));
 
 export default function SeriesFilter(props) {
   const classes = useStyles();
-  const { onSubmit, formOpen, setFormOpen } = props;
+  const { searchParams, onSubmit, formOpen, setFormOpen } = props;
 
   return (
     <Paper className={classes.filterContainer}>
@@ -38,7 +38,7 @@ export default function SeriesFilter(props) {
       </Grid>
 
       <Collapse in={formOpen}>
-        <SeriesForm onSubmit={onSubmit} />
+        <SeriesForm searchParams={searchParams} onSubmit={onSubmit} />
       </Collapse>
     </Paper>
   );
