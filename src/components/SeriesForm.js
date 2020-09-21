@@ -170,7 +170,7 @@ export default function SeriesForm(props) {
         </Grid>
       </Grid>
 
-      <Grid container item justify="space-around">
+      <Grid container item justify="space-around" spacing={2}>
         <Grid item>
           <FormControl
             variant="outlined"
