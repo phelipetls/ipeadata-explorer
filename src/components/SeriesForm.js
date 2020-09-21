@@ -6,7 +6,10 @@ import {
   InputLabel,
   FormControl,
   Select,
-  MenuItem
+  MenuItem,
+  FormGroup,
+  FormControlLabel,
+  Checkbox
 } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,6 +27,10 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     minWidth: "9ch"
+  },
+  formGroup: {
+    margin: "0 auto",
+    paddingTop: "1em"
   }
 }));
 
@@ -53,6 +60,11 @@ export default function SeriesForm(props) {
   const [bases, setBases] = useState([BASNOME] || []);
   const [status, setStatus] = useState(SERSTATUS || "");
   const [isNumeric, setIsNumeric] = useState(SERNUMERICA || "");
+
+  const [hasBrazil, setHasBrazil] = useState(false);
+  const [hasMunicipality, setHasMunicipality] = useState(false);
+  const [hasState, setHasState] = useState(false);
+  const [hasMetropolitan, setHasMetropolitan] = useState(false);
 
   const { onSubmit } = props;
 
@@ -229,6 +241,64 @@ export default function SeriesForm(props) {
           </FormControl>
         </Grid>
       </Grid>
+
+      <FormGroup row className={classes.formGroup}>
+        <FormControlLabel
+          control={
+            <Checkbox
+              size="small"
+              checked={hasBrazil}
+              value={hasBrazil}
+              onChange={e => setHasBrazil(e.target.checked)}
+              name="SERTEMBR"
+              color="primary"
+            />
+          }
+          label="Brasil"
+        />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              size="small"
+              checked={hasMunicipality}
+              value={hasMunicipality}
+              onChange={e => setHasMunicipality(e.target.checked)}
+              name="SERTEMMUN"
+              color="primary"
+            />
+          }
+          label="Municípios"
+        />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              size="small"
+              checked={hasState}
+              value={hasState}
+              onChange={e => setHasState(e.target.checked)}
+              name="SERTEMEST"
+              color="primary"
+            />
+          }
+          label="Estados"
+        />
+
+        <FormControlLabel
+          control={
+            <Checkbox
+              size="small"
+              checked={hasMetropolitan}
+              value={hasMetropolitan}
+              onChange={e => setHasMetropolitan(e.target.checked)}
+              name="SERTEMMET"
+              color="primary"
+            />
+          }
+          label="Área metropolitana"
+        />
+      </FormGroup>
 
       <Grid container item xs={12} justify="center">
         <Button

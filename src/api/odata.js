@@ -66,7 +66,7 @@ function buildFilter(parameters) {
   let helperQuery = "";
 
   for (const [name, value] of parameters) {
-    if (!value) continue;
+    if (!value || value === "false") continue;
 
     switch (name) {
       case "SERNOME":
@@ -104,13 +104,15 @@ function buildFilter(parameters) {
         filters.push(`${name} eq '${value}'`);
         break;
       case "SERNUMERICA":
+      case "TEMCODIGO":
+        filters.push(`${name} eq ${value}`);
+        break;
       case "SERTEMAMC":
       case "SERTEMBR":
       case "SERTEMEST":
       case "SERTEMMUN":
       case "SERTEMMET":
-      case "TEMCODIGO":
-        filters.push(`${name} eq ${value}`);
+        filters.push(`${name} eq ${+Boolean(value)}`);
         break;
       default:
         throw new Error("Este parâmetro não é suportado para filtragem.");
