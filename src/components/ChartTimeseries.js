@@ -20,6 +20,13 @@ function ValueLabelComponent(props) {
   );
 }
 
+const timeUnits = {
+  Mensal: "month",
+  Diária: "day",
+  Anual: "year",
+  Trimestral: "quarter",
+};
+
 const DateSlider = withStyles(theme => ({
   root: {
     color: Paired12[0],
@@ -88,8 +95,8 @@ export default function ChartTimeseries({ labels, datasets, metadata }) {
             {
               type: "time",
               time: {
-                unit: "year"
-              }
+                unit: timeUnits[metadata.PERNOME] || "year",
+              },
             }
           ],
           yAxes: [
