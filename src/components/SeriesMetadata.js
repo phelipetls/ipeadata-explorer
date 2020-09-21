@@ -8,7 +8,7 @@ import SeriesMetadataTable from "./SeriesMetadataTable";
 const useStyles = makeStyles(theme => ({
   metadata: {
     padding: theme.spacing(2),
-    '& > *': {
+    "& > *": {
       padding: theme.spacing(2)
     }
   }
@@ -23,11 +23,9 @@ export default function SeriesMetadata({ metadata }) {
         <Typography variant="h4" component="h1" gutterBottom>
           {metadata.SERNOME}
         </Typography>
-        <Typography
-          variant="body1"
-          paragraph
-          dangerouslySetInnerHTML={{ __html: metadata.SERCOMENTARIO }}
-        />
+        <Typography variant="body1" paragraph>
+          {metadata.SERCOMENTARIO.replace(/<[^>]+>/g, "")}
+        </Typography>
       </Grid>
 
       <Grid item xs={12} md={6}>
