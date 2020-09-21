@@ -74,16 +74,21 @@ export default function ChartTimeseries({ labels, datasets, metadata }) {
         datasets: datasets
       },
       options: {
+        maintainAspectRatio: false,
         title: {
+          display: true,
+          fontSize: 14,
           text: metadata.SERNOME
         },
-        maintainAspectRatio: false,
+        legend: {
+          position: "bottom"
+        },
         scales: {
           xAxes: [
             {
               type: "time",
               time: {
-                unit: "month"
+                unit: "year"
               }
             }
           ],
