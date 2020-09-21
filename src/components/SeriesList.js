@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { Link, TableRow, TableCell } from "@material-ui/core";
+import { Link, useMediaQuery } from "@material-ui/core";
+import { useTheme } from "@material-ui/styles";
 
 import {
   buildQueryFromForm,
@@ -10,10 +11,12 @@ import {
 } from "../api/odata";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 
-import SortableTable from "./SortableTable";
+import TableSortable from "./TableSortable";
 import SeriesFilter from "./SeriesFilter";
 import TablePaginationFooter from "./TablePaginationFooter";
 import TableSkeleton from "./TableSkeleton";
+import TableShort from "./TableShort";
+import TableWrapper from "./TableWrapper";
 
 function useSearchParams() {
   return new URLSearchParams(useLocation().search);
@@ -29,7 +32,7 @@ const columns = [
     key: "SERNOME",
     type: "string",
     label: "Nome",
-    render: (row, column) => (
+    render: row => (
       <Link component={RouterLink} to={`/serie/${row.SERCODIGO}`}>
         {row.SERNOME}
       </Link>
@@ -42,6 +45,9 @@ const columns = [
 ];
 
 export default function SeriesList(props) {
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+
   const [rows, setRows] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const [page, setPage] = useState(0);
@@ -128,22 +134,32 @@ export default function SeriesList(props) {
     page * rowsPerPage + rowsPerPage
   );
 
-  const tableRows = isLoading ? (
-    <TableSkeleton rows={rowsPerPage} columns={columns.length} />
-  ) : (
-    currentPageRows.map(row => (
-      <TableRow key={row["SERCODIGO"]}>
-        {columns.map((column, index) => (
-          <TableCell
-            key={column.key}
-            align={column.type === "numeric" ? "right" : "left"}
-          >
-            {column.render ? column.render(row, column) : row[column.key]}
-          </TableCell>
-        ))}
-      </TableRow>
-    ))
-  );
+  let table;
+
+  if (isSmallScreen) {
+    table = (
+      <TableShort
+        rows={currentPageRows}
+        columns={columns}
+        footer={paginationActions}
+        isLoading={isLoading}
+        fallback={<TableSkeleton nRows={rowsPerPage} nColumns={2} />}
+      />
+    );
+  } else {
+    table = (
+      <TableSortable
+        rows={currentPageRows}
+        rowKey="SERCODIGO"
+        columns={columns}
+        footer={paginationActions}
+        isLoading={isLoading}
+        fallback={
+          <TableSkeleton nRows={rowsPerPage} nColumns={columns.length} />
+        }
+      />
+    );
+  }
 
   return (
     <>
@@ -154,16 +170,7 @@ export default function SeriesList(props) {
         onSubmit={handleSubmit}
       />
 
-      <SortableTable
-        rows={currentPageRows}
-        columns={columns}
-        body={tableRows}
-        footer={paginationActions}
-        page={page}
-        rowsPerPage={rowsPerPage}
-        onChangePage={handlePageChange}
-        onChangeRowsPerPage={handleRowsPerPageChange}
-      />
+      <TableWrapper>{table}</TableWrapper>
     </>
   );
 }

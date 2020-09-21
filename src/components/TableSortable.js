@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 
 import {
-  Paper,
-  TableContainer,
   Table,
   TableHead,
   TableBody,
@@ -13,13 +11,12 @@ import {
 
 import { makeStyles } from "@material-ui/core/styles";
 
+import TableRowsLarge from "./TableRowsLarge";
+
 const useStyles = makeStyles(theme => ({
-  tableContainer: {
-    margin: "0 auto",
-  },
   table: {
     "thead tr th:first-child": {
-      // width: "50%",
+      width: "50%"
     }
   }
 }));
@@ -35,13 +32,13 @@ const sortFunctions = {
   date: (a, b) => new Date(a) - new Date(b)
 };
 
-export default function SortableTable(props) {
+export default function TableSortable(props) {
   const classes = useStyles();
 
   const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState(props.defaultOrderBy);
 
-  const { columns, rows, body, footer } = props;
+  const { columns, rows, rowKey, footer, isLoading, fallback } = props;
 
   const handleSort = (e, column) => {
     if (column === orderBy) {
@@ -84,14 +81,18 @@ export default function SortableTable(props) {
   ));
 
   return (
-    <TableContainer component={Paper} className={classes.tableContainer}>
-      <Table className={classes.table} size="small">
-        <TableHead>
-          <TableRow>{headers}</TableRow>
-        </TableHead>
-        <TableBody>{body}</TableBody>
-        {footer}
-      </Table>
-    </TableContainer>
+    <Table className={classes.table} size="small">
+      <TableHead>
+        <TableRow>{headers}</TableRow>
+      </TableHead>
+      <TableBody>
+        {isLoading ? (
+          fallback
+        ) : (
+          <TableRowsLarge rows={rows} columns={columns} rowKey={rowKey} />
+        )}
+      </TableBody>
+      {footer}
+    </Table>
   );
 }
