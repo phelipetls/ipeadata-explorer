@@ -20,8 +20,8 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "space-between"
   },
   secondaryToolbar: {
-    alignItems: "stretch",
-  },
+    alignItems: "stretch"
+  }
 }));
 
 export default function NavigationBar() {
@@ -35,7 +35,7 @@ export default function NavigationBar() {
   const navigationBarLinks = [
     { text: "Séries", url: "/series" },
     { text: "Temas", url: "/temas" },
-    { text: "Países", url: "/paises" },
+    { text: "Países", url: "/paises" }
   ];
 
   const classes = useStyles();
@@ -69,7 +69,6 @@ export default function NavigationBar() {
               <NavigationBarMenu links={navigationBarLinks} />
             </Hidden>
           </Toolbar>
-
         </Toolbar>
       )}
     </AppBar>

@@ -5,11 +5,11 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   searchContainer: {
-    textAlign: "center",
+    textAlign: "center"
   },
   search: {
-    width: "73vw",
-  },
+    width: "73vw"
+  }
 }));
 
 export default function LandingPageSearchBar() {
@@ -21,7 +21,7 @@ export default function LandingPageSearchBar() {
         className={classes.search}
         placeholder="Pesquise por palavras"
         variant="outlined"
-    />
+      />
     </div>
   );
 }

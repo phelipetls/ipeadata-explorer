@@ -4,13 +4,7 @@ import { TableRow, TableFooter, TablePagination } from "@material-ui/core";
 import TablePaginationActions from "./TablePaginationActions";
 
 export default function TablePaginationFooter(props) {
-  const {
-    page,
-    count,
-    rowsPerPage,
-    onChangePage,
-    onChangeRowsPerPage
-  } = props;
+  const { page, count, rowsPerPage, onChangePage, onChangeRowsPerPage } = props;
 
   return (
     <TableFooter>

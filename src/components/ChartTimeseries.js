@@ -24,7 +24,7 @@ const timeUnits = {
   Mensal: "month",
   Diária: "day",
   Anual: "year",
-  Trimestral: "quarter",
+  Trimestral: "quarter"
 };
 
 const DateSlider = withStyles(theme => ({
@@ -55,13 +55,13 @@ const DateSlider = withStyles(theme => ({
   active: {},
   track: {
     height: 16,
-    marginTop: -6,
+    marginTop: -6
   },
   rail: {
     color: theme.palette.grey[300],
     opacity: 1,
     height: 16,
-    marginTop: -6,
+    marginTop: -6
   }
 }))(Slider);
 
@@ -95,8 +95,8 @@ export default function ChartTimeseries({ labels, datasets, metadata }) {
             {
               type: "time",
               time: {
-                unit: timeUnits[metadata.PERNOME] || "year",
-              },
+                unit: timeUnits[metadata.PERNOME] || "year"
+              }
             }
           ],
           yAxes: [

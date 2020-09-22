@@ -69,8 +69,8 @@ export default function ChartCategorical({ code, metadata }) {
     } else if (initialYear || finalYear) {
       setPeriod(
         initialYear && finalYear
-        ? `${initialYear} a ${finalYear}`
-        : initialYear || finalYear
+          ? `${initialYear} a ${finalYear}`
+          : initialYear || finalYear
       );
 
       initialYear && filters.push(`year(VALDATA) ge ${initialYear}`);

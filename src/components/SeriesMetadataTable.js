@@ -19,10 +19,7 @@ const metadataFields = [
   {
     label: "Fonte",
     render: metadata => (
-      <Link
-        component={RouterLink}
-        to={`/series?FNTNOME=${metadata.FNTNOME}`}
-      >
+      <Link component={RouterLink} to={`/series?FNTNOME=${metadata.FNTNOME}`}>
         {metadata.FNTNOME}
       </Link>
     )

@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   link: {
     "&:not(:last-child)": {
       marginRight: "1.5em"
-    },
+    }
   },
   navigationList: {
     display: "flex",
@@ -39,7 +39,9 @@ export default function NavigationBarList(props) {
           key={index}
           className={classes.navigationListItem}
         >
-          <Link component="div" className={classes.link} style={theme.link}>{link.text}</Link>
+          <Link component="div" className={classes.link} style={theme.link}>
+            {link.text}
+          </Link>
         </ListItem>
       ))}
     </List>
