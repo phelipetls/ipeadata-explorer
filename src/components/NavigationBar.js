@@ -29,8 +29,8 @@ export default function NavigationBar() {
 
   const [isSearching, setIsSearching] = useState(false);
 
-  const handleClick = () => setIsSearching(true);
-  const handleBlur = () => setIsSearching(false);
+  const searchEnter = () => setIsSearching(true);
+  const searchExit = () => setIsSearching(false);
 
   const navigationBarLinks = [
     { text: "Séries", url: "/series" },
@@ -49,7 +49,7 @@ export default function NavigationBar() {
       className={classes.appBar}
     >
       {isSearching ? (
-        <NavigationBarSearch onBlur={handleBlur} />
+        <NavigationBarSearch searchExit={searchExit} />
       ) : (
         <Toolbar className={classes.mainToolbar}>
           <Typography variant="h5" color="primary">
@@ -63,7 +63,7 @@ export default function NavigationBar() {
               <NavigationBarList links={navigationBarLinks} />
             </Hidden>
 
-            <SearchButton onClick={handleClick} />
+            <SearchButton onClick={searchEnter} />
 
             <Hidden smUp>
               <NavigationBarMenu links={navigationBarLinks} />

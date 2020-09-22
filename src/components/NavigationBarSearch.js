@@ -4,6 +4,7 @@ import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import BackButton from "./BackButton";
+import SearchButton from "./SearchButton";
 
 const useStyles = makeStyles(theme => ({
   searchContainer: {
@@ -18,6 +19,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function NavigationBarSearch(props) {
+  const classes = useStyles();
+
   const [searchInput, setSearchInput] = useState("");
 
   const handleChange = e => {
@@ -27,29 +30,28 @@ export default function NavigationBarSearch(props) {
   const handleEscape = e => {
     if (e.key === "Escape") {
       e.target.value = "";
-      e.target.blur();
+      props.searchExit();
     }
   };
 
-  const classes = useStyles();
-
   return (
-    <div className={classes.searchContainer}>
+    <form action="/series" className={classes.searchContainer}>
       <TextField
         value={searchInput}
+        name="SERNOME"
         onChange={handleChange}
         className={classes.search}
         onKeyDown={handleEscape}
-        onBlur={props.onBlur}
         placeholder="Pesquisar..."
         type="search"
         autoFocus
         fullWidth
         InputProps={{
           disableUnderline: true,
-          startAdornment: <BackButton onClick={props.handleBlur} />
+          startAdornment: <BackButton onClick={props.searchExit} />,
+          endAdornment: <SearchButton type="submit" />
         }}
       />
-    </div>
+    </form>
   );
 }

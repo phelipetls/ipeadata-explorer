@@ -9,6 +9,7 @@ export default function SearchButton(props) {
       color="default"
       onClick={props.onClick}
       style={{ alignSelf: "center" }}
+      type={props.type || "button"}
     >
       <Search />
     </IconButton>
