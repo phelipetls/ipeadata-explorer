@@ -18,7 +18,7 @@ export default function NavigationBarMenu(props) {
 
   return (
     <>
-      <IconButton onClick={useMenuOpen}>
+      <IconButton style={{ alignSelf: "center" }} onClick={useMenuOpen}>
         <MoreVert />
       </IconButton>
       <Menu open={Boolean(anchorEl)} anchorEl={anchorEl} onClick={useMenuClose}>
