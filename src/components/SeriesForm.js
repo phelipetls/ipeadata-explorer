@@ -31,8 +31,11 @@ const useStyles = makeStyles(theme => ({
   },
   formGroup: {
     margin: "0 auto",
-    paddingTop: "1em"
-  }
+    paddingTop: "1em",
+  },
+  textField: {
+    textAlign: "center",
+  },
 }));
 
 export default function SeriesForm(props) {
@@ -86,8 +89,8 @@ export default function SeriesForm(props) {
       onSubmit={onSubmit}
       className={classes.form}
     >
-      <Grid container item spacing={3} justify="center" name="text">
-        <Grid item xs={6} sm={4}>
+      <Grid container item spacing={3}>
+        <Grid item xs={6} sm={4} className={classes.textField}>
           <TextField
             size="small"
             name="SERNOME"
@@ -99,7 +102,7 @@ export default function SeriesForm(props) {
           />
         </Grid>
 
-        <Grid item xs={6} sm={4}>
+        <Grid item xs={6} sm={4} className={classes.textField}>
           <TextField
             size="small"
             name="FNTNOME"
@@ -111,7 +114,7 @@ export default function SeriesForm(props) {
           />
         </Grid>
 
-        <Grid item xs={6} sm={4}>
+        <Grid item xs={6} sm={4} className={classes.textField}>
           <TextField
             size="small"
             name="UNINOME"
@@ -123,7 +126,7 @@ export default function SeriesForm(props) {
           />
         </Grid>
 
-        <Grid item xs={6} sm={4}>
+        <Grid item xs={6} sm={4} className={classes.textField}>
           <TextField
             size="small"
             name="PERNOME"
@@ -135,7 +138,7 @@ export default function SeriesForm(props) {
           />
         </Grid>
 
-        <Grid item xs={6} sm={4}>
+        <Grid item xs={6} sm={4} className={classes.textField}>
           <TextField
             size="small"
             name="TEMNOME"
@@ -147,7 +150,7 @@ export default function SeriesForm(props) {
           />
         </Grid>
 
-        <Grid item xs={6} sm={4}>
+        <Grid item xs={6} sm={4} className={classes.textField}>
           <TextField
             size="small"
             name="PAINOME"
