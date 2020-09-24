@@ -52,9 +52,9 @@ export default function NavigationBar() {
         <NavigationBarSearch searchExit={searchExit} />
       ) : (
         <Toolbar className={classes.mainToolbar}>
-          <Typography variant="h5" color="primary">
+          <Typography variant="h5" color="primary" noWrap>
             <Link component={RouterLink} to="/" style={theme.link}>
-              IPEA
+              Ipeadata Explorer
             </Link>
           </Typography>
 
