@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { Link, useMediaQuery } from "@material-ui/core";
-import { useTheme } from "@material-ui/styles";
+import { Link } from "@material-ui/core";
+import { useSmallScreen } from "../utils/responsive";
 
 import {
   buildQueryFromForm,
@@ -45,8 +45,7 @@ const columns = [
 ];
 
 export default function SeriesList(props) {
-  const theme = useTheme();
-  const isSmallScreen = useMediaQuery(theme.breakpoints.down("sm"));
+  const isSmallScreen = useSmallScreen();
 
   const [rows, setRows] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
