@@ -5,7 +5,7 @@ import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import NavigationBar from "./components/NavigationBar";
-import LandingPage from "./components/LandingPage";
+import HomePage from "./components/HomePage";
 import Themes from "./components/Themes";
 import Countries from "./components/Countries";
 import SeriesList from "./components/SeriesList";
@@ -27,7 +27,7 @@ function App() {
         <NavigationBar />
         <Container component="main" className={classes.mainSection}>
           <Switch>
-            <Route exact path="/" component={LandingPage} />
+            <Route exact path="/" component={HomePage} />
             <Route path="/temas" component={Themes} />
             <Route path="/paises" component={Countries} />
             <Route path="/series" component={SeriesList} />
