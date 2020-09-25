@@ -64,7 +64,7 @@ export default function SeriesList(props) {
     e.preventDefault();
 
     let url = buildQueryFromForm(e.target.elements);
-    setUrl(url);
+    setUrl(limitQuery(url, rowsPerPage));
     setPage(0);
     setFormOpen(false);
   }

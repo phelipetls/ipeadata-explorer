@@ -253,8 +253,8 @@ export default function SeriesForm(props) {
             <Checkbox
               size="small"
               checked={hasBrazil}
-              value={hasBrazil}
               onChange={e => setHasBrazil(e.target.checked)}
+              disabled={bases.includes("Macroeconômico")}
               name="SERTEMBR"
               color="primary"
             />
@@ -267,8 +267,8 @@ export default function SeriesForm(props) {
             <Checkbox
               size="small"
               checked={hasMunicipality}
-              value={hasMunicipality}
               onChange={e => setHasMunicipality(e.target.checked)}
+              disabled={bases.includes("Macroeconômico")}
               name="SERTEMMUN"
               color="primary"
             />
@@ -281,8 +281,8 @@ export default function SeriesForm(props) {
             <Checkbox
               size="small"
               checked={hasState}
-              value={hasState}
               onChange={e => setHasState(e.target.checked)}
+              disabled={bases.includes("Macroeconômico")}
               name="SERTEMEST"
               color="primary"
             />
@@ -295,8 +295,8 @@ export default function SeriesForm(props) {
             <Checkbox
               size="small"
               checked={hasMetropolitan}
-              value={hasMetropolitan}
               onChange={e => setHasMetropolitan(e.target.checked)}
+              disabled={bases.includes("Macroeconômico")}
               name="SERTEMMET"
               color="primary"
             />

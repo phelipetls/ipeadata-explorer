@@ -49,10 +49,14 @@ function formatDate(dateStr) {
 }
 
 export function buildQueryFromForm(formElements) {
-  return (
-    URL +
-    buildFilter([].map.call(formElements, ({ name, value }) => [name, value]))
-  );
+  const elements = Array.from(formElements)
+    .filter(element => !element.disabled)
+    .map(({ type, name, value, checked }) => [
+      name,
+      type === "checkbox" ? checked : value,
+    ]);
+
+  return URL + buildFilter(elements);
 }
 
 export function buildQueryFromUrl(searchParams) {
@@ -66,7 +70,7 @@ function buildFilter(parameters) {
   let helperQuery = "";
 
   for (const [name, value] of parameters) {
-    if (!value || value === "false") continue;
+    if (!value) continue;
 
     switch (name) {
       case "SERNOME":
@@ -112,18 +116,16 @@ function buildFilter(parameters) {
       case "SERTEMEST":
       case "SERTEMMUN":
       case "SERTEMMET":
-        filters.push(`${name} eq ${+Boolean(value)}`);
+        filters.push(`${name} eq ${+value}`);
         break;
       default:
         throw new Error("Este parâmetro não é suportado para filtragem.");
     }
   }
 
-  if (filters.length > 0) {
-    return `&$filter=${filters.join(" and ")}${helperQuery}`;
-  }
-
-  return "";
+  return filters.length > 0
+    ? `&$filter=${filters.join(" and ")}${helperQuery}`
+    : "";
 }
 
 export function buildGeographicLevelsUrl(code) {
