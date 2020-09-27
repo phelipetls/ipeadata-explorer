@@ -13,7 +13,7 @@ import {
 } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/core/styles";
-import { useSmallScreen } from "../utils/responsive";
+import { useBreakpoint } from "../utils/responsive";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function SeriesForm(props) {
   const classes = useStyles();
-  const isSmallScreen = useSmallScreen();
+  const isExtraSmallScreen = useBreakpoint("xs");
 
   const {
     SERNOME,
@@ -247,7 +247,7 @@ export default function SeriesForm(props) {
         </Grid>
       </Grid>
 
-      <FormGroup row={!isSmallScreen} className={classes.formGroup}>
+      <FormGroup row={!isExtraSmallScreen} className={classes.formGroup}>
         <FormControlLabel
           control={
             <Checkbox

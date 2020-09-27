@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { Link } from "@material-ui/core";
-import { useSmallScreen } from "../utils/responsive";
+import { useBreakpoint } from "../utils/responsive";
 
 import { limitQuery, offsetQuery } from "../api/odata";
 import { filterSeriesFromForm, filterSeriesFromUrl } from "../api/seriesFilter";
@@ -41,7 +41,7 @@ const columns = [
 ];
 
 export default function SeriesList(props) {
-  const isSmallScreen = useSmallScreen();
+  const isSmallScreen = useBreakpoint("sm");
 
   const [rows, setRows] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
