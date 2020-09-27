@@ -3,12 +3,8 @@ import React, { useState, useEffect } from "react";
 import { Link } from "@material-ui/core";
 import { useSmallScreen } from "../utils/responsive";
 
-import {
-  buildQueryFromForm,
-  buildQueryFromUrl,
-  limitQuery,
-  offsetQuery
-} from "../api/odata";
+import { limitQuery, offsetQuery } from "../api/odata";
+import { filterSeriesFromForm, filterSeriesFromUrl } from "../api/seriesFilter";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 
 import TableSortable from "./TableSortable";
@@ -51,19 +47,36 @@ export default function SeriesList(props) {
   const [totalRows, setTotalRows] = useState(0);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [newPageUrl, setNewPageUrl] = useState("");
   const [formOpen, setFormOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
   const searchParams = useSearchParams();
-  const searchUrl = buildQueryFromUrl(searchParams);
+  const urlFromSearchParams = filterSeriesFromUrl(searchParams);
 
-  let [url, setUrl] = useState(limitQuery(searchUrl || URL, rowsPerPage));
+  let [url, setUrl] = useState(
+    limitQuery(urlFromSearchParams || URL, rowsPerPage)
+  );
+  const [newPageUrl, setNewPageUrl] = useState("");
+
+  useEffect(
+    function fetchNewRows() {
+      setIsLoading(true);
+
+      fetch(url)
+        .then(response => response.json())
+        .then(json => {
+          setRows(json.value);
+          setTotalRows(json["@odata.count"]);
+        })
+        .then(() => setIsLoading(false));
+    },
+    [url]
+  );
 
   function handleSubmit(e) {
     e.preventDefault();
 
-    let url = buildQueryFromForm(e.target.elements);
+    let url = filterSeriesFromForm(e.target.elements);
     setUrl(limitQuery(url, rowsPerPage));
     setPage(0);
     setFormOpen(false);
@@ -88,25 +101,8 @@ export default function SeriesList(props) {
   }
 
   useEffect(
-    function fetchNewRows() {
-      setIsLoading(true);
-
-      fetch(url)
-        .then(response => response.json())
-        .then(json => {
-          setRows(json.value);
-          setTotalRows(json["@odata.count"]);
-        })
-        .then(() => setIsLoading(false));
-    },
-    [url]
-  );
-
-  useEffect(
     function fetchMoreRows() {
-      if (newPageUrl === "") {
-        return;
-      }
+      if (!newPageUrl) return;
 
       setIsLoading(true);
 
