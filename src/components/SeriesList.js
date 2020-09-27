@@ -19,7 +19,7 @@ function useSearchParams() {
 }
 
 const BASE_URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados";
-const URL = `${BASE_URL}?$count=true&$orderby=SERATUALIZACAO%20desc`;
+const URL = `${BASE_URL}?$count=true&$orderby=SERATUALIZACAO desc`;
 
 const getYear = (row, column) => new Date(row[column.key]).getFullYear();
 
