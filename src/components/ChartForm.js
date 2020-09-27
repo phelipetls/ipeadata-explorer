@@ -9,12 +9,12 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     flexFlow: "column",
     [theme.breakpoints.up("md")]: {
-      flexFlow: "row"
+      flexFlow: "row",
     },
     "& > *": {
-      margin: theme.spacing(1)
-    }
-  }
+      margin: theme.spacing(1),
+    },
+  },
 }));
 
 export default function ChartForm(props) {

@@ -10,7 +10,7 @@ const dateViewsByPeriodicity = {
   Anual: ["year"],
   Decenal: ["year"],
   Quadrienal: ["year"],
-  Quinquenal: ["year"]
+  Quinquenal: ["year"],
 };
 
 export default function ChartFormTimeInterval({ metadata }) {

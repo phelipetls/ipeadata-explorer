@@ -11,12 +11,12 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     textDecoration: "none",
     "&:hover": {
-      backgroundColor: theme.palette.action.hover
-    }
+      backgroundColor: theme.palette.action.hover,
+    },
   },
   content: {
-    padding: "1em 0.5em"
-  }
+    padding: "1em 0.5em",
+  },
 }));
 
 export default function ThemeCard({ themeName, children }) {

@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   container: {
     display: "flex",
     flexFlow: "row wrap",
-    justifyContent: "space-around"
+    justifyContent: "space-around",
   },
   card: {
     textAlign: "center",
@@ -17,8 +17,8 @@ const useStyles = makeStyles(theme => ({
     minHeight: "20vh",
     padding: theme.spacing(1),
     margin: theme.spacing(1),
-    textDecoration: "none"
-  }
+    textDecoration: "none",
+  },
 }));
 
 const geographicLevels = [
@@ -26,7 +26,7 @@ const geographicLevels = [
   { name: "Estados", code: "SERTEMEST" },
   { name: "Municípios", code: "SERTEMMUN" },
   { name: "AMC", code: "SERTEMAMC" },
-  { name: "Área metropolitana", code: "SERTEMMET" }
+  { name: "Área metropolitana", code: "SERTEMMET" },
 ];
 
 export default function GeographicLevels() {

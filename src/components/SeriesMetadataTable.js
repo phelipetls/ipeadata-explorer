@@ -8,7 +8,7 @@ import {
   TableCell,
   TableRow,
   TableBody,
-  TableHead
+  TableHead,
 } from "@material-ui/core";
 
 function formatDate(date) {
@@ -33,8 +33,8 @@ const metadataFields = [
   { label: "Fim", render: metadata => formatDate(metadata.SERMAXDATA) },
   {
     label: "Status",
-    render: metadata => (metadata.SERSTATUS === "A" ? "Ativa" : "Inativa")
-  }
+    render: metadata => (metadata.SERSTATUS === "A" ? "Ativa" : "Inativa"),
+  },
 ];
 
 export default function SeriesMetadataTable(props) {

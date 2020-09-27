@@ -6,7 +6,7 @@ import {
   TableBody,
   TableRow,
   TableCell,
-  TableSortLabel
+  TableSortLabel,
 } from "@material-ui/core";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,20 +16,20 @@ import TableRowsLarge from "./TableRowsLarge";
 const useStyles = makeStyles(theme => ({
   table: {
     "thead tr th:first-child": {
-      width: "50%"
-    }
-  }
+      width: "50%",
+    },
+  },
 }));
 
 const invertSortDirections = {
   asc: "desc",
-  desc: "asc"
+  desc: "asc",
 };
 
 const sortFunctions = {
   string: (a, b) => a.localeCompare(b),
   numeric: (a, b) => a - b,
-  date: (a, b) => new Date(a) - new Date(b)
+  date: (a, b) => new Date(a) - new Date(b),
 };
 
 export default function TableSortable(props) {

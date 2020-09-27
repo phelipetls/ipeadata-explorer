@@ -9,7 +9,7 @@ import {
   MenuItem,
   FormGroup,
   FormControlLabel,
-  Checkbox
+  Checkbox,
 } from "@material-ui/core";
 import { DatePicker } from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/core/styles";
@@ -17,17 +17,17 @@ import { useSmallScreen } from "../utils/responsive";
 
 const useStyles = makeStyles(theme => ({
   title: {
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
   },
   button: {
     display: "grid",
-    margin: "1em auto"
+    margin: "1em auto",
   },
   form: {
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(2),
   },
   formControl: {
-    minWidth: "9ch"
+    minWidth: "9ch",
   },
   formGroup: {
     margin: "0 auto",
@@ -51,7 +51,7 @@ export default function SeriesForm(props) {
     BASNOME,
     SERNUMERICA,
     SERSTATUS,
-    PAINOME
+    PAINOME,
   } = Object.fromEntries(props.searchParams);
 
   const [name, setName] = useState(SERNOME || "");

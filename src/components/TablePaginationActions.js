@@ -8,8 +8,8 @@ import { KeyboardArrowRight, KeyboardArrowLeft } from "@material-ui/icons";
 const useStyles = makeStyles(theme => ({
   root: {
     flexShrink: 0,
-    marginLeft: theme.spacing(2.5)
-  }
+    marginLeft: theme.spacing(2.5),
+  },
 }));
 
 export default function TablePaginationActions(props) {

@@ -6,7 +6,7 @@ const IbgeMapResolution = {
   Estados: 2,
   Mesorregiões: 3,
   Microrregiões: 4,
-  Municípios: 5
+  Municípios: 5,
 };
 
 export default function ChartGeographicMap({ series, metadata, geoLevel }) {
@@ -56,8 +56,8 @@ export default function ChartGeographicMap({ series, metadata, geoLevel }) {
       outline: brazil,
       data: regions.map(region => {
         return { feature: region, value: 0 };
-      })
-    }
+      }),
+    },
   ];
 
   return (

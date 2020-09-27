@@ -5,7 +5,7 @@ import {
   TableHead,
   TableBody,
   TableRow,
-  TableCell
+  TableCell,
 } from "@material-ui/core";
 
 import TableRowsShort from "./TableRowsShort";

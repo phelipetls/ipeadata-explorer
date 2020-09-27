@@ -32,12 +32,12 @@ const columns = [
       <Link component={RouterLink} to={`/serie/${row.SERCODIGO}`}>
         {row.SERNOME}
       </Link>
-    )
+    ),
   },
   { key: "PERNOME", type: "string", label: "Frequência" },
   { key: "UNINOME", type: "string", label: "Unidade" },
   { key: "SERMINDATA", type: "date", label: "Início", render: getYear },
-  { key: "SERMAXDATA", type: "date", label: "Fim", render: getYear }
+  { key: "SERMAXDATA", type: "date", label: "Fim", render: getYear },
 ];
 
 export default function SeriesList(props) {

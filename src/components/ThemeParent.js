@@ -5,8 +5,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   subtitle: {
-    fontSize: "0.6rem"
-  }
+    fontSize: "0.6rem",
+  },
 }));
 
 export default function ThemeParent(props) {

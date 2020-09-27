@@ -7,7 +7,7 @@ export default function ChartGeographicTimeseries({ series, metadata }) {
   const datasets = Object.entries(groupBy(series, "TERNOME")).map(
     ([level, values]) => ({
       label: level,
-      data: values.map(series => series.VALVALOR)
+      data: values.map(series => series.VALVALOR),
     })
   );
 

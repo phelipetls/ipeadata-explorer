@@ -9,9 +9,9 @@ const useStyles = makeStyles(theme => ({
   metadata: {
     padding: theme.spacing(2),
     "& > *": {
-      padding: theme.spacing(2)
-    }
-  }
+      padding: theme.spacing(2),
+    },
+  },
 }));
 
 export default function SeriesMetadata({ metadata }) {

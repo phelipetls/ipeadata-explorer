@@ -4,8 +4,8 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   tableContainer: {
-    margin: "0 auto"
-  }
+    margin: "0 auto",
+  },
 }));
 
 export default function TableWrapper({ children }) {

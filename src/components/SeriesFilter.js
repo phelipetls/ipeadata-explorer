@@ -5,7 +5,7 @@ import {
   Typography,
   Paper,
   Collapse,
-  IconButton
+  IconButton,
 } from "@material-ui/core";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
@@ -15,8 +15,8 @@ import SeriesForm from "./SeriesForm";
 const useStyles = makeStyles(theme => ({
   filterContainer: {
     padding: theme.spacing(2),
-    marginBottom: "2em"
-  }
+    marginBottom: "2em",
+  },
 }));
 
 export default function SeriesFilter(props) {

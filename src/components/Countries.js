@@ -19,13 +19,13 @@ const columns = [
       <Link component={RouterLink} to={`/series?PAINOME=${row["PAINOME"]}`}>
         {row[column.key]}
       </Link>
-    )
+    ),
   },
   {
     key: "Metadados@odata.count",
     type: "numeric",
-    label: "Qtd. de séries"
-  }
+    label: "Qtd. de séries",
+  },
 ];
 
 export default function Countries() {

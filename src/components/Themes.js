@@ -17,8 +17,8 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     gridTemplateColumns: "repeat(auto-fit, 7rem)",
     gridAutoRows: "minmax(5em, auto)",
-    gridGap: theme.spacing(2)
-  }
+    gridGap: theme.spacing(2),
+  },
 }));
 
 const URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Temas";
@@ -57,7 +57,14 @@ export default function Themes() {
         {themes
           .filter(theme => bases.some(base => theme[base]))
           .map(theme => {
-            const { TEMNOME, TEMCODIGO, TEMCODIGO_PAI, MACRO, REGIONAL, SOCIAL } = theme;
+            const {
+              TEMNOME,
+              TEMCODIGO,
+              TEMCODIGO_PAI,
+              MACRO,
+              REGIONAL,
+              SOCIAL,
+            } = theme;
 
             const parent_theme = themes.find(
               theme => theme.TEMCODIGO === TEMCODIGO_PAI

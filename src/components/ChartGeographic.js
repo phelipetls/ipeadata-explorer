@@ -4,7 +4,7 @@ import {
   buildSeriesUrl,
   buildGeographicLevelsUrl,
   limitQuery,
-  limitByDate
+  limitByDate,
 } from "../api/odata";
 
 import Loading from "./Loading";

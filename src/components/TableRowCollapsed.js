@@ -9,12 +9,12 @@ import SeriesMetadataTable from "./SeriesMetadataTable";
 const useStyles = makeStyles({
   root: {
     "& > *": {
-      borderBottom: "unset"
-    }
+      borderBottom: "unset",
+    },
   },
   collapsedCell: {
-    padding: 0
-  }
+    padding: 0,
+  },
 });
 
 export default function TableRowCollapsed({ row, columns }) {

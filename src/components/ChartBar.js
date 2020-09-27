@@ -14,24 +14,24 @@ export default function ChartBar({ metadata, period, labels, datasets }) {
       type: "horizontalBar",
       data: {
         labels: labels,
-        datasets: datasets
+        datasets: datasets,
       },
       options: {
         maintainAspectRatio: false,
         title: {
           display: true,
           fontSize: 14,
-          text: `${metadata.SERNOME} - ${period}`
+          text: `${metadata.SERNOME} - ${period}`,
         },
         legend: {
-          position: "bottom"
+          position: "bottom",
         },
         plugins: {
           colorschemes: {
-            scheme: Paired12
-          }
-        }
-      }
+            scheme: Paired12,
+          },
+        },
+      },
     });
 
     return () => chartRef.current.destroy();

@@ -14,7 +14,7 @@ const parseJsonCount = json =>
   json.reduce(
     (obj, category) => ({
       ...obj,
-      [category.VALVALOR]: category.totalCount
+      [category.VALVALOR]: category.totalCount,
     }),
     {}
   );
@@ -46,8 +46,8 @@ export default function ChartCategorical({ code, metadata }) {
   const datasets = [
     {
       label: metadata.UNINOME,
-      data: Object.values(count)
-    }
+      data: Object.values(count),
+    },
   ];
 
   async function handleSubmit(e) {

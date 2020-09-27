@@ -20,7 +20,7 @@ export default function TablePaginationFooter(props) {
           labelRowsPerPage="Por página:"
           SelectProps={{
             inputProps: { "aria-label": "Linhas por página" },
-            native: true
+            native: true,
           }}
           ActionsComponent={TablePaginationActions}
         />

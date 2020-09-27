@@ -24,14 +24,14 @@ const timeUnits = {
   Mensal: "month",
   Diária: "day",
   Anual: "year",
-  Trimestral: "quarter"
+  Trimestral: "quarter",
 };
 
 const DateSlider = withStyles(theme => ({
   root: {
     color: Paired12[0],
     height: 3,
-    padding: "13px 0"
+    padding: "13px 0",
   },
   thumb: {
     height: 27,
@@ -42,27 +42,27 @@ const DateSlider = withStyles(theme => ({
     marginLeft: -13,
     boxShadow: "#ebebeb 0 2px 2px",
     "&:focus, &:hover, &$active": {
-      boxShadow: "#ccc 0 2px 3px 1px"
+      boxShadow: "#ccc 0 2px 3px 1px",
     },
     "& .bar": {
       height: 9,
       width: 1,
       backgroundColor: "currentColor",
       marginLeft: 1,
-      marginRight: 1
-    }
+      marginRight: 1,
+    },
   },
   active: {},
   track: {
     height: 16,
-    marginTop: -6
+    marginTop: -6,
   },
   rail: {
     color: theme.palette.grey[300],
     opacity: 1,
     height: 16,
-    marginTop: -6
-  }
+    marginTop: -6,
+  },
 }))(Slider);
 
 export default function ChartTimeseries({ labels, datasets, metadata }) {
@@ -78,50 +78,50 @@ export default function ChartTimeseries({ labels, datasets, metadata }) {
       type: "line",
       data: {
         labels: labels,
-        datasets: datasets
+        datasets: datasets,
       },
       options: {
         maintainAspectRatio: false,
         title: {
           display: true,
           fontSize: 14,
-          text: metadata.SERNOME
+          text: metadata.SERNOME,
         },
         legend: {
-          position: "bottom"
+          position: "bottom",
         },
         scales: {
           xAxes: [
             {
               type: "time",
               time: {
-                unit: timeUnits[metadata.PERNOME] || "year"
-              }
-            }
+                unit: timeUnits[metadata.PERNOME] || "year",
+              },
+            },
           ],
           yAxes: [
             {
               type: "linear",
               scaleLabel: {
                 display: true,
-                labelString: metadata.UNINOME
-              }
-            }
-          ]
+                labelString: metadata.UNINOME,
+              },
+            },
+          ],
         },
         plugins: {
           colorschemes: {
-            scheme: Paired12
-          }
+            scheme: Paired12,
+          },
         },
         tooltips: {
           callbacks: {
             title: function(tooltipItem, data) {
               return new Date(tooltipItem[0].label).toLocaleDateString();
-            }
-          }
-        }
-      }
+            },
+          },
+        },
+      },
     });
 
     return () => chartRef.current.destroy();

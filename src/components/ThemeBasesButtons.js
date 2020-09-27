@@ -7,17 +7,17 @@ const useStyles = makeStyles(theme => ({
   buttonsGroup: {
     display: "flex",
     margin: "2em 0",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   macro: {
-    color: theme.palette.macro
+    color: theme.palette.macro,
   },
   regional: {
-    color: theme.palette.regional
+    color: theme.palette.regional,
   },
   social: {
-    color: theme.palette.social
-  }
+    color: theme.palette.social,
+  },
 }));
 
 export default function ThemeBasesButtons(props) {

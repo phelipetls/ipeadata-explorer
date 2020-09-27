@@ -11,11 +11,11 @@ const useStyles = makeStyles(theme => ({
     height: "100%",
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   search: {
-    padding: "0 1em"
-  }
+    padding: "0 1em",
+  },
 }));
 
 export default function NavigationBarSearch(props) {
@@ -49,7 +49,7 @@ export default function NavigationBarSearch(props) {
         InputProps={{
           disableUnderline: true,
           startAdornment: <BackButton onClick={props.searchExit} />,
-          endAdornment: <SearchButton type="submit" />
+          endAdornment: <SearchButton type="submit" />,
         }}
       />
     </form>

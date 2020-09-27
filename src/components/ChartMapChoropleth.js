@@ -11,8 +11,8 @@ const useStyles = makeStyles(theme => ({
   center: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 }));
 
 const getYearIsoDate = date => date.slice(0, 4);
@@ -49,12 +49,12 @@ export default function ChartMapChoropleth(props) {
       type: "choropleth",
       data: {
         labels: labels,
-        datasets: datasets
+        datasets: datasets,
       },
       options: {
         maintainAspectRatio: false,
         legend: {
-          display: false
+          display: false,
         },
         geo: {
           colorScale: {
@@ -62,14 +62,14 @@ export default function ChartMapChoropleth(props) {
             position: "bottom",
             quantize: 5,
             legend: {
-              position: "bottom-right"
-            }
-          }
+              position: "bottom-right",
+            },
+          },
         },
         scale: {
-          projection: "mercator"
-        }
-      }
+          projection: "mercator",
+        },
+      },
     });
 
     return () => chartRef.current.destroy();

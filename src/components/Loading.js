@@ -6,8 +6,8 @@ const useStyles = makeStyles(theme => ({
   center: {
     display: "flex",
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 }));
 
 export default function Loading(props) {

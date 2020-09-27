@@ -8,12 +8,12 @@ import { Link as RouterLink } from "react-router-dom";
 const useStyles = makeStyles(theme => ({
   link: {
     "&:not(:last-child)": {
-      marginRight: "1.5em"
-    }
+      marginRight: "1.5em",
+    },
   },
   navigationList: {
     display: "flex",
-    flexDirection: "row"
+    flexDirection: "row",
   },
   navigationListItem: {
     cursor: "pointer",
@@ -21,9 +21,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     textAlign: "center",
     "&:hover": {
-      backgroundColor: "rgba(0, 0, 0, 0.04)"
-    }
-  }
+      backgroundColor: "rgba(0, 0, 0, 0.04)",
+    },
+  },
 }));
 
 export default function NavigationBarList(props) {

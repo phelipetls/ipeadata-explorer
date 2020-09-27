@@ -6,8 +6,8 @@ import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles(theme => ({
   title: {
     flex: 1,
-    fontSize: "0.7rem"
-  }
+    fontSize: "0.7rem",
+  },
 }));
 
 export default function ThemeName(props) {

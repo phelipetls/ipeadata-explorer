@@ -8,17 +8,17 @@ const useStyles = makeStyles(theme => ({
     display: "flex",
     "& > *:first-child": {
       borderTopLeftRadius: theme.shape.borderRadius,
-      borderBottomLeftRadius: theme.shape.borderRadius
+      borderBottomLeftRadius: theme.shape.borderRadius,
     },
     "& > *:last-child": {
       borderTopRightRadius: theme.shape.borderRadius,
-      borderBottomRightRadius: theme.shape.borderRadius
-    }
+      borderBottomRightRadius: theme.shape.borderRadius,
+    },
   },
   column: {
     flex: "1 0",
-    height: "1vh"
-  }
+    height: "1vh",
+  },
 }));
 
 export default function ThemeBases(props) {

@@ -13,15 +13,15 @@ import SearchButton from "./SearchButton";
 
 const useStyles = makeStyles(theme => ({
   appBar: {
-    height: "4em"
+    height: "4em",
   },
   mainToolbar: {
     height: "100%",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   secondaryToolbar: {
-    alignItems: "stretch"
-  }
+    alignItems: "stretch",
+  },
 }));
 
 export default function NavigationBar() {
@@ -35,7 +35,7 @@ export default function NavigationBar() {
   const navigationBarLinks = [
     { text: "Séries", url: "/series" },
     { text: "Temas", url: "/temas" },
-    { text: "Países", url: "/paises" }
+    { text: "Países", url: "/paises" },
   ];
 
   const classes = useStyles();

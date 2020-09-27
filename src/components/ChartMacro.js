@@ -29,8 +29,8 @@ export default function ChartMacro({ code, metadata }) {
   const datasets = [
     {
       label: code,
-      data: series.map(series => series.VALVALOR)
-    }
+      data: series.map(series => series.VALVALOR),
+    },
   ];
 
   function handleSubmit(e) {
