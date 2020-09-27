@@ -13,14 +13,16 @@ export default function ChartMacro({ code, metadata }) {
   const [series, setSeries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  useEffect(() => {
-    let url = buildSeriesUrl(code);
-
+  async function fetchSeries(url) {
     setIsLoading(true);
-    fetch(limitQuery(url, 50))
-      .then(response => response.json())
-      .then(json => setSeries(json.value))
-      .then(() => setIsLoading(false));
+    const response = await fetch(url);
+    const json = await response.json();
+    setSeries(json.value);
+    setIsLoading(false);
+  }
+
+  useEffect(() => {
+    fetchSeries(limitQuery(buildSeriesUrl(code), 50));
   }, [code]);
 
   const labels = series.map(series => series.VALDATA);
@@ -47,9 +49,7 @@ export default function ChartMacro({ code, metadata }) {
       return;
     }
 
-    fetch(url)
-      .then(response => response.json())
-      .then(json => setSeries(json.value));
+    fetchSeries(url);
   }
 
   return (

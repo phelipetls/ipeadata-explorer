@@ -31,11 +31,17 @@ export default function Themes() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
-    fetch(URL)
-      .then(response => response.json())
-      .then(json => setThemes(json.value))
-      .then(() => setIsLoading(false));
+    async function fetchThemes() {
+      setIsLoading(true);
+
+      const response = await fetch(URL);
+      const json = await response.json();
+      setThemes(json.value);
+
+      setIsLoading(false);
+    }
+
+    fetchThemes();
   }, []);
 
   const handleChangeBases = (e, newBases) => {

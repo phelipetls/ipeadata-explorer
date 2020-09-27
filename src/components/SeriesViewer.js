@@ -15,9 +15,13 @@ export default function SeriesViewer() {
   let { code } = useParams();
 
   useEffect(() => {
-    fetch(buildMetadataUrl(code))
-      .then(response => response.json())
-      .then(json => setMetadata(json.value[0]));
+    async function fetchSeriesMetadata() {
+      const response = await fetch(buildMetadataUrl(code));
+      const json = await response.json();
+      setMetadata(json.value[0]);
+    }
+
+    fetchSeriesMetadata();
   }, [code]);
 
   return !metadata ? (

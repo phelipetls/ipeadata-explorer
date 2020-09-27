@@ -33,12 +33,17 @@ export default function Countries() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    setIsLoading(true);
+    async function fetchCountries() {
+      setIsLoading(true);
 
-    fetch(URL)
-      .then(response => response.json())
-      .then(json => setCountries(json.value))
-      .then(() => setIsLoading(false));
+      const response = await fetch(URL);
+      const json = await response.json();
+      setCountries(json.value);
+
+      setIsLoading(false);
+    }
+
+    fetchCountries();
   }, []);
 
   return (

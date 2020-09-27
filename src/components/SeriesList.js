@@ -58,20 +58,20 @@ export default function SeriesList(props) {
   );
   const [newPageUrl, setNewPageUrl] = useState("");
 
-  useEffect(
-    function fetchNewRows() {
+  useEffect(() => {
+    async function fetchNewRows() {
       setIsLoading(true);
 
-      fetch(url)
-        .then(response => response.json())
-        .then(json => {
-          setRows(json.value);
-          setTotalRows(json["@odata.count"]);
-        })
-        .then(() => setIsLoading(false));
-    },
-    [url]
-  );
+      const response = await fetch(url);
+      const json = await response.json();
+      setRows(json.value);
+      setTotalRows(json["@odata.count"]);
+
+      setIsLoading(false);
+    }
+
+    fetchNewRows();
+  }, [url]);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -100,19 +100,21 @@ export default function SeriesList(props) {
     setUrl(url.replace(/top=[0-9]+/, `top=${newRowsPerPage}`));
   }
 
-  useEffect(
-    function fetchMoreRows() {
-      if (!newPageUrl) return;
+  useEffect(() => {
+    if (!newPageUrl) return;
 
+    async function fetchMoreRows() {
       setIsLoading(true);
 
-      fetch(newPageUrl)
-        .then(response => response.json())
-        .then(json => setRows(rows => rows.concat(json.value)))
-        .then(() => setIsLoading(false));
-    },
-    [newPageUrl]
-  );
+      const response = await fetch(newPageUrl);
+      const json = await response.json();
+      setRows(rows => rows.concat(json.value));
+
+      setIsLoading(false);
+    }
+
+    fetchMoreRows();
+  }, [newPageUrl]);
 
   const paginationActions = (
     <TablePaginationFooter
