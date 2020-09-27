@@ -18,11 +18,14 @@ function formatDate(date) {
 const metadataFields = [
   {
     label: "Fonte",
-    render: metadata => (
-      <Link component={RouterLink} to={`/series?FNTNOME=${metadata.FNTNOME}`}>
-        {metadata.FNTNOME}
+    render: ({ FNTNOME, FNTURL, FNTSIGLA }) => (
+      <Link
+        component={RouterLink}
+        to={`/series?FNTNOME=${FNTNOME || FNTURL || FNTSIGLA}`}
+      >
+        {FNTNOME || FNTURL || FNTSIGLA}
       </Link>
-    )
+    ),
   },
   { label: "Base", key: "BASNOME" },
   { label: "Tema", key: "TEMNOME" },
