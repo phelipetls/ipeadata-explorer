@@ -57,14 +57,14 @@ export default function Themes() {
         {themes
           .filter(theme => bases.some(base => theme[base]))
           .map(theme => {
-            const { TEMNOME, TEMCODIGO_PAI, MACRO, REGIONAL, SOCIAL } = theme;
+            const { TEMNOME, TEMCODIGO, TEMCODIGO_PAI, MACRO, REGIONAL, SOCIAL } = theme;
 
             const parent_theme = themes.find(
               theme => theme.TEMCODIGO === TEMCODIGO_PAI
             );
 
             return (
-              <ThemeCard themeName={TEMNOME}>
+              <ThemeCard themeName={TEMNOME} key={TEMCODIGO}>
                 <ThemeName name={TEMNOME} />
                 {parent_theme && <ThemeParent name={parent_theme.TEMNOME} />}
                 {(MACRO || REGIONAL || SOCIAL) && (
