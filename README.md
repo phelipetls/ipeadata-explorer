@@ -1,68 +1,25 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Ipeadata explorer
 
-## Available Scripts
+Este é um front-end para o Ipeadata, a base de dados do mantida pelo Ipea reúne
+séries temporais de diversas fontes, temas e países.
 
-In the project directory, you can run:
+Tive como inspiração a versão 3 (beta) do site oficial do Ipeadata.
 
-### `npm start`
+Aproveitando minha familiaridade com a API do Ipeadata e do IBGE de [outros
+projetos][seriesbr], o desenvolvimento do site envolveu estudar como funciona
+[o framework][react], como aproveitar ao máximo o protocolo OData para
+[filtrar][odata-url-conventions] e [agregar][odata-aggregation] os dados da
+[API do Ipeadata][ipea-api], estudar uma biblioteca para visualização de dados
+(no caso, [Chart.js][chartjs]) e como [plotar dados
+geográficos][chartjs-chart-geo] usando TopoJSON da [API de malhas do
+IBGE][ibge-malhas], que eu já conhecia de [outro projeto][mapsbr] também.
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
-
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
-
-### `npm test`
-
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
+[ipea-api]: http://ipeadata.gov.br/api/
+[seriesbr]: https://seriesbr.readthedocs.io
+[react]: https://reactjs.org/docs/getting-started.html
+[odata-url-conventions]: https://docs.oasis-open.org/odata/odata/v4.01/odata-v4.01-part2-url-conventions.html
+[odata-aggregation]: http://docs.oasis-open.org/odata/odata-data-aggregation-ext/v4.0/cs01/odata-data-aggregation-ext-v4.0-cs01.html#_Toc378326289
+[chartjs]: https://www.chartjs.org/docs/latest/
+[chartjs-chart-geo]: https://github.com/sgratzl/chartjs-chart-geo
+[ibge-malhas]: https://servicodados.ibge.gov.br/api/docs/malhas?versao=2
+[mapsbr]: http://mapsbr.rtfd.io/
