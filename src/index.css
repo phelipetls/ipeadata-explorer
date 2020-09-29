@@ -1,16 +1,22 @@
-html {
-  box-sizing: border-box;
-  font-family: "Roboto";
-}
-
 *,
 *:before,
 *::after {
   box-sizing: inherit;
 }
 
+html {
+  box-sizing: border-box;
+  font-family: "Roboto";
+  height: 100%;
+}
+
 body {
   margin: 0;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
 }
 
 code {

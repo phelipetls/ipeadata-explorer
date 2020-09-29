@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   app: {
     display: "flex",
     flexFlow: "column",
-    minHeight: "100vh",
+    height: "100%",
   },
   mainSection: {
     flex: 1,
