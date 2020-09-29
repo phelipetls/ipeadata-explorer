@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Container } from "@material-ui/core";
@@ -6,12 +6,14 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/Footer";
-import HomePage from "./components/HomePage";
-import Themes from "./components/Themes";
-import About from "./components/About";
-import Countries from "./components/Countries";
-import SeriesList from "./components/SeriesList";
-import SeriesViewer from "./components/SeriesViewer";
+import Loading from "./components/Loading";
+
+const HomePage = React.lazy(() => import("./components/HomePage"));
+const About = React.lazy(() => import("./components/About"));
+const Themes = React.lazy(() => import("./components/Themes"));
+const Countries = React.lazy(() => import("./components/Countries"));
+const SeriesList = React.lazy(() => import("./components/SeriesList"));
+const SeriesViewer = React.lazy(() => import("./components/SeriesViewer"));
 
 const useStyles = makeStyles(theme => ({
   app: {
@@ -35,14 +37,16 @@ function App() {
       <div className={classes.app}>
         <NavigationBar />
         <Container component="main" className={classes.mainSection}>
-          <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route path="/sobre" component={About} />
-            <Route path="/temas" component={Themes} />
-            <Route path="/paises" component={Countries} />
-            <Route path="/series" component={SeriesList} />
-            <Route path="/serie/:code" component={SeriesViewer} />
-          </Switch>
+          <Suspense fallback={<Loading />}>
+            <Switch>
+              <Route exact path="/" component={HomePage} />
+              <Route path="/sobre" component={About} />
+              <Route path="/temas" component={Themes} />
+              <Route path="/paises" component={Countries} />
+              <Route path="/series" component={SeriesList} />
+              <Route path="/serie/:code" component={SeriesViewer} />
+            </Switch>
+          </Suspense>
         </Container>
         <Footer />
       </div>
