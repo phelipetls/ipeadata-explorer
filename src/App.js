@@ -5,6 +5,7 @@ import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import NavigationBar from "./components/NavigationBar";
+import Footer from "./components/Footer";
 import HomePage from "./components/HomePage";
 import Themes from "./components/Themes";
 import About from "./components/About";
@@ -13,10 +14,16 @@ import SeriesList from "./components/SeriesList";
 import SeriesViewer from "./components/SeriesViewer";
 
 const useStyles = makeStyles(theme => ({
+  app: {
+    display: "flex",
+    flexFlow: "column",
+    minHeight: "100vh",
+  },
   mainSection: {
+    flex: 1,
     maxWidth: theme.breakpoints.values.md,
-    marginTop: "2em"
-  }
+    marginTop: "2em",
+  },
 }));
 
 function App() {
@@ -24,7 +31,7 @@ function App() {
 
   return (
     <Router>
-      <div className="App">
+      <div className={classes.app}>
         <NavigationBar />
         <Container component="main" className={classes.mainSection}>
           <Switch>
@@ -36,6 +43,7 @@ function App() {
             <Route path="/serie/:code" component={SeriesViewer} />
           </Switch>
         </Container>
+        <Footer />
       </div>
     </Router>
   );
