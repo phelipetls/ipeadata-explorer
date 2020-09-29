@@ -6,6 +6,7 @@ import ChartForm from "./ChartForm";
 import ChartFormTimeInterval from "./ChartFormTimeInterval";
 
 import { buildMetadataUrl } from "../api/odata";
+import { useTheme } from "@material-ui/styles";
 
 const CATEGORY_COUNT_QUERY =
   "groupby((VALVALOR),aggregate($count as totalCount))&$orderby=totalCount desc";
@@ -20,6 +21,8 @@ const parseJsonCount = json =>
   );
 
 export default function ChartCategorical({ code, metadata }) {
+  const theme = useTheme();
+
   const [count, setCount] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -96,7 +99,7 @@ export default function ChartCategorical({ code, metadata }) {
       </ChartForm>
 
       {isLoading ? (
-        <Loading style={{ minHeight: 512 }} />
+        <Loading style={{ minHeight: theme.chart.minHeight }} />
       ) : (
         <ChartBar
           period={period}

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 
+import { useTheme } from "@material-ui/styles";
 import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
 
 import Loading from "./Loading";
@@ -10,6 +11,8 @@ import ChartSection from "./ChartSection";
 import ChartTimeseries from "./ChartTimeseries";
 
 export default function ChartMacro({ code, metadata }) {
+  const theme = useTheme();
+
   const [series, setSeries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -59,7 +62,7 @@ export default function ChartMacro({ code, metadata }) {
       </ChartForm>
 
       {isLoading ? (
-        <Loading style={{ minHeight: 512 }} />
+        <Loading style={{ minHeight: theme.chart.minHeight }} />
       ) : (
         <ChartContainer>
           <ChartTimeseries

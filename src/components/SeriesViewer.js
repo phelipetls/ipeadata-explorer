@@ -25,7 +25,7 @@ export default function SeriesViewer() {
   }, [code]);
 
   return !metadata ? (
-    <Loading style={{ minHeight: 512 }} />
+    <Loading />
   ) : (
     <>
       <SeriesMetadata metadata={metadata} />

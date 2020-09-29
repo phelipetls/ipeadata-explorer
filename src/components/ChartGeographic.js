@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 
+import { useTheme } from "@material-ui/styles";
+
 import {
   buildSeriesUrl,
   buildGeographicLevelsUrl,
@@ -16,6 +18,8 @@ import ChartGeographicMap from "./ChartGeographicMap";
 import ChartGeographicTimeseries from "./ChartGeographicTimeseries";
 
 export default function ChartGeographic({ code, metadata }) {
+  const theme = useTheme();
+
   const [series, setSeries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [geoLevel, setGeoLevel] = useState("");
@@ -96,7 +100,7 @@ export default function ChartGeographic({ code, metadata }) {
       </ChartForm>
 
       {isLoading ? (
-        <Loading style={{ minHeight: 512 }} />
+        <Loading style={{ minHeight: theme.chart.minHeight }} />
       ) : geoLevel === "Brasil" ||
         geoLevel === "Regiões" ||
         geoLevel === "Área metropolitana" ? (

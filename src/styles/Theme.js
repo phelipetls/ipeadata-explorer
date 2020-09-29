@@ -10,4 +10,7 @@ export const theme = createMuiTheme({
   link: {
     textDecoration: "none",
   },
+  chart: {
+    minHeight: 512,
+  }
 });
