@@ -22,7 +22,8 @@ const useStyles = makeStyles(theme => ({
   mainSection: {
     flex: 1,
     maxWidth: theme.breakpoints.values.md,
-    marginTop: "2em",
+    marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(4),
   },
 }));
 

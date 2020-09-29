@@ -14,8 +14,9 @@ import SeriesForm from "./SeriesForm";
 
 const useStyles = makeStyles(theme => ({
   filterContainer: {
-    padding: theme.spacing(2),
-    marginBottom: "2em",
+    padding: theme.spacing(1),
+    paddingLeft: theme.spacing(2),
+    marginBottom: theme.spacing(3),
   },
 }));
 
