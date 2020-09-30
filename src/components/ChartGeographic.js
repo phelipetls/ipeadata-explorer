@@ -4,7 +4,7 @@ import { useTheme } from "@material-ui/styles";
 
 import {
   buildSeriesUrl,
-  buildGeographicLevelsUrl,
+  fetchGeographicDivisions,
   limitQuery,
   limitByDate,
 } from "../api/odata";
@@ -25,13 +25,6 @@ export default function ChartGeographic({ code, metadata }) {
   const [geoDivision, setGeoDivision] = useState("");
   const [geoDivisions, setGeoDivisions] = useState([]);
 
-  useEffect(() => {
-    async function fetchGeographicLevels() {
-      const url = buildGeographicLevelsUrl(code);
-      const response = await fetch(url);
-      const json = await response.json();
-      return json.value;
-    }
   const chartType =
     geoDivision === "Brasil" ||
     geoDivision === "Regiões" ||
@@ -39,9 +32,10 @@ export default function ChartGeographic({ code, metadata }) {
       ? "line"
       : "map";
 
+  useEffect(() => {
     async function fetchSeries() {
-      const allGeoLevels = await fetchGeographicLevels();
-      setGeoLevels(allGeoLevels);
+      const availableGeoDivisions = await fetchGeographicDivisions(code);
+      setGeoDivisions(availableGeoDivisions);
 
       const selectedGeoDivision = availableGeoDivisions[0];
       setGeoDivision(selectedGeoDivision.NIVNOME);

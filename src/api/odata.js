@@ -39,12 +39,14 @@ export function limitByDate(url, initialDate, finalDate) {
   return url + `&$filter=${joinedFilters}`;
 }
 
-export function buildGeographicLevelsUrl(code) {
-  return (
+export async function fetchGeographicDivisions(code) {
+  const url =
     buildMetadataUrl(code) +
     "/Valores?" +
     "$apply=filter(not startswith(NIVNOME,'AMC'))" +
     "/groupby((NIVNOME),aggregate(TERNOME with countdistinct as regionCount))" +
-    "&$orderby=regionCount asc"
-  );
+    "&$orderby=regionCount asc";
+  const response = await fetch(url);
+  const json = await response.json();
+  return json.value;
 }
