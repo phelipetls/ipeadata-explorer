@@ -59,6 +59,7 @@ export default function ChartGeographic({ code, metadata }) {
     e.preventDefault();
 
     const { initialDate, finalDate, topN, geoDivision } = e.target.elements;
+
     setGeoDivision(geoDivision.value);
 
     const selectedGeoDivision = geoDivisions.find(
@@ -69,14 +70,13 @@ export default function ChartGeographic({ code, metadata }) {
       buildSeriesUrl(code) +
       `&$filter=NIVNOME eq '${selectedGeoDivision.NIVNOME}'`;
 
-    let url;
-    if (topN.value) {
-      url = limitQuery(baseUrl, topN.value * selectedGeoDivision.regionCount);
-    } else if (initialDate.value || finalDate.value) {
-      url = limitByDate(baseUrl, initialDate.value, finalDate.value);
-    } else {
-      url = limitQuery(baseUrl, 25 * selectedGeoDivision.regionCount);
-    }
+    const url =
+      initialDate.value || finalDate.value
+        ? limitByDate(baseUrl, initialDate.value, finalDate.value)
+        : limitQuery(
+            baseUrl,
+            topN.value || 25 * selectedGeoDivision.regionCount
+          );
 
     setIsLoading(true);
     const response = await fetch(url);
