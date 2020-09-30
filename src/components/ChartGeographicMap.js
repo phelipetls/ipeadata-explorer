@@ -9,13 +9,13 @@ const IbgeMapResolution = {
   Municípios: 5,
 };
 
-export default function ChartGeographicMap({ series, metadata, geoLevel }) {
+export default function ChartGeographicMap({ series, metadata, geoDivision }) {
   const [regions, setRegions] = useState([]);
   const [brazil, setBrazil] = useState([]);
 
   useEffect(() => {
     async function fetchGeographicData() {
-      const resolution = IbgeMapResolution[geoLevel];
+      const resolution = IbgeMapResolution[geoDivision];
 
       const brazilUrl =
         "https://servicodados.ibge.gov.br/api/v2/malhas/BR?formato=application/json";
@@ -42,7 +42,7 @@ export default function ChartGeographicMap({ series, metadata, geoLevel }) {
     }
 
     fetchGeographicData();
-  }, [series, geoLevel]);
+  }, [series, geoDivision]);
 
   const labels = regions.map(region => {
     const regionSeries = series.find(

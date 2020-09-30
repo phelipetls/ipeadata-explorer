@@ -22,8 +22,8 @@ export default function ChartGeographic({ code, metadata }) {
 
   const [series, setSeries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [geoLevel, setGeoLevel] = useState("");
-  const [geoLevels, setGeoLevels] = useState([]);
+  const [geoDivision, setGeoDivision] = useState("");
+  const [geoDivisions, setGeoDivisions] = useState([]);
 
   useEffect(() => {
     async function fetchGeographicLevels() {
@@ -37,13 +37,13 @@ export default function ChartGeographic({ code, metadata }) {
       const allGeoLevels = await fetchGeographicLevels();
       setGeoLevels(allGeoLevels);
 
-      const selectedGeoLevel = allGeoLevels[0];
-      setGeoLevel(selectedGeoLevel.NIVNOME);
+      const selectedGeoDivision = availableGeoDivisions[0];
+      setGeoDivision(selectedGeoDivision.NIVNOME);
 
       const seriesUrl =
         buildSeriesUrl(code) +
-        `&$filter=NIVNOME eq '${selectedGeoLevel.NIVNOME}'` +
-        `&$top=${selectedGeoLevel.regionCount * 25}`;
+        `&$filter=NIVNOME eq '${selectedGeoDivision.NIVNOME}'` +
+        `&$top=${selectedGeoDivision.regionCount * 25}`;
 
       setIsLoading(true);
       const response = await fetch(seriesUrl);
@@ -58,24 +58,24 @@ export default function ChartGeographic({ code, metadata }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const { initialDate, finalDate, topN, geoLevel } = e.target.elements;
-    setGeoLevel(geoLevel.value);
+    const { initialDate, finalDate, topN, geoDivision } = e.target.elements;
+    setGeoDivision(geoDivision.value);
 
-    const selectedGeoLevel = geoLevels.find(
-      level => level.NIVNOME === geoLevel.value
+    const selectedGeoDivision = geoDivisions.find(
+      level => level.NIVNOME === geoDivision.value
     );
 
     const baseUrl =
       buildSeriesUrl(code) +
-      `&$filter=NIVNOME eq '${selectedGeoLevel.NIVNOME}'`;
+      `&$filter=NIVNOME eq '${selectedGeoDivision.NIVNOME}'`;
 
     let url;
     if (topN.value) {
-      url = limitQuery(baseUrl, topN.value * selectedGeoLevel.regionCount);
+      url = limitQuery(baseUrl, topN.value * selectedGeoDivision.regionCount);
     } else if (initialDate.value || finalDate.value) {
       url = limitByDate(baseUrl, initialDate.value, finalDate.value);
     } else {
-      url = limitQuery(baseUrl, 25 * selectedGeoLevel.regionCount);
+      url = limitQuery(baseUrl, 25 * selectedGeoDivision.regionCount);
     }
 
     setIsLoading(true);
@@ -89,12 +89,12 @@ export default function ChartGeographic({ code, metadata }) {
     <ChartSection>
       <ChartForm onSubmit={handleSubmit}>
         <ChartFormTimeInterval metadata={metadata} />
-        {!geoLevel ? (
+        {!geoDivision ? (
           <Loading />
         ) : (
           <ChartFormGeography
-            geoLevel={geoLevel}
-            geoLevels={geoLevels.map(level => level.NIVNOME)}
+            geoDivision={geoDivision}
+            geoDivisions={geoDivisions.map(level => level.NIVNOME)}
           />
         )}
       </ChartForm>
@@ -109,7 +109,7 @@ export default function ChartGeographic({ code, metadata }) {
         <ChartGeographicMap
           series={series}
           metadata={metadata}
-          geoLevel={geoLevel}
+          geoDivision={geoDivision}
         />
       )}
     </ChartSection>
