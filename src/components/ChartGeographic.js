@@ -32,6 +32,12 @@ export default function ChartGeographic({ code, metadata }) {
       const json = await response.json();
       return json.value;
     }
+  const chartType =
+    geoDivision === "Brasil" ||
+    geoDivision === "Regiões" ||
+    geoDivision === "Área metropolitana"
+      ? "line"
+      : "map";
 
     async function fetchSeries() {
       const allGeoLevels = await fetchGeographicLevels();
@@ -101,9 +107,7 @@ export default function ChartGeographic({ code, metadata }) {
 
       {isLoading ? (
         <Loading style={{ minHeight: theme.chart.minHeight }} />
-      ) : geoLevel === "Brasil" ||
-        geoLevel === "Regiões" ||
-        geoLevel === "Área metropolitana" ? (
+      ) : chartType === "line" ? (
         <ChartGeographicTimeseries series={series} metadata={metadata} />
       ) : (
         <ChartGeographicMap
