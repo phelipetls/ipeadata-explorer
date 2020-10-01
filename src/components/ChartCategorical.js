@@ -36,9 +36,11 @@ export default function ChartCategorical({ code, metadata }) {
         `/ValoresStr?$apply=filter(year(VALDATA) eq ${maxYear})/${CATEGORY_COUNT_QUERY}`;
 
       setIsLoading(true);
+
       const response = await fetch(url);
       const json = await response.json();
       setCount(parseJsonCount(json.value));
+
       setIsLoading(false);
     }
 
@@ -86,9 +88,11 @@ export default function ChartCategorical({ code, metadata }) {
     url += `/ValoresStr?$apply=filter(${joinedFilters})/${CATEGORY_COUNT_QUERY}`;
 
     setIsLoading(true);
+
     const response = await fetch(url);
     const json = await response.json();
     setCount(parseJsonCount(json.value));
+
     setIsLoading(false);
   }
 

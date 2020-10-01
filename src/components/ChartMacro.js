@@ -18,9 +18,11 @@ export default function ChartMacro({ code, metadata }) {
 
   async function fetchSeries(url) {
     setIsLoading(true);
+
     const response = await fetch(url);
     const json = await response.json();
     setSeries(json.value);
+
     setIsLoading(false);
   }
 

@@ -45,9 +45,11 @@ export default function ChartGeographic({ code, metadata }) {
         `&$top=${selectedGeoDivision.regionCount * DEFAULT_LIMIT}`;
 
       setIsLoading(true);
+
       const response = await fetch(seriesUrl);
       const json = await response.json();
       setSeries(json.value);
+
       setIsLoading(false);
     }
 
@@ -91,9 +93,11 @@ export default function ChartGeographic({ code, metadata }) {
           );
 
     setIsLoading(true);
+
     const response = await fetch(url);
     const json = await response.json();
     setSeries(json.value);
+
     setIsLoading(false);
   }
 

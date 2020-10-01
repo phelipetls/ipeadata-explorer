@@ -23,6 +23,7 @@ export default function ChartFormGeography(props) {
       const url = getRegionsUrl(geoBoundary);
 
       setIsLoading(true);
+
       const response = await fetch(url);
       const boundariesJson = await response.json();
       const boundaries = boundariesJson.map(boundary => ({
@@ -31,6 +32,7 @@ export default function ChartFormGeography(props) {
       }));
       setGeoBoundaries(boundaries);
       setGeoBoundaryId(boundaries[0].id);
+
       setIsLoading(false);
     }
 
