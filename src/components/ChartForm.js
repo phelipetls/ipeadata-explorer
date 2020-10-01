@@ -13,6 +13,9 @@ const useStyles = makeStyles(theme => ({
     },
     "& > *": {
       margin: theme.spacing(1),
+      [theme.breakpoints.up("md")]: {
+        flexBasis: "16ch",
+      }
     },
   },
 }));
