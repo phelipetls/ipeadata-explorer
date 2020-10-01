@@ -65,16 +65,22 @@ export default function ChartGeographic({ code, metadata }) {
       geoBoundaryId,
     } = e.target.elements;
 
-    setGeoDivision(geoDivision.value);
-    setGeoBundaryId(geoBoundaryId ? geoBoundaryId.value : "BR");
+    const newGeoDivision = geoDivision.value;
+    const newGeoBoundaryId = geoBoundaryId ? geoBoundaryId.value : "BR";
+
+    setGeoDivision(newGeoDivision);
+    setGeoBundaryId(newGeoBoundaryId);
 
     const selectedGeoDivision = geoDivisions.find(
-      level => level.NIVNOME === geoDivision.value
+      level => level.NIVNOME === newGeoDivision
     );
 
     const baseUrl =
       buildSeriesUrl(code) +
-      `&$filter=NIVNOME eq '${selectedGeoDivision.NIVNOME}'`;
+      `&$filter=NIVNOME eq '${selectedGeoDivision.NIVNOME}'` +
+      (getChartType(newGeoDivision) === "map" && newGeoBoundaryId !== "BR"
+        ? ` and startswith(TERCODIGO,'${String(newGeoBoundaryId).slice(0, 2)}')`
+        : "");
 
     const url =
       initialDate.value || finalDate.value
