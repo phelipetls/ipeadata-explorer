@@ -9,6 +9,8 @@ import {
   limitByDate,
 } from "../api/odata";
 
+import { getChartType } from "../api/ibge";
+
 import Loading from "./Loading";
 import ChartForm from "./ChartForm";
 import ChartFormTimeInterval from "./ChartFormTimeInterval";
@@ -17,20 +19,17 @@ import ChartSection from "./ChartSection";
 import ChartGeographicMap from "./ChartGeographicMap";
 import ChartGeographicTimeseries from "./ChartGeographicTimeseries";
 
+const DEFAULT_LIMIT = 5;
+
 export default function ChartGeographic({ code, metadata }) {
   const theme = useTheme();
 
   const [series, setSeries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
+
   const [geoDivision, setGeoDivision] = useState("");
   const [geoDivisions, setGeoDivisions] = useState([]);
-
-  const chartType =
-    geoDivision === "Brasil" ||
-    geoDivision === "Regiões" ||
-    geoDivision === "Área metropolitana"
-      ? "line"
-      : "map";
+  const [geoBoundaryId, setGeoBundaryId] = useState("BR");
 
   useEffect(() => {
     async function fetchSeries() {
@@ -43,7 +42,7 @@ export default function ChartGeographic({ code, metadata }) {
       const seriesUrl =
         buildSeriesUrl(code) +
         `&$filter=NIVNOME eq '${selectedGeoDivision.NIVNOME}'` +
-        `&$top=${selectedGeoDivision.regionCount * 25}`;
+        `&$top=${selectedGeoDivision.regionCount * DEFAULT_LIMIT}`;
 
       setIsLoading(true);
       const response = await fetch(seriesUrl);
@@ -58,9 +57,16 @@ export default function ChartGeographic({ code, metadata }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const { initialDate, finalDate, topN, geoDivision } = e.target.elements;
+    const {
+      initialDate,
+      finalDate,
+      topN,
+      geoDivision,
+      geoBoundaryId,
+    } = e.target.elements;
 
     setGeoDivision(geoDivision.value);
+    setGeoBundaryId(geoBoundaryId ? geoBoundaryId.value : "BR");
 
     const selectedGeoDivision = geoDivisions.find(
       level => level.NIVNOME === geoDivision.value
@@ -75,7 +81,7 @@ export default function ChartGeographic({ code, metadata }) {
         ? limitByDate(baseUrl, initialDate.value, finalDate.value)
         : limitQuery(
             baseUrl,
-            topN.value || 25 * selectedGeoDivision.regionCount
+            topN.value || DEFAULT_LIMIT * selectedGeoDivision.regionCount
           );
 
     setIsLoading(true);
@@ -84,6 +90,8 @@ export default function ChartGeographic({ code, metadata }) {
     setSeries(json.value);
     setIsLoading(false);
   }
+
+  const chartType = getChartType(geoDivision);
 
   return (
     <ChartSection>
@@ -108,6 +116,7 @@ export default function ChartGeographic({ code, metadata }) {
           series={series}
           metadata={metadata}
           geoDivision={geoDivision}
+          geoBoundaryId={geoBoundaryId}
         />
       )}
     </ChartSection>
