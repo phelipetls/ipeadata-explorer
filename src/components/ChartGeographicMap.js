@@ -8,12 +8,12 @@ export default function ChartGeographicMap(props) {
   const [outlineMap, setOutlineMap] = useState([]);
   const [detailedMap, setDetailedMap] = useState([]);
 
-  const { series, metadata, geoDivision, geoBoundaryId } = props;
+  const { series, metadata, geoDivision, geoBoundaryValue } = props;
 
   useEffect(() => {
     async function fetchGeographicData() {
-      const outlineMapUrl = getMapUrl({ geoBoundaryId });
-      const detailedMapUrl = getMapUrl({ geoBoundaryId, geoDivision });
+      const outlineMapUrl = getMapUrl({ geoBoundaryValue });
+      const detailedMapUrl = getMapUrl({ geoBoundaryValue, geoDivision });
 
       const requests = [fetch(outlineMapUrl), fetch(detailedMapUrl)];
 
@@ -32,7 +32,7 @@ export default function ChartGeographicMap(props) {
     }
 
     fetchGeographicData();
-  }, [series, geoBoundaryId, geoDivision]);
+  }, [series, geoBoundaryValue, geoDivision]);
 
   const labels = detailedMap.map(region => {
     const regionSeries = series.find(

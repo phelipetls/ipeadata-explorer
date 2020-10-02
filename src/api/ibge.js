@@ -20,8 +20,8 @@ const ibgeGeoRegionsCodes = {
   Municípios: 5,
 };
 
-export function getMapUrl({ geoBoundaryId, geoDivision }) {
-  const url = new URL(geoBoundaryId, BASE_URL_MAPS);
+export function getMapUrl({ geoBoundaryValue, geoDivision }) {
+  const url = new URL(geoBoundaryValue, BASE_URL_MAPS);
 
   url.searchParams.set("formato", "application/json");
 

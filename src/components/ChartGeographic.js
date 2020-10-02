@@ -29,7 +29,7 @@ export default function ChartGeographic({ code, metadata }) {
 
   const [geoDivision, setGeoDivision] = useState("");
   const [geoDivisions, setGeoDivisions] = useState([]);
-  const [geoBoundaryId, setGeoBundaryId] = useState("BR");
+  const [geoBoundaryValue, setGeoBundaryValue] = useState("BR");
 
   useEffect(() => {
     async function fetchSeries() {
@@ -64,14 +64,14 @@ export default function ChartGeographic({ code, metadata }) {
       finalDate,
       topN,
       geoDivision,
-      geoBoundaryId,
+      geoBoundaryValue,
     } = e.target.elements;
 
     const newGeoDivision = geoDivision.value;
-    const newGeoBoundaryId = geoBoundaryId ? geoBoundaryId.value : "BR";
+    const newGeoBoundaryValue = geoBoundaryValue ? geoBoundaryValue.value : "BR";
 
     setGeoDivision(newGeoDivision);
-    setGeoBundaryId(newGeoBoundaryId);
+    setGeoBundaryValue(newGeoBoundaryValue);
 
     const selectedGeoDivision = geoDivisions.find(
       level => level.NIVNOME === newGeoDivision
@@ -126,7 +126,7 @@ export default function ChartGeographic({ code, metadata }) {
           series={series}
           metadata={metadata}
           geoDivision={geoDivision}
-          geoBoundaryId={geoBoundaryId}
+          geoBoundaryValue={geoBoundaryValue}
         />
       )}
     </ChartSection>

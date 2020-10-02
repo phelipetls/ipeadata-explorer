@@ -12,7 +12,7 @@ import Loading from "./Loading";
 export default function ChartFormGeography(props) {
   const [geoDivision, setGeoDivision] = useState(props.geoDivision);
   const [geoBoundary, setGeoBoundary] = useState("Brasil");
-  const [geoBoundaryId, setGeoBoundaryId] = useState("");
+  const [geoBoundaryValue, setGeoBoundaryValue] = useState("");
   const [geoBoundaries, setGeoBoundaries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -31,7 +31,7 @@ export default function ChartFormGeography(props) {
         name: boundary.nome,
       }));
       setGeoBoundaries(boundaries);
-      setGeoBoundaryId(boundaries[0].id);
+      setGeoBoundaryValue(boundaries[0].id);
 
       setIsLoading(false);
     }
@@ -85,17 +85,17 @@ export default function ChartFormGeography(props) {
             <Loading />
           ) : (
             <FormControl variant="outlined">
-              <InputLabel htmlFor="geoBoundaryId" shrink>
+              <InputLabel htmlFor="geoBoundaryValue" shrink>
                 {unpluralize(geoBoundary)}
               </InputLabel>
               <Select
                 native
-                value={geoBoundaryId}
+                value={geoBoundaryValue}
                 label={unpluralize(geoBoundary)}
-                onChange={e => setGeoBoundaryId(e.target.value)}
+                onChange={e => setGeoBoundaryValue(e.target.value)}
                 inputProps={{
-                  name: "geoBoundaryId",
-                  id: "geoBoundaryId",
+                  name: "geoBoundaryValue",
+                  id: "geoBoundaryValue",
                 }}
               >
                 {geoBoundaries.map(boundary => (
