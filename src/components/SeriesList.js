@@ -54,7 +54,7 @@ export default function SeriesList(props) {
   const urlFromSearchParams = filterSeriesFromUrl(searchParams);
 
   let [url, setUrl] = useState(
-    limitQuery(urlFromSearchParams || URL, rowsPerPage)
+    (urlFromSearchParams || URL) + limitQuery(rowsPerPage)
   );
   const [newPageUrl, setNewPageUrl] = useState("");
 
@@ -77,7 +77,7 @@ export default function SeriesList(props) {
     e.preventDefault();
 
     let url = filterSeriesFromForm(e.target.elements);
-    setUrl(limitQuery(url, rowsPerPage));
+    setUrl(url + limitQuery(rowsPerPage));
     setPage(0);
     setFormOpen(false);
   }

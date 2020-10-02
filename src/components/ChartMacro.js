@@ -10,24 +10,27 @@ import ChartFormTimeInterval from "./ChartFormTimeInterval";
 import ChartSection from "./ChartSection";
 import ChartTimeseries from "./ChartTimeseries";
 
+const DEFAULT_LIMIT = 50;
+
 export default function ChartMacro({ code, metadata }) {
   const theme = useTheme();
 
   const [series, setSeries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  async function fetchSeries(url) {
-    setIsLoading(true);
-
-    const response = await fetch(url);
-    const json = await response.json();
-    setSeries(json.value);
-
-    setIsLoading(false);
-  }
-
   useEffect(() => {
-    fetchSeries(limitQuery(buildSeriesUrl(code), 50));
+    async function fetchSeries() {
+      setIsLoading(true);
+
+      const url = buildSeriesUrl(code) + limitQuery(DEFAULT_LIMIT);
+      const response = await fetch(url);
+      const json = await response.json();
+      setSeries(json.value);
+
+      setIsLoading(false);
+    }
+
+    fetchSeries();
   }, [code]);
 
   const labels = series.map(series => series.VALDATA);
@@ -38,23 +41,25 @@ export default function ChartMacro({ code, metadata }) {
     },
   ];
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     const { initialDate, finalDate, topN } = e.target.elements;
 
-    let url;
-    const baseUrl = buildSeriesUrl(code);
+    const dateFilter =
+      initialDate.value || finalDate.value
+        ? `&$filter=${limitByDate(initialDate.value, finalDate.value)}`
+        : limitQuery(topN.value);
 
-    if (topN.value) {
-      url = limitQuery(baseUrl, topN.value);
-    } else if (initialDate.value || finalDate.value) {
-      url = limitByDate(baseUrl, initialDate.value, finalDate.value);
-    } else {
-      return;
-    }
+    const url = buildSeriesUrl(code) + dateFilter;
 
-    fetchSeries(url);
+    setIsLoading(true);
+
+    const response = await fetch(url);
+    const json = await response.json();
+    setSeries(json.value);
+
+    setIsLoading(false);
   }
 
   return (

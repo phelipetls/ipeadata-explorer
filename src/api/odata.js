@@ -18,25 +18,19 @@ export function buildCategoricalSeriesUrl(code) {
   );
 }
 
-export function limitQuery(url, limit) {
-  return url + `&$top=${limit}`;
+export function limitQuery(limit) {
+  return `&$top=${limit}`;
 }
 
-export function offsetQuery(url, offset) {
-  return url + `&$skip=${offset}`;
+export function offsetQuery(offset) {
+  return `&$skip=${offset}`;
 }
 
-export function limitByDate(url, initialDate, finalDate) {
+export function limitByDate(initialDate, finalDate) {
   const filters = [];
   if (initialDate) filters.push(`VALDATA ge ${formatDate(initialDate)}`);
   if (finalDate) filters.push(`VALDATA le ${formatDate(finalDate)}`);
-  const joinedFilters = filters.join(" and ");
-
-  if (url.includes("filter")) {
-    return url.replace(/filter=(.*?)(?=&|$)/, `$& and ${joinedFilters}`);
-  }
-
-  return url + `&$filter=${joinedFilters}`;
+  return filters.join(" and ");
 }
 
 export async function fetchGeographicDivisions(code) {
