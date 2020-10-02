@@ -38,9 +38,9 @@ export async function fetchGeographicDivisions(code) {
     buildMetadataUrl(code) +
     "/Valores?" +
     "$apply=filter(not startswith(NIVNOME,'AMC'))" +
-    "/groupby((NIVNOME),aggregate(TERNOME with countdistinct as regionCount))" +
-    "&$orderby=regionCount asc";
+    "/groupby((NIVNOME),aggregate($count as Count))" +
+    "&$orderby=Count asc";
   const response = await fetch(url);
   const json = await response.json();
-  return json.value;
+  return json.value.map(division => division.NIVNOME);
 }

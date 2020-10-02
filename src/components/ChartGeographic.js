@@ -3,11 +3,12 @@ import React, { useState, useEffect } from "react";
 import { useTheme } from "@material-ui/styles";
 
 import {
+  limitByDate,
   buildSeriesUrl,
   fetchGeographicDivisions,
-  limitQuery,
-  limitByDate,
 } from "../api/odata";
+
+import { subtractDateByPeriod } from "../api/utils";
 
 import { getChartType } from "../api/ibge";
 
@@ -36,17 +37,24 @@ export default function ChartGeographic({ code, metadata }) {
       const availableGeoDivisions = await fetchGeographicDivisions(code);
       setGeoDivisions(availableGeoDivisions);
 
-      const selectedGeoDivision = availableGeoDivisions[0];
-      setGeoDivision(selectedGeoDivision.NIVNOME);
+      const newGeoDivision = availableGeoDivisions[0];
+      setGeoDivision(newGeoDivision);
 
-      const seriesUrl =
+      const startDate = subtractDateByPeriod({
+        date: metadata.SERMAXDATA,
+        offset: DEFAULT_LIMIT,
+        period: metadata.PERNOME,
+      });
+
+      const url =
         buildSeriesUrl(code) +
-        `&$filter=NIVNOME eq '${selectedGeoDivision.NIVNOME}'` +
-        `&$top=${selectedGeoDivision.regionCount * DEFAULT_LIMIT}`;
+        "&$filter=" +
+        `NIVNOME eq '${newGeoDivision}' and ` +
+        `VALDATA ge ${startDate}`;
 
       setIsLoading(true);
 
-      const response = await fetch(seriesUrl);
+      const response = await fetch(url);
       const json = await response.json();
       setSeries(json.value);
 
@@ -54,7 +62,7 @@ export default function ChartGeographic({ code, metadata }) {
     }
 
     fetchSeries();
-  }, [code]);
+  }, [metadata, code]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -68,29 +76,39 @@ export default function ChartGeographic({ code, metadata }) {
     } = e.target.elements;
 
     const newGeoDivision = geoDivision.value;
-    const newGeoBoundaryValue = geoBoundaryValue ? geoBoundaryValue.value : "BR";
-
     setGeoDivision(newGeoDivision);
+
+    const newGeoBoundaryValue = geoBoundaryValue
+      ? geoBoundaryValue.value
+      : "BR";
     setGeoBundaryValue(newGeoBoundaryValue);
 
-    const selectedGeoDivision = geoDivisions.find(
-      level => level.NIVNOME === newGeoDivision
-    );
+    const boundaryId = String(newGeoBoundaryValue).slice(0, 2);
 
-    const baseUrl =
-      buildSeriesUrl(code) +
-      `&$filter=NIVNOME eq '${selectedGeoDivision.NIVNOME}'` +
-      (getChartType(newGeoDivision) === "map" && newGeoBoundaryId !== "BR"
-        ? ` and startswith(TERCODIGO,'${String(newGeoBoundaryId).slice(0, 2)}')`
-        : "");
+    const boundaryFilter =
+      getChartType(newGeoDivision) === "map" && newGeoBoundaryValue !== "BR"
+        ? ` and startswith(TERCODIGO,'${boundaryId}')`
+        : "";
+
+    let dateFilter = "";
+
+    if (topN.value) {
+      const startDate = subtractDateByPeriod({
+        date: metadata.SERMAXDATA,
+        period: metadata.PERNOME,
+        offset: topN.value,
+      });
+      dateFilter = limitByDate(startDate);
+    } else if (initialDate.value || finalDate.value) {
+      dateFilter = limitByDate(initialDate.value, finalDate.value);
+    }
 
     const url =
-      initialDate.value || finalDate.value
-        ? limitByDate(baseUrl, initialDate.value, finalDate.value)
-        : limitQuery(
-            baseUrl,
-            topN.value || DEFAULT_LIMIT * selectedGeoDivision.regionCount
-          );
+      buildSeriesUrl(code) +
+      "&$filter=" +
+      `NIVNOME eq '${newGeoDivision}'` +
+      boundaryFilter +
+      dateFilter;
 
     setIsLoading(true);
 
@@ -112,7 +130,7 @@ export default function ChartGeographic({ code, metadata }) {
         ) : (
           <ChartFormGeography
             geoDivision={geoDivision}
-            geoDivisions={geoDivisions.map(level => level.NIVNOME)}
+            geoDivisions={geoDivisions}
           />
         )}
       </ChartForm>
