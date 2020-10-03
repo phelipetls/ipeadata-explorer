@@ -92,15 +92,15 @@ export default function ChartGeographic({ code, metadata }) {
 
     let dateFilter = "";
 
-    if (topN.value) {
+    if (initialDate.value || finalDate.value) {
+      dateFilter = limitByDate(initialDate.value, finalDate.value);
+    } else {
       const startDate = subtractDateByPeriod({
         date: metadata.SERMAXDATA,
         period: metadata.PERNOME,
-        offset: topN.value,
+        offset: topN.value || DEFAULT_LIMIT,
       });
-      dateFilter = limitByDate(startDate);
-    } else if (initialDate.value || finalDate.value) {
-      dateFilter = limitByDate(initialDate.value, finalDate.value);
+      dateFilter = ` and VALDATA ge ${startDate}`;
     }
 
     const url =
