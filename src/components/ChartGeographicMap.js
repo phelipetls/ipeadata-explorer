@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { topojson } from "chartjs-chart-geo";
-import ChartMapChoropleth from "./ChartMapChoropleth";
+import ChartChoroplethMap from "./ChartChoroplethMap";
 
 import { getMapUrl } from "../api/ibge";
 
@@ -51,7 +51,7 @@ export default function ChartGeographicMap(props) {
   ];
 
   return (
-    <ChartMapChoropleth
+    <ChartChoroplethMap
       series={series}
       metadata={metadata}
       labels={labels}

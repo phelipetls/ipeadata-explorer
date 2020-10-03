@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
 const getYearIsoDate = date => date.slice(0, 4);
 const getYearAndMonthIsoDate = date => date.slice(0, 7);
 
-export default function ChartMapChoropleth(props) {
+export default function ChartChoroplethMap(props) {
   const classes = useStyles();
   const chartRef = useRef();
   const [period, setPeriod] = useState(null);
