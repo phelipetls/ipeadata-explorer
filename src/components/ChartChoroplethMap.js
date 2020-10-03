@@ -2,9 +2,11 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Select } from "@material-ui/core";
 import ChartCanvas from "./ChartCanvas";
-import Chart from "chart.js";
 import groupBy from "lodash.groupby";
 import keyBy from "lodash.keyby";
+
+import Chart from "chart.js";
+import 'chartjs-adapter-date-fns';
 import "chartjs-chart-geo";
 
 const useStyles = makeStyles(theme => ({
