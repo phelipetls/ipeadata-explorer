@@ -254,7 +254,6 @@ export default function SeriesForm(props) {
               size="small"
               checked={hasBrazil}
               onChange={e => setHasBrazil(e.target.checked)}
-              disabled={bases.includes("Macroeconômico")}
               name="SERTEMBR"
               color="primary"
             />
@@ -268,7 +267,6 @@ export default function SeriesForm(props) {
               size="small"
               checked={hasMunicipality}
               onChange={e => setHasMunicipality(e.target.checked)}
-              disabled={bases.includes("Macroeconômico")}
               name="SERTEMMUN"
               color="primary"
             />
@@ -282,7 +280,6 @@ export default function SeriesForm(props) {
               size="small"
               checked={hasState}
               onChange={e => setHasState(e.target.checked)}
-              disabled={bases.includes("Macroeconômico")}
               name="SERTEMEST"
               color="primary"
             />
@@ -296,7 +293,6 @@ export default function SeriesForm(props) {
               size="small"
               checked={hasMetropolitan}
               onChange={e => setHasMetropolitan(e.target.checked)}
-              disabled={bases.includes("Macroeconômico")}
               name="SERTEMMET"
               color="primary"
             />
