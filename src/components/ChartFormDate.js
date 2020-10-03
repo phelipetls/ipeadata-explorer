@@ -13,7 +13,7 @@ const dateViewsByPeriodicity = {
   Quinquenal: ["year"],
 };
 
-export default function ChartFormTimeInterval({ metadata }) {
+export default function ChartFormDate({ metadata }) {
   const [initialDate, setInitialDate] = useState(null);
   const [finalDate, setFinalDate] = useState(null);
   const [topN, setTopN] = useState("");

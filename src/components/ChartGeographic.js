@@ -14,7 +14,7 @@ import { getChartType } from "../api/ibge";
 
 import Loading from "./Loading";
 import ChartForm from "./ChartForm";
-import ChartFormTimeInterval from "./ChartFormTimeInterval";
+import ChartFormDate from "./ChartFormDate";
 import ChartFormGeography from "./ChartFormGeography";
 import ChartSection from "./ChartSection";
 import ChartGeographicMap from "./ChartGeographicMap";
@@ -124,7 +124,7 @@ export default function ChartGeographic({ code, metadata }) {
   return (
     <ChartSection>
       <ChartForm onSubmit={handleSubmit}>
-        <ChartFormTimeInterval metadata={metadata} />
+        <ChartFormDate metadata={metadata} />
         {!geoDivision ? (
           <Loading />
         ) : (

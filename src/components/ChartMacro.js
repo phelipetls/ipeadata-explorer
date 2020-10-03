@@ -6,7 +6,7 @@ import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
 import Loading from "./Loading";
 import ChartForm from "./ChartForm";
 import ChartContainer from "./ChartContainer";
-import ChartFormTimeInterval from "./ChartFormTimeInterval";
+import ChartFormDate from "./ChartFormDate";
 import ChartSection from "./ChartSection";
 import ChartTimeseries from "./ChartTimeseries";
 
@@ -65,7 +65,7 @@ export default function ChartMacro({ code, metadata }) {
   return (
     <ChartSection>
       <ChartForm onSubmit={handleSubmit}>
-        <ChartFormTimeInterval metadata={metadata} />
+        <ChartFormDate metadata={metadata} />
       </ChartForm>
 
       {isLoading ? (

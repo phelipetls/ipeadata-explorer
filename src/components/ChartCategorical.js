@@ -3,7 +3,7 @@ import Loading from "./Loading";
 import ChartBar from "./ChartBar";
 import ChartSection from "./ChartSection";
 import ChartForm from "./ChartForm";
-import ChartFormTimeInterval from "./ChartFormTimeInterval";
+import ChartFormDate from "./ChartFormDate";
 
 import { buildMetadataUrl } from "../api/odata";
 import { useTheme } from "@material-ui/styles";
@@ -99,7 +99,7 @@ export default function ChartCategorical({ code, metadata }) {
   return (
     <ChartSection>
       <ChartForm onSubmit={handleSubmit}>
-        <ChartFormTimeInterval metadata={metadata} />
+        <ChartFormDate metadata={metadata} />
       </ChartForm>
 
       {isLoading ? (
