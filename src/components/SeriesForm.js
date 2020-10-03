@@ -166,6 +166,7 @@ export default function SeriesForm(props) {
       <Grid container item spacing={3} justify="center">
         <Grid item>
           <DatePicker
+            size="small"
             inputVariant="outlined"
             name="SERMINDATA"
             label="Data inicial"
@@ -177,6 +178,7 @@ export default function SeriesForm(props) {
 
         <Grid item>
           <DatePicker
+            size="small"
             inputVariant="outlined"
             name="SERMAXDATA"
             label="Data final"
@@ -187,16 +189,16 @@ export default function SeriesForm(props) {
         </Grid>
       </Grid>
 
-      <Grid container item justify="space-around" spacing={2}>
+      <Grid container item justify="center" spacing={3}>
         <Grid item>
           <FormControl
+            size="small"
             variant="outlined"
             component="fieldset"
             className={classes.formControl}
           >
             <InputLabel htmlFor="BASNOME">Base</InputLabel>
             <Select
-              size="small"
               multiple
               value={bases}
               onChange={handleChangeBases}
@@ -211,11 +213,10 @@ export default function SeriesForm(props) {
         </Grid>
 
         <Grid item>
-          <FormControl variant="outlined" component="fieldset">
+          <FormControl size="small" variant="outlined" component="fieldset">
             <InputLabel htmlFor="SERSTATUS">Status</InputLabel>
             <Select
               native
-              size="small"
               label="Status"
               value={status}
               onChange={e => setStatus(e.target.value)}
@@ -229,11 +230,10 @@ export default function SeriesForm(props) {
         </Grid>
 
         <Grid item>
-          <FormControl variant="outlined" component="fieldset">
+          <FormControl size="small" variant="outlined" component="fieldset">
             <InputLabel htmlFor="SERNUMERICA">Tipo</InputLabel>
             <Select
               native
-              size="small"
               label="Tipo"
               value={isNumeric}
               onChange={e => setIsNumeric(e.target.value)}
