@@ -3,14 +3,15 @@ import { formatDate } from "./utils";
 const URL =
   "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$count=true";
 
+function getFormElementValue(element) {
+  return element.type === "checkbox" ? element.checked : element.value;
+}
+
 export function filterSeriesFromForm(formElements) {
   return filterSeries(
     Array.from(formElements)
-      .filter(element => element.value && !element.disabled)
-      .map(({ name, type, value, checked }) => [
-        name,
-        type === "checkbox" ? checked : value,
-      ])
+      .filter(element => getFormElementValue(element) && !element.disabled)
+      .map(element => [element.name, getFormElementValue(element)])
   );
 }
 
