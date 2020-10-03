@@ -24,7 +24,7 @@ export default function SeriesMetadata({ metadata }) {
           {metadata.SERNOME}
         </Typography>
         <Typography variant="body1" paragraph>
-          {metadata.SERCOMENTARIO.replace(/<[^>]+>/g, "")}
+          {metadata.SERCOMENTARIO ? metadata.SERCOMENTARIO.replace(/<[^>]+>/g, "") : ""}
         </Typography>
       </Grid>
 
