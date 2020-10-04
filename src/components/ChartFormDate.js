@@ -47,7 +47,6 @@ export default function ChartFormDate({ metadata }) {
         format="dd/MM/yyyy"
         views={dateViewsByPeriodicity[metadata.PERNOME]}
         inputVariant="outlined"
-        disabled={Boolean(topN)}
         clearable
       />
 
@@ -63,7 +62,6 @@ export default function ChartFormDate({ metadata }) {
         format="dd/MM/yyyy"
         views={dateViewsByPeriodicity[metadata.PERNOME]}
         inputVariant="outlined"
-        disabled={Boolean(topN)}
         clearable
       />
 
