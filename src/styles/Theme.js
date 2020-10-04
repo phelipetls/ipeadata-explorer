@@ -1,5 +1,6 @@
 import { blue, green, red } from "@material-ui/core/colors";
 import { createMuiTheme } from "@material-ui/core/styles";
+import { ptBR } from "@material-ui/core/locale";
 
 export const theme = createMuiTheme({
   palette: {
@@ -13,4 +14,4 @@ export const theme = createMuiTheme({
   chart: {
     minHeight: 512,
   }
-});
+}, ptBR);

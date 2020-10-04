@@ -11,15 +11,12 @@ export default function TablePaginationFooter(props) {
       <TableRow>
         <TablePagination
           rowsPerPageOptions={[5, 10, 15]}
-          colSpan={6}
           count={count}
           rowsPerPage={rowsPerPage}
           page={page}
           onChangePage={onChangePage}
           onChangeRowsPerPage={onChangeRowsPerPage}
-          labelRowsPerPage="Por página:"
           SelectProps={{
-            inputProps: { "aria-label": "Linhas por página" },
             native: true,
           }}
           ActionsComponent={TablePaginationActions}
