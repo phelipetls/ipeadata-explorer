@@ -9,6 +9,9 @@ const useStyles = makeStyles(theme => ({
   root: {
     flexShrink: 0,
     marginLeft: theme.spacing(2.5),
+    [theme.breakpoints.down("sm")]: {
+      marginLeft: "auto",
+    },
   },
 }));
 
@@ -32,14 +35,15 @@ export default function TablePaginationActions(props) {
         disabled={page === 0}
         aria-label="Página anterior"
       >
-        <KeyboardArrowLeft />
+        <KeyboardArrowLeft fontSize="small" />
       </IconButton>
+
       <IconButton
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
         onClick={handleNextButtonClick}
         aria-label="Próxima página"
       >
-        <KeyboardArrowRight />
+        <KeyboardArrowRight fontSize="small" />
       </IconButton>
     </div>
   );
