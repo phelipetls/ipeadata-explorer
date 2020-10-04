@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Loading from "./Loading";
+import NoData from "./NoData";
 import ChartBar from "./ChartBar";
 import ChartSection from "./ChartSection";
 import ChartForm from "./ChartForm";
@@ -101,6 +102,8 @@ export default function ChartCategorical({ code, metadata }) {
 
       {isLoading ? (
         <Loading style={{ minHeight: theme.chart.minHeight }} />
+      ) : count.length === 0 ? (
+        <NoData style={{ minHeight: theme.chart.minHeight }} />
       ) : (
         <ChartBar metadata={metadata} labels={labels} datasets={datasets} />
       )}

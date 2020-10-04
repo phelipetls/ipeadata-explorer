@@ -13,6 +13,7 @@ import { formatDateFromDatePicker, subtractSeriesMaxDate } from "../api/utils";
 import { getChartType } from "../api/ibge";
 
 import Loading from "./Loading";
+import NoData from "./NoData";
 import ChartForm from "./ChartForm";
 import ChartFormDate from "./ChartFormDate";
 import ChartFormGeography from "./ChartFormGeography";
@@ -139,6 +140,8 @@ export default function ChartGeographic({ code, metadata }) {
 
       {isLoading ? (
         <Loading style={{ minHeight: theme.chart.minHeight }} />
+      ) : series.length === 0 ? (
+        <NoData style={{ minHeight: theme.chart.minHeight }} />
       ) : chartType === "line" ? (
         <ChartGeographicTimeseries series={series} metadata={metadata} />
       ) : (
