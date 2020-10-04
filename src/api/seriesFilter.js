@@ -1,4 +1,4 @@
-import { formatDate } from "./utils";
+import { formatDateFromDatePicker } from "./utils";
 
 const URL =
   "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$count=true";
@@ -45,9 +45,9 @@ function getFilter([name, value]) {
         ` contains(PAICODIGO,'${value}'))`
       );
     case "SERMINDATA":
-      return `SERMINDATA ge ${formatDate(value)}`;
+      return `SERMINDATA ge ${formatDateFromDatePicker(value)}`;
     case "SERMAXDATA":
-      return `SERMAXDATA le ${formatDate(value)}`;
+      return `SERMAXDATA le ${formatDateFromDatePicker(value)}`;
     case "BASNOME":
       return (
         "(" +

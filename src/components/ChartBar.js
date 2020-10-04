@@ -7,7 +7,7 @@ import ChartCanvas from "./ChartCanvas";
 import "chartjs-plugin-colorschemes/src/plugins/plugin.colorschemes";
 import { Paired12 } from "chartjs-plugin-colorschemes/src/colorschemes/colorschemes.brewer";
 
-export default function ChartBar({ metadata, period, labels, datasets }) {
+export default function ChartBar({ metadata, labels, datasets }) {
   const chartRef = useRef();
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export default function ChartBar({ metadata, period, labels, datasets }) {
         title: {
           display: true,
           fontSize: 14,
-          text: `${metadata.SERNOME} - ${period}`,
+          text: `${metadata.SERNOME}`,
         },
         legend: {
           position: "bottom",
@@ -36,7 +36,7 @@ export default function ChartBar({ metadata, period, labels, datasets }) {
     });
 
     return () => chartRef.current.destroy();
-  }, [metadata, period, labels, datasets]);
+  }, [metadata, labels, datasets]);
 
   return <ChartCanvas id="lineChart" />;
 }

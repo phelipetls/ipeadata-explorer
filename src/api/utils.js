@@ -1,9 +1,18 @@
 import { formatISO, sub, subQuarters, startOfQuarter } from "date-fns";
 
-export function formatDate(dateStr) {
+export function formatDateFromDatePicker(dateStr) {
+  if (!dateStr) return;
   const [day, month, year] = dateStr.split("/");
   const date = new Date(year, month - 1, day);
   return formatISO(date, { representation: "complete" });
+}
+
+export function subtractSeriesMaxDate({ metadata, offset }) {
+  return subtractDateByPeriod({
+    date: metadata.SERMAXDATA,
+    period: metadata.PERNOME,
+    offset: offset,
+  });
 }
 
 const periodicities = {
@@ -15,7 +24,7 @@ const periodicities = {
   Decenal: { periodName: "years", periodAmount: 10 },
 };
 
-export function subtractDateByPeriod({ date, period, offset }) {
+function subtractDateByPeriod({ date, period, offset }) {
   let newDate = new Date(date);
 
   if (period === "Trimestral") {

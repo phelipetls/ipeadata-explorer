@@ -1,5 +1,3 @@
-import { formatDate } from "./utils";
-
 export function buildMetadataUrl(code) {
   return `http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados('${code}')`;
 }
@@ -28,8 +26,8 @@ export function offsetQuery(offset) {
 
 export function limitByDate(initialDate, finalDate) {
   const filters = [];
-  if (initialDate) filters.push(`VALDATA ge ${formatDate(initialDate)}`);
-  if (finalDate) filters.push(`VALDATA le ${formatDate(finalDate)}`);
+  if (initialDate) filters.push(`VALDATA ge ${initialDate}`);
+  if (finalDate) filters.push(`VALDATA le ${finalDate}`);
   return filters.join(" and ");
 }
 

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 import { useTheme } from "@material-ui/styles";
 import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
+import { formatDateFromDatePicker } from "../api/utils";
 
 import Loading from "./Loading";
 import ChartForm from "./ChartForm";
@@ -46,10 +47,13 @@ export default function ChartMacro({ code, metadata }) {
 
     const { initialDate, finalDate, topN } = e.target.elements;
 
+    const initialDateValue = formatDateFromDatePicker(initialDate.value);
+    const finalDateValue = formatDateFromDatePicker(finalDate.value);
+
     const dateFilter =
       initialDate.value || finalDate.value
-        ? `&$filter=${limitByDate(initialDate.value, finalDate.value)}`
-        : limitQuery(topN.value);
+        ? `&$filter=${limitByDate(initialDateValue, finalDateValue)}`
+        : limitQuery(topN.value ? topN.value : DEFAULT_LIMIT);
 
     const url = buildSeriesUrl(code) + dateFilter;
 

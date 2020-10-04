@@ -8,7 +8,7 @@ import {
   fetchGeographicDivisions,
 } from "../api/odata";
 
-import { subtractDateByPeriod } from "../api/utils";
+import { formatDateFromDatePicker, subtractSeriesMaxDate } from "../api/utils";
 
 import { getChartType } from "../api/ibge";
 
@@ -40,10 +40,9 @@ export default function ChartGeographic({ code, metadata }) {
       const newGeoDivision = availableGeoDivisions[0];
       setGeoDivision(newGeoDivision);
 
-      const startDate = subtractDateByPeriod({
-        date: metadata.SERMAXDATA,
+      const startDate = subtractSeriesMaxDate({
+        metadata: metadata,
         offset: DEFAULT_LIMIT,
-        period: metadata.PERNOME,
       });
 
       const url =
@@ -93,14 +92,17 @@ export default function ChartGeographic({ code, metadata }) {
     let dateFilter = "";
 
     if (initialDate.value || finalDate.value) {
-      dateFilter = limitByDate(initialDate.value, finalDate.value);
+      const initialDateValue = formatDateFromDatePicker(initialDate.value);
+      const finalDateValue = formatDateFromDatePicker(finalDate.value);
+
+      dateFilter = " and " + limitByDate(initialDateValue, finalDateValue);
     } else {
-      const startDate = subtractDateByPeriod({
-        date: metadata.SERMAXDATA,
-        period: metadata.PERNOME,
+      const startDate = subtractSeriesMaxDate({
+        metadata: metadata,
         offset: topN.value || DEFAULT_LIMIT,
       });
-      dateFilter = ` and VALDATA ge ${startDate}`;
+
+      dateFilter = " and " + limitByDate(startDate);
     }
 
     const url =

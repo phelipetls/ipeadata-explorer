@@ -5,8 +5,11 @@ import ChartSection from "./ChartSection";
 import ChartForm from "./ChartForm";
 import ChartFormDate from "./ChartFormDate";
 
-import { buildMetadataUrl } from "../api/odata";
+import { limitByDate, buildMetadataUrl } from "../api/odata";
+import { formatDateFromDatePicker, subtractSeriesMaxDate } from "../api/utils";
 import { useTheme } from "@material-ui/styles";
+
+const DEFAULT_LIMIT = 0;
 
 const CATEGORY_COUNT_QUERY =
   "groupby((VALVALOR),aggregate($count as totalCount))&$orderby=totalCount desc";
@@ -26,14 +29,17 @@ export default function ChartCategorical({ code, metadata }) {
   const [count, setCount] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const maxYear = metadata.SERMAXDATA.slice(0, 4);
-  const [period, setPeriod] = useState(maxYear);
-
   useEffect(() => {
     async function fetchCategoricalSeries() {
+      const minDate = subtractSeriesMaxDate({
+        metadata: metadata,
+        offset: DEFAULT_LIMIT,
+      });
+
+      const dateFilter = limitByDate(minDate);
       const url =
         buildMetadataUrl(code) +
-        `/ValoresStr?$apply=filter(year(VALDATA) eq ${maxYear})/${CATEGORY_COUNT_QUERY}`;
+        `/ValoresStr?$apply=filter(${dateFilter})/${CATEGORY_COUNT_QUERY}`;
 
       setIsLoading(true);
 
@@ -45,7 +51,7 @@ export default function ChartCategorical({ code, metadata }) {
     }
 
     fetchCategoricalSeries();
-  }, [code, maxYear]);
+  }, [metadata, code]);
 
   const labels = Object.keys(count);
   const datasets = [
@@ -59,33 +65,24 @@ export default function ChartCategorical({ code, metadata }) {
     e.preventDefault();
     let { initialDate, finalDate, topN } = e.target.elements;
 
-    const initialYear = new Date(initialDate.value).getFullYear();
-    const finalYear = new Date(finalDate.value).getFullYear();
-
     let url = buildMetadataUrl(code);
-    const filters = [];
+    let dateFilter = "";
 
-    if (topN.value) {
-      // This assumes that every categorical series has a quadrennial periodicity, which is true
-      // as of 20/09/2020. For now, I'm not going to bother.
-      const minYear = maxYear - topN.value * 4;
-      filters.push(`year(VALDATA) ge ${minYear}`);
-      setPeriod(`${minYear} a ${maxYear}`);
-    } else if (initialYear || finalYear) {
-      setPeriod(
-        initialYear && finalYear
-          ? `${initialYear} a ${finalYear}`
-          : initialYear || finalYear
-      );
+    if (initialDate.value || finalDate.value) {
+      const initialDateValue = formatDateFromDatePicker(initialDate.value);
+      const finalDateValue = formatDateFromDatePicker(finalDate.value);
 
-      initialYear && filters.push(`year(VALDATA) ge ${initialYear}`);
-      finalYear && filters.push(`year(VALDATA) le ${finalYear}`);
+      dateFilter = limitByDate(initialDateValue, finalDateValue);
     } else {
-      return;
+      dateFilter = limitByDate(
+        subtractSeriesMaxDate({
+          metadata: metadata,
+          offset: topN.value || DEFAULT_LIMIT,
+        })
+      );
     }
 
-    const joinedFilters = filters.join(" and ");
-    url += `/ValoresStr?$apply=filter(${joinedFilters})/${CATEGORY_COUNT_QUERY}`;
+    url += `/ValoresStr?$apply=filter(${dateFilter})/${CATEGORY_COUNT_QUERY}`;
 
     setIsLoading(true);
 
@@ -105,12 +102,7 @@ export default function ChartCategorical({ code, metadata }) {
       {isLoading ? (
         <Loading style={{ minHeight: theme.chart.minHeight }} />
       ) : (
-        <ChartBar
-          period={period}
-          metadata={metadata}
-          labels={labels}
-          datasets={datasets}
-        />
+        <ChartBar metadata={metadata} labels={labels} datasets={datasets} />
       )}
     </ChartSection>
   );
