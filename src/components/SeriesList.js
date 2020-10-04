@@ -88,7 +88,7 @@ export default function SeriesList(props) {
     const totalRows = (newPage + 1) * rowsPerPage;
 
     if (totalRows >= rows.length) {
-      setNewPageUrl(offsetQuery(url, (page + 1) * rowsPerPage));
+      setNewPageUrl(url + offsetQuery((page + 1) * rowsPerPage));
     }
   }
 
