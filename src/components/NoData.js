@@ -8,9 +8,7 @@ export default function NoData({ style }) {
   return (
     <Center style={style}>
       <Error fontSize="large" />
-      <Typography variant="title">
-        Sem dados
-      </Typography>
+      <Typography variant="title">Sem dados</Typography>
     </Center>
   );
 }

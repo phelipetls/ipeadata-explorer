@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   datePicker: {
     [theme.breakpoints.up("md")]: {
       minWidth: "19ch",
-    }
+    },
   },
 }));
 

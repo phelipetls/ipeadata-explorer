@@ -7,9 +7,7 @@ import {
   buildSeriesUrl,
   fetchGeographicDivisions,
 } from "../api/odata";
-
 import { formatDateFromDatePicker, subtractSeriesMaxDate } from "../api/utils";
-
 import { getChartType } from "../api/ibge";
 
 import Loading from "./Loading";

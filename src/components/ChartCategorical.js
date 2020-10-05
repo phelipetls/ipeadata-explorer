@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
+
+import { useTheme } from "@material-ui/styles";
+import { limitByDate, buildMetadataUrl } from "../api/odata";
+import { formatDateFromDatePicker, subtractSeriesMaxDate } from "../api/utils";
+
 import Loading from "./Loading";
 import NoData from "./NoData";
 import ChartBar from "./ChartBar";
 import ChartSection from "./ChartSection";
 import ChartForm from "./ChartForm";
 import ChartFormDate from "./ChartFormDate";
-
-import { limitByDate, buildMetadataUrl } from "../api/odata";
-import { formatDateFromDatePicker, subtractSeriesMaxDate } from "../api/utils";
-import { useTheme } from "@material-ui/styles";
 
 const DEFAULT_LIMIT = 0;
 
