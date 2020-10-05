@@ -1,7 +1,17 @@
 import React, { useState } from "react";
 
 import { TextField } from "@material-ui/core";
-import { DatePicker } from "@material-ui/pickers";
+import { KeyboardDatePicker } from "@material-ui/pickers";
+import { Event } from "@material-ui/icons";
+import { makeStyles } from "@material-ui/styles";
+
+const useStyles = makeStyles(theme => ({
+  datePicker: {
+    [theme.breakpoints.up("md")]: {
+      minWidth: "19ch",
+    }
+  },
+}));
 
 const dateViewsByPeriodicity = {
   Mensal: ["year", "month"],
@@ -14,6 +24,8 @@ const dateViewsByPeriodicity = {
 };
 
 export default function ChartFormDate({ metadata }) {
+  const classes = useStyles();
+
   const [initialDate, setInitialDate] = useState(null);
   const [finalDate, setFinalDate] = useState(null);
   const [topN, setTopN] = useState("");
@@ -35,7 +47,8 @@ export default function ChartFormDate({ metadata }) {
 
   return (
     <>
-      <DatePicker
+      <KeyboardDatePicker
+        className={classes.datePicker}
         name="initialDate"
         label="Data inicial"
         value={initialDate}
@@ -45,12 +58,15 @@ export default function ChartFormDate({ metadata }) {
         onChange={setInitialDate}
         onAccept={resetDate}
         format="dd/MM/yyyy"
+        mask="__/__/____"
         views={dateViewsByPeriodicity[metadata.PERNOME]}
         inputVariant="outlined"
+        keyboardIcon={<Event fontSize="small" />}
         clearable
       />
 
-      <DatePicker
+      <KeyboardDatePicker
+        className={classes.datePicker}
         name="finalDate"
         label="Data final"
         value={finalDate}
@@ -60,8 +76,10 @@ export default function ChartFormDate({ metadata }) {
         onChange={setFinalDate}
         onAccept={resetDate}
         format="dd/MM/yyyy"
+        mask="__/__/____"
         views={dateViewsByPeriodicity[metadata.PERNOME]}
         inputVariant="outlined"
+        keyboardIcon={<Event fontSize="small" />}
         clearable
       />
 

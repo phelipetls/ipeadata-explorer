@@ -11,7 +11,7 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@material-ui/core";
-import { DatePicker } from "@material-ui/pickers";
+import { KeyboardDatePicker } from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/core/styles";
 import { useBreakpoint } from "../utils/responsive";
 
@@ -165,7 +165,8 @@ export default function SeriesForm(props) {
 
       <Grid container item spacing={3} justify="center">
         <Grid item>
-          <DatePicker
+          <KeyboardDatePicker
+            style={{ width: "19ch" }}
             size="small"
             inputVariant="outlined"
             name="SERMINDATA"
@@ -173,11 +174,13 @@ export default function SeriesForm(props) {
             value={initialDate}
             onChange={setInitialDate}
             format="dd/MM/yyyy"
+            mask="__/__/____"
           />
         </Grid>
 
         <Grid item>
-          <DatePicker
+          <KeyboardDatePicker
+            style={{ width: "19ch" }}
             size="small"
             inputVariant="outlined"
             name="SERMAXDATA"
@@ -185,6 +188,7 @@ export default function SeriesForm(props) {
             value={finalDate}
             onChange={setFinalDate}
             format="dd/MM/yyyy"
+            mask="__/__/____"
           />
         </Grid>
       </Grid>
