@@ -46,7 +46,7 @@ export default function ChartMacro({ code, metadata }) {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    const { initialDate, finalDate, topN } = e.target.elements;
+    const { initialDate, finalDate, lastN } = e.target.elements;
 
     const initialDateValue = formatDateFromDatePicker(initialDate.value);
     const finalDateValue = formatDateFromDatePicker(finalDate.value);
@@ -54,7 +54,7 @@ export default function ChartMacro({ code, metadata }) {
     const dateFilter =
       initialDate.value || finalDate.value
         ? `&$filter=${limitByDate(initialDateValue, finalDateValue)}`
-        : limitQuery(topN.value ? topN.value : DEFAULT_LIMIT);
+        : limitQuery(lastN.value ? lastN.value : DEFAULT_LIMIT);
 
     const url = buildSeriesUrl(code) + dateFilter;
 

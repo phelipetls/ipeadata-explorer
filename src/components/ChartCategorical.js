@@ -65,7 +65,7 @@ export default function ChartCategorical({ code, metadata }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    let { initialDate, finalDate, topN } = e.target.elements;
+    let { initialDate, finalDate, lastN } = e.target.elements;
 
     let url = buildMetadataUrl(code);
     let dateFilter = "";
@@ -79,7 +79,7 @@ export default function ChartCategorical({ code, metadata }) {
       dateFilter = limitByDate(
         subtractSeriesMaxDate({
           metadata: metadata,
-          offset: topN.value || DEFAULT_LIMIT,
+          offset: lastN.value || DEFAULT_LIMIT,
         })
       );
     }

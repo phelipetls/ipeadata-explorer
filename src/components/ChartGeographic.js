@@ -68,7 +68,7 @@ export default function ChartGeographic({ code, metadata }) {
     const {
       initialDate,
       finalDate,
-      topN,
+      lastN,
       geoDivision,
       geoBoundaryValue,
     } = e.target.elements;
@@ -98,7 +98,7 @@ export default function ChartGeographic({ code, metadata }) {
     } else {
       const startDate = subtractSeriesMaxDate({
         metadata: metadata,
-        offset: topN.value || DEFAULT_LIMIT,
+        offset: lastN.value || DEFAULT_LIMIT,
       });
 
       dateFilter = " and " + limitByDate(startDate);

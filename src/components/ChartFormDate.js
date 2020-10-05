@@ -28,7 +28,7 @@ export default function ChartFormDate({ metadata }) {
 
   const [initialDate, setInitialDate] = useState(null);
   const [finalDate, setFinalDate] = useState(null);
-  const [topN, setTopN] = useState("");
+  const [lastN, setLastN] = useState("");
 
   const resetDate = date => {
     if (!date) return;
@@ -85,11 +85,11 @@ export default function ChartFormDate({ metadata }) {
 
       <TextField
         type="number"
-        value={topN}
-        name="topN"
-        onChange={e => setTopN(e.target.value)}
+        value={lastN}
+        name="lastN"
+        onChange={e => setLastN(e.target.value)}
         variant="outlined"
-        label="Top N"
+        label="Últimos N"
       />
     </>
   );
