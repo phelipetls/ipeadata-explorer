@@ -5,17 +5,18 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   form: {
-    width: "100%",
     display: "flex",
     flexFlow: "column",
     [theme.breakpoints.up("md")]: {
-      flexFlow: "row",
+      flexFlow: "row wrap",
     },
     "& > *": {
       margin: theme.spacing(1),
       [theme.breakpoints.up("md")]: {
-        flexBasis: "16ch",
-      }
+        flexBasis: "13ch",
+        flexGrow: 1,
+        flexShrink: 0,
+      },
     },
   },
 }));
