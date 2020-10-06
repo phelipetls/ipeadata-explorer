@@ -9,12 +9,7 @@ import { Paired12 } from "chartjs-plugin-colorschemes/src/colorschemes/colorsche
 
 Chart.defaults.global.elements.line.fill = false;
 
-const timeUnits = {
-  Mensal: "month",
-  Diária: "day",
-  Anual: "year",
-  Trimestral: "quarter",
-};
+const getYears = dates => new Set([...dates.map(date => date.slice(0, 4))]);
 
 export default function ChartTimeseries({ labels, datasets, metadata }) {
   const chartRef = useRef();
@@ -41,7 +36,12 @@ export default function ChartTimeseries({ labels, datasets, metadata }) {
             {
               type: "time",
               time: {
-                unit: timeUnits[metadata.PERNOME] || "year",
+                unit:
+                  metadata.PERNOME === "Trimestral"
+                    ? "quarter"
+                    : getYears(labels).length > 1
+                    ? "year"
+                    : "month",
               },
             },
           ],
