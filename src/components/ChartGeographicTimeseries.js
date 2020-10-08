@@ -1,4 +1,5 @@
 import React from "react";
+
 import groupBy from "lodash.groupby";
 import ChartTimeseries from "./ChartTimeseries";
 

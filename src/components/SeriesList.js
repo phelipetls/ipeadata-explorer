@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 
 import { Link } from "@material-ui/core";
 
+import { Link as RouterLink, useLocation } from "react-router-dom";
+
 import { useBreakpoint } from "../utils/responsive";
 import { limitQuery, offsetQuery } from "../api/odata";
 import { filterSeriesFromForm, filterSeriesFromUrl } from "../api/seriesFilter";
-import { Link as RouterLink, useLocation } from "react-router-dom";
 
 import TableSortable from "./TableSortable";
 import SeriesFilter from "./SeriesFilter";

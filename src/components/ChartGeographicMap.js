@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { topojson } from "chartjs-chart-geo";
-import ChartChoroplethMap from "./ChartChoroplethMap";
 
+import { topojson } from "chartjs-chart-geo";
 import { getMapUrl } from "../api/ibge";
+import ChartChoroplethMap from "./ChartChoroplethMap";
 
 export default function ChartGeographicMap(props) {
   const [outlineMap, setOutlineMap] = useState([]);

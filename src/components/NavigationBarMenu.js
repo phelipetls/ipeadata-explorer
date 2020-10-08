@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
-import { Link as RouterLink } from "react-router-dom";
-
 import { MoreVert } from "@material-ui/icons";
 import { Menu, MenuItem, IconButton, Link } from "@material-ui/core";
+
+import { Link as RouterLink } from "react-router-dom";
 
 export default function NavigationBarMenu(props) {
   const [anchorEl, setAnchorEl] = useState(null);

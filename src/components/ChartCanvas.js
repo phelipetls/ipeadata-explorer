@@ -1,4 +1,5 @@
 import React from "react";
+
 import ChartContainer from "./ChartContainer";
 
 export default function ChartCanvas({ id }) {

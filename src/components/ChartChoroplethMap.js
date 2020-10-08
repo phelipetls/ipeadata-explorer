@@ -1,13 +1,15 @@
 import React, { useState, useEffect, useRef, useMemo } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+
 import { Select } from "@material-ui/core";
-import ChartCanvas from "./ChartCanvas";
-import groupBy from "lodash.groupby";
-import keyBy from "lodash.keyby";
+import { makeStyles } from "@material-ui/core/styles";
 
 import Chart from "chart.js";
 import "chartjs-adapter-date-fns";
 import "chartjs-chart-geo";
+
+import ChartCanvas from "./ChartCanvas";
+import groupBy from "lodash.groupby";
+import keyBy from "lodash.keyby";
 
 const useStyles = makeStyles(theme => ({
   center: {
@@ -82,8 +84,8 @@ export default function ChartChoroplethMap(props) {
 
     chartRef.current.data.datasets[0].data.forEach(region => {
       const regionCode = region.feature.properties.codarea;
-      const regionValues = seriesInCurrentPeriod[regionCode];
-      region.value = regionValues ? regionValues.VALVALOR : 0;
+      const regionValue = seriesInCurrentPeriod[regionCode];
+      region.value = regionValue ? regionValue.VALVALOR : 0;
     });
 
     chartRef.current.update(0);
@@ -92,6 +94,7 @@ export default function ChartChoroplethMap(props) {
   return (
     <>
       <ChartCanvas id="mapChart" />
+
       <div className={classes.center}>
         <Select
           native

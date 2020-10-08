@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
+
 import { Select, InputLabel, FormControl } from "@material-ui/core";
+
 import {
   getChartType,
   getTopRegions,

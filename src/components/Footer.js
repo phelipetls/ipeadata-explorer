@@ -1,7 +1,8 @@
 import React from "react";
+
 import { Paper, IconButton, Link } from "@material-ui/core";
-import { GitHub } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
+import { GitHub } from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
   footer: {
