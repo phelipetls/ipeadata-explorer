@@ -7,7 +7,6 @@ import { formatDateFromDatePicker } from "../api/utils";
 import Loading from "./Loading";
 import NoData from "./NoData";
 import ChartForm from "./ChartForm";
-import ChartContainer from "./ChartContainer";
 import ChartFormDate from "./ChartFormDate";
 import ChartSection from "./ChartSection";
 import ChartTimeseries from "./ChartTimeseries";
@@ -78,13 +77,11 @@ export default function ChartMacro({ code, metadata }) {
       ) : series.length === 0 ? (
         <NoData style={{ minHeight: theme.chart.minHeight }} />
       ) : (
-        <ChartContainer>
-          <ChartTimeseries
-            labels={labels}
-            datasets={datasets}
-            metadata={metadata}
-          />
-        </ChartContainer>
+        <ChartTimeseries
+          labels={labels}
+          datasets={datasets}
+          metadata={metadata}
+        />
       )}
     </ChartSection>
   );
