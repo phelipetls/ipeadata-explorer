@@ -7,11 +7,11 @@ import TablePaginationActions from "./TablePaginationActions";
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
-    [theme.breakpoints.down("sm")]: {
-      paddingLeft: 0,
-      paddingTop: theme.spacing(1.5),
+    [theme.breakpoints.down("xs")]: {
       flexWrap: "wrap",
       justifyContent: "center",
+      paddingLeft: theme.spacing(2),
+      paddingTop: theme.spacing(1.5),
     },
   },
 }));
