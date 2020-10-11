@@ -1,21 +1,24 @@
 import React, { useState } from "react";
 
-import { TableRow, TableCell, Collapse, IconButton } from "@material-ui/core";
+import { TableCell, TableRow, Collapse, IconButton } from "@material-ui/core";
 import { KeyboardArrowUp, KeyboardArrowDown } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 
 import SeriesMetadataTable from "./SeriesMetadataTable";
 
-const useStyles = makeStyles({
-  root: {
+const useStyles = makeStyles((theme) => ({
+  row: {
     "& > *": {
       borderBottom: "unset",
     },
   },
   collapsedCell: {
-    padding: 0,
+    paddingBottom: 0,
   },
-});
+  metadataCell: {
+    paddingBottom: theme.spacing(2),
+  }
+}));
 
 export default function TableRowCollapsed({ row, columns }) {
   const classes = useStyles();
@@ -25,9 +28,9 @@ export default function TableRowCollapsed({ row, columns }) {
 
   return (
     <>
-      <TableRow key={row.SERCODIGO} className={classes.root}>
+      <TableRow key={row.SERCODIGO} className={classes.row}>
         <TableCell key="name">{renderSeriesName(row)}</TableCell>
-        <TableCell key="collapse" align="right">
+        <TableCell key="collapse" align="right" className={classes.collapsedCell}>
           <IconButton
             aria-label="Expandir linha"
             size="small"
@@ -38,8 +41,8 @@ export default function TableRowCollapsed({ row, columns }) {
         </TableCell>
       </TableRow>
       <TableRow>
-        <TableCell colSpan={2} className={classes.collapsedCell}>
-          <Collapse in={open} unmountOnExit>
+        <TableCell colSpan={2}>
+          <Collapse in={open} className={classes.metadataCell} unmountOnExit>
             <SeriesMetadataTable metadata={row} />
           </Collapse>
         </TableCell>

@@ -5,11 +5,12 @@ import { Link as RouterLink } from "react-router-dom";
 import {
   Link,
   Table,
-  TableCell,
   TableRow,
   TableBody,
   TableHead,
 } from "@material-ui/core";
+
+import StyledTableCell from "./StyledTableCell";
 
 function formatDate(date) {
   return new Date(date).toLocaleDateString();
@@ -47,20 +48,20 @@ export default function SeriesMetadataTable(props) {
     <Table size="small">
       <TableHead>
         <TableRow>
-          <TableCell component="th">Metadado</TableCell>
-          <TableCell component="th">Valor</TableCell>
+          <StyledTableCell component="th">Metadado</StyledTableCell>
+          <StyledTableCell component="th">Valor</StyledTableCell>
         </TableRow>
       </TableHead>
 
       <TableBody>
         {metadataFields.map(({ label, key, render }) => (
           <TableRow key={label}>
-            <TableCell component="th" scope="row" key="label">
+            <StyledTableCell component="th" scope="row" key="label">
               {label}
-            </TableCell>
-            <TableCell key="valor">
+            </StyledTableCell>
+            <StyledTableCell key="valor">
               {key ? metadata[key] : render(metadata)}
-            </TableCell>
+            </StyledTableCell>
           </TableRow>
         ))}
       </TableBody>
