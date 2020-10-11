@@ -25,7 +25,7 @@ export default function TablePaginationFooter(props) {
       <TableRow>
         <TablePagination
           classes={{ toolbar: classes.toolbar }}
-          rowsPerPageOptions={[5, 10, 15]}
+          rowsPerPageOptions={[10, 25, 50]}
           count={count}
           rowsPerPage={rowsPerPage}
           page={page}
