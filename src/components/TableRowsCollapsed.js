@@ -8,9 +8,9 @@ import {
   TableCell,
 } from "@material-ui/core";
 
-import TableRowsShort from "./TableRowsShort";
+import TableRowCollapsed from "./TableRowCollapsed";
 
-export default function TableShort(props) {
+export default function TableRowsCollapsed(props) {
   const { rows, columns, footer, fallback, isLoading } = props;
 
   return (
@@ -21,12 +21,17 @@ export default function TableShort(props) {
           <TableCell></TableCell>
         </TableRow>
       </TableHead>
+
       <TableBody>
-        {isLoading ? (
-          fallback
-        ) : (
-          <TableRowsShort rows={rows} columns={columns} />
-        )}
+        {isLoading
+          ? fallback
+          : rows.map(row => (
+              <TableRowCollapsed
+                key={row.SERCODIGO}
+                row={row}
+                columns={columns}
+              />
+            ))}
       </TableBody>
       {footer}
     </Table>

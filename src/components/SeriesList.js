@@ -12,7 +12,8 @@ import TableSortable from "./TableSortable";
 import SeriesFilter from "./SeriesFilter";
 import TablePaginationFooter from "./TablePaginationFooter";
 import TableSkeleton from "./TableSkeleton";
-import TableShort from "./TableShort";
+import TableRowsCollapsed from "./TableRowsCollapsed";
+import NoData from "./NoData";
 
 function useSearchParams() {
   return new URLSearchParams(useLocation().search);
@@ -131,20 +132,18 @@ export default function SeriesList(props) {
     page * rowsPerPage + rowsPerPage
   );
 
-  let table;
-
-  if (isSmallScreen) {
-    table = (
-      <TableShort
+  const table =
+    (!isLoading && currentPageRows.length) === 0 ? (
+      <NoData style={{ height: "35px" }} />
+    ) : isSmallScreen ? (
+      <TableRowsCollapsed
         rows={currentPageRows}
         columns={columns}
         footer={paginationActions}
         isLoading={isLoading}
         fallback={<TableSkeleton nRows={rowsPerPage} nColumns={2} />}
       />
-    );
-  } else {
-    table = (
+    ) : (
       <TableSortable
         rows={currentPageRows}
         rowKey="SERCODIGO"
@@ -156,7 +155,6 @@ export default function SeriesList(props) {
         }
       />
     );
-  }
 
   return (
     <>
