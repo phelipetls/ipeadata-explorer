@@ -53,7 +53,7 @@ export default function ChartMacro({ code, metadata }) {
     const dateFilter =
       initialDate.value || finalDate.value
         ? `&$filter=${limitByDate(initialDateValue, finalDateValue)}`
-        : limitQuery(lastN.value ? lastN.value : DEFAULT_LIMIT);
+        : limitQuery(lastN.value || DEFAULT_LIMIT);
 
     const url = buildSeriesUrl(code) + dateFilter;
 
