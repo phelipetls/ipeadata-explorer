@@ -9,7 +9,7 @@ export default function NoData({ style }) {
   return (
     <Center style={style}>
       <Error fontSize="large" />
-      <Typography variant="title">Sem dados</Typography>
+      <Typography variant="h2">Sem dados</Typography>
     </Center>
   );
 }

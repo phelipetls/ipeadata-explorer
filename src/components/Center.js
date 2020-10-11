@@ -12,9 +12,13 @@ export default function Center({ style, children }) {
       justify="center"
       style={style}
     >
-      {children.map(child => (
-        <Grid item>{child}</Grid>
-      ))}
+      {Array.isArray(children)
+        ? children.map((child, index) => (
+            <Grid key={index} item>
+              {child}
+            </Grid>
+          ))
+        : children}
     </Grid>
   );
 }
