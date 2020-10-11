@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Link } from "@material-ui/core";
+import { Paper, TableContainer, Link } from "@material-ui/core";
 
 import { Link as RouterLink, useLocation } from "react-router-dom";
 
@@ -13,7 +13,6 @@ import SeriesFilter from "./SeriesFilter";
 import TablePaginationFooter from "./TablePaginationFooter";
 import TableSkeleton from "./TableSkeleton";
 import TableShort from "./TableShort";
-import TableWrapper from "./TableWrapper";
 
 function useSearchParams() {
   return new URLSearchParams(useLocation().search);
@@ -168,7 +167,7 @@ export default function SeriesList(props) {
         onSubmit={handleSubmit}
       />
 
-      <TableWrapper>{table}</TableWrapper>
+      <TableContainer component={Paper}>{table}</TableContainer>
     </>
   );
 }
