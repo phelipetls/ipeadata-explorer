@@ -12,11 +12,12 @@ const useStyles = makeStyles((theme) => ({
       borderBottom: "unset",
     },
   },
-  collapsedCell: {
+  metadataCell: {
+    paddingTop: 0,
     paddingBottom: 0,
   },
-  metadataCell: {
-    paddingBottom: theme.spacing(2),
+  metadataTable: {
+    paddingBottom: theme.spacing(1)
   }
 }));
 
@@ -30,7 +31,7 @@ export default function TableRowCollapsed({ row, columns }) {
     <>
       <TableRow key={row.SERCODIGO} className={classes.row}>
         <TableCell key="name">{renderSeriesName(row)}</TableCell>
-        <TableCell key="collapse" align="right" className={classes.collapsedCell}>
+        <TableCell key="collapse" align="right">
           <IconButton
             aria-label="Expandir linha"
             size="small"
@@ -40,9 +41,10 @@ export default function TableRowCollapsed({ row, columns }) {
           </IconButton>
         </TableCell>
       </TableRow>
+
       <TableRow>
-        <TableCell colSpan={2}>
-          <Collapse in={open} className={classes.metadataCell} unmountOnExit>
+        <TableCell colSpan={2} className={classes.metadataCell}>
+          <Collapse in={open} className={classes.metadataTable} unmountOnExit>
             <SeriesMetadataTable metadata={row} />
           </Collapse>
         </TableCell>
