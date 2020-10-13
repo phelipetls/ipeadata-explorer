@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import NavigationBar from "./components/NavigationBar";
 import Footer from "./components/Footer";
 import Loading from "./components/Loading";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const HomePage = React.lazy(() => import("./components/HomePage"));
 const About = React.lazy(() => import("./components/About"));
@@ -39,12 +40,14 @@ function App() {
         <Container component="main" className={classes.mainSection}>
           <Suspense fallback={<Loading />}>
             <Switch>
-              <Route exact path="/" component={HomePage} />
-              <Route path="/sobre" component={About} />
-              <Route path="/temas" component={Themes} />
-              <Route path="/paises" component={Countries} />
-              <Route path="/series" component={SeriesList} />
-              <Route path="/serie/:code" component={SeriesViewer} />
+              <ErrorBoundary>
+                <Route exact path="/" component={HomePage} />
+                <Route path="/sobre" component={About} />
+                <Route path="/temas" component={Themes} />
+                <Route path="/paises" component={Countries} />
+                <Route path="/series" component={SeriesList} />
+                <Route path="/serie/:code" component={SeriesViewer} />
+              </ErrorBoundary>
             </Switch>
           </Suspense>
         </Container>
