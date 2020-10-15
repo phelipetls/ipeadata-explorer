@@ -133,7 +133,7 @@ export default function SeriesList(props) {
   );
 
   const table =
-    (!isLoading && currentPageRows.length) === 0 ? (
+    !isLoading && rows.length === 0 ? (
       <NoData style={{ height: "35px" }} />
     ) : isSmallScreen ? (
       <TableRowsCollapsed
