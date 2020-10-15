@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 
 import { Paper, TableContainer, Link } from "@material-ui/core";
 
@@ -132,6 +132,14 @@ export default function SeriesList(props) {
     page * rowsPerPage + rowsPerPage
   );
 
+  const tableSkeleton = useMemo(() => {
+    return isSmallScreen ? (
+      <TableSkeleton nRows={rowsPerPage} nColumns={2} />
+    ) : (
+      <TableSkeleton nRows={rowsPerPage} nColumns={columns.length} />
+    );
+  }, [isSmallScreen, rowsPerPage]);
+
   const table =
     !isLoading && rows.length === 0 ? (
       <NoData style={{ height: "35px" }} />
@@ -141,7 +149,7 @@ export default function SeriesList(props) {
         columns={columns}
         footer={paginationActions}
         isLoading={isLoading}
-        fallback={<TableSkeleton nRows={rowsPerPage} nColumns={2} />}
+        skeleton={tableSkeleton}
       />
     ) : (
       <TableSortable
@@ -150,9 +158,7 @@ export default function SeriesList(props) {
         columns={columns}
         footer={paginationActions}
         isLoading={isLoading}
-        fallback={
-          <TableSkeleton nRows={rowsPerPage} nColumns={columns.length} />
-        }
+        skeleton={tableSkeleton}
       />
     );
 

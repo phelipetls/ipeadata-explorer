@@ -37,7 +37,7 @@ export default function TableSortable(props) {
   const [order, setOrder] = useState("desc");
   const [orderBy, setOrderBy] = useState(props.defaultOrderBy);
 
-  const { columns, rows, rowKey, footer, isLoading, fallback } = props;
+  const { columns, rows, rowKey, footer, isLoading, skeleton } = props;
 
   const handleSort = (e, column) => {
     if (column === orderBy) {
@@ -86,7 +86,7 @@ export default function TableSortable(props) {
       </TableHead>
       <TableBody>
         {isLoading ? (
-          fallback
+          skeleton
         ) : (
           <TableRowsLarge rows={rows} columns={columns} rowKey={rowKey} />
         )}

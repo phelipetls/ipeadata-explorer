@@ -11,7 +11,7 @@ import {
 import TableRowCollapsed from "./TableRowCollapsed";
 
 export default function TableRowsCollapsed(props) {
-  const { rows, columns, footer, fallback, isLoading } = props;
+  const { rows, columns, footer, skeleton, isLoading } = props;
 
   return (
     <Table size="small">
@@ -24,7 +24,7 @@ export default function TableRowsCollapsed(props) {
 
       <TableBody>
         {isLoading
-          ? fallback
+          ? skeleton
           : rows.map(row => (
               <TableRowCollapsed
                 key={row.SERCODIGO}
