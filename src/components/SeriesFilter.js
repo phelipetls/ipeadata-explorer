@@ -18,6 +18,9 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(2),
     marginBottom: theme.spacing(3),
   },
+  arrow: {
+    marginLeft: theme.spacing(1),
+  },
 }));
 
 export default function SeriesFilter(props) {
@@ -33,6 +36,7 @@ export default function SeriesFilter(props) {
           aria-label="Expande filtros"
           size="small"
           onClick={() => setFormOpen(!formOpen)}
+          className={classes.arrow}
         >
           {formOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
         </IconButton>
