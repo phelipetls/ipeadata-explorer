@@ -29,9 +29,9 @@ export default function TableRowCollapsed({ row, columns }) {
 
   return (
     <>
-      <TableRow key={row.SERCODIGO} className={classes.row}>
-        <TableCell key="name">{renderSeriesName(row)}</TableCell>
-        <TableCell key="collapse" align="right">
+      <TableRow className={classes.row}>
+        <TableCell>{renderSeriesName(row)}</TableCell>
+        <TableCell align="right">
           <IconButton
             aria-label="Expandir linha"
             size="small"
