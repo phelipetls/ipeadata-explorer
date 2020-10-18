@@ -12,7 +12,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import TableRowsLarge from "./TableRowsLarge";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   table: {
     "thead tr th:first-child": {
       width: "50%",
@@ -39,7 +39,7 @@ export default function TableSortable(props) {
 
   const { columns, rows, rowKey, footer, isLoading, skeleton } = props;
 
-  const handleSort = (e, column) => {
+  const handleSort = (_, column) => {
     if (column === orderBy) {
       setOrder(invertSortDirections[order]);
     } else {

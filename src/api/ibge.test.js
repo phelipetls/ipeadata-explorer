@@ -1,4 +1,4 @@
-import { BASE_URL_MAPS, getMapUrl } from "./ibge";
+import { getMapUrl } from "./ibge";
 
 test("it should return a correct url given id and resolution", () => {
   expect(getMapUrl({ geoBoundaryValue: 1, geoDivision: "Estados" })).toBe(

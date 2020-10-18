@@ -41,7 +41,7 @@ const columns = [
   { key: "SERMAXDATA", type: "date", label: "Fim", render: getYear },
 ];
 
-export default function SeriesList(props) {
+export default function SeriesList() {
   const isSmallScreen = useBreakpoint("sm");
 
   const [rows, setRows] = useState([]);
@@ -85,7 +85,7 @@ export default function SeriesList(props) {
     setFormOpen(false);
   }
 
-  function handlePageChange(e, newPage) {
+  function handlePageChange(_, newPage) {
     setPage(newPage);
 
     const newTotalRows = (newPage + 1) * rowsPerPage;
