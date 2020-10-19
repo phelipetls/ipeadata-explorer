@@ -86,9 +86,9 @@ export default function SeriesList() {
   function handlePageChange(_, newPage) {
     setPage(newPage);
 
-    const totalRows = (newPage + 1) * rowsPerPage;
+    const newTotalRows = (newPage + 1) * rowsPerPage;
 
-    if (totalRows >= rows.length) {
+    if (newTotalRows >= rows.length) {
       setNewPageUrl(url + offsetQuery((page + 1) * rowsPerPage));
     }
   }
