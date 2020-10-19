@@ -1,0 +1,23 @@
+name: Deploy website to Surge on push
+
+on:
+  push:
+    branches:
+      master
+
+jobs:
+  build:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout master
+        uses: actions/checkout@v2
+      - name: Build website
+        run: npm run build
+      - name: Deploy website
+        uses: dswistowski/surge-sh-action@v1
+        with:
+          domain: http://ipeadata-explorer.surge.sh
+          project: "./build"
+          login: ${{ secrets.SURGE_LOGIN }}
+          token: ${{ secrets.SURGE_TOKEN }}
