@@ -85,7 +85,7 @@ export default function TableSortable(props) {
         <TableRow>{headers}</TableRow>
       </TableHead>
       <TableBody>
-        {isLoading ? (
+        {isLoading || rows.length == 0 ? (
           skeleton
         ) : (
           <TableRowsLarge rows={rows} columns={columns} rowKey={rowKey} />
