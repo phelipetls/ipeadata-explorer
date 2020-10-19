@@ -10,8 +10,6 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import TableRowsLarge from "./TableRowsLarge";
-
 const useStyles = makeStyles(() => ({
   table: {
     "thead tr th:first-child": {
@@ -85,11 +83,22 @@ export default function TableSortable(props) {
         <TableRow>{headers}</TableRow>
       </TableHead>
       <TableBody>
-        {isLoading || rows.length == 0 ? (
-          skeleton
-        ) : (
-          <TableRowsLarge rows={rows} columns={columns} rowKey={rowKey} />
-        )}
+        {isLoading || rows.length === 0
+          ? skeleton
+          : rows.map(row => (
+              <TableRow key={row[rowKey]}>
+                {columns.map(column => (
+                  <TableCell
+                    key={column.key}
+                    align={column.type === "numeric" ? "right" : "left"}
+                  >
+                    {column.render
+                      ? column.render(row, column)
+                      : row[column.key]}
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))}
       </TableBody>
       {footer}
     </Table>
