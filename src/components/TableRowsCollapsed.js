@@ -23,7 +23,7 @@ export default function TableRowsCollapsed(props) {
       </TableHead>
 
       <TableBody>
-        {isLoading || rows.length == 0
+        {isLoading || rows.length === 0
           ? skeleton
           : rows.map(row => (
               <TableRowCollapsed
