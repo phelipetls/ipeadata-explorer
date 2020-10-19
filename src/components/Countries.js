@@ -54,7 +54,7 @@ export default function Countries() {
         columns={columns}
         defaultOrderBy="Metadados@odata.count"
         isLoading={isLoading}
-        fallback={<TableSkeleton nRows={10} nColumns={columns.length} />}
+        skeleton={<TableSkeleton nRows={10} nColumns={columns.length} />}
       />
     </TableContainer>
   );
