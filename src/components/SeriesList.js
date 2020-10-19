@@ -45,7 +45,7 @@ export default function SeriesList() {
   const isSmallScreen = useBreakpoint("sm");
 
   const [rows, setRows] = useState([]);
-  const [totalRows, setTotalRows] = useState(0);
+  const [rowsCount, setRowsCount] = useState(0);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [formOpen, setFormOpen] = useState(false);
@@ -66,7 +66,7 @@ export default function SeriesList() {
       const response = await fetch(url);
       const json = await response.json();
       setRows(json.value);
-      setTotalRows(json["@odata.count"]);
+      setRowsCount(json["@odata.count"]);
 
       setIsLoading(false);
     }
@@ -120,7 +120,7 @@ export default function SeriesList() {
   const paginationActions = (
     <TablePaginationFooter
       page={page}
-      count={totalRows}
+      count={rowsCount}
       rowsPerPage={rowsPerPage}
       onChangePage={handlePageChange}
       onChangeRowsPerPage={handleRowsPerPageChange}
