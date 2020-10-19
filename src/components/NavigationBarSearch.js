@@ -6,7 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import BackButton from "./BackButton";
 import SearchButton from "./SearchButton";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   searchContainer: {
     height: "100%",
     display: "flex",

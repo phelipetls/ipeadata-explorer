@@ -11,7 +11,7 @@ import ChartCanvas from "./ChartCanvas";
 import groupBy from "lodash.groupby";
 import keyBy from "lodash.keyby";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   center: {
     display: "flex",
     alignItems: "center",

@@ -5,7 +5,7 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 
 import { Link as RouterLink } from "react-router-dom";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   link: {
     "&:not(:last-child)": {
       marginRight: "1.5em",
