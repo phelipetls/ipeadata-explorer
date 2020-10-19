@@ -45,7 +45,6 @@ export default function SeriesList() {
   const isSmallScreen = useBreakpoint("sm");
 
   const [rows, setRows] = useState([]);
-  const [currentRows, setCurrentRows] = useState([]);
   const [totalRows, setTotalRows] = useState(0);
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -67,7 +66,6 @@ export default function SeriesList() {
       const response = await fetch(url);
       const json = await response.json();
       setRows(json.value);
-      setCurrentRows(json.value);
       setTotalRows(json["@odata.count"]);
 
       setIsLoading(false);
@@ -88,14 +86,10 @@ export default function SeriesList() {
   function handlePageChange(_, newPage) {
     setPage(newPage);
 
-    const newTotalRows = (newPage + 1) * rowsPerPage;
+    const totalRows = (newPage + 1) * rowsPerPage;
 
-    if (newTotalRows >= rows.length) {
+    if (totalRows >= rows.length) {
       setNewPageUrl(url + offsetQuery((page + 1) * rowsPerPage));
-    } else {
-      setCurrentRows(
-        rows.slice(newPage + rowsPerPage, newPage + rowsPerPage * 2)
-      );
     }
   }
 
@@ -115,17 +109,13 @@ export default function SeriesList() {
 
       const response = await fetch(newPageUrl);
       const json = await response.json();
-      const newRows = rows.concat(json.value);
-      setRows(newRows);
-      setCurrentRows(
-        newRows.slice(page + rowsPerPage, page + rowsPerPage + rowsPerPage)
-      );
+      setRows(rows => rows.concat(json.value));
 
       setIsLoading(false);
     }
 
     fetchMoreRows();
-  }, [page, rows, rowsPerPage, newPageUrl]);
+  }, [newPageUrl]);
 
   const paginationActions = (
     <TablePaginationFooter
@@ -135,6 +125,11 @@ export default function SeriesList() {
       onChangePage={handlePageChange}
       onChangeRowsPerPage={handleRowsPerPageChange}
     />
+  );
+
+  const currentPageRows = rows.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
   );
 
   const tableSkeleton = useMemo(() => {
@@ -150,7 +145,7 @@ export default function SeriesList() {
       <NoData style={{ height: "35px" }} />
     ) : isSmallScreen ? (
       <TableRowsCollapsed
-        rows={currentRows}
+        rows={currentPageRows}
         columns={columns}
         footer={paginationActions}
         isLoading={isLoading}
@@ -158,7 +153,7 @@ export default function SeriesList() {
       />
     ) : (
       <TableSortable
-        rows={currentRows}
+        rows={currentPageRows}
         rowKey="SERCODIGO"
         columns={columns}
         footer={paginationActions}
