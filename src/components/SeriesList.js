@@ -140,27 +140,24 @@ export default function SeriesList() {
     );
   }, [isSmallScreen, rowsPerPage]);
 
-  const table =
-    !isLoading && rows.length === 0 ? (
-      <NoData style={{ height: "35px" }} />
-    ) : isSmallScreen ? (
-      <TableRowsCollapsed
-        rows={currentPageRows}
-        columns={columns}
-        footer={paginationActions}
-        isLoading={isLoading}
-        skeleton={tableSkeleton}
-      />
-    ) : (
-      <TableSortable
-        rows={currentPageRows}
-        rowKey="SERCODIGO"
-        columns={columns}
-        footer={paginationActions}
-        isLoading={isLoading}
-        skeleton={tableSkeleton}
-      />
-    );
+  const table = isSmallScreen ? (
+    <TableRowsCollapsed
+      rows={currentPageRows}
+      columns={columns}
+      footer={paginationActions}
+      isLoading={isLoading}
+      skeleton={tableSkeleton}
+    />
+  ) : (
+    <TableSortable
+      rows={currentPageRows}
+      rowKey="SERCODIGO"
+      columns={columns}
+      footer={paginationActions}
+      isLoading={isLoading}
+      skeleton={tableSkeleton}
+    />
+  );
 
   return (
     <>
@@ -171,7 +168,13 @@ export default function SeriesList() {
         onSubmit={handleSubmit}
       />
 
-      <TableContainer component={Paper}>{table}</TableContainer>
+      {!isLoading && rows.length === 0 ? (
+        <Paper>
+          <NoData style={{ minHeight: "300px" }} />
+        </Paper>
+      ) : (
+        <TableContainer component={Paper}>{table}</TableContainer>
+      )}
     </>
   );
 }
