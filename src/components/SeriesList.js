@@ -20,7 +20,8 @@ function useSearchParams() {
 }
 
 const BASE_URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados";
-const URL = `${BASE_URL}?$count=true&$orderby=SERATUALIZACAO desc`;
+const URL = `${BASE_URL}?$count=true`;
+const DEFAULT_ORDER_BY = `&$orderby=SERATUALIZACAO desc`;
 
 const getYear = (row, column) => new Date(row[column.key]).getFullYear();
 
@@ -55,7 +56,7 @@ export default function SeriesList() {
   const urlFromSearchParams = filterSeriesFromUrl(searchParams);
 
   let [url, setUrl] = useState(
-    (urlFromSearchParams || URL) + limitQuery(rowsPerPage)
+    (urlFromSearchParams || URL) + DEFAULT_ORDER_BY + limitQuery(rowsPerPage)
   );
   const [newPageUrl, setNewPageUrl] = useState("");
 
@@ -78,7 +79,7 @@ export default function SeriesList() {
     e.preventDefault();
 
     let url = filterSeriesFromForm(e.target.elements);
-    setUrl(url + limitQuery(rowsPerPage));
+    setUrl(url + DEFAULT_ORDER_BY + limitQuery(rowsPerPage));
     setPage(0);
     setFormOpen(false);
   }
