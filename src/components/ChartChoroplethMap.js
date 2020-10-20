@@ -100,7 +100,7 @@ export default function ChartChoroplethMap(props) {
           native
           variant="outlined"
           label="Períodos"
-          value={period}
+          value={period || ""}
           onChange={e => setPeriod(e.target.value)}
         >
           {periods.map(period => (
