@@ -32,7 +32,7 @@ export default function ChartGeographicMap(props) {
     }
 
     fetchGeographicData();
-  }, [series, geoBoundaryValue, geoDivision]);
+  }, [geoBoundaryValue, geoDivision]);
 
   const labels = detailedMap.map(region => {
     const regionSeries = series.find(
