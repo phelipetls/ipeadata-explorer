@@ -4,7 +4,7 @@ import { Select, InputLabel, FormControl } from "@material-ui/core";
 
 import {
   getChartType,
-  getTopRegions,
+  getContainingRegions,
   getRegionsUrl,
   unpluralize,
 } from "../api/ibge";
@@ -75,7 +75,7 @@ export default function ChartFormGeography(props) {
               onChange={e => setGeoBoundary(e.target.value)}
               inputProps={{ name: "geoBoundary", id: "geoBoundary" }}
             >
-              {getTopRegions(geoDivision).map(region => (
+              {getContainingRegions(geoDivision).map(region => (
                 <option key={region} value={region}>
                   {region}
                 </option>

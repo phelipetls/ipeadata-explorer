@@ -33,17 +33,18 @@ export function getMapUrl({ geoBoundaryValue, geoDivision }) {
 }
 
 /**
- * Returns top geographic regions (which "contains" a given geographic region).
+ * Returns geographic regions which "contains" a given geographic
+ * region.
  *
- * Following the way regions are encoded in the URL (see variable
- * `ibgeGeoRegionsCodes`), the regions which "contain" a given region have smaller
- * code numbers.
+ * Following the way regions are encoded by the IBGE API (see variable
+ * `ibgeGeoRegionsCodes`), the regions which "contain" a given region have
+ * smaller code numbers.
  *
  * @param {string} geoRegion - A geographic region, one from the set of
  * "Estados", "Mesorregiões", "Microrregiões", "Municípios".
  *
  */
-export function getTopRegions(geoRegion) {
+export function getContainingRegions(geoRegion) {
   const geoRegionCode = ibgeGeoRegionsCodes[geoRegion];
   return Object.entries(ibgeGeoRegionsCodes)
     .filter(([region, code]) => code < geoRegionCode)
