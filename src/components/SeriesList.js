@@ -6,7 +6,11 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 
 import { useBreakpoint } from "../utils/responsive";
 import { limitQuery, offsetQuery } from "../api/odata";
-import { filterSeriesFromForm, filterSeriesFromUrl } from "../api/seriesFilter";
+import {
+  DEFAULT_URL,
+  filterSeriesFromForm,
+  filterSeriesFromUrl,
+} from "../api/seriesFilter";
 
 import TableSortable from "./TableSortable";
 import SeriesFilter from "./SeriesFilter";
@@ -18,10 +22,6 @@ import NoData from "./NoData";
 function useSearchParams() {
   return new URLSearchParams(useLocation().search);
 }
-
-const BASE_URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados";
-const URL = `${BASE_URL}?$count=true`;
-const DEFAULT_ORDER_BY = `&$orderby=SERATUALIZACAO desc`;
 
 const getYear = (row, column) => new Date(row[column.key]).getFullYear();
 
@@ -56,7 +56,7 @@ export default function SeriesList() {
   const urlFromSearchParams = filterSeriesFromUrl(searchParams);
 
   let [url, setUrl] = useState(
-    (urlFromSearchParams || URL) + DEFAULT_ORDER_BY + limitQuery(rowsPerPage)
+    (urlFromSearchParams || DEFAULT_URL) + limitQuery(rowsPerPage)
   );
   const [newPageUrl, setNewPageUrl] = useState("");
 
@@ -79,7 +79,7 @@ export default function SeriesList() {
     e.preventDefault();
 
     let url = filterSeriesFromForm(e.target.elements);
-    setUrl(url + DEFAULT_ORDER_BY + limitQuery(rowsPerPage));
+    setUrl(url + limitQuery(rowsPerPage));
     setPage(0);
     setFormOpen(false);
   }

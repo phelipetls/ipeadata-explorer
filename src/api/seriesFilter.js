@@ -1,18 +1,21 @@
 import { formatDateFromDatePicker } from "./utils";
 
-const URL =
-  "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?$count=true";
+export const DEFAULT_URL =
+  "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?" +
+  "$count=true&$orderby=SERATUALIZACAO desc";
 
 function getFormElementValue(element) {
   return element.type === "checkbox" ? element.checked : element.value;
 }
 
 export function filterSeriesFromForm(formElements) {
-  return filterSeries(
-    Array.from(formElements)
-      .filter(element => getFormElementValue(element) && !element.disabled)
-      .map(element => [element.name, getFormElementValue(element)])
-  );
+  const filledFormElements = Array.from(formElements)
+    .filter(element => getFormElementValue(element) && !element.disabled)
+    .map(element => [element.name, getFormElementValue(element)]);
+
+  return filledFormElements.length > 0
+    ? filterSeries(filledFormElements)
+    : DEFAULT_URL;
 }
 
 export function filterSeriesFromUrl(searchParams) {
@@ -21,9 +24,9 @@ export function filterSeriesFromUrl(searchParams) {
   }
 }
 
-function filterSeries(queries) {
-  const filterQuery = queries.map(getFilter).join(" and ");
-  return URL + `&$filter=${filterQuery}` + getHelperQuery(filterQuery);
+function filterSeries(nameValuePairs) {
+  const filterQuery = nameValuePairs.map(getFilter).join(" and ");
+  return DEFAULT_URL + `&$filter=${filterQuery}` + getHelperQuery(filterQuery);
 }
 
 function getFilter([name, value]) {
