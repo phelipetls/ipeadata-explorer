@@ -30,17 +30,12 @@ const columns = [
 
 export default function Countries() {
   const [countries, setCountries] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchCountries() {
-      setIsLoading(true);
-
       const response = await fetch(URL);
       const json = await response.json();
       setCountries(json.value);
-
-      setIsLoading(false);
     }
 
     fetchCountries();
@@ -53,7 +48,6 @@ export default function Countries() {
         rowKey="PAICODIGO"
         columns={columns}
         defaultOrderBy="Metadados@odata.count"
-        isLoading={isLoading}
         skeleton={<TableSkeleton nRows={10} nColumns={columns.length} />}
       />
     </TableContainer>

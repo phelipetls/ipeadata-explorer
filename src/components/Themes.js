@@ -28,27 +28,22 @@ export default function Themes() {
 
   const [themes, setThemes] = useState([]);
   const [bases, setBases] = useState(["MACRO", "REGIONAL", "SOCIAL"]);
-  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchThemes() {
-      setIsLoading(true);
-
       const response = await fetch(URL);
       const json = await response.json();
       setThemes(json.value);
-
-      setIsLoading(false);
     }
 
     fetchThemes();
   }, []);
 
-  const handleChangeBases = (e, newBases) => {
+  const handleChangeBases = (_, newBases) => {
     setBases(newBases);
   };
 
-  return isLoading ? (
+  return themes.length === 0 ? (
     <Loading />
   ) : (
     <div>
