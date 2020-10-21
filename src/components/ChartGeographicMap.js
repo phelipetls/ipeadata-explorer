@@ -1,50 +1,64 @@
 import React, { useState, useEffect } from "react";
 
 import { topojson } from "chartjs-chart-geo";
-import { getMapUrl } from "../api/ibge";
+import { getMapUrl, getRegionsUrl } from "../api/ibge";
+
+import keyBy from "lodash.keyby";
+
 import ChartChoroplethMap from "./ChartChoroplethMap";
 
 export default function ChartGeographicMap(props) {
-  const [outlineMap, setOutlineMap] = useState([]);
-  const [detailedMap, setDetailedMap] = useState([]);
+  const [outlineFeatures, setOutlineFeatures] = useState([]);
+  const [regionsFeatures, setRegionsFeatures] = useState([]);
+  const [regionsMetadata, setRegionsMetadata] = useState([]);
 
   const { series, metadata, geoDivision, geoBoundaryValue } = props;
 
   useEffect(() => {
     async function fetchGeographicData() {
-      const outlineMapUrl = getMapUrl({ geoBoundaryValue });
-      const detailedMapUrl = getMapUrl({ geoBoundaryValue, geoDivision });
+      const outlineFeaturesUrl = getMapUrl({ geoBoundaryValue });
+      const regionsFeaturesUrl = getMapUrl({ geoBoundaryValue, geoDivision });
+      const regionsUrl = getRegionsUrl(geoDivision);
 
-      const requests = [fetch(outlineMapUrl), fetch(detailedMapUrl)];
+      const requests = [
+        fetch(outlineFeaturesUrl),
+        fetch(regionsFeaturesUrl),
+        fetch(regionsUrl),
+      ];
 
       const responses = await Promise.all(requests);
-      const [outlineMapJson, detailedMapJson] = await Promise.all(
-        responses.map(response => response.json())
+      const [
+        outlineFeaturesJson,
+        regionsFeaturesJson,
+        regionsJson,
+      ] = await Promise.all(responses.map(response => response.json()));
+
+      setRegionsMetadata(regionsJson);
+
+      setOutlineFeatures(
+        topojson.feature(outlineFeaturesJson, outlineFeaturesJson.objects.foo)
+          .features
       );
 
-      setOutlineMap(
-        topojson.feature(outlineMapJson, outlineMapJson.objects.foo).features
-      );
-
-      setDetailedMap(
-        topojson.feature(detailedMapJson, detailedMapJson.objects.foo).features
+      setRegionsFeatures(
+        topojson.feature(regionsFeaturesJson, regionsFeaturesJson.objects.foo)
+          .features
       );
     }
 
     fetchGeographicData();
   }, [geoBoundaryValue, geoDivision]);
 
-  const labels = detailedMap.map(region => {
-    const regionSeries = series.find(
-      series => series.TERCODIGO === region.properties.codarea
-    );
-    return regionSeries ? regionSeries.TERNOME : "Não disponível";
+  const regionsById = keyBy(regionsMetadata, "id");
+
+  const labels = regionsFeatures.map(feature => {
+    return regionsById[feature.properties.codarea].nome || "Não disponível";
   });
 
   const datasets = [
     {
-      outline: outlineMap,
-      data: detailedMap.map(region => {
+      outline: outlineFeatures,
+      data: regionsFeatures.map(region => {
         return { feature: region, value: 0 };
       }),
     },
