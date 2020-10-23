@@ -1,15 +1,20 @@
 import React from "react";
 
-import { Typography } from "@material-ui/core";
+import { Grid, Typography } from "@material-ui/core";
 import { Error } from "@material-ui/icons";
-
-import Center from "./Center";
 
 export default function NoData({ style }) {
   return (
-    <Center style={style}>
+    <Grid
+      container
+      spacing={1}
+      direction="column"
+      alignItems="center"
+      justify="center"
+      style={style}
+    >
       <Error fontSize="large" />
       <Typography variant="h6">Sem dados</Typography>
-    </Center>
+    </Grid>
   );
 }
