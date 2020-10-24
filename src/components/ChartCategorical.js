@@ -19,8 +19,8 @@ const CATEGORY_COUNT_QUERY =
 
 const parseJsonCount = json =>
   json.reduce(
-    (obj, category) => ({
-      ...obj,
+    (acc, category) => ({
+      ...acc,
       [category.VALVALOR]: category.totalCount,
     }),
     {}
@@ -29,17 +29,17 @@ const parseJsonCount = json =>
 export default function ChartCategorical({ code, metadata }) {
   const theme = useTheme();
 
-  const [count, setCount] = useState([]);
+  const [categoriesCount, setCategoriesCount] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     async function fetchCategoricalSeries() {
-      const minDate = subtractSeriesMaxDate({
+      const startDate = subtractSeriesMaxDate({
         metadata: metadata,
         offset: DEFAULT_LIMIT,
       });
 
-      const dateFilter = limitByDate(minDate);
+      const dateFilter = limitByDate(startDate);
       const url =
         buildMetadataUrl(code) +
         `/ValoresStr?$apply=filter(${dateFilter})/${CATEGORY_COUNT_QUERY}`;
@@ -48,7 +48,7 @@ export default function ChartCategorical({ code, metadata }) {
 
       const response = await fetch(url);
       const json = await response.json();
-      setCount(parseJsonCount(json.value));
+      setCategoriesCount(parseJsonCount(json.value));
 
       setIsLoading(false);
     }
@@ -56,11 +56,11 @@ export default function ChartCategorical({ code, metadata }) {
     fetchCategoricalSeries();
   }, [metadata, code]);
 
-  const labels = Object.keys(count);
+  const labels = Object.keys(categoriesCount);
   const datasets = [
     {
       label: metadata.UNINOME,
-      data: Object.values(count),
+      data: Object.values(categoriesCount),
     },
   ];
 
@@ -91,7 +91,7 @@ export default function ChartCategorical({ code, metadata }) {
 
     const response = await fetch(url);
     const json = await response.json();
-    setCount(parseJsonCount(json.value));
+    setCategoriesCount(parseJsonCount(json.value));
 
     setIsLoading(false);
   }
@@ -104,7 +104,7 @@ export default function ChartCategorical({ code, metadata }) {
 
       {isLoading ? (
         <Loading style={{ minHeight: theme.chart.minHeight }} />
-      ) : count.length === 0 ? (
+      ) : categoriesCount.length === 0 ? (
         <NoData style={{ minHeight: theme.chart.minHeight }} />
       ) : (
         <ChartBar metadata={metadata} labels={labels} datasets={datasets} />
