@@ -1,16 +1,13 @@
 import React, { useState, useEffect } from "react";
 
-import { useTheme } from "@material-ui/styles";
-
 import { limitByDate, buildMetadataUrl } from "../api/odata";
 import { formatDateFromDatePicker, subtractSeriesMaxDate } from "../api/utils";
 
-import Loading from "./Loading";
-import NoData from "./NoData";
 import ChartBar from "./ChartBar";
 import ChartSection from "./ChartSection";
 import ChartForm from "./ChartForm";
 import ChartFormDate from "./ChartFormDate";
+import ChartWrapper from "./ChartWrapper";
 
 const DEFAULT_LIMIT = 0;
 
@@ -27,8 +24,6 @@ const parseJsonCount = json =>
   );
 
 export default function ChartCategorical({ code, metadata }) {
-  const theme = useTheme();
-
   const [categoriesCount, setCategoriesCount] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -102,13 +97,9 @@ export default function ChartCategorical({ code, metadata }) {
         <ChartFormDate metadata={metadata} />
       </ChartForm>
 
-      {isLoading ? (
-        <Loading style={{ minHeight: theme.chart.minHeight }} />
-      ) : categoriesCount.length === 0 ? (
-        <NoData text="Sem dados" style={{ minHeight: theme.chart.minHeight }} />
-      ) : (
+      <ChartWrapper isLoading={isLoading} series={categoriesCount}>
         <ChartBar metadata={metadata} labels={labels} datasets={datasets} />
-      )}
+      </ChartWrapper>
     </ChartSection>
   );
 }

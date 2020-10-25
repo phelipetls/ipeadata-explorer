@@ -1,21 +1,17 @@
 import React, { useState, useEffect } from "react";
 
-import { useTheme } from "@material-ui/styles";
 import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
 import { formatDateFromDatePicker } from "../api/utils";
 
-import Loading from "./Loading";
-import NoData from "./NoData";
 import ChartForm from "./ChartForm";
 import ChartFormDate from "./ChartFormDate";
 import ChartSection from "./ChartSection";
 import ChartTimeseries from "./ChartTimeseries";
+import ChartWrapper from "./ChartWrapper";
 
 const DEFAULT_LIMIT = 50;
 
 export default function ChartMacro({ code, metadata }) {
-  const theme = useTheme();
-
   const [series, setSeries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -72,17 +68,13 @@ export default function ChartMacro({ code, metadata }) {
         <ChartFormDate metadata={metadata} />
       </ChartForm>
 
-      {isLoading ? (
-        <Loading style={{ minHeight: theme.chart.minHeight }} />
-      ) : series.length === 0 ? (
-        <NoData text="Sem dados" style={{ minHeight: theme.chart.minHeight }} />
-      ) : (
+      <ChartWrapper isLoading={isLoading} series={series}>
         <ChartTimeseries
           labels={labels}
           datasets={datasets}
           metadata={metadata}
         />
-      )}
+      </ChartWrapper>
     </ChartSection>
   );
 }

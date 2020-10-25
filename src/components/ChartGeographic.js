@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 
-import { useTheme } from "@material-ui/styles";
-
 import {
   limitByDate,
   buildSeriesUrl,
@@ -11,19 +9,17 @@ import { formatDateFromDatePicker, subtractSeriesMaxDate } from "../api/utils";
 import { getChartType } from "../api/ibge";
 
 import Loading from "./Loading";
-import NoData from "./NoData";
 import ChartForm from "./ChartForm";
 import ChartFormDate from "./ChartFormDate";
 import ChartFormGeography from "./ChartFormGeography";
 import ChartSection from "./ChartSection";
 import ChartGeographicMap from "./ChartGeographicMap";
 import ChartGeographicTimeseries from "./ChartGeographicTimeseries";
+import ChartWrapper from "./ChartWrapper";
 
 const DEFAULT_LIMIT = 5;
 
 export default function ChartGeographic({ code, metadata }) {
-  const theme = useTheme();
-
   const [series, setSeries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -36,7 +32,7 @@ export default function ChartGeographic({ code, metadata }) {
       const availableGeoDivisions = await fetchGeographicDivisions(code);
       setGeoDivisions(availableGeoDivisions);
 
-      const newGeoDivision = availableGeoDivisions[0];
+      const newGeoDivision = availableGeoDivisions[3];
       setGeoDivision(newGeoDivision);
 
       const startDate = subtractSeriesMaxDate({
@@ -136,20 +132,18 @@ export default function ChartGeographic({ code, metadata }) {
         )}
       </ChartForm>
 
-      {isLoading ? (
-        <Loading style={{ minHeight: theme.chart.minHeight }} />
-      ) : series.length === 0 ? (
-        <NoData text="Sem dados" style={{ minHeight: theme.chart.minHeight }} />
-      ) : chartType === "line" ? (
-        <ChartGeographicTimeseries series={series} metadata={metadata} />
-      ) : (
-        <ChartGeographicMap
-          series={series}
-          metadata={metadata}
-          geoDivision={geoDivision}
-          geoBoundaryValue={geoBoundaryValue}
-        />
-      )}
+      <ChartWrapper isLoading={isLoading} series={series}>
+        {chartType === "line" ? (
+          <ChartGeographicTimeseries series={series} metadata={metadata} />
+        ) : (
+          <ChartGeographicMap
+            series={series}
+            metadata={metadata}
+            geoDivision={geoDivision}
+            geoBoundaryValue={geoBoundaryValue}
+          />
+        )}
+      </ChartWrapper>
     </ChartSection>
   );
 }
