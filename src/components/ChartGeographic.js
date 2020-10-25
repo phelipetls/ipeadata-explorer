@@ -139,7 +139,7 @@ export default function ChartGeographic({ code, metadata }) {
       {isLoading ? (
         <Loading style={{ minHeight: theme.chart.minHeight }} />
       ) : series.length === 0 ? (
-        <NoData style={{ minHeight: theme.chart.minHeight }} />
+        <NoData text="Sem dados" style={{ minHeight: theme.chart.minHeight }} />
       ) : chartType === "line" ? (
         <ChartGeographicTimeseries series={series} metadata={metadata} />
       ) : (

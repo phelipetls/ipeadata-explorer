@@ -75,7 +75,7 @@ export default function ChartMacro({ code, metadata }) {
       {isLoading ? (
         <Loading style={{ minHeight: theme.chart.minHeight }} />
       ) : series.length === 0 ? (
-        <NoData style={{ minHeight: theme.chart.minHeight }} />
+        <NoData text="Sem dados" style={{ minHeight: theme.chart.minHeight }} />
       ) : (
         <ChartTimeseries
           labels={labels}

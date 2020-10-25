@@ -163,7 +163,10 @@ export default function SeriesList() {
 
       {!isLoading && rows.length === 0 ? (
         <Paper>
-          <NoData style={{ minHeight: "300px" }} />
+          <NoData
+            text="Nenhum resultado para essa pesquisa"
+            style={{ minHeight: "300px" }}
+          />
         </Paper>
       ) : (
         <TableContainer component={Paper}>{table}</TableContainer>
