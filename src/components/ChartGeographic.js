@@ -35,16 +35,22 @@ export default function ChartGeographic({ code, metadata }) {
       const newGeoDivision = availableGeoDivisions[0];
       setGeoDivision(newGeoDivision);
 
-      const startDate = subtractSeriesMaxDate({
-        metadata: metadata,
-        offset: DEFAULT_LIMIT,
-      });
+      let dateFilter = "";
+
+      if (metadata.PERNOME !== "Não se aplica") {
+        const startDate = subtractSeriesMaxDate({
+          metadata: metadata,
+          offset: DEFAULT_LIMIT,
+        });
+
+        dateFilter = ` and VALDATA ge ${startDate}`;
+      }
 
       const url =
         buildSeriesUrl(code) +
         "&$filter=" +
-        `NIVNOME eq '${newGeoDivision}' and ` +
-        `VALDATA ge ${startDate}`;
+        `NIVNOME eq '${newGeoDivision}'` +
+        dateFilter;
 
       setIsLoading(true);
 
@@ -91,7 +97,7 @@ export default function ChartGeographic({ code, metadata }) {
       const finalDateValue = formatDateFromDatePicker(finalDate.value);
 
       dateFilter = " and " + limitByDate(initialDateValue, finalDateValue);
-    } else {
+    } else if (metadata.PERNOME !== "Não se aplica") {
       const startDate = subtractSeriesMaxDate({
         metadata: metadata,
         offset: lastN.value || DEFAULT_LIMIT,
