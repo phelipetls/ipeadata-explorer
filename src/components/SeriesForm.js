@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import {
   Grid,
@@ -15,6 +15,7 @@ import {
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/core/styles";
+
 import { useBreakpoint } from "../utils/responsive";
 
 const useStyles = makeStyles(theme => ({
@@ -40,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SeriesForm(props) {
+export default function SeriesForm({ searchParams, onSubmit }) {
   const classes = useStyles();
   const isExtraSmallScreen = useBreakpoint("xs");
 
@@ -50,38 +51,8 @@ export default function SeriesForm(props) {
     UNINOME,
     PERNOME,
     TEMNOME,
-    BASNOME,
-    SERNUMERICA,
-    SERSTATUS,
     PAINOME,
-  } = Object.fromEntries(props.searchParams);
-
-  const [name, setName] = useState(SERNOME || "");
-  const [source, setSource] = useState(FNTNOME || "");
-  const [unit, setUnit] = useState(UNINOME || "");
-  const [periodicty, setPeriodicty] = useState(PERNOME || "");
-  const [theme, setTheme] = useState(TEMNOME || "");
-  const [country, setCountry] = useState(PAINOME || "");
-  const [initialDate, setInitialDate] = useState(null);
-  const [finalDate, setFinalDate] = useState(null);
-  const [bases, setBases] = useState([BASNOME] || []);
-  const [status, setStatus] = useState(SERSTATUS || "");
-  const [isNumeric, setIsNumeric] = useState(SERNUMERICA || "");
-
-  const [hasBrazil, setHasBrazil] = useState(false);
-  const [hasMunicipality, setHasMunicipality] = useState(false);
-  const [hasState, setHasState] = useState(false);
-  const [hasMetropolitan, setHasMetropolitan] = useState(false);
-
-  const { onSubmit } = props;
-
-  function handleChangeBases(e) {
-    setBases(
-      Array.from(e.target.options || [])
-        .filter(option => option.selected)
-        .concat(e.target.value)
-    );
-  }
+  } = Object.fromEntries(searchParams);
 
   return (
     <Grid
@@ -96,10 +67,9 @@ export default function SeriesForm(props) {
           <TextField
             size="small"
             name="SERNOME"
-            value={name}
-            onChange={e => setName(e.target.value)}
             id="SERNOME"
             label="Nome da série"
+            defaultValue={SERNOME}
             variant="outlined"
           />
         </Grid>
@@ -108,10 +78,9 @@ export default function SeriesForm(props) {
           <TextField
             size="small"
             name="FNTNOME"
-            value={source}
-            onChange={e => setSource(e.target.value)}
             id="FNTNOME"
             label="Fonte"
+            defaultValue={FNTNOME}
             variant="outlined"
           />
         </Grid>
@@ -120,10 +89,9 @@ export default function SeriesForm(props) {
           <TextField
             size="small"
             name="UNINOME"
-            value={unit}
-            onChange={e => setUnit(e.target.value)}
             id="UNINOME"
             label="Unidade"
+            defaultValue={UNINOME}
             variant="outlined"
           />
         </Grid>
@@ -132,10 +100,9 @@ export default function SeriesForm(props) {
           <TextField
             size="small"
             name="PERNOME"
-            value={periodicty}
-            onChange={e => setPeriodicty(e.target.value)}
             id="PERNOME"
             label="Periodicidade"
+            defaultValue={PERNOME}
             variant="outlined"
           />
         </Grid>
@@ -144,10 +111,9 @@ export default function SeriesForm(props) {
           <TextField
             size="small"
             name="TEMNOME"
-            value={theme}
-            onChange={e => setTheme(e.target.value)}
             id="TEMNOME"
             label="Tema"
+            defaultValue={TEMNOME}
             variant="outlined"
           />
         </Grid>
@@ -156,10 +122,9 @@ export default function SeriesForm(props) {
           <TextField
             size="small"
             name="PAINOME"
-            value={country}
-            onChange={e => setCountry(e.target.value)}
             id="PAINOME"
             label="País"
+            defaultValue={PAINOME}
             variant="outlined"
           />
         </Grid>
@@ -173,8 +138,6 @@ export default function SeriesForm(props) {
             inputVariant="outlined"
             name="SERMINDATA"
             label="Data inicial"
-            value={initialDate}
-            onChange={setInitialDate}
             format="dd/MM/yyyy"
             mask="__/__/____"
           />
@@ -187,8 +150,6 @@ export default function SeriesForm(props) {
             inputVariant="outlined"
             name="SERMAXDATA"
             label="Data final"
-            value={finalDate}
-            onChange={setFinalDate}
             format="dd/MM/yyyy"
             mask="__/__/____"
           />
@@ -206,8 +167,6 @@ export default function SeriesForm(props) {
             <InputLabel htmlFor="BASNOME">Base</InputLabel>
             <Select
               multiple
-              value={bases}
-              onChange={handleChangeBases}
               label="Base"
               inputProps={{ name: "BASNOME", id: "BASNOME" }}
             >
@@ -224,8 +183,6 @@ export default function SeriesForm(props) {
             <Select
               native
               label="Status"
-              value={status}
-              onChange={e => setStatus(e.target.value)}
               inputProps={{ name: "SERSTATUS", id: "SERSTATUS" }}
             >
               <option aria-label="Não selecionado" value=""></option>
@@ -241,8 +198,6 @@ export default function SeriesForm(props) {
             <Select
               native
               label="Tipo"
-              value={isNumeric}
-              onChange={e => setIsNumeric(e.target.value)}
               inputProps={{ name: "SERNUMERICA", id: "SERNUMERICA" }}
             >
               <option aria-label="Não selecionado" value=""></option>
@@ -255,54 +210,22 @@ export default function SeriesForm(props) {
 
       <FormGroup row={!isExtraSmallScreen} className={classes.formGroup}>
         <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              checked={hasBrazil}
-              onChange={e => setHasBrazil(e.target.checked)}
-              name="SERTEMBR"
-              color="primary"
-            />
-          }
+          control={<Checkbox size="small" name="SERTEMBR" color="primary" />}
           label="Brasil"
         />
 
         <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              checked={hasMunicipality}
-              onChange={e => setHasMunicipality(e.target.checked)}
-              name="SERTEMMUN"
-              color="primary"
-            />
-          }
+          control={<Checkbox size="small" name="SERTEMMUN" color="primary" />}
           label="Municípios"
         />
 
         <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              checked={hasState}
-              onChange={e => setHasState(e.target.checked)}
-              name="SERTEMEST"
-              color="primary"
-            />
-          }
+          control={<Checkbox size="small" name="SERTEMEST" color="primary" />}
           label="Estados"
         />
 
         <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              checked={hasMetropolitan}
-              onChange={e => setHasMetropolitan(e.target.checked)}
-              name="SERTEMMET"
-              color="primary"
-            />
-          }
+          control={<Checkbox size="small" name="SERTEMMET" color="primary" />}
           label="Área metropolitana"
         />
       </FormGroup>
