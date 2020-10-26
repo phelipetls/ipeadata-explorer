@@ -169,6 +169,7 @@ export default function SeriesForm({ searchParams, onSubmit }) {
               multiple
               label="Base"
               inputProps={{ name: "BASNOME", id: "BASNOME" }}
+              defaultValue={[]}
             >
               <MenuItem value="Macroeconômico">Macroeconômico</MenuItem>
               <MenuItem value="Regional">Regional</MenuItem>
