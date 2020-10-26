@@ -6,13 +6,13 @@ séries temporais de diversas fontes, temas e países.
 Tive como inspiração a versão 3 (beta) do site oficial do Ipeadata.
 
 Aproveitando minha familiaridade com a API do Ipeadata e do IBGE de [outros
-projetos][seriesbr], o desenvolvimento do site envolveu estudar como funciona
-[o framework][react], como aproveitar ao máximo o protocolo OData para
-[filtrar][odata-url-conventions] e [agregar][odata-aggregation] os dados da
-[API do Ipeadata][ipea-api], estudar uma biblioteca para visualização de dados
-(no caso, [Chart.js][chartjs]) e como [plotar dados
-geográficos][chartjs-chart-geo] usando TopoJSON da [API de malhas do
-IBGE][ibge-malhas], que eu já conhecia de [outro projeto][mapsbr] também.
+projetos][seriesbr], o desenvolvimento do site envolveu estudar [React][react],
+o protocolo OData para [filtragem][odata-url-conventions] e
+[agregação][odata-aggregation] dos dados da [API do Ipeadata][ipea-api],
+estudar uma biblioteca para visualização de dados (no caso,
+[Chart.js][chartjs]) e como [plotar dados geográficos][chartjs-chart-geo] em
+conjunto com a [API de malhas do IBGE][ibge-malhas], que eu já conhecia de
+[outro projeto][mapsbr] também.
 
 [ipea-api]: http://ipeadata.gov.br/api/
 [seriesbr]: https://seriesbr.readthedocs.io
