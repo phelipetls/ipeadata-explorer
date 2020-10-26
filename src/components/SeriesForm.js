@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Grid,
@@ -53,6 +53,9 @@ export default function SeriesForm({ searchParams, onSubmit }) {
     TEMNOME,
     PAINOME,
   } = Object.fromEntries(searchParams);
+
+  const [initialDate, setInitialDate] = useState(null);
+  const [finalDate, setFinalDate] = useState(null);
 
   return (
     <Grid
@@ -133,6 +136,8 @@ export default function SeriesForm({ searchParams, onSubmit }) {
       <Grid container item spacing={3} justify="center">
         <Grid item>
           <KeyboardDatePicker
+            value={initialDate}
+            onChange={setInitialDate}
             style={{ width: "19ch" }}
             size="small"
             inputVariant="outlined"
@@ -145,6 +150,8 @@ export default function SeriesForm({ searchParams, onSubmit }) {
 
         <Grid item>
           <KeyboardDatePicker
+            value={finalDate}
+            onChange={setFinalDate}
             style={{ width: "19ch" }}
             size="small"
             inputVariant="outlined"
