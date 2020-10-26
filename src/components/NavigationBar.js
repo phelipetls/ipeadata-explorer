@@ -11,7 +11,7 @@ import NavigationBarSearch from "./NavigationBarSearch";
 
 import SearchButton from "./SearchButton";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   appBar: {
     height: "4em",
   },
