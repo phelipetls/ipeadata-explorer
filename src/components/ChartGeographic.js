@@ -32,7 +32,7 @@ export default function ChartGeographic({ code, metadata }) {
       const availableGeoDivisions = await fetchGeographicDivisions(code);
       setGeoDivisions(availableGeoDivisions);
 
-      const newGeoDivision = availableGeoDivisions[3];
+      const newGeoDivision = availableGeoDivisions[0];
       setGeoDivision(newGeoDivision);
 
       const startDate = subtractSeriesMaxDate({
