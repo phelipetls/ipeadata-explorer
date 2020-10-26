@@ -47,6 +47,7 @@ export default function ChartFormGeography(props) {
         <InputLabel htmlFor="geoDivision" shrink>
           Divisões geográficas
         </InputLabel>
+
         <Select
           native
           value={geoDivision}
@@ -68,6 +69,7 @@ export default function ChartFormGeography(props) {
             <InputLabel htmlFor="geoBoundary" shrink>
               Limite geográfico
             </InputLabel>
+
             <Select
               native
               value={geoBoundary}
@@ -90,6 +92,7 @@ export default function ChartFormGeography(props) {
               <InputLabel htmlFor="geoBoundaryValue" shrink>
                 {unpluralize(geoBoundary)}
               </InputLabel>
+
               <Select
                 native
                 value={geoBoundaryValue}

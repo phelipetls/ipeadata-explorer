@@ -47,7 +47,7 @@ export function getMapUrl({ geoBoundaryValue, geoDivision }) {
 export function getContainingRegions(geoRegion) {
   const geoRegionCode = ibgeGeoRegionsCodes[geoRegion];
   return Object.entries(ibgeGeoRegionsCodes)
-    .filter(([region, code]) => code < geoRegionCode)
+    .filter(([_, code]) => code < geoRegionCode)
     .map(([region]) => region);
 }
 
