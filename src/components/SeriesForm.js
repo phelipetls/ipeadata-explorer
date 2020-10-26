@@ -145,6 +145,7 @@ export default function SeriesForm({ searchParams, onSubmit }) {
             label="Data inicial"
             format="dd/MM/yyyy"
             mask="__/__/____"
+            clearable
           />
         </Grid>
 
@@ -159,6 +160,7 @@ export default function SeriesForm({ searchParams, onSubmit }) {
             label="Data final"
             format="dd/MM/yyyy"
             mask="__/__/____"
+            clearable
           />
         </Grid>
       </Grid>
