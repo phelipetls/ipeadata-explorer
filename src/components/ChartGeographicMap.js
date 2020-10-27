@@ -6,11 +6,13 @@ import { getMapUrl, getRegionsUrl } from "../api/ibge";
 import keyBy from "lodash.keyby";
 
 import ChartChoroplethMap from "./ChartChoroplethMap";
+import ChartWrapper from "./ChartWrapper";
 
 export default function ChartGeographicMap(props) {
   const [outlineFeatures, setOutlineFeatures] = useState([]);
   const [regionsFeatures, setRegionsFeatures] = useState([]);
   const [regionsMetadata, setRegionsMetadata] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const { series, metadata, geoDivision, geoBoundaryValue } = props;
 
@@ -25,6 +27,8 @@ export default function ChartGeographicMap(props) {
         fetch(regionsFeaturesUrl),
         fetch(regionsUrl),
       ];
+
+      setIsLoading(true);
 
       const responses = await Promise.all(requests);
       const [
@@ -44,6 +48,8 @@ export default function ChartGeographicMap(props) {
         topojson.feature(regionsFeaturesJson, regionsFeaturesJson.objects.foo)
           .features
       );
+
+      setIsLoading(false);
     }
 
     fetchGeographicData();
@@ -65,11 +71,13 @@ export default function ChartGeographicMap(props) {
   ];
 
   return (
-    <ChartChoroplethMap
-      series={series}
-      metadata={metadata}
-      labels={labels}
-      datasets={datasets}
-    />
+    <ChartWrapper series={series} isLoading={isLoading}>
+      <ChartChoroplethMap
+        series={series}
+        metadata={metadata}
+        labels={labels}
+        datasets={datasets}
+      />
+    </ChartWrapper>
   );
 }
