@@ -32,8 +32,8 @@ export default function ChartGeographic({ code, metadata }) {
       const availableGeoDivisions = await fetchGeographicDivisions(code);
       setGeoDivisions(availableGeoDivisions);
 
-      const newGeoDivision = availableGeoDivisions[0];
-      setGeoDivision(newGeoDivision);
+      const firstGeoDivision = availableGeoDivisions[0];
+      setGeoDivision(firstGeoDivision);
 
       let dateFilter = "";
 
@@ -49,7 +49,7 @@ export default function ChartGeographic({ code, metadata }) {
       const url =
         buildSeriesUrl(code) +
         "&$filter=" +
-        `NIVNOME eq '${newGeoDivision}'` +
+        `NIVNOME eq '${firstGeoDivision}'` +
         dateFilter;
 
       setIsLoading(true);
@@ -78,16 +78,14 @@ export default function ChartGeographic({ code, metadata }) {
     const newGeoDivision = geoDivision.value;
     setGeoDivision(newGeoDivision);
 
-    const newGeoBoundaryValue = geoBoundaryValue
-      ? geoBoundaryValue.value
-      : "BR";
+    const newGeoBoundaryValue = geoBoundaryValue?.value || "BR";
     setGeoBundaryValue(newGeoBoundaryValue);
 
-    const boundaryId = String(newGeoBoundaryValue).slice(0, 2);
+    const newGeoBoundaryPrefix = String(newGeoBoundaryValue).slice(0, 2);
 
     const boundaryFilter =
       getChartType(newGeoDivision) === "map" && newGeoBoundaryValue !== "BR"
-        ? ` and startswith(TERCODIGO,'${boundaryId}')`
+        ? ` and startswith(TERCODIGO,'${newGeoBoundaryPrefix}')`
         : "";
 
     let dateFilter = "";
