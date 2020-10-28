@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import {
   Grid,
@@ -13,10 +13,11 @@ import {
   Checkbox,
 } from "@material-ui/core";
 
-import { KeyboardDatePicker } from "@material-ui/pickers";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { useBreakpoint } from "../utils/responsive";
+
+import StyledKeyboardDatePicker from "./StyledKeyboardDatePicker";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -53,9 +54,6 @@ export default function SeriesForm({ searchParams, onSubmit }) {
     TEMNOME,
     PAINOME,
   } = Object.fromEntries(searchParams);
-
-  const [initialDate, setInitialDate] = useState(null);
-  const [finalDate, setFinalDate] = useState(null);
 
   return (
     <Grid
@@ -135,32 +133,20 @@ export default function SeriesForm({ searchParams, onSubmit }) {
 
       <Grid container item spacing={3} justify="center">
         <Grid item>
-          <KeyboardDatePicker
-            value={initialDate}
-            onChange={setInitialDate}
-            style={{ width: "19ch" }}
+          <StyledKeyboardDatePicker
             size="small"
-            inputVariant="outlined"
             name="SERMINDATA"
             label="Data inicial"
-            format="dd/MM/yyyy"
-            mask="__/__/____"
-            clearable
+            style={{ width: "19ch" }}
           />
         </Grid>
 
         <Grid item>
-          <KeyboardDatePicker
-            value={finalDate}
-            onChange={setFinalDate}
-            style={{ width: "19ch" }}
+          <StyledKeyboardDatePicker
             size="small"
-            inputVariant="outlined"
             name="SERMAXDATA"
             label="Data final"
-            format="dd/MM/yyyy"
-            mask="__/__/____"
-            clearable
+            style={{ width: "19ch" }}
           />
         </Grid>
       </Grid>

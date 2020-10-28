@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { TextField } from "@material-ui/core";
-import { KeyboardDatePicker } from "@material-ui/pickers";
 import { Event } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
+
+import StyledKeyboardDatePicker from "./StyledKeyboardDatePicker";
 
 const useStyles = makeStyles(theme => ({
   datePicker: {
@@ -26,9 +27,6 @@ const dateViewsByPeriodicity = {
 export default function ChartFormDate({ metadata }) {
   const classes = useStyles();
 
-  const [initialDate, setInitialDate] = useState(null);
-  const [finalDate, setFinalDate] = useState(null);
-
   const resetDate = date => {
     if (!date) return;
 
@@ -46,40 +44,28 @@ export default function ChartFormDate({ metadata }) {
 
   return (
     <>
-      <KeyboardDatePicker
-        className={classes.datePicker}
+      <StyledKeyboardDatePicker
         name="initialDate"
         label="Data inicial"
-        value={initialDate}
-        initialFocusedDate={maxDate}
         minDate={minDate}
         maxDate={maxDate}
-        onChange={setInitialDate}
+        initialFocusedDate={maxDate}
         onAccept={resetDate}
-        format="dd/MM/yyyy"
-        mask="__/__/____"
         views={dateViewsByPeriodicity[metadata.PERNOME]}
-        inputVariant="outlined"
         keyboardIcon={<Event fontSize="small" />}
-        clearable
+        className={classes.datePicker}
       />
 
-      <KeyboardDatePicker
-        className={classes.datePicker}
+      <StyledKeyboardDatePicker
         name="finalDate"
         label="Data final"
-        value={finalDate}
-        initialFocusedDate={maxDate}
         minDate={minDate}
         maxDate={maxDate}
-        onChange={setFinalDate}
+        initialFocusedDate={maxDate}
         onAccept={resetDate}
-        format="dd/MM/yyyy"
-        mask="__/__/____"
         views={dateViewsByPeriodicity[metadata.PERNOME]}
-        inputVariant="outlined"
         keyboardIcon={<Event fontSize="small" />}
-        clearable
+        className={classes.datePicker}
       />
 
       <TextField
