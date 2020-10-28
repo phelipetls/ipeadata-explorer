@@ -21,11 +21,12 @@ export default function NavigationBarMenu(props) {
       <IconButton style={{ alignSelf: "center" }} onClick={useMenuOpen}>
         <MoreVert />
       </IconButton>
+
       <Menu open={Boolean(anchorEl)} anchorEl={anchorEl} onClick={useMenuClose}>
         {props.links.map(({ text, url }, index) => {
           return (
             <MenuItem key={index}>
-              <Link to={url} component={RouterLink}>
+              <Link component={RouterLink} to={url} underline="none">
                 {text}
               </Link>
             </MenuItem>
