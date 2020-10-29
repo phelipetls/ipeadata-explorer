@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from "react";
 
+import { ChartForm } from "./ChartForm";
+import { ChartFormDate } from "./ChartFormDate";
+import { ChartSection } from "./ChartSection";
+import { ChartTimeseries } from "./ChartTimeseries";
+import { ChartWrapper } from "./ChartWrapper";
+
 import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
 import { formatDateFromDatePicker } from "../api/utils";
 
-import ChartForm from "./ChartForm";
-import ChartFormDate from "./ChartFormDate";
-import ChartSection from "./ChartSection";
-import ChartTimeseries from "./ChartTimeseries";
-import ChartWrapper from "./ChartWrapper";
-
 const DEFAULT_LIMIT = 50;
 
-export default function ChartMacro({ code, metadata }) {
+export function ChartMacro({ code, metadata }) {
   const [series, setSeries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 

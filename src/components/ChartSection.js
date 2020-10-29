@@ -10,7 +10,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function ChartSection({ children }) {
+export function ChartSection({ children }) {
   const classes = useStyles();
   return <Paper className={classes.container}>{children}</Paper>;
 }

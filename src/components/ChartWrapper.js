@@ -2,10 +2,10 @@ import React from "react";
 
 import { useTheme } from "@material-ui/styles";
 
-import Loading from "./Loading";
-import NoData from "./NoData";
+import { Loading } from "./Loading";
+import { NoData } from "./NoData";
 
-export default function ChartWrapper({ isLoading, series, children }) {
+export function ChartWrapper({ isLoading, series, children }) {
   const theme = useTheme();
 
   return isLoading ? (

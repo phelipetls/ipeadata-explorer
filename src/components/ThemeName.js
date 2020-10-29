@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ThemeName(props) {
+export function ThemeName(props) {
   const classes = useStyles();
 
   return (

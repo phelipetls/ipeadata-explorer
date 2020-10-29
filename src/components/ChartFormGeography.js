@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { Select, InputLabel, FormControl } from "@material-ui/core";
 
+import { Loading } from "./Loading";
+
 import {
   getChartType,
   getContainingRegions,
@@ -9,9 +11,7 @@ import {
   unpluralize,
 } from "../api/ibge";
 
-import Loading from "./Loading";
-
-export default function ChartFormGeography(props) {
+export function ChartFormGeography(props) {
   const [geoDivision, setGeoDivision] = useState(props.geoDivision);
   const [geoBoundary, setGeoBoundary] = useState("Brasil");
   const [geoBoundaryValue, setGeoBoundaryValue] = useState("");

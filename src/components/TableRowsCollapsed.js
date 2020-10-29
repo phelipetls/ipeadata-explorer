@@ -8,9 +8,9 @@ import {
   TableCell,
 } from "@material-ui/core";
 
-import TableRowCollapsed from "./TableRowCollapsed";
+import { TableRowCollapsed } from "./TableRowCollapsed";
 
-export default function TableRowsCollapsed(props) {
+export function TableRowsCollapsed(props) {
   const { rows, columns, footer, skeleton, isLoading } = props;
 
   return (

@@ -3,12 +3,12 @@ import React, { useState, useEffect } from "react";
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import ThemeCard from "./ThemeCard";
-import ThemeName from "./ThemeName";
-import ThemeParent from "./ThemeParent";
-import ThemeBases from "./ThemeBases";
-import ThemeBasesButtons from "./ThemeBasesButtons";
-import Loading from "./Loading";
+import { ThemeCard } from "./ThemeCard";
+import { ThemeName } from "./ThemeName";
+import { ThemeParent } from "./ThemeParent";
+import { ThemeBases } from "./ThemeBases";
+import { ThemeBasesButtons } from "./ThemeBasesButtons";
+import { Loading } from "./Loading";
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
 
 const URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Temas";
 
-export default function Themes() {
+export function Themes() {
   const classes = useStyles();
 
   const [themes, setThemes] = useState([]);
@@ -83,3 +83,5 @@ export default function Themes() {
     </div>
   );
 }
+
+export default Themes;

@@ -12,12 +12,11 @@ import {
   FormControlLabel,
   Checkbox,
 } from "@material-ui/core";
-
 import { makeStyles } from "@material-ui/core/styles";
 
-import { useBreakpoint } from "../utils/responsive";
+import { StyledKeyboardDatePicker } from "./StyledKeyboardDatePicker";
 
-import StyledKeyboardDatePicker from "./StyledKeyboardDatePicker";
+import { useBreakpoint } from "../utils/responsive";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -42,7 +41,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SeriesForm({ searchParams, onSubmit }) {
+export function SeriesForm({ searchParams, onSubmit }) {
   const classes = useStyles();
   const isExtraSmallScreen = useBreakpoint("xs");
 

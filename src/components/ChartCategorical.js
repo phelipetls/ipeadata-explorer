@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
 
+import { ChartBar } from "./ChartBar";
+import { ChartSection } from "./ChartSection";
+import { ChartForm } from "./ChartForm";
+import { ChartFormDate } from "./ChartFormDate";
+import { ChartWrapper } from "./ChartWrapper";
+
 import { limitByDate, buildMetadataUrl } from "../api/odata";
 import { formatDateFromDatePicker, subtractSeriesMaxDate } from "../api/utils";
-
-import ChartBar from "./ChartBar";
-import ChartSection from "./ChartSection";
-import ChartForm from "./ChartForm";
-import ChartFormDate from "./ChartFormDate";
-import ChartWrapper from "./ChartWrapper";
 
 const DEFAULT_LIMIT = 0;
 
@@ -23,7 +23,7 @@ const parseJsonCount = json =>
     {}
   );
 
-export default function ChartCategorical({ code, metadata }) {
+export function ChartCategorical({ code, metadata }) {
   const [categoriesCount, setCategoriesCount] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 

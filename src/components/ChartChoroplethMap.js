@@ -3,11 +3,12 @@ import React, { useState, useEffect, useRef, useMemo } from "react";
 import { Select } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
+import { ChartCanvas } from "./ChartCanvas";
+
 import Chart from "chart.js";
 import "chartjs-adapter-date-fns";
 import "chartjs-chart-geo";
 
-import ChartCanvas from "./ChartCanvas";
 import groupBy from "lodash.groupby";
 import keyBy from "lodash.keyby";
 
@@ -22,7 +23,7 @@ const useStyles = makeStyles(() => ({
 const getYearIsoDate = date => date.slice(0, 4);
 const getYearAndMonthIsoDate = date => date.slice(0, 7);
 
-export default function ChartChoroplethMap(props) {
+export function ChartChoroplethMap(props) {
   const classes = useStyles();
   const chartRef = useRef();
   const [period, setPeriod] = useState(null);

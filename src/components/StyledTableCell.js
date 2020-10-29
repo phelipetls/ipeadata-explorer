@@ -9,6 +9,6 @@ const TableCellWithStyles = withStyles(() => ({
   },
 }))(TableCell);
 
-export default function StyledTableCell({ children, ...props }) {
+export function StyledTableCell({ children, ...props }) {
   return <TableCellWithStyles {...props}>{children}</TableCellWithStyles>;
 }

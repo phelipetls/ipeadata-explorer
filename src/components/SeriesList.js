@@ -4,6 +4,13 @@ import { Paper, TableContainer, Link } from "@material-ui/core";
 
 import { Link as RouterLink, useLocation } from "react-router-dom";
 
+import { TableSortable } from "./TableSortable";
+import { SeriesFilter } from "./SeriesFilter";
+import { TablePaginationFooter } from "./TablePaginationFooter";
+import { TableSkeleton } from "./TableSkeleton";
+import { TableRowsCollapsed } from "./TableRowsCollapsed";
+import { NoData } from "./NoData";
+
 import { useBreakpoint } from "../utils/responsive";
 import { limitQuery, offsetQuery } from "../api/odata";
 import {
@@ -11,13 +18,6 @@ import {
   filterSeriesFromForm,
   filterSeriesFromUrl,
 } from "../api/seriesFilter";
-
-import TableSortable from "./TableSortable";
-import SeriesFilter from "./SeriesFilter";
-import TablePaginationFooter from "./TablePaginationFooter";
-import TableSkeleton from "./TableSkeleton";
-import TableRowsCollapsed from "./TableRowsCollapsed";
-import NoData from "./NoData";
 
 function useSearchParams() {
   return new URLSearchParams(useLocation().search);
@@ -42,7 +42,7 @@ const columns = [
   { key: "SERMAXDATA", type: "date", label: "Fim", render: getYear },
 ];
 
-export default function SeriesList() {
+export function SeriesList() {
   const isSmallScreen = useBreakpoint("sm");
 
   const [rows, setRows] = useState([]);
@@ -174,3 +174,5 @@ export default function SeriesList() {
     </>
   );
 }
+
+export default SeriesList;

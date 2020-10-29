@@ -3,12 +3,12 @@ import React, { useState, useEffect } from "react";
 import { topojson } from "chartjs-chart-geo";
 import { getMapUrl, getRegionsUrl } from "../api/ibge";
 
+import { ChartChoroplethMap } from "./ChartChoroplethMap";
+import { ChartWrapper } from "./ChartWrapper";
+
 import keyBy from "lodash.keyby";
 
-import ChartChoroplethMap from "./ChartChoroplethMap";
-import ChartWrapper from "./ChartWrapper";
-
-export default function ChartGeographicMap(props) {
+export function ChartGeographicMap(props) {
   const [outlineFeatures, setOutlineFeatures] = useState([]);
   const [regionsFeatures, setRegionsFeatures] = useState([]);
   const [regionsMetadata, setRegionsMetadata] = useState([]);

@@ -2,13 +2,12 @@ import React, { useEffect, useRef } from "react";
 
 import Chart from "chart.js";
 import "chartjs-adapter-date-fns";
-
 import "chartjs-plugin-colorschemes/src/plugins/plugin.colorschemes";
 import { Paired12 } from "chartjs-plugin-colorschemes/src/colorschemes/colorschemes.brewer";
 
-import ChartCanvas from "./ChartCanvas";
+import { ChartCanvas } from "./ChartCanvas";
 
-export default function ChartBar({ metadata, labels, datasets }) {
+export function ChartBar({ metadata, labels, datasets }) {
   const chartRef = useRef();
 
   useEffect(() => {

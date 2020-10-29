@@ -4,7 +4,7 @@ import { TextField } from "@material-ui/core";
 import { Event } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 
-import StyledKeyboardDatePicker from "./StyledKeyboardDatePicker";
+import { StyledKeyboardDatePicker } from "./StyledKeyboardDatePicker";
 
 const useStyles = makeStyles(theme => ({
   datePicker: {
@@ -24,7 +24,7 @@ const dateViewsByPeriodicity = {
   Quinquenal: ["year"],
 };
 
-export default function ChartFormDate({ metadata }) {
+export function ChartFormDate({ metadata }) {
   const classes = useStyles();
 
   const resetDate = date => {

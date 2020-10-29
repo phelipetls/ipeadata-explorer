@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ThemeParent(props) {
+export function ThemeParent(props) {
   const classes = useStyles();
 
   return (

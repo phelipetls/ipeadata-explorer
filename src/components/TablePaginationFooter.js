@@ -3,7 +3,7 @@ import React from "react";
 import { TableRow, TableFooter, TablePagination } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 
-import TablePaginationActions from "./TablePaginationActions";
+import { TablePaginationActions } from "./TablePaginationActions";
 
 const useStyles = makeStyles(theme => ({
   toolbar: {
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function TablePaginationFooter(props) {
+export function TablePaginationFooter(props) {
   const classes = useStyles();
   const { page, count, rowsPerPage, onChangePage, onChangeRowsPerPage } = props;
 

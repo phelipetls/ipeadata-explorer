@@ -1,5 +1,14 @@
 import React, { useState, useEffect } from "react";
 
+import { Loading } from "./Loading";
+import { ChartForm } from "./ChartForm";
+import { ChartFormDate } from "./ChartFormDate";
+import { ChartFormGeography } from "./ChartFormGeography";
+import { ChartSection } from "./ChartSection";
+import { ChartGeographicMap } from "./ChartGeographicMap";
+import { ChartGeographicTimeseries } from "./ChartGeographicTimeseries";
+import { ChartWrapper } from "./ChartWrapper";
+
 import {
   limitByDate,
   buildSeriesUrl,
@@ -8,18 +17,9 @@ import {
 import { formatDateFromDatePicker, subtractSeriesMaxDate } from "../api/utils";
 import { getChartType } from "../api/ibge";
 
-import Loading from "./Loading";
-import ChartForm from "./ChartForm";
-import ChartFormDate from "./ChartFormDate";
-import ChartFormGeography from "./ChartFormGeography";
-import ChartSection from "./ChartSection";
-import ChartGeographicMap from "./ChartGeographicMap";
-import ChartGeographicTimeseries from "./ChartGeographicTimeseries";
-import ChartWrapper from "./ChartWrapper";
-
 const DEFAULT_LIMIT = 5;
 
-export default function ChartGeographic({ code, metadata }) {
+export function ChartGeographic({ code, metadata }) {
   const [series, setSeries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 

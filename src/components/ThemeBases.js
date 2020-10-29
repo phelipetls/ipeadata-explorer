@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ThemeBases(props) {
+export function ThemeBases(props) {
   const { macro, regional, social } = props;
 
   const theme = useTheme();

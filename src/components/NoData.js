@@ -10,7 +10,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function NoData({ text, style }) {
+export function NoData({ text, style }) {
   const classes = useStyles();
 
   return (

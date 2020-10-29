@@ -1,8 +1,8 @@
 import React from "react";
 
-import ChartContainer from "./ChartContainer";
+import { ChartContainer } from "./ChartContainer";
 
-export default function ChartCanvas({ id }) {
+export function ChartCanvas({ id }) {
   return (
     <ChartContainer>
       <canvas id={id} aria-label="Gráfico">

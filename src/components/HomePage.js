@@ -2,10 +2,9 @@ import React from "react";
 
 import { Link, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
 import { Link as RouterLink } from "react-router-dom";
 
-import HomePageFeatures from "./HomePageFeatures";
+import { HomePageFeatures } from "./HomePageFeatures";
 
 const useStyles = makeStyles(theme => ({
   siteTitle: {
@@ -17,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function HomePage() {
+export function HomePage() {
   const classes = useStyles();
 
   return (
@@ -51,3 +50,5 @@ export default function HomePage() {
     </>
   );
 }
+
+export default HomePage;

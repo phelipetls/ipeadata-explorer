@@ -1,7 +1,5 @@
 import React from "react";
 
-import { Link as RouterLink } from "react-router-dom";
-
 import {
   Link,
   Table,
@@ -9,8 +7,9 @@ import {
   TableBody,
   TableHead,
 } from "@material-ui/core";
+import { Link as RouterLink } from "react-router-dom";
 
-import StyledTableCell from "./StyledTableCell";
+import { StyledTableCell } from "./StyledTableCell";
 
 function formatDate(date) {
   return new Date(date).toLocaleDateString();
@@ -41,7 +40,7 @@ const metadataFields = [
   },
 ];
 
-export default function SeriesMetadataTable(props) {
+export function SeriesMetadataTable(props) {
   const { metadata } = props;
 
   return (

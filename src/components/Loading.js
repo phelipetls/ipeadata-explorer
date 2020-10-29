@@ -11,7 +11,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function Loading(props) {
+export function Loading(props) {
   const classes = useStyles();
 
   return (

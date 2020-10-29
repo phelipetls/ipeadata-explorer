@@ -3,8 +3,8 @@ import React, { useState } from "react";
 import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import BackButton from "./BackButton";
-import SearchButton from "./SearchButton";
+import { BackButton } from "./BackButton";
+import { SearchButton } from "./SearchButton";
 
 const useStyles = makeStyles(() => ({
   searchContainer: {
@@ -18,7 +18,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function NavigationBarSearch(props) {
+export function NavigationBarSearch(props) {
   const classes = useStyles();
 
   const [searchInput, setSearchInput] = useState("");

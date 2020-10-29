@@ -2,7 +2,7 @@ import React from "react";
 
 import { Container, Typography, Link } from "@material-ui/core";
 
-export default function About() {
+export function About() {
   return (
     <Container maxWidth="sm">
       <Typography variant="h4" component="h1" align="center" gutterBottom>
@@ -67,3 +67,5 @@ export default function About() {
     </Container>
   );
 }
+
+export default About;

@@ -5,7 +5,7 @@ import { Menu, MenuItem, IconButton, Link } from "@material-ui/core";
 
 import { Link as RouterLink } from "react-router-dom";
 
-export default function NavigationBarMenu(props) {
+export function NavigationBarMenu(props) {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const useMenuOpen = event => {

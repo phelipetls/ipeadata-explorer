@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 import { Link, TableContainer, Paper } from "@material-ui/core";
-
 import { Link as RouterLink } from "react-router-dom";
 
-import TableSortable from "./TableSortable";
-import TableSkeleton from "./TableSkeleton";
+import { TableSortable } from "./TableSortable";
+import { TableSkeleton } from "./TableSkeleton";
 
 const URL =
   "http://ipeadata2-homologa.ipea.gov.br/api/v1/Paises?$expand=Metadados($select=SERCODIGO;$count=true)";
@@ -28,7 +27,7 @@ const columns = [
   },
 ];
 
-export default function Countries() {
+export function Countries() {
   const [countries, setCountries] = useState([]);
 
   useEffect(() => {
@@ -53,3 +52,5 @@ export default function Countries() {
     </TableContainer>
   );
 }
+
+export default Countries;

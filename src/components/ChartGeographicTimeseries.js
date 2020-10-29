@@ -1,9 +1,10 @@
 import React from "react";
 
-import groupBy from "lodash.groupby";
-import ChartTimeseries from "./ChartTimeseries";
+import { ChartTimeseries } from "./ChartTimeseries";
 
-export default function ChartGeographicTimeseries({ series, metadata }) {
+import groupBy from "lodash.groupby";
+
+export function ChartGeographicTimeseries({ series, metadata }) {
   const labels = [...new Set(series.map(series => series.VALDATA))];
   const datasets = Object.entries(groupBy(series, "TERNOME")).map(
     ([level, values]) => ({

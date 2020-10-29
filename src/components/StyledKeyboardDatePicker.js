@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 
-export default function StyledKeyboardDatePicker(props) {
+export function StyledKeyboardDatePicker(props) {
   const [date, setDate] = useState(null);
 
   return (

@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ThemeCard({ themeName, children }) {
+export function ThemeCard({ themeName, children }) {
   const classes = useStyles();
 
   return (

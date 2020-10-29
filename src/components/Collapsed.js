@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Typography, Paper, Collapse, IconButton } from "@material-ui/core";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 
-export default function Collapsed(props) {
+export function Collapsed(props) {
   const [open, setOpen] = useState(false);
 
   return (

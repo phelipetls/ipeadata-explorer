@@ -4,10 +4,10 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import NavigationBar from "./components/NavigationBar";
-import Footer from "./components/Footer";
-import Loading from "./components/Loading";
-import ErrorBoundary from "./components/ErrorBoundary";
+import { NavigationBar } from "./components/NavigationBar";
+import { Footer } from "./components/Footer";
+import { Loading } from "./components/Loading";
+import { ErrorBoundary } from "./components/ErrorBoundary";
 
 const HomePage = React.lazy(() => import("./components/HomePage"));
 const About = React.lazy(() => import("./components/About"));

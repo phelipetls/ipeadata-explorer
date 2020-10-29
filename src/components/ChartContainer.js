@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ChartContainer({ children }) {
+export function ChartContainer({ children }) {
   const classes = useStyles();
   return <div className={classes.canvasContainer}>{children}</div>;
 }

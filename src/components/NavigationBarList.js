@@ -26,7 +26,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function NavigationBarList(props) {
+export function NavigationBarList(props) {
   const classes = useStyles();
   const theme = useTheme();
 

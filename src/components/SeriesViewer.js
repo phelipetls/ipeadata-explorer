@@ -2,15 +2,15 @@ import React, { useState, useEffect } from "react";
 
 import { useParams } from "react-router-dom";
 
+import { ChartMacro } from "./ChartMacro";
+import { Loading } from "./Loading";
+import { ChartGeographic } from "./ChartGeographic";
+import { ChartCategorical } from "./ChartCategorical";
+import { SeriesMetadata } from "./SeriesMetadata";
+
 import { buildMetadataUrl } from "../api/odata";
 
-import ChartMacro from "./ChartMacro";
-import Loading from "./Loading";
-import ChartGeographic from "./ChartGeographic";
-import ChartCategorical from "./ChartCategorical";
-import SeriesMetadata from "./SeriesMetadata";
-
-export default function SeriesViewer() {
+export function SeriesViewer() {
   const [metadata, setMetadata] = useState(null);
 
   let { code } = useParams();
@@ -41,3 +41,5 @@ export default function SeriesViewer() {
     </>
   );
 }
+
+export default SeriesViewer;

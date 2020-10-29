@@ -10,7 +10,7 @@ import {
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 
-import SeriesForm from "./SeriesForm";
+import { SeriesForm } from "./SeriesForm";
 
 const useStyles = makeStyles(theme => ({
   filterContainer: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SeriesFilter(props) {
+export function SeriesFilter(props) {
   const classes = useStyles();
   const { searchParams, onSubmit, formOpen, setFormOpen } = props;
 

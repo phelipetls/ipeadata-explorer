@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ThemeBasesButtons(props) {
+export function ThemeBasesButtons(props) {
   const classes = useStyles();
 
   return (

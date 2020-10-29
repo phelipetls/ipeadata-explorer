@@ -29,7 +29,7 @@ const sortFunctions = {
   date: (a, b) => new Date(a) - new Date(b),
 };
 
-export default function TableSortable(props) {
+export function TableSortable(props) {
   const classes = useStyles();
 
   const [order, setOrder] = useState("desc");

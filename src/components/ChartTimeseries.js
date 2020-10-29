@@ -1,18 +1,17 @@
 import React, { useEffect, useRef } from "react";
 
+import { ChartCanvas } from "./ChartCanvas";
+
 import Chart from "chart.js";
 import "chartjs-adapter-date-fns";
-
 import "chartjs-plugin-colorschemes/src/plugins/plugin.colorschemes";
 import { Paired12 } from "chartjs-plugin-colorschemes/src/colorschemes/colorschemes.brewer";
-
-import ChartCanvas from "./ChartCanvas";
 
 Chart.defaults.global.elements.line.fill = false;
 
 const getYears = dates => new Set([...dates.map(date => date.slice(0, 4))]);
 
-export default function ChartTimeseries({ labels, datasets, metadata }) {
+export function ChartTimeseries({ labels, datasets, metadata }) {
   const chartRef = useRef();
 
   useEffect(() => {

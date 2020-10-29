@@ -3,7 +3,7 @@ import React from "react";
 import { Grid, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import SeriesMetadataTable from "./SeriesMetadataTable";
+import { SeriesMetadataTable } from "./SeriesMetadataTable";
 
 const useStyles = makeStyles(theme => ({
   metadata: {
@@ -14,7 +14,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SeriesMetadata({ metadata }) {
+export function SeriesMetadata({ metadata }) {
   const classes = useStyles();
 
   return (

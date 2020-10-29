@@ -1,8 +1,8 @@
 import React from "react";
 
-import NoData from "./NoData";
+import { NoData } from "./NoData";
 
-export default class ErrorBoundary extends React.Component {
+export class ErrorBoundary extends React.Component {
   constructor(props) {
     super(props);
     this.state = {

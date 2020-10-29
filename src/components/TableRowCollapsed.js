@@ -4,7 +4,7 @@ import { TableCell, TableRow, Collapse, IconButton } from "@material-ui/core";
 import { KeyboardArrowUp, KeyboardArrowDown } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 
-import SeriesMetadataTable from "./SeriesMetadataTable";
+import { SeriesMetadataTable } from "./SeriesMetadataTable";
 
 const useStyles = makeStyles((theme) => ({
   row: {
@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function TableRowCollapsed({ row, columns }) {
+export function TableRowCollapsed({ row, columns }) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);

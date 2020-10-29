@@ -2,14 +2,13 @@ import React, { useState } from "react";
 
 import { AppBar, Toolbar, Link, Typography, Hidden } from "@material-ui/core";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-
 import { Link as RouterLink } from "react-router-dom";
 
-import NavigationBarMenu from "./NavigationBarMenu";
-import NavigationBarList from "./NavigationBarList";
-import NavigationBarSearch from "./NavigationBarSearch";
+import { NavigationBarMenu } from "./NavigationBarMenu";
+import { NavigationBarList } from "./NavigationBarList";
+import { NavigationBarSearch } from "./NavigationBarSearch";
 
-import SearchButton from "./SearchButton";
+import { SearchButton } from "./SearchButton";
 
 const useStyles = makeStyles(() => ({
   appBar: {
@@ -24,7 +23,7 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-export default function NavigationBar() {
+export function NavigationBar() {
   const theme = useTheme();
 
   const [isSearching, setIsSearching] = useState(false);

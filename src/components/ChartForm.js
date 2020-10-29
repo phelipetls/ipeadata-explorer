@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ChartForm(props) {
+export function ChartForm(props) {
   const classes = useStyles();
 
   return (
