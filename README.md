@@ -16,7 +16,7 @@ Tecnologias utilizadas:
 - OData (Open Data Protocol) para interagir com o backend do Ipeadata (queries
   para [filtrar](odata-url-conventions) e [agregar](odata-aggregation) os dados
   etc.).
-- [Chart.js](https://chartjs.org/) para visualizações de dados simples (.
+- [Chart.js](https://chartjs.org/) para visualizações de dados simples.
 - [chartjs-chart-geo](https://github.com/sgratzl/chartjs-chart-geo), plugin do
   Chart.js para plotar dados distribuídos geograficamente, como um mapa
   choropleth, utilizado topoJSON, por exemplo.
