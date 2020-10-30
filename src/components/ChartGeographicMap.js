@@ -58,7 +58,7 @@ export function ChartGeographicMap(props) {
   const regionsById = keyBy(regionsMetadata, "id");
 
   const labels = regionsFeatures.map(feature => {
-    return regionsById[feature.properties.codarea].nome || "Não disponível";
+    return regionsById[feature.properties.codarea]?.nome || "Não disponível";
   });
 
   const datasets = [
