@@ -1,7 +1,7 @@
 import React from "react";
 
 import { Link, List, ListItem } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 import { Link as RouterLink } from "react-router-dom";
 
@@ -28,7 +28,6 @@ const useStyles = makeStyles(() => ({
 
 export function NavigationBarList(props) {
   const classes = useStyles();
-  const theme = useTheme();
 
   return (
     <List className={classes.navigationList}>
@@ -39,7 +38,7 @@ export function NavigationBarList(props) {
           key={index}
           className={classes.navigationListItem}
         >
-          <Link component="div" className={classes.link} style={theme.link}>
+          <Link component="div" className={classes.link} underline="none">
             {link.text}
           </Link>
         </ListItem>

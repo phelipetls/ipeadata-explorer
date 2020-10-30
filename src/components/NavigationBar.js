@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import { AppBar, Toolbar, Link, Typography, Hidden } from "@material-ui/core";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import { Link as RouterLink } from "react-router-dom";
 
 import { NavigationBarMenu } from "./NavigationBarMenu";
@@ -24,8 +24,6 @@ const useStyles = makeStyles(() => ({
 }));
 
 export function NavigationBar() {
-  const theme = useTheme();
-
   const [isSearching, setIsSearching] = useState(false);
 
   const searchEnter = () => setIsSearching(true);
@@ -52,7 +50,7 @@ export function NavigationBar() {
       ) : (
         <Toolbar className={classes.mainToolbar}>
           <Typography variant="h5" color="primary" noWrap>
-            <Link component={RouterLink} to="/" style={theme.link}>
+            <Link component={RouterLink} to="/" underline="none">
               Ipeadata Explorer
             </Link>
           </Typography>

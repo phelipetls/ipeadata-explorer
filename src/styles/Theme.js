@@ -9,9 +9,6 @@ export const theme = createMuiTheme(
       regional: green[600],
       social: red[600],
     },
-    link: {
-      textDecoration: "none",
-    },
     chart: {
       minHeight: 512,
     },
