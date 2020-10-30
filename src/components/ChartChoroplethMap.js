@@ -30,12 +30,14 @@ export function ChartChoroplethMap(props) {
 
   const { series, metadata, labels, datasets } = props;
 
+  const periodicity = metadata.PERNOME;
+
   const seriesByGroup = useMemo(() => {
     const seriesByGroup = groupBy(series, row =>
-      metadata.PERNOME === "Anual" ||
-      metadata.PERNOME === "Decenal" ||
-      metadata.PERNOME === "Quadrienal" ||
-      metadata.PERNOME === "Quinquenal"
+      periodicity === "Anual" ||
+      periodicity === "Decenal" ||
+      periodicity === "Quadrienal" ||
+      periodicity === "Quinquenal"
         ? getYearIsoDate(row.VALDATA)
         : getYearAndMonthIsoDate(row.VALDATA)
     );
@@ -45,7 +47,7 @@ export function ChartChoroplethMap(props) {
     }
 
     return seriesByGroup;
-  }, [series, metadata]);
+  }, [series, periodicity]);
 
   const periods = Object.keys(seriesByGroup).reverse();
 
