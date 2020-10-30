@@ -5,23 +5,16 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { Link as RouterLink } from "react-router-dom";
 
-const useStyles = makeStyles(() => ({
-  link: {
-    "&:not(:last-child)": {
-      marginRight: "1.5em",
-    },
-  },
+const useStyles = makeStyles(theme => ({
   navigationList: {
     display: "flex",
     flexDirection: "row",
   },
   navigationListItem: {
     cursor: "pointer",
-    "&": {},
-    justifyContent: "center",
     textAlign: "center",
     "&:hover": {
-      backgroundColor: "rgba(0, 0, 0, 0.04)",
+      backgroundColor: theme.palette.action.hover,
     },
   },
 }));
@@ -38,7 +31,7 @@ export function NavigationBarList(props) {
           key={index}
           className={classes.navigationListItem}
         >
-          <Link component="div" className={classes.link} underline="none">
+          <Link component="div" underline="none">
             {link.text}
           </Link>
         </ListItem>
