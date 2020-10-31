@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 
-import { Select, InputLabel, FormControl } from "@material-ui/core";
+import { Select, InputLabel, FormControl, Grow } from "@material-ui/core";
+import { makeStyles } from "@material-ui/styles";
 
 import { Loading } from "./Loading";
 
@@ -11,7 +12,13 @@ import {
   unpluralize,
 } from "../api/ibge";
 
+const useStyles = makeStyles(() => ({
+  formElement: {},
+}));
+
 export function ChartFormGeography(props) {
+  const classes = useStyles();
+
   const [geoDivision, setGeoDivision] = useState(props.geoDivision);
   const [geoBoundary, setGeoBoundary] = useState("Brasil");
   const [geoBoundaryValue, setGeoBoundaryValue] = useState("");
@@ -65,52 +72,57 @@ export function ChartFormGeography(props) {
 
       {getChartType(geoDivision) === "map" && (
         <>
-          <FormControl variant="outlined">
-            <InputLabel htmlFor="geoBoundary" shrink>
-              Limite geográfico
-            </InputLabel>
-
-            <Select
-              native
-              value={geoBoundary}
-              label="Limite geográfico"
-              onChange={e => setGeoBoundary(e.target.value)}
-              inputProps={{ name: "geoBoundary", id: "geoBoundary" }}
-            >
-              {getContainingRegions(geoDivision).map(region => (
-                <option key={region} value={region}>
-                  {region}
-                </option>
-              ))}
-            </Select>
-          </FormControl>
-
-          {geoBoundary === "Brasil" ? null : isLoading ? (
-            <Loading />
-          ) : (
-            <FormControl variant="outlined">
-              <InputLabel htmlFor="geoBoundaryValue" shrink>
-                {unpluralize(geoBoundary)}
+          <Grow in={true}>
+            <FormControl variant="outlined" className={classes.formElement}>
+              <InputLabel htmlFor="geoBoundary" shrink>
+                Limite geográfico
               </InputLabel>
 
               <Select
                 native
-                value={geoBoundaryValue}
-                label={unpluralize(geoBoundary)}
-                onChange={e => setGeoBoundaryValue(e.target.value)}
-                inputProps={{
-                  name: "geoBoundaryValue",
-                  id: "geoBoundaryValue",
-                }}
+                value={geoBoundary}
+                label="Limite geográfico"
+                onChange={e => setGeoBoundary(e.target.value)}
+                inputProps={{ name: "geoBoundary", id: "geoBoundary" }}
               >
-                {geoBoundaries.map(boundary => (
-                  <option key={boundary.name} value={boundary.id}>
-                    {boundary.name}
+                {getContainingRegions(geoDivision).map(region => (
+                  <option key={region} value={region}>
+                    {region}
                   </option>
                 ))}
               </Select>
             </FormControl>
-          )}
+          </Grow>
+
+          {geoBoundary !== "Brasil" &&
+            (isLoading ? (
+              <Loading />
+            ) : (
+              <Grow in={true}>
+                <FormControl variant="outlined" className={classes.formElement}>
+                  <InputLabel htmlFor="geoBoundaryValue" shrink>
+                    {unpluralize(geoBoundary)}
+                  </InputLabel>
+
+                  <Select
+                    native
+                    value={geoBoundaryValue}
+                    label={unpluralize(geoBoundary)}
+                    onChange={e => setGeoBoundaryValue(e.target.value)}
+                    inputProps={{
+                      name: "geoBoundaryValue",
+                      id: "geoBoundaryValue",
+                    }}
+                  >
+                    {geoBoundaries.map(boundary => (
+                      <option key={boundary.name} value={boundary.id}>
+                        {boundary.name}
+                      </option>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grow>
+            ))}
         </>
       )}
     </>
