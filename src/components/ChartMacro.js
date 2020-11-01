@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
+import { useQuery } from "react-query";
 
 import { ChartForm } from "./ChartForm";
 import { ChartFormDate } from "./ChartFormDate";
@@ -12,23 +14,44 @@ import { formatDateFromDatePicker } from "../api/utils";
 const DEFAULT_LIMIT = 50;
 
 export function ChartMacro({ code, metadata }) {
-  const [series, setSeries] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [initialDate, setInitialDate] = useState(null);
+  const [finalDate, setFinalDate] = useState(null);
+  const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
-  useEffect(() => {
-    async function fetchSeries() {
-      setIsLoading(true);
+  const { isLoading, data } = useQuery(
+    [code, initialDate, finalDate, lastN],
+    async (code, initialDate, finalDate, lastN) => {
+      let dateInterval = "";
 
-      const url = buildSeriesUrl(code) + limitQuery(DEFAULT_LIMIT);
-      const response = await fetch(url);
-      const json = await response.json();
-      setSeries(json.value);
+      if (initialDate || finalDate) {
+        const initialDateValue = formatDateFromDatePicker(initialDate);
+        const finalDateValue = formatDateFromDatePicker(finalDate);
 
-      setIsLoading(false);
+        dateInterval = `&$filter=${limitByDate(
+          initialDateValue,
+          finalDateValue
+        )}`;
+      } else {
+        dateInterval = limitQuery(lastN);
+      }
+
+      const url = buildSeriesUrl(code) + dateInterval;
+
+      return await (await fetch(url)).json();
     }
+  );
 
-    fetchSeries();
-  }, [code]);
+  const series = data?.value || [];
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    const { initialDate, finalDate, lastN } = e.target.elements;
+
+    if (initialDate) setInitialDate(initialDate.value);
+    if (finalDate) setFinalDate(finalDate.value);
+    if (lastN) setLastN(lastN.value);
+  }
 
   const labels = series.map(series => series.VALDATA);
   const datasets = [
@@ -37,30 +60,6 @@ export function ChartMacro({ code, metadata }) {
       data: series.map(series => series.VALVALOR),
     },
   ];
-
-  async function handleSubmit(e) {
-    e.preventDefault();
-
-    const { initialDate, finalDate, lastN } = e.target.elements;
-
-    const initialDateValue = formatDateFromDatePicker(initialDate.value);
-    const finalDateValue = formatDateFromDatePicker(finalDate.value);
-
-    const dateFilter =
-      initialDate.value || finalDate.value
-        ? `&$filter=${limitByDate(initialDateValue, finalDateValue)}`
-        : limitQuery(lastN.value || DEFAULT_LIMIT);
-
-    const url = buildSeriesUrl(code) + dateFilter;
-
-    setIsLoading(true);
-
-    const response = await fetch(url);
-    const json = await response.json();
-    setSeries(json.value);
-
-    setIsLoading(false);
-  }
 
   return (
     <ChartSection>
