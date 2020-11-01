@@ -33,9 +33,9 @@ export function Themes() {
     setBases(newBases);
   };
 
-  const { isLoading, data } = useQuery("Countries", () =>
-    fetch(THEMES_URL).then(response => response.json())
-  );
+  const { isLoading, data } = useQuery("Countries", async () => {
+    return await (await fetch(THEMES_URL)).json();
+  });
 
   const themes = data?.value || [];
 

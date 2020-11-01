@@ -29,9 +29,9 @@ const columns = [
 ];
 
 export function Countries() {
-  const { isLoading, data } = useQuery("Countries", () =>
-    fetch(COUNTRIES_URL).then(response => response.json())
-  );
+  const { isLoading, data } = useQuery("Countries", async () => {
+    return await (await fetch(COUNTRIES_URL)).json();
+  });
 
   const countries = data?.value || [];
 

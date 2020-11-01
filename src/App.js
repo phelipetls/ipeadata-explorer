@@ -13,7 +13,7 @@ const HomePage = React.lazy(() => import("./components/HomePage"));
 const About = React.lazy(() => import("./components/About"));
 const Themes = React.lazy(() => import("./components/Themes"));
 const Countries = React.lazy(() => import("./components/Countries"));
-const SeriesList = React.lazy(() => import("./components/SeriesList"));
+const SeriesSearch = React.lazy(() => import("./components/SeriesSearch"));
 const SeriesViewer = React.lazy(() => import("./components/SeriesViewer"));
 
 const useStyles = makeStyles(theme => ({
@@ -45,7 +45,7 @@ function App() {
                 <Route path="/sobre" component={About} />
                 <Route path="/temas" component={Themes} />
                 <Route path="/paises" component={Countries} />
-                <Route path="/series" component={SeriesList} />
+                <Route path="/series" component={SeriesSearch} />
                 <Route path="/serie/:code" component={SeriesViewer} />
               </ErrorBoundary>
             </Switch>

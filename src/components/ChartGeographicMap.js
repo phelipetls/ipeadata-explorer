@@ -35,7 +35,7 @@ export function ChartGeographicMap(props) {
         outlineFeaturesJson,
         regionsFeaturesJson,
         regionsJson,
-      ] = await Promise.all(responses.map(response => response.json()));
+      ] = await Promise.all(responses.map(res => res.json()));
 
       setRegionsMetadata(regionsJson);
 

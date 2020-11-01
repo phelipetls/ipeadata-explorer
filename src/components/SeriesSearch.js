@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { Paper, TableContainer, Link } from "@material-ui/core";
-
 import { Link as RouterLink, useLocation } from "react-router-dom";
+import { useQuery, useQueryCache } from "react-query";
 
 import { TableSortable } from "./TableSortable";
 import { SeriesFilter } from "./SeriesFilter";
@@ -42,81 +42,52 @@ const columns = [
   { key: "SERMAXDATA", type: "date", label: "Fim", render: getYear },
 ];
 
-export function SeriesList() {
+export function SeriesSearch() {
   const isSmallScreen = useBreakpoint("sm");
+  const queryCache = useQueryCache();
+  const searchParams = useSearchParams();
 
-  const [rows, setRows] = useState([]);
-  const [rowsCount, setRowsCount] = useState(0);
+  const [searchUrl, setSearchUrl] = useState(
+    () => filterSeriesFromUrl(searchParams) || DEFAULT_URL
+  );
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [formOpen, setFormOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const searchParams = useSearchParams();
-  const urlFromSearchParams = filterSeriesFromUrl(searchParams);
-
-  let [url, setUrl] = useState(
-    (urlFromSearchParams || DEFAULT_URL) + limitQuery(rowsPerPage)
+  const { isLoading, isFetching, data } = useQuery(
+    [searchUrl, { page, rowsPerPage }],
+    async (searchUrl, { page, rowsPerPage }) => {
+      const response = await fetch(
+        searchUrl + limitQuery(rowsPerPage) + offsetQuery(page * rowsPerPage)
+      );
+      return await response.json();
+    },
+    { staleTime: Infinity }
   );
-  const [newPageUrl, setNewPageUrl] = useState("");
 
-  useEffect(() => {
-    async function fetchNewRows() {
-      setIsLoading(true);
-
-      const response = await fetch(url);
-      const json = await response.json();
-      setRows(json.value);
-      setRowsCount(json["@odata.count"]);
-
-      setIsLoading(false);
-    }
-
-    fetchNewRows();
-  }, [url]);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-
-    let url = filterSeriesFromForm(e.target.elements);
-    setUrl(url + limitQuery(rowsPerPage));
-    setPage(0);
-    setFormOpen(false);
-  }
+  const rows = data?.value || [];
+  const rowsCount = data?.["@odata.count"] || 0;
 
   function handlePageChange(_, newPage) {
     setPage(newPage);
-
-    const newTotalRows = (newPage + 1) * rowsPerPage;
-
-    if (newTotalRows >= rows.length) {
-      setNewPageUrl(url + offsetQuery((page + 1) * rowsPerPage));
-    }
   }
 
   function handleRowsPerPageChange(e) {
-    const newRowsPerPage = parseInt(e.target.value, 10);
-
     setPage(0);
-    setRowsPerPage(newRowsPerPage);
-    setUrl(url.replace(/top=[0-9]+/, `top=${newRowsPerPage}`));
+    setRowsPerPage(parseInt(e.target.value, 10));
+    queryCache.invalidateQueries([searchUrl, { rowsPerPage }], {
+      refetchActive: false,
+    });
   }
 
-  useEffect(() => {
-    if (!newPageUrl) return;
-
-    async function fetchMoreRows() {
-      setIsLoading(true);
-
-      const response = await fetch(newPageUrl);
-      const json = await response.json();
-      setRows(rows => rows.concat(json.value));
-
-      setIsLoading(false);
-    }
-
-    fetchMoreRows();
-  }, [newPageUrl]);
+  function handleSubmit(e) {
+    e.preventDefault();
+    let newUrl = filterSeriesFromForm(e.target.elements);
+    queryCache.invalidateQueries([searchUrl], { refetchActive: false });
+    setSearchUrl(newUrl);
+    setPage(0);
+    setFormOpen(false);
+  }
 
   const paginationActions = (
     <TablePaginationFooter
@@ -128,26 +99,21 @@ export function SeriesList() {
     />
   );
 
-  const currentPageRows = rows.slice(
-    page * rowsPerPage,
-    page * rowsPerPage + rowsPerPage
-  );
-
   const table = isSmallScreen ? (
     <TableRowsCollapsed
-      rows={currentPageRows}
+      isLoading={isLoading || isFetching}
+      rows={rows}
       columns={columns}
       footer={paginationActions}
-      isLoading={isLoading}
       skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={2} />}
     />
   ) : (
     <TableSortable
-      rows={currentPageRows}
+      isLoading={isLoading || isFetching}
+      rows={rows}
       rowKey="SERCODIGO"
       columns={columns}
       footer={paginationActions}
-      isLoading={isLoading}
       skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={columns.length} />}
     />
   );
@@ -175,4 +141,4 @@ export function SeriesList() {
   );
 }
 
-export default SeriesList;
+export default SeriesSearch;
