@@ -61,14 +61,14 @@ export function Themes() {
               SOCIAL,
             } = theme;
 
-            const parent_theme = themes.find(
+            const parentTheme = themes.find(
               theme => theme.TEMCODIGO === TEMCODIGO_PAI
             );
 
             return (
               <ThemeCard themeName={TEMNOME} key={TEMCODIGO}>
                 <ThemeName name={TEMNOME} />
-                {parent_theme && <ThemeParent name={parent_theme.TEMNOME} />}
+                {parentTheme && <ThemeParent name={parentTheme.TEMNOME} />}
                 {(MACRO || REGIONAL || SOCIAL) && (
                   <ThemeBases
                     macro={MACRO}
