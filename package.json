@@ -52,6 +52,7 @@
     "babel-plugin-import": "^1.13.0",
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.1.6",
+    "react-query": "^2.25.2",
     "source-map-explorer": "^2.5.0"
   }
 }

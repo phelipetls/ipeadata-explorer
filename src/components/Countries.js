@@ -1,12 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 
 import { Link, TableContainer, Paper } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
+import { useQuery } from "react-query";
 
 import { TableSortable } from "./TableSortable";
 import { TableSkeleton } from "./TableSkeleton";
 
-const URL =
+const COUNTRIES_URL =
   "http://ipeadata2-homologa.ipea.gov.br/api/v1/Paises?$expand=Metadados($select=SERCODIGO;$count=true)";
 
 const columns = [
@@ -28,21 +29,16 @@ const columns = [
 ];
 
 export function Countries() {
-  const [countries, setCountries] = useState([]);
+  const { isLoading, data } = useQuery("Countries", () =>
+    fetch(COUNTRIES_URL).then(response => response.json())
+  );
 
-  useEffect(() => {
-    async function fetchCountries() {
-      const response = await fetch(URL);
-      const json = await response.json();
-      setCountries(json.value);
-    }
-
-    fetchCountries();
-  }, []);
+  const countries = data?.value || [];
 
   return (
     <TableContainer component={Paper}>
       <TableSortable
+        isLoading={isLoading}
         rows={countries}
         rowKey="PAICODIGO"
         columns={columns}

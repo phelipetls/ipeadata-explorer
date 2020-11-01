@@ -10,11 +10,23 @@ import { ThemeProvider } from "@material-ui/core/styles";
 import DateFnsUtils from "@date-io/date-fns";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
+import { QueryCache, ReactQueryCacheProvider } from "react-query";
+
+const queryCache = new QueryCache({
+  defaultConfig: {
+    queries: {
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
 ReactDOM.render(
   <React.StrictMode>
     <ThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <App />
+        <ReactQueryCacheProvider queryCache={queryCache}>
+          <App />
+        </ReactQueryCacheProvider>
       </MuiPickersUtilsProvider>
     </ThemeProvider>
   </React.StrictMode>,

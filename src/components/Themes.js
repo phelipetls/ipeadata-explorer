@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { useQuery } from "react-query";
 
 import { ThemeCard } from "./ThemeCard";
 import { ThemeName } from "./ThemeName";
@@ -21,29 +22,24 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Temas";
+const THEMES_URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Temas";
 
 export function Themes() {
   const classes = useStyles();
 
-  const [themes, setThemes] = useState([]);
   const [bases, setBases] = useState(["MACRO", "REGIONAL", "SOCIAL"]);
-
-  useEffect(() => {
-    async function fetchThemes() {
-      const response = await fetch(URL);
-      const json = await response.json();
-      setThemes(json.value);
-    }
-
-    fetchThemes();
-  }, []);
 
   const handleChangeBases = (_, newBases) => {
     setBases(newBases);
   };
 
-  return themes.length === 0 ? (
+  const { isLoading, data } = useQuery("Countries", () =>
+    fetch(THEMES_URL).then(response => response.json())
+  );
+
+  const themes = data?.value || [];
+
+  return isLoading ? (
     <Loading />
   ) : (
     <div>
