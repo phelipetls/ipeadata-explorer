@@ -1,7 +1,7 @@
 import { sub, subQuarters, startOfQuarter } from "date-fns";
 
 function formatISO(date) {
-  return date.toISOString().slice(0, 10) + "T00:00:00-03:00";
+  return date.toISOString().slice(0, 10) + "T00:00:00-00:00";
 }
 
 export function formatDateFromDatePicker(dateStr) {
