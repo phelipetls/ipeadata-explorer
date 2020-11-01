@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
+import { useQuery } from "react-query";
 
 import { ChartBar } from "./ChartBar";
 import { ChartSection } from "./ChartSection";
@@ -24,32 +26,38 @@ const parseJsonCount = json =>
   );
 
 export function ChartCategorical({ code, metadata }) {
-  const [categoriesCount, setCategoriesCount] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [initialDate, setInitialDate] = useState(null);
+  const [finalDate, setFinalDate] = useState(null);
+  const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
-  useEffect(() => {
-    async function fetchCategoricalSeries() {
-      const startDate = subtractSeriesMaxDate({
-        metadata: metadata,
-        offset: DEFAULT_LIMIT,
-      });
+  const { isLoading, data } = useQuery(
+    [code, initialDate, finalDate, lastN],
+    async (code, initialDate, finalDate, lastN) => {
+      let dateFilter = "";
 
-      const dateFilter = limitByDate(startDate);
+      if (initialDate || finalDate) {
+        const initialDateValue = formatDateFromDatePicker(initialDate);
+        const finalDateValue = formatDateFromDatePicker(finalDate);
+
+        dateFilter = limitByDate(initialDateValue, finalDateValue);
+      } else {
+        dateFilter = limitByDate(
+          subtractSeriesMaxDate({
+            metadata: metadata,
+            offset: lastN,
+          })
+        );
+      }
+
       const url =
         buildMetadataUrl(code) +
         `/ValoresStr?$apply=filter(${dateFilter})/${CATEGORY_COUNT_QUERY}`;
 
-      setIsLoading(true);
-
-      const response = await fetch(url);
-      const json = await response.json();
-      setCategoriesCount(parseJsonCount(json.value));
-
-      setIsLoading(false);
+      return await (await fetch(url)).json();
     }
+  );
 
-    fetchCategoricalSeries();
-  }, [metadata, code]);
+  const categoriesCount = parseJsonCount(data?.value || []);
 
   const labels = Object.keys(categoriesCount);
   const datasets = [
@@ -63,32 +71,9 @@ export function ChartCategorical({ code, metadata }) {
     e.preventDefault();
     let { initialDate, finalDate, lastN } = e.target.elements;
 
-    let url = buildMetadataUrl(code);
-    let dateFilter = "";
-
-    if (initialDate.value || finalDate.value) {
-      const initialDateValue = formatDateFromDatePicker(initialDate.value);
-      const finalDateValue = formatDateFromDatePicker(finalDate.value);
-
-      dateFilter = limitByDate(initialDateValue, finalDateValue);
-    } else {
-      dateFilter = limitByDate(
-        subtractSeriesMaxDate({
-          metadata: metadata,
-          offset: lastN.value || DEFAULT_LIMIT,
-        })
-      );
-    }
-
-    url += `/ValoresStr?$apply=filter(${dateFilter})/${CATEGORY_COUNT_QUERY}`;
-
-    setIsLoading(true);
-
-    const response = await fetch(url);
-    const json = await response.json();
-    setCategoriesCount(parseJsonCount(json.value));
-
-    setIsLoading(false);
+    if (initialDate) setInitialDate(initialDate.value);
+    if (finalDate) setFinalDate(finalDate.value);
+    if (lastN) setLastN(lastN.value);
   }
 
   return (
