@@ -6,7 +6,7 @@ import { ChartBar } from "./ChartBar";
 import { ChartSection } from "./ChartSection";
 import { ChartForm } from "./ChartForm";
 import { ChartFormDate } from "./ChartFormDate";
-import { ChartWrapper } from "./ChartWrapper";
+import { ChartContainer } from "./ChartContainer";
 
 import { limitByDate, buildMetadataUrl } from "../api/odata";
 import { formatDateFromDatePicker, subtractSeriesMaxDate } from "../api/utils";
@@ -82,9 +82,9 @@ export function ChartCategorical({ code, metadata }) {
         <ChartFormDate metadata={metadata} />
       </ChartForm>
 
-      <ChartWrapper isLoading={isLoading} series={categoriesCount}>
+      <ChartContainer isLoading={isLoading} data={categoriesCount}>
         <ChartBar metadata={metadata} labels={labels} datasets={datasets} />
-      </ChartWrapper>
+      </ChartContainer>
     </ChartSection>
   );
 }

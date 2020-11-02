@@ -9,7 +9,7 @@ import { ChartFormGeography } from "./ChartFormGeography";
 import { ChartSection } from "./ChartSection";
 import { ChartGeographicMap } from "./ChartGeographicMap";
 import { ChartGeographicTimeseries } from "./ChartGeographicTimeseries";
-import { ChartWrapper } from "./ChartWrapper";
+import { ChartContainer } from "./ChartContainer";
 
 import {
   limitByDate,
@@ -40,9 +40,9 @@ export function ChartGeographic({ code, metadata }) {
 
   const chartType = getChartType(geoDivision);
 
-  const { isLoading, data = {} } = useQuery(
+  const { isLoading: isLoadingData, data = {} } = useQuery(
     [code, initialDate, finalDate, lastN, geoDivision, geoBoundaryId],
-    async (code, initialDate, finalDate, lastN, geoDivision, geoBoundaryId) => {
+    async () => {
       let dateFilter = "";
 
       if (initialDate || finalDate) {
@@ -80,6 +80,8 @@ export function ChartGeographic({ code, metadata }) {
     { enabled: geoDivisions.length > 0 }
   );
 
+  const isLoading = isLoadingData || isLoadingGeoDivisions;
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -114,9 +116,9 @@ export function ChartGeographic({ code, metadata }) {
         )}
       </ChartForm>
 
-      <ChartWrapper isLoading={isLoading || isLoadingGeoDivisions} series={series}>
+      <ChartContainer isLoading={isLoading} data={series}>
         {chartType === "line" ? (
-          <ChartGeographicTimeseries series={series} metadata={metadata} />
+          <ChartGeographicTimeseries isLoading={isLoading} series={series} />
         ) : (
           <ChartGeographicMap
             series={series}
@@ -125,7 +127,7 @@ export function ChartGeographic({ code, metadata }) {
             geoBoundaryId={geoBoundaryId}
           />
         )}
-      </ChartWrapper>
+      </ChartContainer>
     </ChartSection>
   );
 }

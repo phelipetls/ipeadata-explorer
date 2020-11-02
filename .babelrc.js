@@ -1,4 +1,5 @@
 const plugins = [
+  ["recharts"],
   [
     'babel-plugin-import',
     {
