@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
+import { useQuery } from "react-query";
 
 import { Loading } from "./Loading";
 import { ChartForm } from "./ChartForm";
@@ -20,51 +22,65 @@ import { getChartType } from "../api/ibge";
 const DEFAULT_LIMIT = 5;
 
 export function ChartGeographic({ code, metadata }) {
-  const [series, setSeries] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [initialDate, setInitialDate] = useState(null);
+  const [finalDate, setFinalDate] = useState(null);
+  const [lastN, setLastN] = useState(DEFAULT_LIMIT);
+  const [geoBoundaryId, setGeoBundaryId] = useState("BR");
 
-  const [geoDivision, setGeoDivision] = useState("");
-  const [geoDivisions, setGeoDivisions] = useState([]);
-  const [geoBoundaryValue, setGeoBundaryValue] = useState("BR");
+  let [geoDivision, setGeoDivision] = useState(null);
 
-  useEffect(() => {
-    async function fetchSeries() {
-      const availableGeoDivisions = await fetchGeographicDivisions(code);
-      setGeoDivisions(availableGeoDivisions);
+  const {
+    isLoading: geoDivisionsIsLoading,
+    data: geoDivisions = [],
+  } = useQuery(["Geographic divisions", code], () =>
+    fetchGeographicDivisions(code)
+  );
 
-      const firstGeoDivision = availableGeoDivisions[0];
-      setGeoDivision(firstGeoDivision);
+  geoDivision = geoDivision || geoDivisions[0];
 
+  const chartType = getChartType(geoDivision);
+
+  const { isLoading, data = {} } = useQuery(
+    [code, initialDate, finalDate, lastN, geoDivision, geoBoundaryId],
+    async (code, initialDate, finalDate, lastN, geoDivision, geoBoundaryId) => {
       let dateFilter = "";
 
-      if (metadata.PERNOME !== "Não se aplica") {
-        const startDate = subtractSeriesMaxDate({
-          metadata: metadata,
-          offset: DEFAULT_LIMIT,
-        });
-
-        dateFilter = ` and VALDATA ge ${startDate}`;
+      if (initialDate || finalDate) {
+        dateFilter = limitByDate(
+          formatDateFromDatePicker(initialDate),
+          formatDateFromDatePicker(finalDate)
+        );
+      } else if (metadata.PERNOME !== "Não se aplica") {
+        dateFilter = limitByDate(
+          subtractSeriesMaxDate({
+            metadata: metadata,
+            offset: lastN || DEFAULT_LIMIT,
+          })
+        );
       }
+
+      dateFilter = dateFilter ? " and " + dateFilter : dateFilter;
+
+      const boundaryFilter =
+        chartType === "map" && geoBoundaryId !== "BR"
+          ? ` and startswith(TERCODIGO,'${"".slice.call(geoBoundaryId, 0, 2)}')`
+          : "";
+
+      const divisionFilter = `NIVNOME eq '${geoDivision}'`;
 
       const url =
         buildSeriesUrl(code) +
         "&$filter=" +
-        `NIVNOME eq '${firstGeoDivision}'` +
+        divisionFilter +
+        boundaryFilter +
         dateFilter;
 
-      setIsLoading(true);
+      return await (await fetch(url)).json();
+    },
+    { enabled: geoDivisions.length > 0 }
+  );
 
-      const response = await fetch(url);
-      const json = await response.json();
-      setSeries(json.value);
-
-      setIsLoading(false);
-    }
-
-    fetchSeries();
-  }, [metadata, code]);
-
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
 
     const {
@@ -72,61 +88,23 @@ export function ChartGeographic({ code, metadata }) {
       finalDate,
       lastN,
       geoDivision,
-      geoBoundaryValue,
+      geoBoundaryId,
     } = e.target.elements;
 
-    const newGeoDivision = geoDivision.value;
-    setGeoDivision(newGeoDivision);
-
-    const newGeoBoundaryValue = geoBoundaryValue?.value || "BR";
-    setGeoBundaryValue(newGeoBoundaryValue);
-
-    const newGeoBoundaryPrefix = String(newGeoBoundaryValue).slice(0, 2);
-
-    const boundaryFilter =
-      getChartType(newGeoDivision) === "map" && newGeoBoundaryValue !== "BR"
-        ? ` and startswith(TERCODIGO,'${newGeoBoundaryPrefix}')`
-        : "";
-
-    let dateFilter = "";
-
-    if (initialDate.value || finalDate.value) {
-      const initialDateValue = formatDateFromDatePicker(initialDate.value);
-      const finalDateValue = formatDateFromDatePicker(finalDate.value);
-
-      dateFilter = " and " + limitByDate(initialDateValue, finalDateValue);
-    } else if (metadata.PERNOME !== "Não se aplica") {
-      const startDate = subtractSeriesMaxDate({
-        metadata: metadata,
-        offset: lastN.value || DEFAULT_LIMIT,
-      });
-
-      dateFilter = " and " + limitByDate(startDate);
-    }
-
-    const url =
-      buildSeriesUrl(code) +
-      "&$filter=" +
-      `NIVNOME eq '${newGeoDivision}'` +
-      boundaryFilter +
-      dateFilter;
-
-    setIsLoading(true);
-
-    const response = await fetch(url);
-    const json = await response.json();
-    setSeries(json.value);
-
-    setIsLoading(false);
+    if (initialDate) setInitialDate(initialDate.value);
+    if (finalDate) setFinalDate(finalDate.value);
+    if (lastN) setLastN(lastN.value);
+    if (geoDivision) setGeoDivision(geoDivision.value);
+    if (geoBoundaryId) setGeoBundaryId(geoBoundaryId.value);
   }
 
-  const chartType = getChartType(geoDivision);
+  const series = data?.value || [];
 
   return (
     <ChartSection>
       <ChartForm onSubmit={handleSubmit}>
         <ChartFormDate metadata={metadata} />
-        {!geoDivision ? (
+        {geoDivisionsIsLoading ? (
           <Loading />
         ) : (
           <ChartFormGeography
@@ -136,7 +114,10 @@ export function ChartGeographic({ code, metadata }) {
         )}
       </ChartForm>
 
-      <ChartWrapper isLoading={isLoading} series={series}>
+      <ChartWrapper
+        isLoading={isLoading || geoDivisionsIsLoading}
+        series={series}
+      >
         {chartType === "line" ? (
           <ChartGeographicTimeseries series={series} metadata={metadata} />
         ) : (
@@ -144,7 +125,7 @@ export function ChartGeographic({ code, metadata }) {
             series={series}
             metadata={metadata}
             geoDivision={geoDivision}
-            geoBoundaryValue={geoBoundaryValue}
+            geoBoundaryId={geoBoundaryId}
           />
         )}
       </ChartWrapper>
