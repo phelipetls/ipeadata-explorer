@@ -1,74 +1,68 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+
+import { useQuery } from "react-query";
 
 import { topojson } from "chartjs-chart-geo";
-import { getMapUrl, getRegionsUrl } from "../api/ibge";
+import { getMapUrl, getDivisionsUrl } from "../api/ibge";
 
 import { ChartChoroplethMap } from "./ChartChoroplethMap";
 import { ChartWrapper } from "./ChartWrapper";
 
 import keyBy from "lodash.keyby";
 
+async function fetchOutlineMap(geoBoundaryId) {
+  const url = getMapUrl({ geoBoundaryId });
+  const json = await (await fetch(url)).json();
+  return topojson.feature(json, json.objects.foo).features;
+}
+
+async function fetchDivisionsMap(geoBoundaryId, geoDivision) {
+  const url = getMapUrl({ geoBoundaryId, geoDivision });
+  const json = await (await fetch(url)).json();
+  return topojson.feature(json, json.objects.foo).features;
+}
+
+async function fetchDivisions(geoDivision) {
+  const url = getDivisionsUrl(geoDivision);
+  return await (await fetch(url)).json();
+}
+
 export function ChartGeographicMap(props) {
-  const [outlineFeatures, setOutlineFeatures] = useState([]);
-  const [regionsFeatures, setRegionsFeatures] = useState([]);
-  const [regionsMetadata, setRegionsMetadata] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const { series, metadata, geoDivision, geoBoundaryId } = props;
 
-  const { series, metadata, geoDivision, geoBoundaryValue } = props;
+  const { isLoading: outlineMapIsLoading, data: outlineMap = [] } = useQuery(
+    [geoBoundaryId],
+    fetchOutlineMap
+  );
 
-  useEffect(() => {
-    async function fetchGeographicData() {
-      const outlineFeaturesUrl = getMapUrl({ geoBoundaryValue });
-      const regionsFeaturesUrl = getMapUrl({ geoBoundaryValue, geoDivision });
-      const regionsUrl = getRegionsUrl(geoDivision);
+  const {
+    isLoading: divisionsMapIsLoading,
+    data: divisionsMap = [],
+  } = useQuery([geoBoundaryId, geoDivision], fetchDivisionsMap);
 
-      const requests = [
-        fetch(outlineFeaturesUrl),
-        fetch(regionsFeaturesUrl),
-        fetch(regionsUrl),
-      ];
+  const { isLoading: divisionsIsLoading, data: divisions = [] } = useQuery(
+    [geoDivision],
+    fetchDivisions
+  );
 
-      setIsLoading(true);
+  const divisionsById = keyBy(divisions, "id");
 
-      const responses = await Promise.all(requests);
-      const [
-        outlineFeaturesJson,
-        regionsFeaturesJson,
-        regionsJson,
-      ] = await Promise.all(responses.map(res => res.json()));
-
-      setRegionsMetadata(regionsJson);
-
-      setOutlineFeatures(
-        topojson.feature(outlineFeaturesJson, outlineFeaturesJson.objects.foo)
-          .features
-      );
-
-      setRegionsFeatures(
-        topojson.feature(regionsFeaturesJson, regionsFeaturesJson.objects.foo)
-          .features
-      );
-
-      setIsLoading(false);
-    }
-
-    fetchGeographicData();
-  }, [geoBoundaryValue, geoDivision]);
-
-  const regionsById = keyBy(regionsMetadata, "id");
-
-  const labels = regionsFeatures.map(feature => {
-    return regionsById[feature.properties.codarea]?.nome || "Não disponível";
-  });
+  const labels = divisionsMap.map(
+    feature =>
+      divisionsById[feature.properties.codarea]?.nome || "Não disponível"
+  );
 
   const datasets = [
     {
-      outline: outlineFeatures,
-      data: regionsFeatures.map(region => {
-        return { feature: region, value: 0 };
+      outline: outlineMap,
+      data: divisionsMap.map(division => {
+        return { feature: division, value: 0 };
       }),
     },
   ];
+
+  const isLoading =
+    outlineMapIsLoading || divisionsMapIsLoading || divisionsIsLoading;
 
   return (
     <ChartWrapper series={series} isLoading={isLoading}>

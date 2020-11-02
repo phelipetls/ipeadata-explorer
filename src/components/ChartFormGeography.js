@@ -8,7 +8,7 @@ import { Loading } from "./Loading";
 import {
   getChartType,
   getContainingRegions,
-  getRegionsUrl,
+  getDivisionsUrl,
   unpluralize,
 } from "../api/ibge";
 
@@ -29,7 +29,7 @@ export function ChartFormGeography(props) {
     async function fetchGeoRegionsNames() {
       if (geoBoundary === "Brasil") return;
 
-      const url = getRegionsUrl(geoBoundary);
+      const url = getDivisionsUrl(geoBoundary);
 
       setIsLoading(true);
 

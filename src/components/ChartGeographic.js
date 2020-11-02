@@ -30,7 +30,7 @@ export function ChartGeographic({ code, metadata }) {
   let [geoDivision, setGeoDivision] = useState(null);
 
   const {
-    isLoading: geoDivisionsIsLoading,
+    isLoading: isLoadingGeoDivisions,
     data: geoDivisions = [],
   } = useQuery(["Geographic divisions", code], () =>
     fetchGeographicDivisions(code)
@@ -104,7 +104,7 @@ export function ChartGeographic({ code, metadata }) {
     <ChartSection>
       <ChartForm onSubmit={handleSubmit}>
         <ChartFormDate metadata={metadata} />
-        {geoDivisionsIsLoading ? (
+        {isLoadingGeoDivisions ? (
           <Loading />
         ) : (
           <ChartFormGeography
@@ -114,10 +114,7 @@ export function ChartGeographic({ code, metadata }) {
         )}
       </ChartForm>
 
-      <ChartWrapper
-        isLoading={isLoading || geoDivisionsIsLoading}
-        series={series}
-      >
+      <ChartWrapper isLoading={isLoading || isLoadingGeoDivisions} series={series}>
         {chartType === "line" ? (
           <ChartGeographicTimeseries series={series} metadata={metadata} />
         ) : (

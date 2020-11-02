@@ -43,7 +43,7 @@ export function ChartMacro({ code, metadata }) {
 
   const series = data?.value || [];
 
-  async function handleSubmit(e) {
+  function handleSubmit(e) {
     e.preventDefault();
 
     const { initialDate, finalDate, lastN } = e.target.elements;

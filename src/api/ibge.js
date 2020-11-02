@@ -20,8 +20,8 @@ const ibgeGeoRegionsCodes = {
   Municípios: 5,
 };
 
-export function getMapUrl({ geoBoundaryValue, geoDivision }) {
-  const url = new URL(geoBoundaryValue, BASE_URL_MAPS);
+export function getMapUrl({ geoBoundaryId, geoDivision }) {
+  const url = new URL(geoBoundaryId, BASE_URL_MAPS);
 
   url.searchParams.set("formato", "application/json");
 
@@ -32,7 +32,7 @@ export function getMapUrl({ geoBoundaryValue, geoDivision }) {
   return url.toString();
 }
 
-/**
+  /**
  * Returns geographic regions which "contains" a given geographic
  * region.
  *
@@ -55,7 +55,10 @@ export function getContainingRegions(geoRegion) {
  *  https://servicodados.ibge.gov.br/api/docs/localidades?versao=1
  */
 
-const geoRegionEndpoints = {
+const BASE_URL_DIVISIONS =
+  "https://servicodados.ibge.gov.br/api/v1/localidades/";
+
+const divisions = {
   Regiões: "regioes",
   Estados: "estados",
   Mesorregiões: "mesorregioes",
@@ -63,14 +66,8 @@ const geoRegionEndpoints = {
   Municípios: "municipios",
 };
 
-const BASE_URL_LOCATIONS =
-  "https://servicodados.ibge.gov.br/api/v1/localidades/";
-
-export function getRegionsUrl(geoRegionType) {
-  return new URL(
-    geoRegionEndpoints[geoRegionType],
-    BASE_URL_LOCATIONS
-  ).toString();
+export function getDivisionsUrl(division) {
+  return new URL(divisions[division], BASE_URL_DIVISIONS).toString();
 }
 
 export function unpluralize(str) {
