@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+
+import { useQuery } from "react-query";
 
 import { useParams } from "react-router-dom";
 
@@ -11,21 +13,17 @@ import { SeriesMetadata } from "./SeriesMetadata";
 import { buildMetadataUrl } from "../api/odata";
 
 export function SeriesViewer() {
-  const [metadata, setMetadata] = useState(null);
-
   let { code } = useParams();
 
-  useEffect(() => {
-    async function fetchSeriesMetadata() {
-      const response = await fetch(buildMetadataUrl(code));
-      const json = await response.json();
-      setMetadata(json.value[0]);
-    }
+  const { isLoading, data } = useQuery([code], async code => {
+    const url = buildMetadataUrl(code);
+    const response = await fetch(url);
+    return await response.json();
+  });
 
-    fetchSeriesMetadata();
-  }, [code]);
+  const metadata = data?.value[0] || {};
 
-  return !metadata ? (
+  return isLoading ? (
     <Loading />
   ) : (
     <>
