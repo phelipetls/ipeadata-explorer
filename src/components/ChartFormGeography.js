@@ -1,4 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
+import { useQuery } from "react-query";
 
 import { Select, InputLabel, FormControl, Grow } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
@@ -16,37 +18,29 @@ const useStyles = makeStyles(() => ({
   formElement: {},
 }));
 
+async function fetchGeoBoundaryIds(boundary) {
+  const url = getDivisionsUrl(boundary);
+  const boundaries = await (await fetch(url)).json();
+
+  return boundaries.map(boundary => ({
+    id: boundary.id,
+    name: boundary.nome,
+  }));
+}
+
 export function ChartFormGeography(props) {
   const classes = useStyles();
 
   const [geoDivision, setGeoDivision] = useState(props.geoDivision);
   const [geoBoundary, setGeoBoundary] = useState("Brasil");
-  const [geoBoundaryId, setGeoBoundaryId] = useState("");
-  const [geoBoundaries, setGeoBoundaries] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  let [geoBoundaryId, setGeoBoundaryId] = useState(null);
 
-  useEffect(() => {
-    async function fetchGeoRegionsNames() {
-      if (geoBoundary === "Brasil") return;
+  const { isLoading, data: geoBoundaryIds = [] } = useQuery(
+    [geoBoundary],
+    fetchGeoBoundaryIds
+  );
 
-      const url = getDivisionsUrl(geoBoundary);
-
-      setIsLoading(true);
-
-      const response = await fetch(url);
-      const boundariesJson = await response.json();
-      const boundaries = boundariesJson.map(boundary => ({
-        id: boundary.id,
-        name: boundary.nome,
-      }));
-      setGeoBoundaries(boundaries);
-      setGeoBoundaryId(boundaries[0].id);
-
-      setIsLoading(false);
-    }
-
-    fetchGeoRegionsNames();
-  }, [geoBoundary]);
+  geoBoundaryId = geoBoundaryId || geoBoundaryIds[0];
 
   return (
     <>
@@ -114,7 +108,7 @@ export function ChartFormGeography(props) {
                       id: "geoBoundaryId",
                     }}
                   >
-                    {geoBoundaries.map(boundary => (
+                    {geoBoundaryIds.map(boundary => (
                       <option key={boundary.name} value={boundary.id}>
                         {boundary.name}
                       </option>
