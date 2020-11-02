@@ -1,122 +1,39 @@
 import React, { useState } from "react";
 
-import { useQuery } from "react-query";
+import { getChartType } from "../api/ibge";
 
-import { Select, InputLabel, FormControl, Grow } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
-
-import { Loading } from "./Loading";
-
-import {
-  getChartType,
-  getContainingRegions,
-  getDivisionsUrl,
-  unpluralize,
-} from "../api/ibge";
-
-const useStyles = makeStyles(() => ({
-  formElement: {},
-}));
-
-async function fetchGeoBoundaryIds(boundary) {
-  const url = getDivisionsUrl(boundary);
-  const boundaries = await (await fetch(url)).json();
-
-  return boundaries.map(boundary => ({
-    id: boundary.id,
-    name: boundary.nome,
-  }));
-}
+import { SelectGeoDivisions } from "./SelectGeoDivisions";
+import { SelectGeoBoundaryId } from "./SelectGeoBoundaryId";
+import { SelectGeoBoundary } from "./SelectGeoBoundary";
 
 export function ChartFormGeography(props) {
-  const classes = useStyles();
-
+  // FIXME: Do not use props as initial state
   const [geoDivision, setGeoDivision] = useState(props.geoDivision);
   const [geoBoundary, setGeoBoundary] = useState("Brasil");
-  let [geoBoundaryId, setGeoBoundaryId] = useState(null);
-
-  const { isLoading, data: geoBoundaryIds = [] } = useQuery(
-    [geoBoundary],
-    fetchGeoBoundaryIds
-  );
-
-  geoBoundaryId = geoBoundaryId || geoBoundaryIds[0];
 
   return (
     <>
-      <FormControl required variant="outlined">
-        <InputLabel htmlFor="geoDivision" shrink>
-          Divisões geográficas
-        </InputLabel>
-
-        <Select
-          native
-          value={geoDivision}
-          label="Divisões geográficas"
-          onChange={e => setGeoDivision(e.target.value)}
-          inputProps={{ name: "geoDivision", id: "geoDivision" }}
-        >
-          {props.geoDivisions.map(region => (
-            <option key={region} value={region}>
-              {region}
-            </option>
-          ))}
-        </Select>
-      </FormControl>
+      {/* Geographic division to visualize data, e.g., states, municipalities */}
+      <SelectGeoDivisions
+        geoDivisions={props.geoDivisions}
+        handleChange={e => setGeoDivision(e.target.value)}
+      />
 
       {getChartType(geoDivision) === "map" && (
         <>
-          <Grow in={true}>
-            <FormControl variant="outlined" className={classes.formElement}>
-              <InputLabel htmlFor="geoBoundary" shrink>
-                Limite geográfico
-              </InputLabel>
+          {/* The user may give a boundary to the map, e.g. a state etc. The
+          default is "Brazil", which means the whole country so no boundary */}
+          <SelectGeoBoundary
+            geoBoundary={geoBoundary}
+            geoDivision={geoDivision}
+            handleChange={e => setGeoBoundary(e.target.value)}
+          />
 
-              <Select
-                native
-                value={geoBoundary}
-                label="Limite geográfico"
-                onChange={e => setGeoBoundary(e.target.value)}
-                inputProps={{ name: "geoBoundary", id: "geoBoundary" }}
-              >
-                {getContainingRegions(geoDivision).map(region => (
-                  <option key={region} value={region}>
-                    {region}
-                  </option>
-                ))}
-              </Select>
-            </FormControl>
-          </Grow>
-
-          {geoBoundary !== "Brasil" &&
-            (isLoading ? (
-              <Loading />
-            ) : (
-              <Grow in={true}>
-                <FormControl variant="outlined" className={classes.formElement}>
-                  <InputLabel htmlFor="geoBoundaryId" shrink>
-                    {unpluralize(geoBoundary)}
-                  </InputLabel>
-
-                  <Select
-                    native
-                    value={geoBoundaryId}
-                    label={unpluralize(geoBoundary)}
-                    onChange={e => setGeoBoundaryId(e.target.value)}
-                    inputProps={{
-                      name: "geoBoundaryId",
-                      id: "geoBoundaryId",
-                    }}
-                  >
-                    {geoBoundaryIds.map(boundary => (
-                      <option key={boundary.name} value={boundary.id}>
-                        {boundary.name}
-                      </option>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Grow>
-            ))}
+          {/* If boundary is not Brazil, user must specify a specific value of
+          a boundary, e.g., state of São Paulo if geoBoundary is "Estados" */}
+          {geoBoundary !== "Brasil" && (
+            <SelectGeoBoundaryId geoBoundary={geoBoundary} />
+          )}
         </>
       )}
     </>
