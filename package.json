@@ -15,6 +15,7 @@
     "chartjs-adapter-date-fns": "^1.0.0",
     "chartjs-chart-geo": "^2.1.0",
     "chartjs-plugin-colorschemes": "^0.4.0",
+    "d3-scale": "^3.2.3",
     "d3-scale-chromatic": "^2.0.0",
     "date-fns": "^2.16.1",
     "fontsource-roboto": "^3.0.3",
@@ -26,6 +27,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
+    "react-simple-maps": "^2.3.0",
     "recharts": "^1.8.5"
   },
   "scripts": {

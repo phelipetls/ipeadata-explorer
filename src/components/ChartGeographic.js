@@ -36,7 +36,7 @@ export function ChartGeographic({ code, metadata }) {
     fetchGeographicDivisions(code)
   );
 
-  geoDivision = geoDivision || geoDivisions[0];
+  geoDivision = geoDivision || geoDivisions[3];
 
   const chartType = getChartType(geoDivision);
 
