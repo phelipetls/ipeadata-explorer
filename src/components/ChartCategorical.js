@@ -8,8 +8,8 @@ import { ChartForm } from "./ChartForm";
 import { ChartFormDate } from "./ChartFormDate";
 import { ChartContainer } from "./ChartContainer";
 
-import { limitByDate, buildMetadataUrl } from "../api/odata";
-import { formatDateFromDatePicker, subtractSeriesMaxDate } from "../api/utils";
+import { buildMetadataUrl } from "../api/odata";
+import { getDateFilter } from "../api/odata";
 
 const DEFAULT_LIMIT = 0;
 
@@ -32,22 +32,8 @@ export function ChartCategorical({ code, metadata }) {
 
   const { isLoading, data } = useQuery(
     [code, initialDate, finalDate, lastN],
-    async (code, initialDate, finalDate, lastN) => {
-      let dateFilter = "";
-
-      if (initialDate || finalDate) {
-        const initialDateValue = formatDateFromDatePicker(initialDate);
-        const finalDateValue = formatDateFromDatePicker(finalDate);
-
-        dateFilter = limitByDate(initialDateValue, finalDateValue);
-      } else {
-        dateFilter = limitByDate(
-          subtractSeriesMaxDate({
-            metadata: metadata,
-            offset: lastN,
-          })
-        );
-      }
+    async () => {
+      const dateFilter = getDateFilter(initialDate, finalDate, lastN, metadata);
 
       const url =
         buildMetadataUrl(code) +

@@ -6,13 +6,15 @@ import { unpluralize, getDivisionsUrl } from "../api/ibge";
 
 import { Loading } from "./Loading";
 
-export function SelectGeoBoundaryId({ geoBoundary }) {
+async function fetchBoundaryDivisionEntities(_, boundaryDivision) {
+  const url = getDivisionsUrl(boundaryDivision);
+  return await (await fetch(url)).json();
+}
+
+export function SelectBoundaryId({ boundaryDivision }) {
   const { isLoading, data = [] } = useQuery(
-    ["Get all names of a", geoBoundary],
-    async () => {
-      const url = getDivisionsUrl(geoBoundary);
-      return await (await fetch(url)).json();
-    }
+    ["Fetch geographic entities within boundary division", boundaryDivision],
+    fetchBoundaryDivisionEntities
   );
 
   if (isLoading) return <Loading />;
@@ -25,17 +27,17 @@ export function SelectGeoBoundaryId({ geoBoundary }) {
   return (
     <Grow in={true}>
       <FormControl variant="outlined">
-        <InputLabel htmlFor="geoBoundaryId" shrink>
-          {unpluralize(geoBoundary)}
+        <InputLabel htmlFor="boundaryId" shrink>
+          {unpluralize(boundaryDivision)}
         </InputLabel>
 
         <Select
           native
           defaultValue={boundaries[0]}
-          label={unpluralize(geoBoundary)}
+          label={unpluralize(boundaryDivision)}
           inputProps={{
-            name: "geoBoundaryId",
-            id: "geoBoundaryId",
+            name: "boundaryId",
+            id: "boundaryId",
           }}
         >
           {boundaries.map(boundary => (

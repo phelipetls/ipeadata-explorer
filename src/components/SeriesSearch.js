@@ -56,7 +56,7 @@ export function SeriesSearch() {
 
   const { isLoading, isFetching, data } = useQuery(
     [searchUrl, { page, rowsPerPage }],
-    async (searchUrl, { page, rowsPerPage }) => {
+    async () => {
       const response = await fetch(
         searchUrl + limitQuery(rowsPerPage) + offsetQuery(page * rowsPerPage)
       );

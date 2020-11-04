@@ -11,76 +11,64 @@ import { ChartGeographicMap } from "./ChartGeographicMap";
 import { ChartGeographicTimeseries } from "./ChartGeographicTimeseries";
 import { ChartContainer } from "./ChartContainer";
 
-import {
-  limitByDate,
-  buildSeriesUrl,
-  fetchGeographicDivisions,
-} from "../api/odata";
-import { formatDateFromDatePicker, subtractSeriesMaxDate } from "../api/utils";
+import { buildMetadataUrl, buildSeriesUrl, getDateFilter } from "../api/odata";
 import { getChartType } from "../api/ibge";
 
 const DEFAULT_LIMIT = 5;
+
+async function fetchGeographicDivisions(_, code) {
+  const url =
+    buildMetadataUrl(code) +
+    "/Valores?" +
+    "$apply=filter(not startswith(NIVNOME,'AMC'))" +
+    "/groupby((NIVNOME),aggregate($count as Count))" +
+    "&$orderby=Count asc";
+  const response = await fetch(url);
+  const json = await response.json();
+  return json.value.map(division => division.NIVNOME);
+}
 
 export function ChartGeographic({ code, metadata }) {
   const [initialDate, setInitialDate] = useState(null);
   const [finalDate, setFinalDate] = useState(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
-  const [geoBoundaryId, setGeoBundaryId] = useState("BR");
 
-  let [geoDivision, setGeoDivision] = useState(null);
+  let [division, setDivision] = useState(null);
+  const [boundaryId, setBoundaryId] = useState("BR");
 
-  const {
-    isLoading: isLoadingGeoDivisions,
-    data: geoDivisions = [],
-  } = useQuery(["Geographic divisions", code], () =>
-    fetchGeographicDivisions(code)
+  const { isLoading: isLoadingDivisions, data: divisions = [] } = useQuery(
+    ["Fetch available geographic divisions", code],
+    fetchGeographicDivisions
   );
 
-  geoDivision = geoDivision || geoDivisions[3];
-
-  const chartType = getChartType(geoDivision);
+  division = division || divisions[3];
 
   const { isLoading: isLoadingData, data = {} } = useQuery(
-    [code, initialDate, finalDate, lastN, geoDivision, geoBoundaryId],
+    [code, initialDate, finalDate, lastN, division, boundaryId],
     async () => {
-      let dateFilter = "";
-
-      if (initialDate || finalDate) {
-        dateFilter = limitByDate(
-          formatDateFromDatePicker(initialDate),
-          formatDateFromDatePicker(finalDate)
-        );
-      } else if (metadata.PERNOME !== "Não se aplica") {
-        dateFilter = limitByDate(
-          subtractSeriesMaxDate({
-            metadata: metadata,
-            offset: lastN || DEFAULT_LIMIT,
-          })
-        );
-      }
-
-      dateFilter = dateFilter ? " and " + dateFilter : dateFilter;
+      const dateFilter = getDateFilter(initialDate, finalDate, lastN, metadata);
 
       const boundaryFilter =
-        chartType === "map" && geoBoundaryId !== "BR"
-          ? ` and startswith(TERCODIGO,'${"".slice.call(geoBoundaryId, 0, 2)}')`
+        chartType === "map" && boundaryId !== "BR"
+          ? ` and startswith(TERCODIGO,'${"".slice.call(boundaryId, 0, 2)}')`
           : "";
 
-      const divisionFilter = `NIVNOME eq '${geoDivision}'`;
+      const divisionFilter = ` and NIVNOME eq '${division}'`;
 
       const url =
         buildSeriesUrl(code) +
         "&$filter=" +
+        dateFilter +
         divisionFilter +
-        boundaryFilter +
-        dateFilter;
+        boundaryFilter;
 
       return await (await fetch(url)).json();
     },
-    { enabled: geoDivisions.length > 0 }
+    { enabled: divisions.length > 0 }
   );
 
-  const isLoading = isLoadingData || isLoadingGeoDivisions;
+  const series = data?.value || [];
+  const isLoading = isLoadingData || isLoadingDivisions;
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -89,30 +77,27 @@ export function ChartGeographic({ code, metadata }) {
       initialDate,
       finalDate,
       lastN,
-      geoDivision,
-      geoBoundaryId,
+      division,
+      boundaryId,
     } = e.target.elements;
 
     if (initialDate) setInitialDate(initialDate.value);
     if (finalDate) setFinalDate(finalDate.value);
     if (lastN) setLastN(lastN.value);
-    if (geoDivision) setGeoDivision(geoDivision.value);
-    if (geoBoundaryId) setGeoBundaryId(geoBoundaryId.value);
+    if (division) setDivision(division.value);
+    if (boundaryId) setBoundaryId(boundaryId.value);
   }
 
-  const series = data?.value || [];
+  const chartType = getChartType(division);
 
   return (
     <ChartSection>
       <ChartForm onSubmit={handleSubmit}>
         <ChartFormDate metadata={metadata} />
-        {isLoadingGeoDivisions ? (
+        {isLoadingDivisions ? (
           <Loading />
         ) : (
-          <ChartFormGeography
-            geoDivision={geoDivision}
-            geoDivisions={geoDivisions}
-          />
+          <ChartFormGeography division={division} divisions={divisions} />
         )}
       </ChartForm>
 
@@ -123,8 +108,8 @@ export function ChartGeographic({ code, metadata }) {
           <ChartGeographicMap
             series={series}
             metadata={metadata}
-            geoDivision={geoDivision}
-            geoBoundaryId={geoBoundaryId}
+            division={division}
+            boundaryId={boundaryId}
           />
         )}
       </ChartContainer>

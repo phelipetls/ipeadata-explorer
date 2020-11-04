@@ -1,3 +1,5 @@
+import { formatDateFromDatePicker, subtractSeriesMaxDate } from "./utils";
+
 export function buildMetadataUrl(code) {
   return `http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados('${code}')`;
 }
@@ -31,14 +33,18 @@ export function limitByDate(initialDate, finalDate) {
   return filters.join(" and ");
 }
 
-export async function fetchGeographicDivisions(code) {
-  const url =
-    buildMetadataUrl(code) +
-    "/Valores?" +
-    "$apply=filter(not startswith(NIVNOME,'AMC'))" +
-    "/groupby((NIVNOME),aggregate($count as Count))" +
-    "&$orderby=Count asc";
-  const response = await fetch(url);
-  const json = await response.json();
-  return json.value.map(division => division.NIVNOME);
+export function getDateFilter(initialDate, finalDate, lastN, metadata) {
+  if (initialDate || finalDate) {
+    return limitByDate(
+      formatDateFromDatePicker(initialDate),
+      formatDateFromDatePicker(finalDate)
+    );
+  }
+
+  return limitByDate(
+    subtractSeriesMaxDate({
+      metadata: metadata,
+      offset: lastN,
+    })
+  );
 }

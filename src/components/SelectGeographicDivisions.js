@@ -2,24 +2,24 @@ import React from "react";
 
 import { Select, InputLabel, FormControl } from "@material-ui/core";
 
-export function SelectGeoDivisions(props) {
-  const { geoDivision, geoDivisions, handleChange, ...rest } = props;
+export function SelectGeographicDivisions(props) {
+  const { division, divisions, handleChange, ...rest } = props;
 
   return (
     <FormControl required variant="outlined">
-      <InputLabel htmlFor="geoDivision" shrink>
+      <InputLabel htmlFor="division" shrink>
         Divisões geográficas
       </InputLabel>
 
       <Select
         {...rest}
         native
-        value={geoDivision}
+        value={division}
         label="Divisões geográficas"
         onChange={handleChange}
-        inputProps={{ name: "geoDivision", id: "geoDivision" }}
+        inputProps={{ name: "division", id: "division" }}
       >
-        {geoDivisions.map(region => (
+        {divisions.map(region => (
           <option key={region} value={region}>
             {region}
           </option>

@@ -18,8 +18,8 @@ import { ChartFormDate } from "./ChartFormDate";
 import { ChartSection } from "./ChartSection";
 import { ChartContainer } from "./ChartContainer";
 
-import { buildSeriesUrl, limitQuery, limitByDate } from "../api/odata";
-import { formatDateFromDatePicker } from "../api/utils";
+import { buildSeriesUrl } from "../api/odata";
+import { getDateFilter } from "../api/odata";
 
 const DEFAULT_LIMIT = 50;
 
@@ -30,23 +30,10 @@ export function ChartMacro({ code, metadata }) {
 
   const { isLoading, data } = useQuery(
     [code, initialDate, finalDate, lastN],
-    async (code, initialDate, finalDate, lastN) => {
-      let dateInterval = "";
+    async () => {
+      const dateFilter = getDateFilter(initialDate, finalDate, lastN, metadata);
 
-      if (initialDate || finalDate) {
-        const initialDateValue = formatDateFromDatePicker(initialDate);
-        const finalDateValue = formatDateFromDatePicker(finalDate);
-
-        dateInterval = `&$filter=${limitByDate(
-          initialDateValue,
-          finalDateValue
-        )}`;
-      } else {
-        dateInterval = limitQuery(lastN);
-      }
-
-      const url = buildSeriesUrl(code) + dateInterval;
-
+      const url = buildSeriesUrl(code) + "&$filter=" + dateFilter;
       return await (await fetch(url)).json();
     }
   );

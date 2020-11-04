@@ -1,7 +1,7 @@
-export function getChartType(geoDivision) {
-  return geoDivision === "Brasil" ||
-    geoDivision === "Regiões" ||
-    geoDivision === "Área metropolitana"
+export function getChartType(division) {
+  return division === "Brasil" ||
+    division === "Regiões" ||
+    division === "Área metropolitana"
     ? "line"
     : "map";
 }
@@ -11,7 +11,7 @@ export function getChartType(geoDivision) {
  */
 const BASE_URL_MAPS = "https://servicodados.ibge.gov.br/api/v2/malhas/";
 
-const ibgeRegionsCodes = {
+const divisionsCode = {
   Brasil: 0,
   Regiões: 1,
   Estados: 2,
@@ -20,19 +20,19 @@ const ibgeRegionsCodes = {
   Municípios: 5,
 };
 
-export function getMapUrl({ geoBoundaryId, geoDivision, format }) {
-  const url = new URL(geoBoundaryId, BASE_URL_MAPS);
+export function getMapUrl({ boundaryId, division, format }) {
+  const url = new URL(boundaryId, BASE_URL_MAPS);
 
   url.searchParams.set("formato", format || "application/json");
 
-  if (geoDivision) {
-    url.searchParams.set("resolucao", ibgeRegionsCodes[geoDivision]);
+  if (division) {
+    url.searchParams.set("resolucao", divisionsCode[division]);
   }
 
   return url.toString();
 }
 
-  /**
+/**
  * Returns geographic regions which "contains" a given geographic
  * region.
  *
@@ -45,8 +45,8 @@ export function getMapUrl({ geoBoundaryId, geoDivision, format }) {
  *
  */
 export function getContainingDivisions(geoRegion) {
-  const geoRegionCode = ibgeRegionsCodes[geoRegion];
-  return Object.entries(ibgeRegionsCodes)
+  const geoRegionCode = divisionsCode[geoRegion];
+  return Object.entries(divisionsCode)
     .filter(([_, code]) => code < geoRegionCode)
     .map(([region]) => region);
 }
@@ -54,7 +54,6 @@ export function getContainingDivisions(geoRegion) {
 /** Official documentation for IBGE's locations API:
  *  https://servicodados.ibge.gov.br/api/docs/localidades?versao=1
  */
-
 const BASE_URL_DIVISIONS =
   "https://servicodados.ibge.gov.br/api/v1/localidades/";
 
