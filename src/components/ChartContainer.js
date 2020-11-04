@@ -8,6 +8,7 @@ import { NoData } from "./NoData";
 const useStyles = makeStyles(theme => ({
   container: {
     display: "flex",
+    flexFlow: "column",
     alignItems: "center",
     justifyContent: "center",
     height: theme.chart.minHeight,

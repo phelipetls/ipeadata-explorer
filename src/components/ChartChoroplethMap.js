@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { useQuery } from "react-query";
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
@@ -11,6 +11,7 @@ import { getMapUrl, getDivisionsUrl } from "../api/ibge";
 
 import { Loading } from "./Loading";
 import { MapLegend } from "./MapLegend";
+import { SelectPeriods } from "./SelectPeriods";
 
 import groupBy from "lodash.groupby";
 import keyBy from "lodash.keyby";
@@ -48,6 +49,8 @@ export const ChartChoroplethMap = React.memo(props => {
     setTooltipOpen,
   } = props;
 
+  const [period, setPeriod] = useState("");
+
   const rowsByPeriod = groupBy(series, "VALDATA");
 
   for (const [year, value] of Object.entries(rowsByPeriod)) {
@@ -55,9 +58,9 @@ export const ChartChoroplethMap = React.memo(props => {
   }
 
   const periods = Object.keys(rowsByPeriod);
-  const period = periods[0];
+  const selectedPeriod = period || periods[0];
 
-  const rowsInPeriod = rowsByPeriod[period];
+  const rowsInPeriod = rowsByPeriod[selectedPeriod];
   const valuesInPeriod = Object.values(rowsInPeriod).map(
     row => row["VALVALOR"]
   );
@@ -83,36 +86,45 @@ export const ChartChoroplethMap = React.memo(props => {
     .range(palette[4]);
 
   return (
-    <ComposableMap width={width} height={height} projection={projection}>
-      <Geographies geography={getMapUrl({ boundaryId, division })}>
-        {({ geographies }) =>
-          geographies.map(geo => {
-            const id = geo.properties.codarea;
-            const name = divisionsNames[id]["nome"];
-            const value = rowsByPeriod[period]?.[id]?.["VALVALOR"] || 0;
-            return (
-              <Geography
-                key={id}
-                geography={geo}
-                fill={colorScale(value)}
-                onMouseEnter={() => {
-                  setTooltipOpen(true);
-                  setTooltipText(`${name} ― ${value}`);
-                }}
-                onMouseLeave={() => {
-                  setTooltipOpen(false);
-                  setTooltipText("");
-                }}
-                onMouseMove={e => {
-                  setTooltipPosition({ x: e.clientX, y: e.clientY });
-                }}
-              />
-            );
-          })
-        }
-      </Geographies>
+    <>
+      <ComposableMap width={width} height={height} projection={projection}>
+        <Geographies geography={getMapUrl({ boundaryId, division })}>
+          {({ geographies }) =>
+            geographies.map(geo => {
+              const id = geo.properties.codarea;
+              const name = divisionsNames[id]["nome"];
+              const value =
+                rowsByPeriod[selectedPeriod]?.[id]?.["VALVALOR"] || 0;
+              return (
+                <Geography
+                  key={id}
+                  geography={geo}
+                  fill={colorScale(value)}
+                  onMouseEnter={() => {
+                    setTooltipOpen(true);
+                    setTooltipText(`${name} ― ${value}`);
+                  }}
+                  onMouseLeave={() => {
+                    setTooltipOpen(false);
+                    setTooltipText("");
+                  }}
+                  onMouseMove={e => {
+                    setTooltipPosition({ x: e.clientX, y: e.clientY });
+                  }}
+                />
+              );
+            })
+          }
+        </Geographies>
 
-      <MapLegend scale={colorScale} title={metadata.UNINOME} />
-    </ComposableMap>
+        <MapLegend scale={colorScale} title={metadata.UNINOME} />
+      </ComposableMap>
+
+      <SelectPeriods
+        period={selectedPeriod}
+        periods={periods}
+        handleChange={e => setPeriod(e.target.value)}
+      />
+    </>
   );
 });
