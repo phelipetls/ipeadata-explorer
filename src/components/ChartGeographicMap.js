@@ -1,4 +1,4 @@
-import React, { useState, memo } from "react";
+import React, { useState, useEffect, useRef } from "react";
 
 import { useQuery } from "react-query";
 
@@ -10,6 +10,10 @@ import { getMapUrl, getDivisionsUrl } from "../api/ibge";
 
 import { Loading } from "./Loading";
 import { MapTooltip } from "./MapTooltip.js";
+
+import { select as d3Select } from "d3-selection";
+import { format as d3Format } from "d3-format";
+import { legendColor } from "d3-svg-legend";
 
 import groupBy from "lodash.groupby";
 import keyBy from "lodash.keyby";
@@ -38,11 +42,30 @@ function getProjection(outline, width, height) {
   return geoMercator().fitExtent(boundingBox, outline);
 }
 
-const ChoroplethMap = memo(props => {
+function Legend({ scale, title }) {
+  const legendRef = useRef();
+
+  useEffect(() => {
+    const legendContainer = d3Select(legendRef.current);
+
+    const legend = legendColor()
+      .scale(scale)
+      .labelFormat(d3Format(".0f"))
+      .labelDelimiter(" a ")
+      .title(title);
+
+    legendContainer.call(legend);
+  }, [scale, title]);
+
+  return <g ref={legendRef} transform="translate(20, 20)"></g>;
+}
+
+const ChoroplethMap = React.memo(props => {
   const {
+    series,
+    metadata,
     geoDivision,
     geoBoundaryId,
-    series,
     setTooltipPosition,
     setTooltipText,
     setTooltipOpen,
@@ -62,10 +85,6 @@ const ChoroplethMap = memo(props => {
     row => row["VALVALOR"]
   );
 
-  const colorScale = scaleQuantile()
-    .domain(valuesInPeriod)
-    .range(palette[4]);
-
   const { isLoading: isLoadingOutline, data: outline } = useQuery(
     [geoBoundaryId],
     getOutlineMap
@@ -81,6 +100,10 @@ const ChoroplethMap = memo(props => {
   const width = Math.min(window.innerWidth, 800);
   const height = 480;
   const projection = getProjection(outline, width, height);
+
+  const colorScale = scaleQuantile()
+    .domain(valuesInPeriod)
+    .range(palette[4]);
 
   return (
     <ComposableMap width={width} height={height} projection={projection}>
@@ -111,6 +134,8 @@ const ChoroplethMap = memo(props => {
           })
         }
       </Geographies>
+
+      <Legend scale={colorScale} title={metadata.UNINOME} />
     </ComposableMap>
   );
 });
