@@ -4,25 +4,25 @@ import { Select } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
-  selectPeriods: {
+  selectDates: {
     marginTop: theme.spacing(3),
   },
 }));
 
-export function SelectPeriods({ period, periods, handleChange }) {
+export function SelectDates({ date, dates, handleChange }) {
   const classes = useStyles();
 
   return (
     <Select
       native
       variant="outlined"
-      label="Períodos"
-      value={period}
+      label="Período"
+      value={date}
       onChange={handleChange}
-      className={classes.selectPeriods}
+      className={classes.selectDates}
     >
-      {periods.map(period => (
-        <option key={period}>{period}</option>
+      {dates.map(date => (
+        <option key={date}>{date}</option>
       ))}
     </Select>
   );

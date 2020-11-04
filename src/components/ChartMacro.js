@@ -18,8 +18,7 @@ import { ChartFormDate } from "./ChartFormDate";
 import { ChartSection } from "./ChartSection";
 import { ChartContainer } from "./ChartContainer";
 
-import { buildSeriesUrl } from "../api/odata";
-import { getDateFilter } from "../api/odata";
+import { buildSeriesUrl, getDateFilter } from "../api/odata";
 
 const DEFAULT_LIMIT = 50;
 
@@ -38,8 +37,6 @@ export function ChartMacro({ code, metadata }) {
     }
   );
 
-  const series = data?.value || [];
-
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -49,6 +46,8 @@ export function ChartMacro({ code, metadata }) {
     if (finalDate) setFinalDate(finalDate.value);
     if (lastN) setLastN(lastN.value);
   }
+
+  const series = data?.value || [];
 
   const lines = series.map(row => ({
     date: new Date(row.VALDATA).toLocaleDateString(),

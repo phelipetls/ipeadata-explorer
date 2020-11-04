@@ -11,9 +11,8 @@ import { getMapUrl, getDivisionsUrl } from "../api/ibge";
 
 import { Loading } from "./Loading";
 import { MapLegend } from "./MapLegend";
-import { SelectPeriods } from "./SelectPeriods";
+import { SelectDates } from "./SelectDates";
 
-import groupBy from "lodash.groupby";
 import keyBy from "lodash.keyby";
 
 async function getOutlineMap(_, boundaryId) {
@@ -40,7 +39,7 @@ function getProjection(outline, width, height) {
 
 export const ChartChoroplethMap = React.memo(props => {
   const {
-    series,
+    seriesByDate,
     metadata,
     division,
     boundaryId,
@@ -49,21 +48,7 @@ export const ChartChoroplethMap = React.memo(props => {
     setTooltipOpen,
   } = props;
 
-  const [period, setPeriod] = useState("");
-
-  const rowsByPeriod = groupBy(series, "VALDATA");
-
-  for (const [year, value] of Object.entries(rowsByPeriod)) {
-    rowsByPeriod[year] = keyBy(value, "TERCODIGO");
-  }
-
-  const periods = Object.keys(rowsByPeriod);
-  const selectedPeriod = period || periods[0];
-
-  const rowsInPeriod = rowsByPeriod[selectedPeriod];
-  const valuesInPeriod = Object.values(rowsInPeriod).map(
-    row => row["VALVALOR"]
-  );
+  const [date, setDate] = useState("");
 
   const { isLoading: isLoadingOutlineMap, data: outline } = useQuery(
     ["Fetch outline map given a boundary region", boundaryId],
@@ -75,15 +60,23 @@ export const ChartChoroplethMap = React.memo(props => {
     getDivisionsNames
   );
 
-  if (isLoadingOutlineMap || isLoadingDivisionsNames) return <Loading />;
+  if (isLoadingOutlineMap || isLoadingDivisionsNames) {
+    return <Loading />;
+  }
+
+  const dates = Object.keys(seriesByDate);
+  const selectedDate = date || dates[0];
+
+  const rowsInDate = seriesByDate[selectedDate];
+  const valuesInDate = Object.values(rowsInDate).map(row => row["VALVALOR"]);
+
+  const colorScale = scaleQuantile()
+    .domain(valuesInDate)
+    .range(palette[4]);
 
   const width = Math.min(window.innerWidth, 800);
   const height = 480;
   const projection = getProjection(outline, width, height);
-
-  const colorScale = scaleQuantile()
-    .domain(valuesInPeriod)
-    .range(palette[4]);
 
   return (
     <>
@@ -94,7 +87,8 @@ export const ChartChoroplethMap = React.memo(props => {
               const id = geo.properties.codarea;
               const name = divisionsNames[id]["nome"];
               const value =
-                rowsByPeriod[selectedPeriod]?.[id]?.["VALVALOR"] || 0;
+                rowsInDate.find(row => row["TERCODIGO"] === id)?.["VALVALOR"] ||
+                0;
               return (
                 <Geography
                   key={id}
@@ -120,10 +114,10 @@ export const ChartChoroplethMap = React.memo(props => {
         <MapLegend scale={colorScale} title={metadata.UNINOME} />
       </ComposableMap>
 
-      <SelectPeriods
-        period={selectedPeriod}
-        periods={periods}
-        handleChange={e => setPeriod(e.target.value)}
+      <SelectDates
+        date={selectedDate}
+        dates={dates}
+        handleChange={e => setDate(e.target.value)}
       />
     </>
   );

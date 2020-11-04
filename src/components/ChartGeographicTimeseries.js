@@ -12,26 +12,20 @@ import {
 } from "recharts";
 import { schemeCategory10 as palette } from "d3-scale-chromatic";
 
-import groupBy from "lodash.groupby";
-
-export function ChartGeographicTimeseries({ series }) {
-  const regions = [...new Set(series.map(row => row.TERNOME))];
-
-  const seriesByDate = groupBy(series, row =>
-    new Date(row["VALDATA"]).toLocaleDateString()
-  );
-
+export function ChartGeographicTimeseries({ seriesByDate }) {
   const lines = Object.entries(seriesByDate)
     .map(([date, regions]) =>
       regions.reduce(
-        (lines, region) => ({
-          ...lines,
+        (acc, region) => ({
+          ...acc,
           ...{ date, [region.TERNOME]: region.VALVALOR },
         }),
         {}
       )
     )
     .reverse();
+
+  const regions = Object.keys(lines[0]).filter(key => key !== "date");
 
   return (
     <ResponsiveContainer>
