@@ -89,7 +89,7 @@ const ChoroplethMap = memo(props => {
           geographies.map(geo => {
             const id = geo.properties.codarea;
             const name = divisionsInfo[id]["nome"];
-            const value = rowsByPeriod[period][id]["VALVALOR"];
+            const value = rowsByPeriod[period]?.[id]?.["VALVALOR"] || 0;
             return (
               <Geography
                 key={id}
