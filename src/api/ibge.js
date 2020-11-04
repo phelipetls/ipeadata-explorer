@@ -11,7 +11,7 @@ export function getChartType(geoDivision) {
  */
 const BASE_URL_MAPS = "https://servicodados.ibge.gov.br/api/v2/malhas/";
 
-const ibgeGeoRegionsCodes = {
+const ibgeRegionsCodes = {
   Brasil: 0,
   Regiões: 1,
   Estados: 2,
@@ -26,7 +26,7 @@ export function getMapUrl({ geoBoundaryId, geoDivision, format }) {
   url.searchParams.set("formato", format || "application/json");
 
   if (geoDivision) {
-    url.searchParams.set("resolucao", ibgeGeoRegionsCodes[geoDivision]);
+    url.searchParams.set("resolucao", ibgeRegionsCodes[geoDivision]);
   }
 
   return url.toString();
@@ -44,9 +44,9 @@ export function getMapUrl({ geoBoundaryId, geoDivision, format }) {
  * "Estados", "Mesorregiões", "Microrregiões", "Municípios".
  *
  */
-export function getContainingRegions(geoRegion) {
-  const geoRegionCode = ibgeGeoRegionsCodes[geoRegion];
-  return Object.entries(ibgeGeoRegionsCodes)
+export function getContainingDivisions(geoRegion) {
+  const geoRegionCode = ibgeRegionsCodes[geoRegion];
+  return Object.entries(ibgeRegionsCodes)
     .filter(([_, code]) => code < geoRegionCode)
     .map(([region]) => region);
 }

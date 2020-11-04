@@ -2,10 +2,8 @@ import React from "react";
 
 import { Select, InputLabel, FormControl, Grow } from "@material-ui/core";
 
-import { getContainingRegions } from "../api/ibge";
-
 export function SelectGeoBoundary(props) {
-  const { geoDivision, geoBoundary, handleChange } = props;
+  const { geoBoundary, geoBoundaries, handleChange } = props;
 
   return (
     <Grow in={true}>
@@ -21,9 +19,9 @@ export function SelectGeoBoundary(props) {
           onChange={handleChange}
           inputProps={{ name: "geoBoundary", id: "geoBoundary" }}
         >
-          {getContainingRegions(geoDivision).map(region => (
-            <option key={region} value={region}>
-              {region}
+          {geoBoundaries.map(boundary => (
+            <option key={boundary} value={boundary}>
+              {boundary}
             </option>
           ))}
         </Select>
