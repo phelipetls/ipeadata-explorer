@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 
 import { useQuery } from "react-query";
+
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
-
 import { schemeBlues as palette } from "d3-scale-chromatic";
-
 import { geoMercator } from "d3-geo";
 import { scaleQuantile } from "d3-scale";
+
 import { getMapUrl, getDivisionsUrl } from "../api/ibge";
 
 import { Loading } from "./Loading";
@@ -86,9 +86,8 @@ export const ChartChoroplethMap = React.memo(props => {
             geographies.map(geo => {
               const id = geo.properties.codarea;
               const name = divisionsNames[id]["nome"];
-              const value =
-                rowsInDate.find(row => row["TERCODIGO"] === id)?.["VALVALOR"] ||
-                0;
+              const divisionValue = rowsInDate.find(row => row["TERCODIGO"] === id)
+              const value = (divisionValue && divisionValue["VALVALOR"]) || 0;
               return (
                 <Geography
                   key={id}

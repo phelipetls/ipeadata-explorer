@@ -33,7 +33,7 @@ export function Countries() {
     return await (await fetch(COUNTRIES_URL)).json();
   });
 
-  const countries = data?.value || [];
+  const countries = (data && data.value) || [];
 
   return (
     <TableContainer component={Paper}>

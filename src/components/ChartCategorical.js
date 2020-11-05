@@ -2,18 +2,6 @@ import React, { useState } from "react";
 
 import { useQuery } from "react-query";
 
-import {
-  ResponsiveContainer,
-  Bar,
-  BarChart,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-} from "recharts";
-import { schemeCategory10 as palette } from "d3-scale-chromatic";
-
 import { ChartSection } from "./ChartSection";
 import { ChartForm } from "./ChartForm";
 import { ChartFormDate } from "./ChartFormDate";
@@ -22,10 +10,12 @@ import { ChartContainer } from "./ChartContainer";
 import { buildMetadataUrl } from "../api/odata";
 import { getDateFilter } from "../api/odata";
 
+import { ChartBar } from "./ChartBar";
+
 const DEFAULT_OFFSET = 1;
 
 const CATEGORY_COUNT_QUERY =
-  "groupby((VALVALOR),aggregate($count as totalCount))&$orderby=totalCount desc";
+  "groupby((VALVALOR),aggregate($count as count))&$orderby=count desc";
 
 export function ChartCategorical({ code, metadata }) {
   const [initialDate, setInitialDate] = useState(null);
@@ -54,12 +44,15 @@ export function ChartCategorical({ code, metadata }) {
     if (lastN.value) setLastN(lastN.value);
   }
 
-  const categories = data?.value || [];
+  const categories = (data && data.value) || [];
 
-  const categoriesCount = categories.map(category => ({
-    [metadata.SERNOME]: category.VALVALOR,
-    Contagem: category.totalCount,
-  }));
+  const labels = categories.map(category => category.VALVALOR);
+  const datasets = [
+    {
+      label: metadata.UNINOME,
+      data: categories.map(category => category.count),
+    },
+  ];
 
   return (
     <ChartSection>
@@ -67,17 +60,8 @@ export function ChartCategorical({ code, metadata }) {
         <ChartFormDate metadata={metadata} />
       </ChartForm>
 
-      <ChartContainer isLoading={isLoading} data={categoriesCount}>
-        <ResponsiveContainer>
-          <BarChart data={categoriesCount}>
-            <CartesianGrid strokeDasharray="5 5" />
-            <XAxis dataKey={metadata.SERNOME} />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Bar dataKey="Contagem" fill={palette[0]} />
-          </BarChart>
-        </ResponsiveContainer>
+      <ChartContainer isLoading={isLoading} data={categories}>
+        <ChartBar metadata={metadata} labels={labels} datasets={datasets} />
       </ChartContainer>
     </ChartSection>
   );

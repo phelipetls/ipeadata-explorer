@@ -2,21 +2,11 @@ import React, { useState } from "react";
 
 import { useQuery } from "react-query";
 
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-} from "recharts";
-
 import { ChartForm } from "./ChartForm";
 import { ChartFormDate } from "./ChartFormDate";
 import { ChartSection } from "./ChartSection";
 import { ChartContainer } from "./ChartContainer";
+import { ChartTimeseries } from "./ChartTimeseries";
 
 import { buildSeriesUrl, getDateFilter } from "../api/odata";
 
@@ -47,12 +37,15 @@ export function ChartMacro({ code, metadata }) {
     if (lastN.value) setLastN(lastN.value);
   }
 
-  const series = data?.value || [];
+  const series = (data && data.value) || [];
 
-  const lines = series.map(row => ({
-    date: new Date(row.VALDATA).toLocaleDateString(),
-    [code]: row.VALVALOR,
-  }));
+  const labels = series.map(series => series.VALDATA);
+  const datasets = [
+    {
+      label: code,
+      data: series.map(series => series.VALVALOR),
+    },
+  ];
 
   return (
     <ChartSection>
@@ -60,17 +53,12 @@ export function ChartMacro({ code, metadata }) {
         <ChartFormDate metadata={metadata} />
       </ChartForm>
 
-      <ChartContainer isLoading={isLoading} data={lines}>
-        <ResponsiveContainer>
-          <LineChart data={lines}>
-            <Line type="monotone" dataKey={code} stroke="#8884d8" />
-            <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-          </LineChart>
-        </ResponsiveContainer>
+      <ChartContainer isLoading={isLoading} data={series}>
+        <ChartTimeseries
+          metadata={metadata}
+          labels={labels}
+          datasets={datasets}
+        />
       </ChartContainer>
     </ChartSection>
   );

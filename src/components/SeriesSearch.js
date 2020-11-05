@@ -65,8 +65,8 @@ export function SeriesSearch() {
     { staleTime: Infinity }
   );
 
-  const rows = data?.value || [];
-  const rowsCount = data?.["@odata.count"] || 0;
+  const rows = (data && data.value) || [];
+  const rowsCount = (data && data["@odata.count"]) || 0;
 
   function handlePageChange(_, newPage) {
     setPage(newPage);

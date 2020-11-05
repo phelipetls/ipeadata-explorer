@@ -13,6 +13,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "center",
     height: theme.chart.minHeight,
     marginTop: theme.spacing(3),
+    marginBottom: theme.spacing(3),
   },
 }));
 

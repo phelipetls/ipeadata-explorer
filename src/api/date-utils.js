@@ -1,19 +1,13 @@
 import { sub, subQuarters, startOfQuarter, format } from "date-fns";
 
 const dateFormats = {
-  Anual: "yyyy",
-  Irregular: "yyyy",
-  "Não se aplica": "yyyy",
   Diária: "dd-MM-yyyy",
   Mensal: "MM-yyyy",
-  Decenal: "yyyy",
-  Quadrienal: "yyyy",
   Trimestral: "qQ yyyy",
-  Quinquenal: "yyyy",
 };
 
 export function formatDate(date, periodicity) {
-  const dateFormat = dateFormats[periodicity];
+  const dateFormat = dateFormats[periodicity] || "yyyy";
   return format(date, dateFormat);
 }
 
@@ -32,7 +26,7 @@ export function getLastNDates({ metadata, offset }) {
   return offsetDateByPeriod({
     isoDateStr: metadata.SERMAXDATA,
     period: metadata.PERNOME,
-    // To get last 1 period, we need to 
+    // To get last 1 period, we need to
     // subtract it 0 times.
     offset: offset - 1,
   });

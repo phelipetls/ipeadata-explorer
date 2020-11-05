@@ -37,7 +37,7 @@ export function Themes() {
     return await (await fetch(THEMES_URL)).json();
   });
 
-  const themes = data?.value || [];
+  const themes = (data && data.value) || [];
 
   return isLoading ? (
     <Loading />

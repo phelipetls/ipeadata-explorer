@@ -1,49 +1,19 @@
 import React from "react";
 
-import {
-  ResponsiveContainer,
-  LineChart,
-  Line,
-  CartesianGrid,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-} from "recharts";
-import { schemeCategory10 as palette } from "d3-scale-chromatic";
+import { ChartTimeseries } from "./ChartTimeseries";
 
-export function ChartGeographicTimeseries({ seriesByDate }) {
-  const lines = Object.entries(seriesByDate)
-    .map(([date, regions]) =>
-      regions.reduce(
-        (acc, region) => ({
-          ...acc,
-          ...{ date, [region.TERNOME]: region.VALVALOR },
-        }),
-        {}
-      )
-    )
-    .reverse();
+import groupBy from "lodash/groupBy";
 
-  const regions = Object.keys(lines[0]).filter(key => key !== "date");
+export function ChartGeographicTimeseries({ series, seriesByDate, ...props }) {
+  const labels = Object.keys(seriesByDate);
 
-  return (
-    <ResponsiveContainer>
-      <LineChart data={lines}>
-        {regions.map((region, index) => (
-          <Line
-            type="monotone"
-            key={region}
-            dataKey={region}
-            stroke={palette[index % regions.length]}
-          />
-        ))}
-        <CartesianGrid stroke="#ccc" strokeDasharray="5 5" />
-        <XAxis dataKey="date" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
-      </LineChart>
-    </ResponsiveContainer>
+  const seriesByDivisions = groupBy(series, "TERNOME");
+  const datasets = Object.entries(seriesByDivisions).map(
+    ([division, values]) => ({
+      label: division,
+      data: values.map(series => series.VALVALOR),
+    })
   );
+
+  return <ChartTimeseries {...props} labels={labels} datasets={datasets} />;
 }

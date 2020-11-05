@@ -13,6 +13,7 @@ import { ChartContainer } from "./ChartContainer";
 
 import { buildMetadataUrl, buildSeriesUrl, getDateFilter } from "../api/odata";
 import { getChartType } from "../api/ibge";
+import { formatDate } from "../api/date-utils";
 
 import groupBy from "lodash/groupBy";
 
@@ -43,7 +44,7 @@ export function ChartGeographic({ code, metadata }) {
     fetchGeographicDivisions
   );
 
-  division = division || divisions[3];
+  division = division || divisions[0];
 
   const { isLoading: isLoadingData, data = {} } = useQuery(
     [code, initialDate, finalDate, lastN, division, boundaryId],
@@ -69,9 +70,6 @@ export function ChartGeographic({ code, metadata }) {
     { enabled: divisions.length > 0 }
   );
 
-  const series = data?.value || [];
-  const isLoading = isLoadingData || isLoadingDivisions;
-
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -90,9 +88,14 @@ export function ChartGeographic({ code, metadata }) {
     if (boundaryId) setBoundaryId(boundaryId.value);
   }
 
-  const chartType = getChartType(division);
+  const isLoading = isLoadingData || isLoadingDivisions;
 
-  const seriesByDate = groupBy(series, "VALDATA");
+  const series = (data && data.value) || [];
+  const seriesByDate = groupBy(series, row =>
+    formatDate(new Date(row.VALDATA))
+  );
+
+  const chartType = getChartType(division);
 
   return (
     <ChartSection>
@@ -107,7 +110,11 @@ export function ChartGeographic({ code, metadata }) {
 
       <ChartContainer isLoading={isLoading} data={series}>
         {chartType === "line" ? (
-          <ChartGeographicTimeseries seriesByDate={seriesByDate} />
+          <ChartGeographicTimeseries
+            metadata={metadata}
+            series={series}
+            seriesByDate={seriesByDate}
+          />
         ) : (
           <ChartGeographicMap
             seriesByDate={seriesByDate}
