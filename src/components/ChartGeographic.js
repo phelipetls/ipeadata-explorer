@@ -14,7 +14,7 @@ import { ChartContainer } from "./ChartContainer";
 import { buildMetadataUrl, buildSeriesUrl, getDateFilter } from "../api/odata";
 import { getChartType } from "../api/ibge";
 
-import groupBy from "lodash.groupby";
+import groupBy from "lodash/groupBy";
 
 const DEFAULT_OFFSET = 5;
 

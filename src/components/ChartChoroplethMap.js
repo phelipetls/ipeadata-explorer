@@ -13,7 +13,7 @@ import { Loading } from "./Loading";
 import { MapLegend } from "./MapLegend";
 import { SelectDates } from "./SelectDates";
 
-import keyBy from "lodash.keyby";
+import keyBy from "lodash/keyBy";
 
 async function getOutlineMap(_, boundaryId) {
   const url = getMapUrl({ boundaryId, format: "application/vnd.geo+json" });
