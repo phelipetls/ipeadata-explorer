@@ -1,4 +1,21 @@
-import { sub, subQuarters, startOfQuarter } from "date-fns";
+import { sub, subQuarters, startOfQuarter, format } from "date-fns";
+
+const dateFormats = {
+  Anual: "yyyy",
+  Irregular: "yyyy",
+  "Não se aplica": "yyyy",
+  Diária: "dd-MM-yyyy",
+  Mensal: "MM-yyyy",
+  Decenal: "yyyy",
+  Quadrienal: "yyyy",
+  Trimestral: "qQ yyyy",
+  Quinquenal: "yyyy",
+};
+
+export function formatDate(date, periodicity) {
+  const dateFormat = dateFormats[periodicity];
+  return format(date, dateFormat);
+}
 
 function formatISO(date) {
   return date.toISOString().slice(0, 10) + "T00:00:00-00:00";
