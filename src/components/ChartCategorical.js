@@ -2,7 +2,18 @@ import React, { useState } from "react";
 
 import { useQuery } from "react-query";
 
-import { ChartBar } from "./ChartBar";
+import {
+  ResponsiveContainer,
+  Bar,
+  BarChart,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  Legend,
+} from "recharts";
+import { schemeCategory10 as palette } from "d3-scale-chromatic";
+
 import { ChartSection } from "./ChartSection";
 import { ChartForm } from "./ChartForm";
 import { ChartFormDate } from "./ChartFormDate";
@@ -15,15 +26,6 @@ const DEFAULT_LIMIT = 0;
 
 const CATEGORY_COUNT_QUERY =
   "groupby((VALVALOR),aggregate($count as totalCount))&$orderby=totalCount desc";
-
-const parseJsonCount = json =>
-  json.reduce(
-    (acc, category) => ({
-      ...acc,
-      [category.VALVALOR]: category.totalCount,
-    }),
-    {}
-  );
 
 export function ChartCategorical({ code, metadata }) {
   const [initialDate, setInitialDate] = useState(null);
@@ -43,16 +45,6 @@ export function ChartCategorical({ code, metadata }) {
     }
   );
 
-  const categoriesCount = parseJsonCount(data?.value || []);
-
-  const labels = Object.keys(categoriesCount);
-  const datasets = [
-    {
-      label: metadata.UNINOME,
-      data: Object.values(categoriesCount),
-    },
-  ];
-
   async function handleSubmit(e) {
     e.preventDefault();
     let { initialDate, finalDate, lastN } = e.target.elements;
@@ -62,6 +54,13 @@ export function ChartCategorical({ code, metadata }) {
     if (lastN) setLastN(lastN.value);
   }
 
+  const categories = data?.value || [];
+
+  const categoriesCount = categories.map(category => ({
+    [metadata.SERNOME]: category.VALVALOR,
+    Contagem: category.totalCount,
+  }));
+
   return (
     <ChartSection>
       <ChartForm onSubmit={handleSubmit}>
@@ -69,7 +68,16 @@ export function ChartCategorical({ code, metadata }) {
       </ChartForm>
 
       <ChartContainer isLoading={isLoading} data={categoriesCount}>
-        <ChartBar metadata={metadata} labels={labels} datasets={datasets} />
+        <ResponsiveContainer>
+          <BarChart data={categoriesCount}>
+            <CartesianGrid strokeDasharray="5 5" />
+            <XAxis dataKey={metadata.SERNOME} />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Bar dataKey="Contagem" fill={palette[0]} />
+          </BarChart>
+        </ResponsiveContainer>
       </ChartContainer>
     </ChartSection>
   );
