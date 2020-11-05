@@ -83,9 +83,9 @@ export function ChartGeographic({ code, metadata }) {
       boundaryId,
     } = e.target.elements;
 
-    if (initialDate) setInitialDate(initialDate.value);
-    if (finalDate) setFinalDate(finalDate.value);
-    if (lastN) setLastN(lastN.value);
+    if (initialDate.value) setInitialDate(initialDate.value);
+    if (finalDate.value) setFinalDate(finalDate.value);
+    if (lastN.value) setLastN(lastN.value);
     if (division) setDivision(division.value);
     if (boundaryId) setBoundaryId(boundaryId.value);
   }

@@ -42,9 +42,9 @@ export function ChartMacro({ code, metadata }) {
 
     const { initialDate, finalDate, lastN } = e.target.elements;
 
-    if (initialDate) setInitialDate(initialDate.value);
-    if (finalDate) setFinalDate(finalDate.value);
-    if (lastN) setLastN(lastN.value);
+    if (initialDate.value) setInitialDate(initialDate.value);
+    if (finalDate.value) setFinalDate(finalDate.value);
+    if (lastN.value) setLastN(lastN.value);
   }
 
   const series = data?.value || [];
