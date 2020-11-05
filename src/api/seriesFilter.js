@@ -1,4 +1,4 @@
-import { formatDateFromDatePicker } from "./utils";
+import { formatDateFromDatePicker } from "./date-utils";
 
 export const DEFAULT_URL =
   "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?" +

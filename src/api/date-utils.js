@@ -11,11 +11,13 @@ export function formatDateFromDatePicker(dateStr) {
   return formatISO(date);
 }
 
-export function subtractSeriesMaxDate({ metadata, offset }) {
-  return subtractDateByPeriod({
+export function getLastNDates({ metadata, offset }) {
+  return offsetDateByPeriod({
     isoDateStr: metadata.SERMAXDATA,
     period: metadata.PERNOME,
-    offset: offset,
+    // To get last 1 period, we need to 
+    // subtract it 0 times.
+    offset: offset - 1,
   });
 }
 
@@ -32,14 +34,16 @@ const periodicities = {
  * The output date must be in ISO format.
  * Do not convert to local time, ignore time completely.
  */
-function subtractDateByPeriod({ isoDateStr, period, offset }) {
+export function offsetDateByPeriod({ isoDateStr, period, offset }) {
   let newDate = new Date(isoDateStr);
 
   if (period === "Trimestral") {
     newDate = subQuarters(startOfQuarter(newDate), offset);
   } else if (period !== "Irregular") {
     const { periodName, periodAmount } = periodicities[period];
-    newDate = sub(newDate, { [periodName]: offset * periodAmount });
+    newDate = sub(newDate, {
+      [periodName]: offset * periodAmount,
+    });
   }
 
   return formatISO(newDate);

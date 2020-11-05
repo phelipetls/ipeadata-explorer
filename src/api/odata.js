@@ -1,4 +1,4 @@
-import { formatDateFromDatePicker, subtractSeriesMaxDate } from "./utils";
+import { formatDateFromDatePicker, getLastNDates } from "./date-utils";
 
 export function buildMetadataUrl(code) {
   return `http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados('${code}')`;
@@ -42,7 +42,7 @@ export function getDateFilter(initialDate, finalDate, lastN, metadata) {
   }
 
   return limitByDate(
-    subtractSeriesMaxDate({
+    getLastNDates({
       metadata: metadata,
       offset: lastN,
     })

@@ -16,7 +16,7 @@ import { getChartType } from "../api/ibge";
 
 import groupBy from "lodash.groupby";
 
-const DEFAULT_LIMIT = 5;
+const DEFAULT_OFFSET = 5;
 
 async function fetchGeographicDivisions(_, code) {
   const url =
@@ -33,7 +33,7 @@ async function fetchGeographicDivisions(_, code) {
 export function ChartGeographic({ code, metadata }) {
   const [initialDate, setInitialDate] = useState(null);
   const [finalDate, setFinalDate] = useState(null);
-  const [lastN, setLastN] = useState(DEFAULT_LIMIT);
+  const [lastN, setLastN] = useState(DEFAULT_OFFSET);
 
   let [division, setDivision] = useState(null);
   const [boundaryId, setBoundaryId] = useState("BR");
