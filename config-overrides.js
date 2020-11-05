@@ -1,8 +1,5 @@
-const { useBabelRc, override, addWebpackExternals } = require('customize-cra')
+const { useBabelRc, override } = require('customize-cra')
 
 module.exports = override(
   useBabelRc(),
-  addWebpackExternals({
-    moment: "moment",
-  })
 );
