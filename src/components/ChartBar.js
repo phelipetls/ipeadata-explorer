@@ -3,21 +3,21 @@ import React from "react";
 import { ChartJS } from "./ChartJS";
 import { schemeCategory10 as palette } from "d3-scale-chromatic";
 
-export function ChartBar(props) {
-  const datasetsWithColors = props.datasets.map((dataset, index) => ({
+export function ChartBar({ metadata, datasets, ...rest }) {
+  const datasetsWithColors = datasets.map((dataset, index) => ({
     ...dataset,
     backgroundColor: palette[index % palette.length],
   }));
 
   return (
     <ChartJS
-      {...props}
+      {...rest}
       type="bar"
       datasets={datasetsWithColors}
-      title={{ display: true, text: props.metadata.SERNOME }}
+      title={{ display: true, text: metadata.SERNOME }}
       yScale={{
         type: "linear",
-        scaleLabel: { display: true, labelString: props.metadata.UNINOME },
+        scaleLabel: { display: true, labelString: metadata.UNINOME },
       }}
     />
   );
