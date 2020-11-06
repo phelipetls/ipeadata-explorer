@@ -26,11 +26,11 @@ async function getDivisionsNames(_, division) {
   return keyBy(json, "id");
 }
 
-function getProjection(outline, width, height) {
-  const padding = 20;
+const SPACE_FOR_TITLE = 25;
 
+function getProjection(outline, width, height) {
   const boundingBox = [
-    [padding, padding],
+    [0, SPACE_FOR_TITLE],
     [width, height],
   ];
 
@@ -82,7 +82,7 @@ export const ChartChoroplethMap = React.memo(props => {
     <>
       <ChartContainer isLoading={isLoading} data={rowsInDate}>
         <ComposableMap width={width} height={height} projection={projection}>
-          <text x={width / 2} y={0} style={{ textAnchor: "middle" }}>
+          <text x={width / 2} text-anchor="middle" dominant-baseline="hanging">
             {metadata.SERNOME}
           </text>
 
