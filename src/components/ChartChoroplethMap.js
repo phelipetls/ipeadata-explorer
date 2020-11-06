@@ -116,17 +116,21 @@ export const ChartChoroplethMap = React.memo(props => {
               })
             }
           </Geographies>
-
-          <MapLegend scale={colorScale} title={metadata.UNINOME} />
         </ComposableMap>
       </ChartContainer>
 
-      <SelectDates
-        isLoading={isLoading}
-        date={selectedDate}
-        dates={dates}
-        handleChange={e => setDate(e.target.value)}
-      />
+      {!isLoading && (
+        <>
+          <MapLegend scale={colorScale} title={metadata.UNINOME} />
+
+          <SelectDates
+            isLoading={isLoading}
+            date={selectedDate}
+            dates={dates}
+            handleChange={e => setDate(e.target.value)}
+          />
+        </>
+      )}
     </>
   );
 });
