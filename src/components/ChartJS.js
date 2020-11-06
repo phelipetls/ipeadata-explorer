@@ -30,6 +30,15 @@ Chart.register(
   Tooltip
 );
 
+Chart.defaults.elements.point.radius = 0;
+Chart.defaults.plugins.legend.position = "bottom";
+Chart.defaults.plugins.tooltip.intersect = false;
+Chart.defaults.plugins.title.font = {
+  size: 16,
+  family: "Roboto, sans-serif",
+  weight: 0,
+};
+
 export function ChartJS(props) {
   const canvasRef = useRef();
 
@@ -41,9 +50,6 @@ export function ChartJS(props) {
       data: { labels, datasets },
       options: {
         maintainAspectRatio: false,
-        legend: {
-          position: "bottom",
-        },
         scales: { x: xScale, y: yScale },
         ...options,
       },
