@@ -21,6 +21,7 @@
     "fontsource-roboto": "^3.0.3",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-query": "^2.26.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.3",
@@ -52,7 +53,7 @@
     "babel-plugin-import": "^1.13.0",
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.1.6",
-    "react-query": "^2.25.2",
+    "react-query-devtools": "^2.6.3",
     "source-map-explorer": "^2.5.0"
   }
 }
