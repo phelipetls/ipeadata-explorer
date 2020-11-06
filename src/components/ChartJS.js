@@ -1,7 +1,5 @@
 import React, { useEffect, useRef } from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
-
 import {
   Chart,
   Line,
@@ -16,7 +14,6 @@ import {
   Legend,
   Tooltip,
 } from "chart.js";
-
 import "chartjs-adapter-date-fns";
 
 Chart.register(
@@ -33,16 +30,7 @@ Chart.register(
   Tooltip
 );
 
-const useStyles = makeStyles(() => ({
-  canvasContainer: {
-    position: "relative",
-    width: "100%",
-    height: "100%",
-  },
-}));
-
 export function ChartJS(props) {
-  const classes = useStyles();
   const canvasRef = useRef();
 
   const { type, labels, datasets, xScale, yScale, ...options } = props;
@@ -67,10 +55,8 @@ export function ChartJS(props) {
   }, [type, labels, datasets, xScale, yScale, options]);
 
   return (
-    <div className={classes.canvasContainer}>
-      <canvas ref={canvasRef} aria-label="Gráfico">
-        <p>Gráfico</p>
-      </canvas>
-    </div>
+    <canvas ref={canvasRef} aria-label="Gráfico">
+      <p>Gráfico</p>
+    </canvas>
   );
 }

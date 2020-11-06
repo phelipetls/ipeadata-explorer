@@ -9,9 +9,9 @@ import { scaleQuantile } from "d3-scale";
 
 import { getMapUrl, getDivisionsUrl } from "../api/ibge";
 
-import { Loading } from "./Loading";
 import { MapLegend } from "./MapLegend";
 import { SelectDates } from "./SelectDates";
+import { ChartContainer } from "./ChartContainer";
 
 import keyBy from "lodash/keyBy";
 
@@ -39,6 +39,7 @@ function getProjection(outline, width, height) {
 
 export const ChartChoroplethMap = React.memo(props => {
   const {
+    isLoading: isLoadingSeries,
     seriesByDate,
     metadata,
     division,
@@ -60,14 +61,13 @@ export const ChartChoroplethMap = React.memo(props => {
     getDivisionsNames
   );
 
-  if (isLoadingOutlineMap || isLoadingDivisionsNames) {
-    return <Loading />;
-  }
+  const isLoading =
+    isLoadingSeries || isLoadingOutlineMap || isLoadingDivisionsNames;
 
   const dates = Object.keys(seriesByDate);
   const selectedDate = date || dates[0];
 
-  const rowsInDate = seriesByDate[selectedDate];
+  const rowsInDate = dates.length > 0 ? seriesByDate[selectedDate] : {};
   const valuesInDate = Object.values(rowsInDate).map(row => row["VALVALOR"]);
 
   const colorScale = scaleQuantile()
@@ -80,40 +80,49 @@ export const ChartChoroplethMap = React.memo(props => {
 
   return (
     <>
-      <ComposableMap width={width} height={height} projection={projection}>
-        <Geographies geography={getMapUrl({ boundaryId, division })}>
-          {({ geographies }) =>
-            geographies.map(geo => {
-              const id = geo.properties.codarea;
-              const name = divisionsNames[id]["nome"];
-              const divisionValue = rowsInDate.find(row => row["TERCODIGO"] === id)
-              const value = (divisionValue && divisionValue["VALVALOR"]) || 0;
-              return (
-                <Geography
-                  key={id}
-                  geography={geo}
-                  fill={colorScale(value)}
-                  onMouseEnter={() => {
-                    setTooltipOpen(true);
-                    setTooltipText(`${name} ― ${value}`);
-                  }}
-                  onMouseLeave={() => {
-                    setTooltipOpen(false);
-                    setTooltipText("");
-                  }}
-                  onMouseMove={e => {
-                    setTooltipPosition({ x: e.clientX, y: e.clientY });
-                  }}
-                />
-              );
-            })
-          }
-        </Geographies>
+      <ChartContainer isLoading={isLoading} data={rowsInDate}>
+        <ComposableMap width={width} height={height} projection={projection}>
+          <text x={width / 2} y={0} style={{ textAnchor: "middle" }}>
+            {metadata.SERNOME}
+          </text>
 
-        <MapLegend scale={colorScale} title={metadata.UNINOME} />
-      </ComposableMap>
+          <Geographies geography={getMapUrl({ boundaryId, division })}>
+            {({ geographies }) =>
+              geographies.map(geo => {
+                const id = geo.properties.codarea;
+                const name = divisionsNames[id]["nome"];
+                const divisionValue = rowsInDate.find(
+                  row => row["TERCODIGO"] === id
+                );
+                const value = (divisionValue && divisionValue["VALVALOR"]) || 0;
+                return (
+                  <Geography
+                    key={id}
+                    geography={geo}
+                    fill={colorScale(value)}
+                    onMouseEnter={() => {
+                      setTooltipOpen(true);
+                      setTooltipText(`${name} ― ${value}`);
+                    }}
+                    onMouseLeave={() => {
+                      setTooltipOpen(false);
+                      setTooltipText("");
+                    }}
+                    onMouseMove={e => {
+                      setTooltipPosition({ x: e.clientX, y: e.clientY });
+                    }}
+                  />
+                );
+              })
+            }
+          </Geographies>
+
+          <MapLegend scale={colorScale} title={metadata.UNINOME} />
+        </ComposableMap>
+      </ChartContainer>
 
       <SelectDates
+        isLoading={isLoading}
         date={selectedDate}
         dates={dates}
         handleChange={e => setDate(e.target.value)}

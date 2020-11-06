@@ -4,26 +4,32 @@ import { Select } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
-  selectDates: {
-    marginTop: theme.spacing(3),
+  root: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    marginTop: theme.spacing(2),
   },
 }));
 
-export function SelectDates({ date, dates, handleChange }) {
+export function SelectDates({ isLoading, date, dates, handleChange }) {
   const classes = useStyles();
 
+  if (isLoading) return null;
+
   return (
-    <Select
-      native
-      variant="outlined"
-      label="Período"
-      value={date}
-      onChange={handleChange}
-      className={classes.selectDates}
-    >
-      {dates.map(date => (
-        <option key={date}>{date}</option>
-      ))}
-    </Select>
+    <div className={classes.root}>
+      <Select
+        native
+        variant="outlined"
+        label="Período"
+        value={date}
+        onChange={handleChange}
+      >
+        {dates.map(date => (
+          <option key={date}>{date}</option>
+        ))}
+      </Select>
+    </div>
   );
 }

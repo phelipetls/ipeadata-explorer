@@ -8,12 +8,11 @@ import { NoData } from "./NoData";
 const useStyles = makeStyles(theme => ({
   container: {
     display: "flex",
-    flexFlow: "column",
     alignItems: "center",
     justifyContent: "center",
+    position: "relative",
     height: theme.chart.minHeight,
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
   },
 }));
 

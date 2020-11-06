@@ -1,10 +1,13 @@
 import React from "react";
 
 import { ChartTimeseries } from "./ChartTimeseries";
+import { ChartContainer } from "./ChartContainer";
 
 import groupBy from "lodash/groupBy";
 
-export function ChartGeographicTimeseries({ series, seriesByDate, ...props }) {
+export function ChartGeographicTimeseries(props) {
+  const { series, seriesByDate, isLoading, ...rest } = props;
+
   const labels = Object.keys(seriesByDate);
 
   const seriesByDivisions = groupBy(series, "TERNOME");
@@ -15,5 +18,9 @@ export function ChartGeographicTimeseries({ series, seriesByDate, ...props }) {
     })
   );
 
-  return <ChartTimeseries {...props} labels={labels} datasets={datasets} />;
+  return (
+    <ChartContainer isLoading={isLoading} data={series}>
+      <ChartTimeseries {...rest} labels={labels} datasets={datasets} />
+    </ChartContainer>
+  );
 }

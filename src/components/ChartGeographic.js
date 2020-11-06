@@ -9,7 +9,6 @@ import { ChartFormGeography } from "./ChartFormGeography";
 import { ChartSection } from "./ChartSection";
 import { ChartGeographicMap } from "./ChartGeographicMap";
 import { ChartGeographicTimeseries } from "./ChartGeographicTimeseries";
-import { ChartContainer } from "./ChartContainer";
 
 import { buildMetadataUrl, buildSeriesUrl, getDateFilter } from "../api/odata";
 import { getChartType } from "../api/ibge";
@@ -108,22 +107,22 @@ export function ChartGeographic({ code, metadata }) {
         )}
       </ChartForm>
 
-      <ChartContainer isLoading={isLoading} data={series}>
-        {chartType === "line" ? (
-          <ChartGeographicTimeseries
-            metadata={metadata}
-            series={series}
-            seriesByDate={seriesByDate}
-          />
-        ) : (
-          <ChartGeographicMap
-            seriesByDate={seriesByDate}
-            metadata={metadata}
-            division={division}
-            boundaryId={boundaryId}
-          />
-        )}
-      </ChartContainer>
+      {chartType === "line" ? (
+        <ChartGeographicTimeseries
+          isLoading={isLoading}
+          metadata={metadata}
+          series={series}
+          seriesByDate={seriesByDate}
+        />
+      ) : (
+        <ChartGeographicMap
+          isLoading={isLoading}
+          seriesByDate={seriesByDate}
+          metadata={metadata}
+          division={division}
+          boundaryId={boundaryId}
+        />
+      )}
     </ChartSection>
   );
 }
