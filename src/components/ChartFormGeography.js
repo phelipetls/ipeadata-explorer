@@ -10,13 +10,12 @@ export function ChartFormGeography(props) {
   const [division, setDivisions] = useState(null);
   const [boundaryDivision, setBoundaryDivision] = useState("Brasil");
 
-  const boundaries = getContainingDivisions(division || props.division);
+  const possibleBoundaries = getContainingDivisions(division || props.division);
 
   return (
     <>
       <SelectGeographicDivisions
         defaultValue={props.division}
-        divsion={division}
         divisions={props.divisions}
         handleChange={e => setDivisions(e.target.value)}
       />
@@ -24,7 +23,7 @@ export function ChartFormGeography(props) {
       {getChartType(division || props.division) === "map" && (
         <>
           <SelectBoundaryDivision
-            boundaries={boundaries}
+            boundaries={possibleBoundaries}
             boundaryDivision={boundaryDivision}
             handleChange={e => setBoundaryDivision(e.target.value)}
           />

@@ -3,7 +3,7 @@ import React from "react";
 import { Select, InputLabel, FormControl } from "@material-ui/core";
 
 export function SelectGeographicDivisions(props) {
-  const { division, divisions, handleChange, ...rest } = props;
+  const { divisions, handleChange, ...rest } = props;
 
   return (
     <FormControl required variant="outlined">
@@ -14,7 +14,6 @@ export function SelectGeographicDivisions(props) {
       <Select
         {...rest}
         native
-        value={division}
         label="Divisões geográficas"
         onChange={handleChange}
         inputProps={{ name: "division", id: "division" }}

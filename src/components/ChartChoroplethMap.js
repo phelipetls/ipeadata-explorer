@@ -22,8 +22,7 @@ async function getOutlineMap(_, boundaryId) {
 
 async function getDivisionsNames(_, division) {
   const url = getDivisionsUrl(division);
-  const json = await (await fetch(url)).json();
-  return keyBy(json, "id");
+  return await (await fetch(url)).json();
 }
 
 const SPACE_FOR_TITLE = 25;
@@ -57,9 +56,11 @@ export const ChartChoroplethMap = React.memo(props => {
   );
 
   const { isLoading: isLoadingDivisionsNames, data: divisionsNames } = useQuery(
-    ["Fetch all geographic divisions names", division],
+    ["Fetch geographic divisions names", division],
     getDivisionsNames
   );
+
+  const divisionsNamesById = divisionsNames && keyBy(divisionsNames, "id");
 
   const isLoading =
     isLoadingSeries || isLoadingOutlineMap || isLoadingDivisionsNames;
@@ -90,7 +91,7 @@ export const ChartChoroplethMap = React.memo(props => {
             {({ geographies }) =>
               geographies.map(geo => {
                 const id = geo.properties.codarea;
-                const name = divisionsNames[id]["nome"];
+                const name = divisionsNamesById[id]["nome"];
                 const divisionValue = rowsInDate.find(
                   row => row["TERCODIGO"] === id
                 );

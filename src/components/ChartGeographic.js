@@ -45,6 +45,8 @@ export function ChartGeographic({ code, metadata }) {
 
   division = division || divisions[0];
 
+  const chartType = getChartType(division);
+
   const { isLoading: isLoadingData, data = {} } = useQuery(
     [code, initialDate, finalDate, lastN, division, boundaryId],
     async () => {
@@ -93,8 +95,6 @@ export function ChartGeographic({ code, metadata }) {
   const seriesByDate = groupBy(series, row =>
     formatDate(new Date(row.VALDATA))
   );
-
-  const chartType = getChartType(division);
 
   return (
     <ChartSection>

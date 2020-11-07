@@ -6,15 +6,15 @@ import { unpluralize, getDivisionsUrl } from "../api/ibge";
 
 import { Loading } from "./Loading";
 
-async function fetchBoundaryDivisionEntities(_, boundaryDivision) {
-  const url = getDivisionsUrl(boundaryDivision);
+async function getDivisionsNames(_, division) {
+  const url = getDivisionsUrl(division);
   return await (await fetch(url)).json();
 }
 
 export function SelectBoundaryId({ boundaryDivision }) {
   const { isLoading, data = [] } = useQuery(
-    ["Fetch geographic entities within boundary division", boundaryDivision],
-    fetchBoundaryDivisionEntities
+    ["Fetch geographic divisions names", boundaryDivision],
+    getDivisionsNames
   );
 
   if (isLoading) return <Loading />;
