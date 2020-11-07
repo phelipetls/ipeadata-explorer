@@ -7,11 +7,12 @@ import { schemeBlues as palette } from "d3-scale-chromatic";
 import { geoMercator } from "d3-geo";
 import { scaleQuantile } from "d3-scale";
 
+import { useBreakpoint } from "../utils/responsive";
 import { getMapUrl, getDivisionsUrl } from "../api/ibge";
 
 import { MapLegend } from "./MapLegend";
 import { SelectDates } from "./SelectDates";
-import { ChartContainer } from "./ChartContainer";
+import { Loading } from "./Loading";
 
 import keyBy from "lodash/keyBy";
 
@@ -25,23 +26,26 @@ async function getDivisionsNames(_, division) {
   return await (await fetch(url)).json();
 }
 
-const TITLE_HEIGHT = 25;
-const MAP_WIDTH = 800;
-const MAP_HEIGHT = 480;
-
+const SVG_WIDTH = 800;
 const LEGEND_WIDTH = 320;
-const LEGEND_HEIGHT = 44;
 
-function getProjection(outline, width, height) {
+const TITLE_HEIGHT = 25;
+const MAP_HEIGHT = 480;
+const LEGEND_HEIGHT = 44;
+const SVG_HEIGHT = MAP_HEIGHT + LEGEND_HEIGHT + TITLE_HEIGHT;
+
+function getProjection(outline, { mapWidth, mapHeight }) {
   const boundingBox = [
     [0, TITLE_HEIGHT],
-    [width, height - LEGEND_HEIGHT],
+    [mapWidth, mapHeight],
   ];
 
   return geoMercator().fitExtent(boundingBox, outline);
 }
 
 export const ChartChoroplethMap = React.memo(props => {
+  const isExtraSmallScreen = useBreakpoint("xs");
+
   const {
     isLoading: isLoadingSeries,
     seriesByDate,
@@ -80,76 +84,78 @@ export const ChartChoroplethMap = React.memo(props => {
     .domain(valuesInDate)
     .range(palette[4]);
 
-  const mapWidth = Math.min(window.innerWidth, MAP_WIDTH);
-  const mapHeight = MAP_HEIGHT;
-  const projection = getProjection(outline, mapWidth, mapHeight);
+  const svgWidth = Math.min(window.innerWidth, SVG_WIDTH);
+  const svgHeight = SVG_HEIGHT;
 
-  return (
+  const projection = getProjection(outline, {
+    mapWidth: svgWidth,
+    mapHeight: MAP_HEIGHT,
+  });
+
+  return isLoading ? (
+    <Loading style={{ height: SVG_HEIGHT }} />
+  ) : (
     <>
-      <ChartContainer isLoading={isLoading} data={rowsInDate}>
-        <ComposableMap
-          width={mapWidth}
-          height={mapHeight}
-          projection={projection}
-        >
-          <text
-            x={mapWidth / 2}
-            text-anchor="middle"
-            dominant-baseline="hanging"
-          >
-            {metadata.SERNOME}
-          </text>
+      <ComposableMap
+        width={svgWidth}
+        height={svgHeight}
+        projection={projection}
+      >
+        <text x={svgWidth / 2} text-anchor="middle" dominant-baseline="hanging">
+          {metadata.SERNOME}
+        </text>
 
-          <Geographies geography={getMapUrl({ boundaryId, division })}>
-            {({ geographies }) =>
-              geographies.map(geo => {
-                const id = geo.properties.codarea;
-                const name = divisionsNamesById[id]["nome"];
-                const divisionValue = rowsInDate.find(
-                  row => row["TERCODIGO"] === id
-                );
-                const value = (divisionValue && divisionValue["VALVALOR"]) || 0;
-                return (
-                  <Geography
-                    key={id}
-                    geography={geo}
-                    fill={colorScale(value)}
-                    onMouseEnter={() => {
-                      setTooltipOpen(true);
-                      setTooltipText(`${name} ― ${value}`);
-                    }}
-                    onMouseLeave={() => {
-                      setTooltipOpen(false);
-                      setTooltipText("");
-                    }}
-                    onMouseMove={e => {
-                      setTooltipPosition({ x: e.clientX, y: e.clientY });
-                    }}
-                  />
-                );
-              })
-            }
-          </Geographies>
+        <Geographies geography={getMapUrl({ boundaryId, division })}>
+          {({ geographies }) =>
+            geographies.map(geo => {
+              const id = geo.properties.codarea;
+              const name = divisionsNamesById[id]["nome"];
+              const divisionValue = rowsInDate.find(
+                row => row["TERCODIGO"] === id
+              );
+              const value = (divisionValue && divisionValue["VALVALOR"]) || 0;
+              return (
+                <Geography
+                  key={id}
+                  geography={geo}
+                  fill={colorScale(value)}
+                  onMouseEnter={() => {
+                    setTooltipOpen(true);
+                    setTooltipText(`${name} ― ${value}`);
+                  }}
+                  onMouseLeave={() => {
+                    setTooltipOpen(false);
+                    setTooltipText("");
+                  }}
+                  onMouseMove={e => {
+                    setTooltipPosition({ x: e.clientX, y: e.clientY });
+                  }}
+                />
+              );
+            })
+          }
+        </Geographies>
 
-          <MapLegend
-            scale={colorScale}
-            title={metadata.UNINOME}
-            width={LEGEND_WIDTH}
-            height={LEGEND_HEIGHT}
-            x={mapWidth - LEGEND_WIDTH}
-            y={mapHeight - LEGEND_HEIGHT}
-          />
-        </ComposableMap>
-      </ChartContainer>
-
-      {!isLoading && (
-        <SelectDates
-          isLoading={isLoading}
-          date={selectedDate}
-          dates={dates}
-          handleChange={e => setDate(e.target.value)}
+        <MapLegend
+          scale={colorScale}
+          title={metadata.UNINOME}
+          width={LEGEND_WIDTH}
+          height={LEGEND_HEIGHT}
+          x={
+            isExtraSmallScreen
+              ? (svgWidth - LEGEND_WIDTH) / 2
+              : svgWidth - LEGEND_WIDTH
+          }
+          y={SVG_HEIGHT - LEGEND_HEIGHT - 1}
         />
-      )}
+      </ComposableMap>
+
+      <SelectDates
+        isLoading={isLoading}
+        date={selectedDate}
+        dates={dates}
+        handleChange={e => setDate(e.target.value)}
+      />
     </>
   );
 });
