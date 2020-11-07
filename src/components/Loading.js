@@ -1,22 +1,17 @@
 import React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { CircularProgress } from "@material-ui/core";
-
-const useStyles = makeStyles(() => ({
-  center: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-}));
+import { Grid, CircularProgress } from "@material-ui/core";
 
 export function Loading(props) {
-  const classes = useStyles();
-
   return (
-    <div className={classes.center} style={{ ...props.style }}>
+    <Grid
+      container
+      alignItems="center"
+      justify="center"
+      style={{ height: "100%" }}
+      {...props}
+    >
       <CircularProgress />
-    </div>
+    </Grid>
   );
 }

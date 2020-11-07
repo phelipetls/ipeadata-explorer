@@ -10,7 +10,7 @@ export const theme = createMuiTheme(
       social: red[600],
     },
     chart: {
-      minHeight: 512,
+      height: 512,
     },
   },
   ptBR

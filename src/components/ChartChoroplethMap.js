@@ -12,7 +12,7 @@ import { getMapUrl, getDivisionsUrl } from "../api/ibge";
 
 import { MapLegend } from "./MapLegend";
 import { SelectDates } from "./SelectDates";
-import { Loading } from "./Loading";
+import { ChartContainer } from "./ChartContainer";
 
 import keyBy from "lodash/keyBy";
 
@@ -92,63 +92,67 @@ export const ChartChoroplethMap = React.memo(props => {
     mapHeight: MAP_HEIGHT,
   });
 
-  return isLoading ? (
-    <Loading style={{ height: SVG_HEIGHT }} />
-  ) : (
+  return (
     <>
-      <ComposableMap
-        width={svgWidth}
-        height={svgHeight}
-        projection={projection}
-      >
-        <text x={svgWidth / 2} text-anchor="middle" dominant-baseline="hanging">
-          {metadata.SERNOME}
-        </text>
+      <ChartContainer isLoading={isLoading} data={valuesInDate}>
+        <ComposableMap
+          width={svgWidth}
+          height={svgHeight}
+          projection={projection}
+        >
+          <text
+            x={svgWidth / 2}
+            text-anchor="middle"
+            dominant-baseline="hanging"
+          >
+            {metadata.SERNOME}
+          </text>
 
-        <Geographies geography={getMapUrl({ boundaryId, division })}>
-          {({ geographies }) =>
-            geographies.map(geo => {
-              const id = geo.properties.codarea;
-              const name = divisionsNamesById[id]["nome"];
-              const divisionValue = rowsInDate.find(
-                row => row["TERCODIGO"] === id
-              );
-              const value = (divisionValue && divisionValue["VALVALOR"]) || 0;
-              return (
-                <Geography
-                  key={id}
-                  geography={geo}
-                  fill={colorScale(value)}
-                  onMouseEnter={() => {
-                    setTooltipOpen(true);
-                    setTooltipText(`${name} ― ${value}`);
-                  }}
-                  onMouseLeave={() => {
-                    setTooltipOpen(false);
-                    setTooltipText("");
-                  }}
-                  onMouseMove={e => {
-                    setTooltipPosition({ x: e.clientX, y: e.clientY });
-                  }}
-                />
-              );
-            })
-          }
-        </Geographies>
+          <Geographies geography={getMapUrl({ boundaryId, division })}>
+            {({ geographies }) =>
+              geographies.map(geo => {
+                const id = geo.properties.codarea;
+                const name = divisionsNamesById[id]["nome"];
+                const divisionValue = rowsInDate.find(
+                  row => row["TERCODIGO"] === id
+                );
+                const value = (divisionValue && divisionValue["VALVALOR"]) || 0;
+                return (
+                  <Geography
+                    key={id}
+                    geography={geo}
+                    fill={colorScale(value)}
+                    onMouseEnter={() => {
+                      setTooltipOpen(true);
+                      setTooltipText(`${name} ― ${value}`);
+                    }}
+                    onMouseLeave={() => {
+                      setTooltipOpen(false);
+                      setTooltipText("");
+                    }}
+                    onMouseMove={e => {
+                      setTooltipPosition({ x: e.clientX, y: e.clientY });
+                    }}
+                  />
+                );
+              })
+            }
+          </Geographies>
 
-        <MapLegend
-          scale={colorScale}
-          title={metadata.UNINOME}
-          width={LEGEND_WIDTH}
-          height={LEGEND_HEIGHT}
-          x={
-            isExtraSmallScreen
-              ? (svgWidth - LEGEND_WIDTH) / 2
-              : svgWidth - LEGEND_WIDTH
-          }
-          y={SVG_HEIGHT - LEGEND_HEIGHT - 1}
-        />
-      </ComposableMap>
+          <MapLegend
+            scale={colorScale}
+            title={metadata.UNINOME}
+            width={LEGEND_WIDTH}
+            height={LEGEND_HEIGHT}
+            x={
+              isExtraSmallScreen
+                ? (svgWidth - LEGEND_WIDTH) / 2
+                : svgWidth - LEGEND_WIDTH
+            }
+            y={SVG_HEIGHT - LEGEND_HEIGHT - 1}
+          />
+        </ComposableMap>
+      </ChartContainer>
 
       <SelectDates
         isLoading={isLoading}

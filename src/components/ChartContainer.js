@@ -6,28 +6,32 @@ import { Loading } from "./Loading";
 import { NoData } from "./NoData";
 
 const useStyles = makeStyles(theme => ({
-  container: {
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    position: "relative",
-    height: theme.chart.minHeight,
-    marginTop: theme.spacing(3),
+  root: {
+    height: theme.chart.height,
+    "& > *": {
+      height: "100%",
+    },
   },
 }));
 
-export function ChartContainer({ isLoading, data, children }) {
+export function ChartContainer({ isLoading, data, children, ...props }) {
   const classes = useStyles();
 
-  return (
-    <div className={classes.container}>
-      {isLoading ? (
+  if (isLoading) {
+    return (
+      <div className={classes.root} {...props}>
         <Loading />
-      ) : data.length === 0 ? (
+      </div>
+    );
+  }
+
+  if (data.length === 0) {
+    return (
+      <div className={classes.root} {...props}>
         <NoData text="Sem dados" />
-      ) : (
-        children
-      )}
-    </div>
-  );
+      </div>
+    );
+  }
+
+  return children;
 }

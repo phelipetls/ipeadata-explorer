@@ -2,30 +2,20 @@ import React from "react";
 
 import { Grid, Typography } from "@material-ui/core";
 import { Error } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/styles";
 
-const useStyles = makeStyles(theme => ({
-  text: {
-    paddingTop: theme.spacing(1),
-  },
-}));
-
-export function NoData({ text, style }) {
-  const classes = useStyles();
-
+export function NoData({ text, ...props }) {
   return (
     <Grid
       container
       spacing={1}
       direction="column"
+      wrap="nowrap"
       alignItems="center"
       justify="center"
-      style={style}
+      {...props}
     >
       <Error fontSize="large" />
-      <Typography className={classes.text} variant="h6">
-        {text}
-      </Typography>
+      <Typography variant="h6">{text}</Typography>
     </Grid>
   );
 }

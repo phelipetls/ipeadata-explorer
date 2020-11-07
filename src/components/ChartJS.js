@@ -1,5 +1,7 @@
 import React, { useEffect, useRef } from "react";
 
+import { makeStyles } from "@material-ui/styles";
+
 import {
   Chart,
   Line,
@@ -39,7 +41,15 @@ Chart.defaults.plugins.title.font = {
   weight: 0,
 };
 
+const useStyles = makeStyles(theme => ({
+  root: {
+    position: "relative",
+    height: theme.chart.height,
+  },
+}));
+
 export function ChartJS(props) {
+  const classes = useStyles();
   const canvasRef = useRef();
 
   const { type, labels, datasets, xScale, yScale, ...options } = props;
@@ -61,8 +71,10 @@ export function ChartJS(props) {
   }, [type, labels, datasets, xScale, yScale, options]);
 
   return (
-    <canvas ref={canvasRef} aria-label="Gráfico">
-      <p>Gráfico</p>
-    </canvas>
+    <div className={classes.root}>
+      <canvas ref={canvasRef} aria-label="Gráfico">
+        <p>Gráfico</p>
+      </canvas>
+    </div>
   );
 }

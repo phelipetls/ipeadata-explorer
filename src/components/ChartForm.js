@@ -7,6 +7,7 @@ const useStyles = makeStyles(theme => ({
   form: {
     display: "flex",
     flexFlow: "column",
+    marginBottom: theme.spacing(3),
     [theme.breakpoints.up("md")]: {
       flexFlow: "row wrap",
     },
