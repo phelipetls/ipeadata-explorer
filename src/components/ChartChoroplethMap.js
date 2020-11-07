@@ -25,12 +25,17 @@ async function getDivisionsNames(_, division) {
   return await (await fetch(url)).json();
 }
 
-const SPACE_FOR_TITLE = 25;
+const TITLE_HEIGHT = 25;
+const MAP_WIDTH = 800;
+const MAP_HEIGHT = 480;
+
+const LEGEND_WIDTH = 320;
+const LEGEND_HEIGHT = 44;
 
 function getProjection(outline, width, height) {
   const boundingBox = [
-    [0, SPACE_FOR_TITLE],
-    [width, height],
+    [0, TITLE_HEIGHT],
+    [width, height - LEGEND_HEIGHT],
   ];
 
   return geoMercator().fitExtent(boundingBox, outline);
@@ -75,15 +80,23 @@ export const ChartChoroplethMap = React.memo(props => {
     .domain(valuesInDate)
     .range(palette[4]);
 
-  const width = Math.min(window.innerWidth, 800);
-  const height = 480;
-  const projection = getProjection(outline, width, height);
+  const mapWidth = Math.min(window.innerWidth, MAP_WIDTH);
+  const mapHeight = MAP_HEIGHT;
+  const projection = getProjection(outline, mapWidth, mapHeight);
 
   return (
     <>
       <ChartContainer isLoading={isLoading} data={rowsInDate}>
-        <ComposableMap width={width} height={height} projection={projection}>
-          <text x={width / 2} text-anchor="middle" dominant-baseline="hanging">
+        <ComposableMap
+          width={mapWidth}
+          height={mapHeight}
+          projection={projection}
+        >
+          <text
+            x={mapWidth / 2}
+            text-anchor="middle"
+            dominant-baseline="hanging"
+          >
             {metadata.SERNOME}
           </text>
 
@@ -117,20 +130,25 @@ export const ChartChoroplethMap = React.memo(props => {
               })
             }
           </Geographies>
+
+          <MapLegend
+            scale={colorScale}
+            title={metadata.UNINOME}
+            width={LEGEND_WIDTH}
+            height={LEGEND_HEIGHT}
+            x={mapWidth - LEGEND_WIDTH}
+            y={mapHeight - LEGEND_HEIGHT}
+          />
         </ComposableMap>
       </ChartContainer>
 
       {!isLoading && (
-        <>
-          <MapLegend scale={colorScale} title={metadata.UNINOME} />
-
-          <SelectDates
-            isLoading={isLoading}
-            date={selectedDate}
-            dates={dates}
-            handleChange={e => setDate(e.target.value)}
-          />
-        </>
+        <SelectDates
+          isLoading={isLoading}
+          date={selectedDate}
+          dates={dates}
+          handleChange={e => setDate(e.target.value)}
+        />
       )}
     </>
   );

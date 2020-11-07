@@ -14,18 +14,17 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const width = 320;
-const height = 44;
 const marginTop = 18;
 const marginRight = 0;
 const marginBottom = 16;
 const marginLeft = 0;
 const tickSize = 6;
 
-export function MapLegend({ scale, title }) {
+export function MapLegend(props) {
   const classes = useStyles();
-
   const legendRef = useRef();
+
+  const { scale, title, width, height } = props;
 
   const xScale = scaleLinear()
     .domain([-1, scale.range().length - 1])
@@ -51,15 +50,16 @@ export function MapLegend({ scale, title }) {
       viewBox={`0 0 ${width} ${height}`}
       overflow="visible"
       display="block"
+      {...props}
     >
-      <QuantileRectangles scale={scale} xScale={xScale} />
-      <Ticks tickAxis={tickAxis} title={title} />
+      <QuantileRectangles scale={scale} xScale={xScale} height={height} />
+      <Ticks tickAxis={tickAxis} title={title} height={height} />
     </svg>
   );
 }
 
 function QuantileRectangles(props) {
-  const { scale, xScale } = props;
+  const { scale, xScale, height } = props;
 
   return (
     <g>
@@ -78,17 +78,18 @@ function QuantileRectangles(props) {
 
 function Ticks(props) {
   const ticksRef = useRef();
-  const { title, tickAxis } = props;
 
-  const tickAdjust = g =>
-    g.selectAll(".tick line").attr("y1", marginTop + marginBottom - height);
+  const { title, tickAxis, height } = props;
 
   useEffect(() => {
+    const tickAdjust = g =>
+      g.selectAll(".tick line").attr("y1", marginTop + marginBottom - height);
+
     d3Select(ticksRef.current)
       .call(tickAxis)
       .call(tickAdjust)
       .call(g => g.select(".domain").remove());
-  }, [tickAxis, title]);
+  }, [tickAxis, title, height]);
 
   return (
     <g transform={`translate(0,${height - marginBottom})`} ref={ticksRef}>
