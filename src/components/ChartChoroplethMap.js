@@ -2,17 +2,15 @@ import React, { useState } from "react";
 
 import { useQuery } from "react-query";
 
-import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+import { Geographies, Geography } from "react-simple-maps";
 import { schemeBlues as palette } from "d3-scale-chromatic";
-import { geoMercator } from "d3-geo";
 import { scaleQuantile } from "d3-scale";
 
-import { useBreakpoint } from "../utils/responsive";
 import { getMapUrl, getDivisionsUrl } from "../api/ibge";
 
-import { MapLegend } from "./MapLegend";
 import { SelectDates } from "./SelectDates";
 import { ChartContainer } from "./ChartContainer";
+import { ChartMap } from "./ChartMap";
 
 import keyBy from "lodash/keyBy";
 
@@ -26,26 +24,7 @@ async function getDivisionsNames(_, division) {
   return await (await fetch(url)).json();
 }
 
-const SVG_WIDTH = 800;
-const LEGEND_WIDTH = 320;
-
-const TITLE_HEIGHT = 25;
-const MAP_HEIGHT = 480;
-const LEGEND_HEIGHT = 44;
-const SVG_HEIGHT = MAP_HEIGHT + LEGEND_HEIGHT + TITLE_HEIGHT;
-
-function getProjection(outline, { mapWidth, mapHeight }) {
-  const boundingBox = [
-    [0, TITLE_HEIGHT],
-    [mapWidth, mapHeight],
-  ];
-
-  return geoMercator().fitExtent(boundingBox, outline);
-}
-
 export const ChartChoroplethMap = React.memo(props => {
-  const isExtraSmallScreen = useBreakpoint("xs");
-
   const {
     isLoading: isLoadingSeries,
     seriesByDate,
@@ -59,20 +38,20 @@ export const ChartChoroplethMap = React.memo(props => {
 
   const [date, setDate] = useState("");
 
-  const { isLoading: isLoadingOutlineMap, data: outline } = useQuery(
-    ["Fetch outline map given a boundary region", boundaryId],
-    getOutlineMap
-  );
-
   const { isLoading: isLoadingDivisionsNames, data: divisionsNames } = useQuery(
     ["Fetch geographic divisions names", division],
     getDivisionsNames
   );
 
-  const divisionsNamesById = divisionsNames && keyBy(divisionsNames, "id");
+  const { isLoading: isLoadingOutlineMap, data: outline } = useQuery(
+    ["Fetch outline map given a boundary region", boundaryId],
+    getOutlineMap
+  );
 
   const isLoading =
     isLoadingSeries || isLoadingOutlineMap || isLoadingDivisionsNames;
+
+  const divisionsNamesById = divisionsNames && keyBy(divisionsNames, "id");
 
   const dates = Object.keys(seriesByDate);
   const selectedDate = date || dates[0];
@@ -80,34 +59,14 @@ export const ChartChoroplethMap = React.memo(props => {
   const rowsInDate = dates.length > 0 ? seriesByDate[selectedDate] : {};
   const valuesInDate = Object.values(rowsInDate).map(row => row["VALVALOR"]);
 
-  const colorScale = scaleQuantile()
+  const scale = scaleQuantile()
     .domain(valuesInDate)
     .range(palette[4]);
-
-  const svgWidth = Math.min(window.innerWidth, SVG_WIDTH);
-  const svgHeight = SVG_HEIGHT;
-
-  const projection = getProjection(outline, {
-    mapWidth: svgWidth,
-    mapHeight: MAP_HEIGHT,
-  });
 
   return (
     <>
       <ChartContainer isLoading={isLoading} data={valuesInDate}>
-        <ComposableMap
-          width={svgWidth}
-          height={svgHeight}
-          projection={projection}
-        >
-          <text
-            x={svgWidth / 2}
-            text-anchor="middle"
-            dominant-baseline="hanging"
-          >
-            {metadata.SERNOME}
-          </text>
-
+        <ChartMap scale={scale} metadata={metadata} outline={outline}>
           <Geographies geography={getMapUrl({ boundaryId, division })}>
             {({ geographies }) =>
               geographies.map(geo => {
@@ -121,7 +80,7 @@ export const ChartChoroplethMap = React.memo(props => {
                   <Geography
                     key={id}
                     geography={geo}
-                    fill={colorScale(value)}
+                    fill={scale(value)}
                     onMouseEnter={() => {
                       setTooltipOpen(true);
                       setTooltipText(`${name} ― ${value}`);
@@ -138,20 +97,7 @@ export const ChartChoroplethMap = React.memo(props => {
               })
             }
           </Geographies>
-
-          <MapLegend
-            scale={colorScale}
-            title={metadata.UNINOME}
-            width={LEGEND_WIDTH}
-            height={LEGEND_HEIGHT}
-            x={
-              isExtraSmallScreen
-                ? (svgWidth - LEGEND_WIDTH) / 2
-                : svgWidth - LEGEND_WIDTH
-            }
-            y={SVG_HEIGHT - LEGEND_HEIGHT - 1}
-          />
-        </ComposableMap>
+        </ChartMap>
       </ChartContainer>
 
       <SelectDates
