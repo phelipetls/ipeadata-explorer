@@ -12,9 +12,6 @@ import { ChartGeographicTimeseries } from "./ChartGeographicTimeseries";
 
 import { buildMetadataUrl, buildSeriesUrl, getDateFilter } from "../api/odata";
 import { getChartType } from "../api/ibge";
-import { formatDate } from "../api/date-utils";
-
-import groupBy from "lodash/groupBy";
 
 const DEFAULT_LIMIT = 5;
 
@@ -92,9 +89,6 @@ export function ChartGeographic({ code, metadata }) {
   const isLoading = isLoadingData || isLoadingDivisions;
 
   const series = (data && data.value) || [];
-  const seriesByDate = groupBy(series, row =>
-    formatDate(new Date(row.VALDATA))
-  );
 
   return (
     <ChartSection>
@@ -109,15 +103,14 @@ export function ChartGeographic({ code, metadata }) {
 
       {chartType === "line" ? (
         <ChartGeographicTimeseries
+          series={series}
           isLoading={isLoading}
           metadata={metadata}
-          series={series}
-          seriesByDate={seriesByDate}
         />
       ) : (
         <ChartGeographicMap
           isLoading={isLoading}
-          seriesByDate={seriesByDate}
+          series={series}
           metadata={metadata}
           division={division}
           boundaryId={boundaryId}

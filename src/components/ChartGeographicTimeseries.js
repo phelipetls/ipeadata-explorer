@@ -6,11 +6,12 @@ import { ChartContainer } from "./ChartContainer";
 import groupBy from "lodash/groupBy";
 
 export function ChartGeographicTimeseries(props) {
-  const { series, seriesByDate, isLoading, ...rest } = props;
+  const { series, isLoading, ...rest } = props;
 
-  const labels = Object.keys(seriesByDate);
+  const labels = [...new Set(series.map(row => row.VALDATA))];
 
   const seriesByDivisions = groupBy(series, "TERNOME");
+
   const datasets = Object.entries(seriesByDivisions).map(
     ([division, values]) => ({
       label: division,

@@ -7,12 +7,14 @@ import { schemeBlues as palette } from "d3-scale-chromatic";
 import { scaleQuantile } from "d3-scale";
 
 import { getMapUrl, getDivisionsUrl } from "../api/ibge";
+import { formatDate } from "../api/date-utils";
 
 import { SelectDates } from "./SelectDates";
 import { ChartContainer } from "./ChartContainer";
 import { ChartMap } from "./ChartMap";
 
 import keyBy from "lodash/keyBy";
+import groupBy from "lodash/groupBy";
 
 async function getOutlineMap(_, boundaryId) {
   const url = getMapUrl({ boundaryId, format: "application/vnd.geo+json" });
@@ -27,7 +29,7 @@ async function getDivisionsNames(_, division) {
 export const ChartChoroplethMap = React.memo(props => {
   const {
     isLoading: isLoadingSeries,
-    seriesByDate,
+    series,
     metadata,
     division,
     boundaryId,
@@ -52,6 +54,10 @@ export const ChartChoroplethMap = React.memo(props => {
     isLoadingSeries || isLoadingOutlineMap || isLoadingDivisionsNames;
 
   const divisionsNamesById = divisionsNames && keyBy(divisionsNames, "id");
+
+  const seriesByDate = groupBy(series, row =>
+    formatDate(new Date(row.VALDATA), metadata.PERNOME)
+  );
 
   const dates = Object.keys(seriesByDate);
   const selectedDate = date || dates[0];
