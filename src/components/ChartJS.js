@@ -37,8 +37,9 @@ Chart.defaults.plugins.legend.position = "bottom";
 Chart.defaults.plugins.tooltip.intersect = false;
 Chart.defaults.plugins.title.font = {
   size: 16,
-  family: "Roboto, sans-serif",
   weight: 0,
+  family: "Roboto, sans-serif",
+  color: "black",
 };
 
 const useStyles = makeStyles(theme => ({
