@@ -16,7 +16,7 @@ import { formatDate } from "../api/date-utils";
 
 import groupBy from "lodash/groupBy";
 
-const DEFAULT_OFFSET = 5;
+const DEFAULT_LIMIT = 5;
 
 async function fetchGeographicDivisions(_, code) {
   const url =
@@ -33,7 +33,7 @@ async function fetchGeographicDivisions(_, code) {
 export function ChartGeographic({ code, metadata }) {
   const [initialDate, setInitialDate] = useState(null);
   const [finalDate, setFinalDate] = useState(null);
-  const [lastN, setLastN] = useState(DEFAULT_OFFSET);
+  const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
   let [division, setDivision] = useState(null);
   const [boundaryId, setBoundaryId] = useState("BR");

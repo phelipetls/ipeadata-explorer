@@ -12,7 +12,7 @@ import { getDateFilter } from "../api/odata";
 
 import { ChartBar } from "./ChartBar";
 
-const DEFAULT_OFFSET = 1;
+const DEFAULT_LIMIT = 1;
 
 const CATEGORY_COUNT_QUERY =
   "groupby((VALVALOR),aggregate($count as count))&$orderby=count desc";
@@ -20,7 +20,7 @@ const CATEGORY_COUNT_QUERY =
 export function ChartCategorical({ code, metadata }) {
   const [initialDate, setInitialDate] = useState(null);
   const [finalDate, setFinalDate] = useState(null);
-  const [lastN, setLastN] = useState(DEFAULT_OFFSET);
+  const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
   const { isLoading, data } = useQuery(
     [code, initialDate, finalDate, lastN],

@@ -10,12 +10,12 @@ import { ChartTimeseries } from "./ChartTimeseries";
 
 import { buildSeriesUrl, getDateFilter } from "../api/odata";
 
-const DEFAULT_OFFSET = 50;
+const DEFAULT_LIMIT = 50;
 
 export function ChartMacro({ code, metadata }) {
   const [initialDate, setInitialDate] = useState(null);
   const [finalDate, setFinalDate] = useState(null);
-  const [lastN, setLastN] = useState(DEFAULT_OFFSET);
+  const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
   const { isLoading, data } = useQuery(
     [code, initialDate, finalDate, lastN],
