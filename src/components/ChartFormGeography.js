@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { getChartType, getContainingDivisions } from "../api/ibge";
+import { shouldPlotMap, getContainingDivisions } from "../api/ibge";
 
 import { SelectGeographicDivisions } from "./SelectGeographicDivisions";
 import { SelectBoundaryDivision } from "./SelectBoundaryDivision";
@@ -20,7 +20,7 @@ export function ChartFormGeography(props) {
         handleChange={e => setDivisions(e.target.value)}
       />
 
-      {getChartType(division || props.division) === "map" && (
+      {shouldPlotMap(division || props.division) && (
         <>
           <SelectBoundaryDivision
             boundaries={possibleBoundaries}

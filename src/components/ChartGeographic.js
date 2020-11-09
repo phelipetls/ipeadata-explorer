@@ -11,7 +11,7 @@ import { ChartGeographicMap } from "./ChartGeographicMap";
 import { ChartGeographicTimeseries } from "./ChartGeographicTimeseries";
 
 import { buildMetadataUrl, buildSeriesUrl, getDateFilter } from "../api/odata";
-import { getChartType } from "../api/ibge";
+import { shouldPlotMap } from "../api/ibge";
 
 const DEFAULT_LIMIT = 5;
 
@@ -32,7 +32,7 @@ export function ChartGeographic({ code, metadata }) {
   const [finalDate, setFinalDate] = useState(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
-  let [division, setDivision] = useState(null);
+  let [division, setDivision] = useState("Brasil");
   const [boundaryId, setBoundaryId] = useState("BR");
 
   const { isLoading: isLoadingDivisions, data: divisions = [] } = useQuery(
@@ -42,15 +42,13 @@ export function ChartGeographic({ code, metadata }) {
 
   division = division || divisions[0];
 
-  const chartType = getChartType(division);
-
   const { isLoading: isLoadingData, data = {} } = useQuery(
     [code, initialDate, finalDate, lastN, division, boundaryId],
     async () => {
       const dateFilter = getDateFilter(initialDate, finalDate, lastN, metadata);
 
       const boundaryFilter =
-        chartType === "map" && boundaryId !== "BR"
+        shouldPlotMap(division) && boundaryId !== "BR"
           ? ` and startswith(TERCODIGO,'${"".slice.call(boundaryId, 0, 2)}')`
           : "";
 
@@ -101,19 +99,19 @@ export function ChartGeographic({ code, metadata }) {
         )}
       </ChartForm>
 
-      {chartType === "line" ? (
-        <ChartGeographicTimeseries
-          series={series}
-          isLoading={isLoading}
-          metadata={metadata}
-        />
-      ) : (
+      {shouldPlotMap(division) ? (
         <ChartGeographicMap
           isLoading={isLoading}
           series={series}
           metadata={metadata}
           division={division}
           boundaryId={boundaryId}
+        />
+      ) : (
+        <ChartGeographicTimeseries
+          series={series}
+          isLoading={isLoading}
+          metadata={metadata}
         />
       )}
     </ChartSection>

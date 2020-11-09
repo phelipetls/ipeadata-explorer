@@ -1,9 +1,7 @@
-export function getChartType(division) {
-  return division === "Brasil" ||
-    division === "Regiões" ||
-    division === "Área metropolitana"
-    ? "line"
-    : "map";
+export function shouldPlotMap(division) {
+  return !["Brasil", "Regiões", "Área metropolitana"].includes(
+    division
+  );
 }
 
 /** Official documentation for IBGE's maps API:
