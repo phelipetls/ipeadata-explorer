@@ -10,7 +10,7 @@ const timeUnits = {
 };
 
 export function ChartTimeseries({ metadata, datasets, ...rest }) {
-  const datasetsWithColors = datasets.map((dataset, index) => ({
+  const coloredDatasets = datasets.map((dataset, index) => ({
     ...dataset,
     backgroundColor: palette[index % palette.length],
     borderColor: palette[index % palette.length],
@@ -22,7 +22,7 @@ export function ChartTimeseries({ metadata, datasets, ...rest }) {
     <ChartJS
       {...rest}
       type="line"
-      datasets={datasetsWithColors}
+      datasets={coloredDatasets}
       title={{ display: true, text: metadata.SERNOME }}
       xScale={{
         type: "time",

@@ -6,7 +6,7 @@ const dateFormats = {
   Trimestral: "qQ yyyy",
 };
 
-export function formatDate(date, periodicity) {
+export function formatDate(date, { periodicity }) {
   const dateFormat = dateFormats[periodicity] || "yyyy";
   return format(date, dateFormat);
 }

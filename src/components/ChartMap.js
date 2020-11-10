@@ -10,10 +10,10 @@ import { MapLegend } from "./MapLegend";
 const SVG_WIDTH = 800;
 const LEGEND_WIDTH = 320;
 
-const TITLE_HEIGHT = 25;
+const TITLE_HEIGHT = 30;
 const MAP_HEIGHT = 480;
 const LEGEND_HEIGHT = 44;
-const SVG_HEIGHT = MAP_HEIGHT + LEGEND_HEIGHT + TITLE_HEIGHT;
+const SVG_HEIGHT = TITLE_HEIGHT + MAP_HEIGHT + LEGEND_HEIGHT;
 
 function getProjection(outline, { mapWidth, mapHeight }) {
   const boundingBox = [

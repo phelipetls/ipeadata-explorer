@@ -22,8 +22,7 @@ async function fetchGeographicDivisions(_, code) {
     "$apply=filter(not startswith(NIVNOME,'AMC'))" +
     "/groupby((NIVNOME),aggregate($count as Count))" +
     "&$orderby=Count asc";
-  const response = await fetch(url);
-  const json = await response.json();
+  const json = await (await fetch(url)).json();
   return json.value.map(division => division.NIVNOME);
 }
 

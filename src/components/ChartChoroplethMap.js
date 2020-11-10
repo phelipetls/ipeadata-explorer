@@ -21,7 +21,7 @@ async function getOutlineMap(_, boundaryId) {
   return await (await fetch(url)).json();
 }
 
-async function getDivisionsNames(_, division) {
+async function fetchGeographicDivisionsNames(_, division) {
   const url = getDivisionsUrl(division);
   return await (await fetch(url)).json();
 }
@@ -38,15 +38,15 @@ export const ChartChoroplethMap = React.memo(props => {
     setTooltipOpen,
   } = props;
 
-  const [date, setDate] = useState("");
+  let [date, setDate] = useState("");
 
   const { isLoading: isLoadingDivisionsNames, data: divisionsNames } = useQuery(
     ["Fetch geographic divisions names", division],
-    getDivisionsNames
+    fetchGeographicDivisionsNames
   );
 
   const { isLoading: isLoadingOutlineMap, data: outline } = useQuery(
-    ["Fetch outline map given a boundary region", boundaryId],
+    ["Fetch outline map given a boundary region id", boundaryId],
     getOutlineMap
   );
 
@@ -56,13 +56,13 @@ export const ChartChoroplethMap = React.memo(props => {
   const divisionsNamesById = divisionsNames && keyBy(divisionsNames, "id");
 
   const seriesByDate = groupBy(series, row =>
-    formatDate(new Date(row.VALDATA), metadata.PERNOME)
+    formatDate(new Date(row.VALDATA), { periodicity: metadata.PERNOME })
   );
 
   const dates = Object.keys(seriesByDate);
-  const selectedDate = date || dates[0];
+  date = date || dates[0];
 
-  const rowsInDate = dates.length > 0 ? seriesByDate[selectedDate] : {};
+  const rowsInDate = dates.length > 0 ? seriesByDate[date] : {};
   const valuesInDate = Object.values(rowsInDate).map(row => row["VALVALOR"]);
 
   const scale = scaleQuantile()
@@ -108,7 +108,7 @@ export const ChartChoroplethMap = React.memo(props => {
 
       <SelectDates
         isLoading={isLoading}
-        date={selectedDate}
+        date={date}
         dates={dates}
         handleChange={e => setDate(e.target.value)}
       />
