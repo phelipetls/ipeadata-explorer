@@ -15,7 +15,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 const marginTop = 18;
-const marginRight = 0;
+const marginRight = 20;
 const marginBottom = 16;
 const marginLeft = 0;
 const tickSize = 6;
@@ -26,15 +26,25 @@ export function MapLegend(props) {
 
   const { scale, title, width, height } = props;
 
+  const thresholds = scale.quantiles();
+
+  const min = Math.min(...scale.domain());
+  const max = Math.max(...scale.domain());
+  const tickLabels = [min, ...thresholds, max];
+
   const xScale = scaleLinear()
     .domain([-1, scale.range().length - 1])
     .rangeRound([marginLeft, width - marginRight]);
 
-  const thresholds = scale.quantiles();
-
-  const tickValues = Array.from({ length: thresholds.length }).map((_, i) => i);
+  // We want two additional ticks (min and max)
+  const tickValues = Array.from({ length: thresholds.length + 2 }).map(
+    // xScale domain starts at -1
+    (_, i) => i - 1
+  );
   const tickFormatter = d3Format(">.0f");
-  const tickFormat = i => tickFormatter(thresholds[i]);
+  // i will take the value of xScale's domain. So we must add 1 because it
+  // starts at -1
+  const tickFormat = i => tickFormatter(tickLabels[i + 1]);
 
   const tickAxis = axisBottom(xScale)
     .tickSize(tickSize)
