@@ -31,7 +31,7 @@ export function ChartGeographic({ code, metadata }) {
   const [finalDate, setFinalDate] = useState(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
-  let [division, setDivision] = useState("Brasil");
+  const [division, setDivision] = useState(null);
   const [boundaryId, setBoundaryId] = useState("BR");
 
   const { isLoading: isLoadingDivisions, data: divisions = [] } = useQuery(
@@ -39,7 +39,9 @@ export function ChartGeographic({ code, metadata }) {
     fetchGeographicDivisions
   );
 
-  division = division || divisions[0];
+  if (!isLoadingDivisions && division === null) {
+    setDivision(divisions[0]);
+  }
 
   const { isLoading: isLoadingData, data = {} } = useQuery(
     [code, initialDate, finalDate, lastN, division, boundaryId],
@@ -62,7 +64,7 @@ export function ChartGeographic({ code, metadata }) {
 
       return await (await fetch(url)).json();
     },
-    { enabled: divisions.length > 0 }
+    { enabled: division }
   );
 
   function handleSubmit(e) {
@@ -98,7 +100,7 @@ export function ChartGeographic({ code, metadata }) {
         )}
       </ChartForm>
 
-      {shouldPlotMap(division) ? (
+      {division && shouldPlotMap(division) ? (
         <ChartGeographicMap
           isLoading={isLoading}
           series={series}

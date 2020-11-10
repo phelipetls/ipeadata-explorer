@@ -40,9 +40,13 @@ export const ChartChoroplethMap = React.memo(props => {
 
   let [date, setDate] = useState("");
 
-  const { isLoading: isLoadingDivisionsNames, data: divisionsNames } = useQuery(
+  const {
+    isLoading: isLoadingDivisionsNames,
+    data: divisionsNames,
+  } = useQuery(
     ["Fetch geographic divisions names", division],
-    fetchGeographicDivisionsNames
+    fetchGeographicDivisionsNames,
+    { enabled: division }
   );
 
   const { isLoading: isLoadingOutlineMap, data: outline } = useQuery(
