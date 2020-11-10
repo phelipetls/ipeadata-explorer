@@ -33,8 +33,8 @@ Chart.register(
 );
 
 Chart.defaults.elements.point.radius = 0;
+Chart.defaults.elements.point.hitRadius = 5;
 Chart.defaults.plugins.legend.position = "bottom";
-Chart.defaults.plugins.tooltip.intersect = false;
 Chart.defaults.plugins.title.font = {
   size: 16,
   weight: 0,
