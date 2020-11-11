@@ -5,7 +5,7 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useQuery, useQueryCache } from "react-query";
 
 import { TableSortable } from "./TableSortable";
-import { SeriesFilter } from "./SeriesFilter";
+import { SeriesSearchFilters } from "./SeriesSearchFilters";
 import { TablePaginationFooter } from "./TablePaginationFooter";
 import { TableSkeleton } from "./TableSkeleton";
 import { TableRowsCollapsed } from "./TableRowsCollapsed";
@@ -15,9 +15,9 @@ import { useBreakpoint } from "../utils/responsive";
 import { limitQuery, offsetQuery } from "../api/odata";
 import {
   DEFAULT_URL,
-  filterSeriesFromForm,
-  filterSeriesFromUrl,
-} from "../api/seriesFilter";
+  searchSeriesFromForm,
+  searchSeriesFromUrl,
+} from "../api/series-search-queries";
 
 function useSearchParams() {
   return new URLSearchParams(useLocation().search);
@@ -48,7 +48,7 @@ export function SeriesSearch() {
   const searchParams = useSearchParams();
 
   const [searchUrl, setSearchUrl] = useState(
-    () => filterSeriesFromUrl(searchParams) || DEFAULT_URL
+    () => searchSeriesFromUrl(searchParams) || DEFAULT_URL
   );
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
@@ -82,9 +82,9 @@ export function SeriesSearch() {
 
   function handleSubmit(e) {
     e.preventDefault();
-    let newUrl = filterSeriesFromForm(e.target.elements);
+    let newSearchUrl = searchSeriesFromForm(e.target.elements);
     queryCache.invalidateQueries([searchUrl], { refetchActive: false });
-    setSearchUrl(newUrl);
+    setSearchUrl(newSearchUrl);
     setPage(0);
     setFormOpen(false);
   }
@@ -120,7 +120,7 @@ export function SeriesSearch() {
 
   return (
     <>
-      <SeriesFilter
+      <SeriesSearchFilters
         searchParams={searchParams}
         formOpen={formOpen}
         setFormOpen={setFormOpen}

@@ -8,28 +8,28 @@ function getFormElementValue(element) {
   return element.type === "checkbox" ? element.checked : element.value;
 }
 
-export function filterSeriesFromForm(formElements) {
+export function searchSeriesFromForm(formElements) {
   const filledFormElements = Array.from(formElements)
     .filter(element => getFormElementValue(element) && !element.disabled)
     .map(element => [element.name, getFormElementValue(element)]);
 
   return filledFormElements.length > 0
-    ? filterSeries(filledFormElements)
+    ? searchSeries(filledFormElements)
     : DEFAULT_URL;
 }
 
-export function filterSeriesFromUrl(searchParams) {
+export function searchSeriesFromUrl(searchParams) {
   if (searchParams.toString() !== "") {
-    return filterSeries(Array.from(searchParams));
+    return searchSeries(Array.from(searchParams));
   }
 }
 
-function filterSeries(nameValuePairs) {
-  const filterQuery = nameValuePairs.map(getFilter).join(" and ");
+function searchSeries(nameValuePairs) {
+  const filterQuery = nameValuePairs.map(getSearchQuery).join(" and ");
   return DEFAULT_URL + `&$filter=${filterQuery}` + getHelperQuery(filterQuery);
 }
 
-function getFilter([name, value]) {
+function getSearchQuery([name, value]) {
   switch (name) {
     case "SERNOME":
     case "UNINOME":

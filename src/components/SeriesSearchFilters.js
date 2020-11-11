@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function SeriesFilter(props) {
+export function SeriesSearchFilters(props) {
   const classes = useStyles();
   const { searchParams, onSubmit, formOpen, setFormOpen } = props;
 
