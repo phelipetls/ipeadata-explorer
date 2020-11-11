@@ -10,7 +10,7 @@ import { getMapUrl, getDivisionsUrl } from "../api/ibge";
 import { formatDate } from "../api/date-utils";
 
 import { SelectDates } from "./SelectDates";
-import { ChartContainer } from "./ChartContainer";
+import { ChartLoading } from "./ChartLoading";
 import { ChartMap } from "./ChartMap";
 
 import keyBy from "lodash/keyBy";
@@ -28,7 +28,6 @@ async function fetchGeographicDivisionsNames(_, division) {
 
 export const ChartChoroplethMap = React.memo(props => {
   const {
-    isLoading: isLoadingSeries,
     series,
     metadata,
     division,
@@ -38,7 +37,7 @@ export const ChartChoroplethMap = React.memo(props => {
     setTooltipOpen,
   } = props;
 
-  let [date, setDate] = useState("");
+  const [date, setDate] = useState("");
 
   const {
     isLoading: isLoadingDivisionsNames,
@@ -54,9 +53,6 @@ export const ChartChoroplethMap = React.memo(props => {
     getOutlineMap
   );
 
-  const isLoading =
-    isLoadingSeries || isLoadingOutlineMap || isLoadingDivisionsNames;
-
   const divisionsNamesById = divisionsNames && keyBy(divisionsNames, "id");
 
   const seriesByDate = groupBy(series, row =>
@@ -64,18 +60,25 @@ export const ChartChoroplethMap = React.memo(props => {
   );
 
   const dates = Object.keys(seriesByDate);
-  date = date || dates[0];
 
-  const rowsInDate = dates.length > 0 ? seriesByDate[date] : {};
+  if (date === "") {
+    setDate(dates[0]);
+  }
+
+  const rowsInDate = seriesByDate[date] || {};
   const valuesInDate = Object.values(rowsInDate).map(row => row["VALVALOR"]);
 
   const scale = scaleQuantile()
     .domain(valuesInDate)
     .range(palette[4]);
 
+  const isLoading = isLoadingOutlineMap || isLoadingDivisionsNames;
+
   return (
     <>
-      <ChartContainer isLoading={isLoading} data={valuesInDate}>
+      {isLoading ? (
+        <ChartLoading />
+      ) : (
         <ChartMap scale={scale} metadata={metadata} outline={outline}>
           <Geographies geography={getMapUrl({ boundaryId, division })}>
             {({ geographies }) =>
@@ -108,7 +111,7 @@ export const ChartChoroplethMap = React.memo(props => {
             }
           </Geographies>
         </ChartMap>
-      </ChartContainer>
+      )}
 
       <SelectDates
         isLoading={isLoading}

@@ -2,10 +2,11 @@ import React, { useState } from "react";
 
 import { useQuery } from "react-query";
 
+import { ChartLoading } from "./ChartLoading";
+import { ChartNoData } from "./ChartNoData";
 import { ChartSection } from "./ChartSection";
 import { ChartForm } from "./ChartForm";
 import { ChartFormDate } from "./ChartFormDate";
-import { ChartContainer } from "./ChartContainer";
 
 import { buildMetadataUrl } from "../api/odata";
 import { getDateFilter } from "../api/odata";
@@ -60,9 +61,13 @@ export function ChartCategorical({ code, metadata }) {
         <ChartFormDate metadata={metadata} />
       </ChartForm>
 
-      <ChartContainer isLoading={isLoading} data={categories}>
+      {isLoading ? (
+        <ChartLoading />
+      ) : categories.length === 0 ? (
+        <ChartNoData />
+      ) : (
         <ChartBar metadata={metadata} labels={labels} datasets={datasets} />
-      </ChartContainer>
+      )}
     </ChartSection>
   );
 }

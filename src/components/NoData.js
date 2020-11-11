@@ -12,6 +12,7 @@ export function NoData({ text, ...props }) {
       wrap="nowrap"
       alignItems="center"
       justify="center"
+      style={{ height: "100%" }}
       {...props}
     >
       <Error fontSize="large" />

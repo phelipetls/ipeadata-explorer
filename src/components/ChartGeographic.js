@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import { useQuery } from "react-query";
 
 import { Loading } from "./Loading";
+import { ChartLoading } from "./ChartLoading";
+import { ChartNoData } from "./ChartNoData";
 import { ChartForm } from "./ChartForm";
 import { ChartFormDate } from "./ChartFormDate";
 import { ChartFormGeography } from "./ChartFormGeography";
@@ -100,20 +102,19 @@ export function ChartGeographic({ code, metadata }) {
         )}
       </ChartForm>
 
-      {division && shouldPlotMap(division) ? (
+      {isLoading ? (
+        <ChartLoading />
+      ) : series.length === 0 ? (
+        <ChartNoData />
+      ) : shouldPlotMap(division) ? (
         <ChartGeographicMap
-          isLoading={isLoading}
           series={series}
           metadata={metadata}
           division={division}
           boundaryId={boundaryId}
         />
       ) : (
-        <ChartGeographicTimeseries
-          series={series}
-          isLoading={isLoading}
-          metadata={metadata}
-        />
+        <ChartGeographicTimeseries series={series} metadata={metadata} />
       )}
     </ChartSection>
   );

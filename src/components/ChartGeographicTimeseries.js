@@ -1,7 +1,6 @@
 import React from "react";
 
 import { ChartTimeseries } from "./ChartTimeseries";
-import { ChartContainer } from "./ChartContainer";
 
 import groupBy from "lodash/groupBy";
 
@@ -19,9 +18,5 @@ export function ChartGeographicTimeseries(props) {
     })
   );
 
-  return (
-    <ChartContainer isLoading={isLoading} data={series}>
-      <ChartTimeseries {...rest} labels={labels} datasets={datasets} />
-    </ChartContainer>
-  );
+  return <ChartTimeseries {...rest} labels={labels} datasets={datasets} />;
 }

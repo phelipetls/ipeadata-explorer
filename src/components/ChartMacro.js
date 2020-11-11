@@ -5,8 +5,9 @@ import { useQuery } from "react-query";
 import { ChartForm } from "./ChartForm";
 import { ChartFormDate } from "./ChartFormDate";
 import { ChartSection } from "./ChartSection";
-import { ChartContainer } from "./ChartContainer";
 import { ChartTimeseries } from "./ChartTimeseries";
+import { ChartLoading } from "./ChartLoading";
+import { ChartNoData } from "./ChartNoData";
 
 import { buildSeriesUrl, getDateFilter } from "../api/odata";
 
@@ -53,13 +54,17 @@ export function ChartMacro({ code, metadata }) {
         <ChartFormDate metadata={metadata} />
       </ChartForm>
 
-      <ChartContainer isLoading={isLoading} data={series}>
+      {isLoading ? (
+        <ChartLoading />
+      ) : series.length === 0 ? (
+        <ChartNoData />
+      ) : (
         <ChartTimeseries
           metadata={metadata}
           labels={labels}
           datasets={datasets}
         />
-      </ChartContainer>
+      )}
     </ChartSection>
   );
 }
