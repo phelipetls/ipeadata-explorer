@@ -17,15 +17,10 @@ Tecnologias utilizadas:
   para [filtrar](odata-url-conventions) e [agregar](odata-aggregation) os dados
   etc.).
 - [Chart.js](https://chartjs.org/) para visualizações de dados simples.
-- [chartjs-chart-geo](https://github.com/sgratzl/chartjs-chart-geo), plugin do
-  Chart.js para plotar dados distribuídos geograficamente, como um mapa
-  choropleth, utilizado topoJSON, por exemplo.
 - APIs de [malhas](https://servicodados.ibge.gov.br/api/docs/malhas?versao=2) e
   de
   [localidades](https://servicodados.ibge.gov.br/api/docs/localidades?versao=1)
   para obter o TopoJSON de regiões geográficas do Brasil e listas de todas as
   regiões, respectivamente.
-
-# Demo
-
-![Ipeadata Explorer Demo](./ipeadata-explorer-demo.gif)
+- [react-simple-maps](https://www.react-simple-maps.io/), para fazer mapas
+  choropleth em SVG.
