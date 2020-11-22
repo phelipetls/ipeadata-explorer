@@ -9,8 +9,6 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@material-ui/pickers": "^3.2.10",
     "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
     "chart.js": "3.0.0-beta.4",
     "chartjs-adapter-date-fns": "^1.1.0-alpha.3",
     "d3-axis": "^2.0.0",
@@ -25,7 +23,7 @@
     "react-query": "^2.26.2",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.3",
+    "react-scripts": "4.0.0",
     "react-simple-maps": "^2.3.0"
   },
   "scripts": {
@@ -51,6 +49,8 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react": "^11.2.2",
+    "@testing-library/user-event": "^7.2.1",
     "babel-plugin-import": "^1.13.0",
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.1.6",
