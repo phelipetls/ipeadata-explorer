@@ -1,16 +1,15 @@
 import React, { Suspense } from "react";
 
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { NavigationBar } from "./components/NavigationBar";
 import { Footer } from "./components/Footer";
-import { Loading } from "./components/Loading";
+import { Loading } from "./components/common/Loading";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 
 const HomePage = React.lazy(() => import("./components/HomePage"));
-const About = React.lazy(() => import("./components/About"));
 const Themes = React.lazy(() => import("./components/Themes"));
 const Countries = React.lazy(() => import("./components/Countries"));
 const SeriesSearch = React.lazy(() => import("./components/SeriesSearch"));
@@ -34,26 +33,23 @@ function App() {
   const classes = useStyles();
 
   return (
-    <Router>
-      <div className={classes.app}>
-        <NavigationBar />
-        <Container component="main" className={classes.mainSection}>
-          <Suspense fallback={<Loading />}>
-            <Switch>
-              <ErrorBoundary>
-                <Route exact path="/" component={HomePage} />
-                <Route path="/sobre" component={About} />
-                <Route path="/temas" component={Themes} />
-                <Route path="/paises" component={Countries} />
-                <Route path="/series" component={SeriesSearch} />
-                <Route path="/serie/:code" component={SeriesViewer} />
-              </ErrorBoundary>
-            </Switch>
-          </Suspense>
-        </Container>
-        <Footer />
-      </div>
-    </Router>
+    <div className={classes.app}>
+      <NavigationBar />
+      <Container component="main" className={classes.mainSection}>
+        <Suspense fallback={<Loading />}>
+          <Switch>
+            <ErrorBoundary>
+              <Route exact path="/" component={HomePage} />
+              <Route path="/temas" component={Themes} />
+              <Route path="/paises" component={Countries} />
+              <Route path="/series" component={SeriesSearch} />
+              <Route path="/serie/:code" component={SeriesViewer} />
+            </ErrorBoundary>
+          </Switch>
+        </Suspense>
+      </Container>
+      <Footer />
+    </div>
   );
 }
 

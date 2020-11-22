@@ -12,6 +12,8 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 import { QueryCache, ReactQueryCacheProvider } from "react-query";
 
+import { BrowserRouter as Router } from "react-router-dom";
+
 const queryCache = new QueryCache({
   defaultConfig: {
     queries: {
@@ -25,7 +27,9 @@ ReactDOM.render(
     <ThemeProvider theme={theme}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <ReactQueryCacheProvider queryCache={queryCache}>
-          <App />
+          <Router>
+            <App />
+          </Router>
         </ReactQueryCacheProvider>
       </MuiPickersUtilsProvider>
     </ThemeProvider>

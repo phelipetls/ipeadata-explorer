@@ -10,18 +10,23 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 import { MemoryRouter as Router } from "react-router-dom";
 
-const customRender = component => {
+import App from "../App";
+
+const customRender = (component, { routerOptions, ...renderOptions } = {}) => {
   return render(
     <ThemeProvider theme={theme}>
-      <Router>
+      <Router {...routerOptions}>
         <MuiPickersUtilsProvider utils={DateFnsUtils}>
           {component}
         </MuiPickersUtilsProvider>
       </Router>
-    </ThemeProvider>
+    </ThemeProvider>,
+    renderOptions
   );
 };
 
 export * from "@testing-library/react";
 
 export { customRender as render };
+
+export { App };
