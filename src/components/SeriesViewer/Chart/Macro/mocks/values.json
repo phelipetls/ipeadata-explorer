@@ -1,0 +1,305 @@
+{
+  "@odata.context": "http://ipeadata2-homologa.ipea.gov.br/api/v1/$metadata#Valores(VALDATA,VALVALOR,TERCODIGO,TERNOME)",
+  "value": [
+    {
+      "VALDATA": "2020-11-01T00:00:00-03:00",
+      "VALVALOR": 0.13,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2020-10-01T00:00:00-03:00",
+      "VALVALOR": 0.16,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2020-09-01T00:00:00-03:00",
+      "VALVALOR": 0.16,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2020-08-01T00:00:00-03:00",
+      "VALVALOR": 0.16,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2020-07-01T00:00:00-03:00",
+      "VALVALOR": 0.19,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2020-06-01T00:00:00-03:00",
+      "VALVALOR": 0.21,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2020-05-01T00:00:00-03:00",
+      "VALVALOR": 0.24,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2020-04-01T00:00:00-03:00",
+      "VALVALOR": 0.28,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2020-03-01T00:00:00-03:00",
+      "VALVALOR": 0.34,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2020-02-01T00:00:00-03:00",
+      "VALVALOR": 0.29,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2020-01-01T00:00:00-03:00",
+      "VALVALOR": 0.38,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2019-12-01T00:00:00-03:00",
+      "VALVALOR": 0.37,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2019-11-01T00:00:00-03:00",
+      "VALVALOR": 0.38,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2019-10-01T00:00:00-03:00",
+      "VALVALOR": 0.48,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2019-09-01T00:00:00-03:00",
+      "VALVALOR": 0.46,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2019-08-01T00:00:00-03:00",
+      "VALVALOR": 0.5,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2019-07-01T00:00:00-03:00",
+      "VALVALOR": 0.57,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2019-06-01T00:00:00-03:00",
+      "VALVALOR": 0.47,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2019-05-01T00:00:00-03:00",
+      "VALVALOR": 0.54,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2019-04-01T00:00:00-03:00",
+      "VALVALOR": 0.52,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2019-03-01T00:00:00-03:00",
+      "VALVALOR": 0.47,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2019-02-01T00:00:00-02:00",
+      "VALVALOR": 0.49,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2019-01-01T00:00:00-02:00",
+      "VALVALOR": 0.54,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2018-12-01T00:00:00-02:00",
+      "VALVALOR": 0.49,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2018-11-01T00:00:00-03:00",
+      "VALVALOR": 0.49,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2018-10-01T00:00:00-03:00",
+      "VALVALOR": 0.54,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2018-09-01T00:00:00-03:00",
+      "VALVALOR": 0.47,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2018-08-01T00:00:00-03:00",
+      "VALVALOR": 0.57,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2018-07-01T00:00:00-03:00",
+      "VALVALOR": 0.54,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2018-06-01T00:00:00-03:00",
+      "VALVALOR": 0.52,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2018-05-01T00:00:00-03:00",
+      "VALVALOR": 0.52,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2018-04-01T00:00:00-03:00",
+      "VALVALOR": 0.52,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2018-03-01T00:00:00-03:00",
+      "VALVALOR": 0.53,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2018-02-01T00:00:00-02:00",
+      "VALVALOR": 0.47,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2018-01-01T00:00:00-02:00",
+      "VALVALOR": 0.58,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2017-12-01T00:00:00-02:00",
+      "VALVALOR": 0.54,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2017-11-01T00:00:00-02:00",
+      "VALVALOR": 0.57,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2017-10-01T00:00:00-03:00",
+      "VALVALOR": 0.64,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2017-09-01T00:00:00-03:00",
+      "VALVALOR": 0.64,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2017-08-01T00:00:00-03:00",
+      "VALVALOR": 0.8,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2017-07-01T00:00:00-03:00",
+      "VALVALOR": 0.8,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2017-06-01T00:00:00-03:00",
+      "VALVALOR": 0.81,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2017-05-01T00:00:00-03:00",
+      "VALVALOR": 0.93,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2017-04-01T00:00:00-03:00",
+      "VALVALOR": 0.79,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2017-03-01T00:00:00-03:00",
+      "VALVALOR": 1.05,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2017-02-01T00:00:00-02:00",
+      "VALVALOR": 0.87,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2017-01-01T00:00:00-02:00",
+      "VALVALOR": 1.09,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2016-12-01T00:00:00-02:00",
+      "VALVALOR": 1.12,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2016-11-01T00:00:00-02:00",
+      "VALVALOR": 1.04,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    },
+    {
+      "VALDATA": "2016-10-01T00:00:00-03:00",
+      "VALVALOR": 1.05,
+      "TERCODIGO": "",
+      "TERNOME": ""
+    }
+  ]
+}
