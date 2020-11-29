@@ -1,0 +1,37 @@
+{
+  "@odata.context": "http://ipeadata2-homologa.ipea.gov.br/api/v1/$metadata#Metadados",
+  "@odata.count": 8871,
+  "value": [
+    {
+      "SERCODIGO": "BM366_TJOVER366",
+      "SERNOME": "Taxa de juros - Selic - fixada pelo Copom",
+      "SERCOMENTARIO": "Decisões da reuinião do Comitê de Política Monetária (Copom) para a taxa de juros referencial (Selic).",
+      "SERATUALIZACAO": "2020-11-21T05:08:00.597-03:00",
+      "BASNOME": "Macroeconômico",
+      "FNTID": 1333430857,
+      "FNTSIGLA": "Bacen/Boletim/M. Finan.",
+      "FNTNOME": "Banco Central do Brasil, Boletim, Seção mercado financeiro e de capitais (Bacen/Boletim/M. Finan.)",
+      "FNTURL": "http://www.bcb.gov.br",
+      "PERNOME": "Diária",
+      "UNINOME": "(% a.a.)",
+      "MULNOME": null,
+      "SERSTATUS": "A",
+      "TEMCODIGO": 39,
+      "TEMNOME": "Financeiras",
+      "TEMCODIGOPAI": null,
+      "PAICODIGO": "BRA",
+      "SERNUMERICA": true,
+      "SERTEMBR": null,
+      "SERTEMEST": null,
+      "SERTEMMUN": null,
+      "SERTEMAMC": null,
+      "SERTEMMET": null,
+      "SERMINDATA": "1996-07-01T00:00:00-03:00",
+      "SERMAXDATA": "2020-11-21T00:00:00-03:00",
+      "FNTEXTURL": null,
+      "SERPROGRAMAGERADOR": null,
+      "SERDECIMAIS": 2,
+      "SERQNT": 8869
+    }
+  ]
+}
