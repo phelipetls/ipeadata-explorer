@@ -54,7 +54,7 @@
     "babel-plugin-import": "^1.13.0",
     "canvas": "^2.6.1",
     "customize-cra": "^1.0.0",
-    "msw": "^0.22.1",
+    "msw": "^0.22.3",
     "react-app-rewired": "^2.1.6",
     "react-query-devtools": "^2.6.3",
     "source-map-explorer": "^2.5.0"
