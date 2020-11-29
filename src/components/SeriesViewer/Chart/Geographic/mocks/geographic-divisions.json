@@ -1,0 +1,40 @@
+{
+  "@odata.context": "http://ipeadata2-homologa.ipea.gov.br/api/v1/$metadata#Valores(NIVNOME,Count)",
+  "value": [
+    {
+      "@odata.id": null,
+      "NIVNOME": "Brasil",
+      "Count": 39
+    },
+    {
+      "@odata.id": null,
+      "NIVNOME": "Regiões",
+      "Count": 195
+    },
+    {
+      "@odata.id": null,
+      "NIVNOME": "Área metropolitana",
+      "Count": 429
+    },
+    {
+      "@odata.id": null,
+      "NIVNOME": "Estados",
+      "Count": 1044
+    },
+    {
+      "@odata.id": null,
+      "NIVNOME": "Mesorregiões",
+      "Count": 5295
+    },
+    {
+      "@odata.id": null,
+      "NIVNOME": "Microrregiões",
+      "Count": 20943
+    },
+    {
+      "@odata.id": null,
+      "NIVNOME": "Municípios",
+      "Count": 132498
+    }
+  ]
+}

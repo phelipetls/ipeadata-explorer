@@ -1,0 +1,35 @@
+{
+  "@odata.context": "http://ipeadata2-homologa.ipea.gov.br/api/v1/$metadata#Valores(VALDATA,VALVALOR,TERCODIGO,TERNOME)",
+  "value": [
+    {
+      "VALDATA": "2018-01-01T00:00:00-02:00",
+      "VALVALOR": 33335,
+      "TERCODIGO": "0",
+      "TERNOME": "Brasil"
+    },
+    {
+      "VALDATA": "2017-01-01T00:00:00-02:00",
+      "VALVALOR": 36114,
+      "TERCODIGO": "0",
+      "TERNOME": "Brasil"
+    },
+    {
+      "VALDATA": "2016-01-01T00:00:00-02:00",
+      "VALVALOR": 37963,
+      "TERCODIGO": "0",
+      "TERNOME": "Brasil"
+    },
+    {
+      "VALDATA": "2015-01-01T00:00:00-02:00",
+      "VALVALOR": 39210,
+      "TERCODIGO": "0",
+      "TERNOME": "Brasil"
+    },
+    {
+      "VALDATA": "2014-01-01T00:00:00-02:00",
+      "VALVALOR": 44427,
+      "TERCODIGO": "0",
+      "TERNOME": "Brasil"
+    }
+  ]
+}
