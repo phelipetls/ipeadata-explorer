@@ -1,0 +1,160 @@
+{
+  "@odata.context": "http://ipeadata2-homologa.ipea.gov.br/api/v1/$metadata#ValoresStr(VALVALOR,count)",
+  "value": [
+    {
+      "@odata.id": null,
+      "VALVALOR": "PMDB",
+      "count": 1053
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PSDB",
+      "count": 778
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PP",
+      "count": 525
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PSD",
+      "count": 515
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PSB",
+      "count": 403
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PDT",
+      "count": 348
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PR",
+      "count": 293
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "DEM",
+      "count": 269
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PTB",
+      "count": 268
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PT",
+      "count": 260
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PPS",
+      "count": 121
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PRB",
+      "count": 111
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PV",
+      "count": 97
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PSC",
+      "count": 89
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PC DO B",
+      "count": 84
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "SD",
+      "count": 61
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PROS",
+      "count": 45
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PHS",
+      "count": 38
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PTN",
+      "count": 31
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PSL",
+      "count": 30
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PMN",
+      "count": 26
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PRP",
+      "count": 18
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PTC",
+      "count": 17
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PEN",
+      "count": 12
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PT DO B",
+      "count": 12
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PRTB",
+      "count": 10
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PSDC",
+      "count": 8
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "REDE",
+      "count": 5
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PMB",
+      "count": 4
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PPL",
+      "count": 4
+    },
+    {
+      "@odata.id": null,
+      "VALVALOR": "PSOL",
+      "count": 2
+    }
+  ]
+}
