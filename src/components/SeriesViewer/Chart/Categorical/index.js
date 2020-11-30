@@ -2,10 +2,10 @@ import React, { useState } from "react";
 
 import { useQuery } from "react-query";
 
-import { Loading } from "../Loading";
-import { NoData } from "../NoData";
+import { ChartLoading } from "../ChartLoading";
+import { ChartNoData } from "../ChartNoData";
 import { ChartSection } from "../ChartSection";
-import { Form } from "../Form";
+import { ChartFilters } from "../ChartFilters";
 import { DateInputs } from "../DateInputs";
 
 import { buildMetadataUrl, getDateFilter } from "../../../api/odata";
@@ -56,14 +56,14 @@ export function ChartCategorical({ code, metadata }) {
 
   return (
     <ChartSection>
-      <Form onSubmit={handleSubmit}>
+      <ChartFilters onSubmit={handleSubmit}>
         <DateInputs metadata={metadata} />
-      </Form>
+      </ChartFilters>
 
       {isLoading ? (
-        <Loading />
+        <ChartLoading />
       ) : categories.length === 0 ? (
-        <NoData />
+        <ChartNoData />
       ) : (
         <BarChart metadata={metadata} labels={labels} datasets={datasets} />
       )}

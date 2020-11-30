@@ -2,12 +2,12 @@ import React, { useState } from "react";
 
 import { useQuery } from "react-query";
 
-import { Form } from "../Form";
+import { ChartFilters } from "../ChartFilters";
 import { DateInputs } from "../DateInputs";
 import { ChartSection } from "../ChartSection";
 import { LineChart } from "../LineChart";
-import { Loading } from "../Loading";
-import { NoData } from "../NoData";
+import { ChartLoading } from "../ChartLoading";
+import { ChartNoData } from "../ChartNoData";
 
 import { buildSeriesUrl, getDateFilter } from "../../../api/odata";
 
@@ -50,14 +50,14 @@ export function ChartMacro({ code, metadata }) {
 
   return (
     <ChartSection>
-      <Form onSubmit={handleSubmit}>
+      <ChartFilters onSubmit={handleSubmit}>
         <DateInputs metadata={metadata} />
-      </Form>
+      </ChartFilters>
 
       {isLoading ? (
-        <Loading />
+        <ChartLoading />
       ) : series.length === 0 ? (
-        <NoData />
+        <ChartNoData />
       ) : (
         <LineChart metadata={metadata} labels={labels} datasets={datasets} />
       )}

@@ -9,7 +9,7 @@ import { scaleQuantile } from "d3-scale";
 import { getMapUrl, getDivisionsUrl } from "../api/ibge";
 import { formatDate } from "../../../../api/date-utils";
 
-import { Loading as ChartLoading } from "../../Loading";
+import { ChartLoading } from "../../ChartLoading";
 import { SelectDates } from "../Select/Dates";
 import { MapWrapper } from "./MapWrapper";
 

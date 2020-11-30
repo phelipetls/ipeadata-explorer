@@ -1,12 +1,12 @@
 import React from "react";
 
-import { NoData } from "../../common/NoData";
+import { Loading } from "../../common/Loading";
 import { Container } from "./Container";
 
-export function ChartNoData() {
+export function ChartLoading() {
   return (
     <Container>
-      <NoData text="Sem dados" />
+      <Loading />
     </Container>
   );
 }

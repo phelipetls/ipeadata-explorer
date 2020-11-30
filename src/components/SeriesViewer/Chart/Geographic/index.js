@@ -4,9 +4,9 @@ import { useQuery } from "react-query";
 
 import { Loading } from "../../../common/Loading";
 
-import { Loading as LoadingChart } from "../Loading";
-import { NoData } from "../NoData";
-import { Form } from "../Form";
+import { ChartLoading } from "../ChartLoading";
+import { ChartNoData } from "../ChartNoData";
+import { ChartFilters } from "../ChartFilters";
 import { DateInputs } from "../DateInputs";
 import { ChartSection } from "../ChartSection";
 
@@ -99,19 +99,19 @@ export function ChartGeographic({ code, metadata }) {
 
   return (
     <ChartSection>
-      <Form onSubmit={handleSubmit}>
+      <ChartFilters onSubmit={handleSubmit}>
         <DateInputs metadata={metadata} />
         {isLoadingDivisions ? (
           <Loading />
         ) : (
           <GeographyInputs division={division} divisions={divisions} />
         )}
-      </Form>
+      </ChartFilters>
 
       {isLoading ? (
-        <LoadingChart />
+        <ChartLoading />
       ) : series.length === 0 ? (
-        <NoData />
+        <ChartNoData />
       ) : shouldPlotMap(division) ? (
         <Map
           series={series}

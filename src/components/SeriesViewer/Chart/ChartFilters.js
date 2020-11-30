@@ -22,7 +22,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function Form(props) {
+export function ChartFilters(props) {
   const classes = useStyles();
 
   return (
