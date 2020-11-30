@@ -16,6 +16,8 @@ it("should display default search results correctly", async () => {
     ).toBeInTheDocument();
   });
 
+  expect(screen.getByText("1-10 de 8871")).toBeInTheDocument();
+
   // Open filters
   const expandFiltersRole = await screen.findByRole("button", {
     name: /expande filtros/i,
@@ -38,4 +40,17 @@ it("should display default search results correctly", async () => {
       screen.getByText("Operações de crédito - recursos direcionados - spread")
     ).toBeInTheDocument()
   );
+  expect(screen.getByText("1-10 de 16")).toBeInTheDocument();
+
+  const nextPageButton = screen.getByRole("button", {
+    name: /próxima página/i,
+  });
+  userEvent.click(nextPageButton);
+
+  await waitFor(() =>
+    expect(
+      screen.getByText("Bônus global República (24) - spread")
+    ).toBeInTheDocument()
+  );
+  expect(screen.getByText("11-16 de 16")).toBeInTheDocument();
 });
