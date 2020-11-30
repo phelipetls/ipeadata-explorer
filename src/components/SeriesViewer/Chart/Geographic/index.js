@@ -34,6 +34,11 @@ async function fetchGeographicDivisions(_, code) {
   return json.value.map(division => division.NIVNOME);
 }
 
+function getBoundaryFilter(boundaryId, division) {
+  if (!shouldPlotMap(division) || boundaryId === "BR") return "";
+  return ` and startswith(TERCODIGO,'${String(boundaryId).slice(0, 2)}')`;
+}
+
 export function ChartGeographic({ code, metadata }) {
   const [initialDate, setInitialDate] = useState(null);
   const [finalDate, setFinalDate] = useState(null);
@@ -52,12 +57,7 @@ export function ChartGeographic({ code, metadata }) {
     [code, initialDate, finalDate, lastN, division, boundaryId],
     async () => {
       const dateFilter = getDateFilter(initialDate, finalDate, lastN, metadata);
-
-      const boundaryFilter =
-        shouldPlotMap(division) && boundaryId !== "BR"
-          ? ` and startswith(TERCODIGO,'${String(boundaryId).slice(0, 2)}')`
-          : "";
-
+      const boundaryFilter = getBoundaryFilter(boundaryId, division);
       const divisionFilter = ` and NIVNOME eq '${division}'`;
 
       const url =
