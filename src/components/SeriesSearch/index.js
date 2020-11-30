@@ -52,6 +52,7 @@ export function SeriesSearch() {
     () => searchSeriesFromUrl(searchParams) || DEFAULT_URL
   );
   const [page, setPage] = useState(0);
+  const [rowsCount, setRowsCount] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const [formOpen, setFormOpen] = useState(false);
 
@@ -63,11 +64,13 @@ export function SeriesSearch() {
       );
       return await response.json();
     },
-    { staleTime: Infinity }
+    {
+      staleTime: Infinity,
+      onSuccess: data => setRowsCount(data["@odata.count"]),
+    }
   );
 
   const rows = (data && data.value) || [];
-  const rowsCount = (data && data["@odata.count"]) || 0;
 
   function handlePageChange(_, newPage) {
     setPage(newPage);
