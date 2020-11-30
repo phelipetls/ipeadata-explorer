@@ -44,12 +44,9 @@ export function ChartGeographic({ code, metadata }) {
 
   const { isLoading: isLoadingDivisions, data: divisions = [] } = useQuery(
     ["Fetch available geographic divisions", code],
-    fetchGeographicDivisions
+    fetchGeographicDivisions,
+    { onSuccess: ([firstDivision]) => setDivision(firstDivision) }
   );
-
-  if (!isLoadingDivisions && division === null) {
-    setDivision(divisions[0]);
-  }
 
   const { isLoading: isLoadingData, data = {} } = useQuery(
     [code, initialDate, finalDate, lastN, division, boundaryId],
