@@ -11,6 +11,8 @@ import { ThemeBases } from "./ThemeBases";
 import { ThemeBasesButtons } from "./ThemeBasesButtons";
 import { Loading } from "../common/Loading";
 
+import { BASE_URL } from "../api/odata.js";
+
 const useStyles = makeStyles(theme => ({
   grid: {
     margin: "2em auto",
@@ -22,7 +24,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const THEMES_URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/Temas";
+const ENDPOINT = BASE_URL + "Temas";
 
 export function Themes() {
   const classes = useStyles();
@@ -34,7 +36,7 @@ export function Themes() {
   };
 
   const { isLoading, data } = useQuery("Countries", async () => {
-    return await (await fetch(THEMES_URL)).json();
+    return await (await fetch(ENDPOINT)).json();
   });
 
   const themes = (data && data.value) || [];

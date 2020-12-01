@@ -15,28 +15,24 @@ import { GeographyInputs } from "./GeographyInputs";
 import { GeographicLineChart } from "./GeographicLineChart";
 
 import {
-  buildMetadataUrl,
   buildSeriesUrl,
   getDateFilter,
+  buildFilter,
+  buildGeographicDivisionsUrl,
 } from "../../../api/odata";
 import { shouldPlotMap } from "./api/ibge";
 
 const DEFAULT_LIMIT = 5;
 
 async function fetchGeographicDivisions(_, code) {
-  const url =
-    buildMetadataUrl(code) +
-    "/Valores?" +
-    "$apply=filter(not startswith(NIVNOME,'AMC'))" +
-    "/groupby((NIVNOME),aggregate($count as Count))" +
-    "&$orderby=Count asc";
+  const url = buildGeographicDivisionsUrl(code);
   const json = await (await fetch(url)).json();
   return json.value.map(division => division.NIVNOME);
 }
 
 function getBoundaryFilter(boundaryId, division) {
   if (!shouldPlotMap(division) || boundaryId === "BR") return "";
-  return ` and startswith(TERCODIGO,'${String(boundaryId).slice(0, 2)}')`;
+  return `startswith(TERCODIGO,'${String(boundaryId).slice(0, 2)}')`;
 }
 
 export function ChartGeographic({ code, metadata }) {
@@ -58,14 +54,11 @@ export function ChartGeographic({ code, metadata }) {
     async () => {
       const dateFilter = getDateFilter(initialDate, finalDate, lastN, metadata);
       const boundaryFilter = getBoundaryFilter(boundaryId, division);
-      const divisionFilter = ` and NIVNOME eq '${division}'`;
+      const divisionFilter = `NIVNOME eq '${division}'`;
 
       const url =
         buildSeriesUrl(code) +
-        "&$filter=" +
-        dateFilter +
-        divisionFilter +
-        boundaryFilter;
+        buildFilter(dateFilter, divisionFilter, boundaryFilter);
 
       return await (await fetch(url)).json();
     },

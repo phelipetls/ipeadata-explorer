@@ -8,14 +8,11 @@ import { ChartSection } from "../ChartSection";
 import { ChartFilters } from "../ChartFilters";
 import { DateInputs } from "../DateInputs";
 
-import { buildMetadataUrl, getDateFilter } from "../../../api/odata";
+import { buildCountByCategoryUrl, getDateFilter } from "../../../api/odata";
 
 import { BarChart } from "./BarChart";
 
 const DEFAULT_LIMIT = 1;
-
-const CATEGORY_COUNT_QUERY =
-  "groupby((VALVALOR),aggregate($count as count))&$orderby=count desc";
 
 export function ChartCategorical({ code, metadata }) {
   const [initialDate, setInitialDate] = useState(null);
@@ -26,11 +23,7 @@ export function ChartCategorical({ code, metadata }) {
     [code, initialDate, finalDate, lastN],
     async () => {
       const dateFilter = getDateFilter(initialDate, finalDate, lastN, metadata);
-
-      const url =
-        buildMetadataUrl(code) +
-        `/ValoresStr?$apply=filter(${dateFilter})/${CATEGORY_COUNT_QUERY}`;
-
+      const url = buildCountByCategoryUrl(code, { filter: dateFilter });
       return await (await fetch(url)).json();
     }
   );

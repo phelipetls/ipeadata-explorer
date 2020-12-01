@@ -9,7 +9,7 @@ import { LineChart } from "../LineChart";
 import { ChartLoading } from "../ChartLoading";
 import { ChartNoData } from "../ChartNoData";
 
-import { buildSeriesUrl, getDateFilter } from "../../../api/odata";
+import { buildSeriesUrl, getDateFilter, buildFilter } from "../../../api/odata";
 
 const DEFAULT_LIMIT = 50;
 
@@ -22,8 +22,7 @@ export function ChartMacro({ code, metadata }) {
     [code, initialDate, finalDate, lastN],
     async () => {
       const dateFilter = getDateFilter(initialDate, finalDate, lastN, metadata);
-
-      const url = buildSeriesUrl(code) + "&$filter=" + dateFilter;
+      const url = buildSeriesUrl(code) + buildFilter(dateFilter);
       return await (await fetch(url)).json();
     }
   );

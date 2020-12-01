@@ -1,20 +1,29 @@
+import { BASE_URL } from "./odata";
 import { formatDateFromDatePicker } from "./date-utils";
 
+const ORDER_BY_UPDATED_DATE_DESCENDING = "$orderby=SERATUALIZACAO desc";
+const INCLUDE_COUNT = "$count=true";
+
 export const DEFAULT_URL =
-  "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados?" +
-  "$count=true&$orderby=SERATUALIZACAO desc";
+  BASE_URL + `/Metadados?${INCLUDE_COUNT}&${ORDER_BY_UPDATED_DATE_DESCENDING}`;
 
 function getFormElementValue(element) {
   return element.type === "checkbox" ? element.checked : element.value;
 }
 
-export function searchSeriesFromForm(formElements) {
-  const filledFormElements = Array.from(formElements)
-    .filter(element => getFormElementValue(element) && !element.disabled)
-    .map(element => [element.name, getFormElementValue(element)]);
+function getNonEmptyFormElements(elements) {
+  return elements.filter(
+    element => Boolean(getFormElementValue(element)) && !element.disabled
+  );
+}
 
-  return filledFormElements.length > 0
-    ? searchSeries(filledFormElements)
+export function searchSeriesFromForm(formElements) {
+  const nonEmptyFormElements = getNonEmptyFormElements(
+    Array.from(formElements)
+  ).map(element => [element.name, getFormElementValue(element)]);
+
+  return nonEmptyFormElements.length > 0
+    ? searchSeries(nonEmptyFormElements)
     : DEFAULT_URL;
 }
 
