@@ -12,9 +12,8 @@ export function formatDate(date, { periodicity }) {
 }
 
 function formatISO(date, options = { isEndDate: false }) {
-  // When date is at the end of an interval, give it a UTC -3 offset.
-  // Otherwise, a date like 2019-12-01T00:00:00Z would not overlap with the
-  // date 2019-12-01T00:00:00-03:00.
+  // When date is at the end of an interval, give it a UTC -3 offset. This is
+  // done to avoid excluding the end date because of timezone offsets.
   return (
     date.toISOString().slice(0, 10) +
     "T00:00:00" +
