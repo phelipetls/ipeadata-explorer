@@ -14,6 +14,4 @@ it("should show metadata correctly", () => {
 
   screen.getByRole("row", { name: "Base Macroeconômico" });
   screen.getByRole("row", { name: "Periodicidade Mensal" });
-  screen.getByRole("row", { name: "Início 31/12/1973" });
-  screen.getByRole("row", { name: "Fim 01/11/2020" });
 });

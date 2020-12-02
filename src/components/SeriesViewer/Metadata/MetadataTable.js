@@ -6,7 +6,7 @@ import { Link as RouterLink } from "react-router-dom";
 import { StyledTableCell } from "../../common/Table/StyledTableCell";
 
 function formatDate(date) {
-  return new Date(date).toLocaleDateString("pt-BR");
+  return new Date(date).toLocaleDateString();
 }
 
 const metadataFields = [
