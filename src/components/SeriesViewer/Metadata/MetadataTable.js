@@ -1,12 +1,6 @@
 import React from "react";
 
-import {
-  Link,
-  Table,
-  TableRow,
-  TableBody,
-  TableHead,
-} from "@material-ui/core";
+import { Link, Table, TableRow, TableBody, TableHead } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 
 import { StyledTableCell } from "../../common/Table/StyledTableCell";
