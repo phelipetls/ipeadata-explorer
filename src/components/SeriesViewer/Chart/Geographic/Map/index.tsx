@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import { ChoroplethMap } from "./ChoroplethMap.js";
-import { MapTooltip } from "./Tooltip.js";
+import { ChoroplethMap } from "./ChoroplethMap";
+import { MapTooltip } from "./Tooltip";
 
 export const Map = props => {
   const [tooltipText, setTooltipText] = useState("");

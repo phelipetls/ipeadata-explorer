@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 
 import { AppBar, Toolbar, Link, Typography, Hidden } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -24,7 +24,7 @@ const useStyles = makeStyles(() => ({
 }));
 
 export function NavigationBar() {
-  const [isSearching, setIsSearching] = useState(false);
+  const [isSearching, setIsSearching] = React.useState(false);
 
   const searchEnter = () => setIsSearching(true);
   const searchExit = () => setIsSearching(false);

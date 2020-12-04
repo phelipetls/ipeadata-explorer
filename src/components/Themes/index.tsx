@@ -11,7 +11,7 @@ import { ThemeBases } from "./ThemeBases";
 import { ThemeBasesButtons } from "./ThemeBasesButtons";
 import { Loading } from "../common/Loading";
 
-import { BASE_URL } from "../api/odata.js";
+import { BASE_URL } from "../api/odata";
 
 const useStyles = makeStyles(theme => ({
   grid: {
