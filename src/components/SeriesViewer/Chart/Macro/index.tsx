@@ -9,20 +9,25 @@ import { LineChart } from "../LineChart";
 import { ChartLoading } from "../ChartLoading";
 import { ChartNoData } from "../ChartNoData";
 
-import { buildSeriesUrl, getDateFilter, buildFilter } from "../../../api/odata";
+import { buildSeriesValuesUrl, getDateFilter, buildFilter } from "../../../api/odata";
 
 const DEFAULT_LIMIT = 50;
 
 export function ChartMacro({ code, metadata }) {
-  const [initialDate, setInitialDate] = useState(null);
-  const [finalDate, setFinalDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
   const { isLoading, data } = useQuery(
-    [code, initialDate, finalDate, lastN],
+    [code, startDate, endDate, lastN],
     async () => {
-      const dateFilter = getDateFilter(initialDate, finalDate, lastN, metadata);
-      const url = buildSeriesUrl(code) + buildFilter(dateFilter);
+      const dateFilter = getDateFilter({
+        start: startDate,
+        end: endDate,
+        lastN,
+        metadata,
+      });
+      const url = buildSeriesValuesUrl(code) + buildFilter(dateFilter);
       return await (await fetch(url)).json();
     }
   );
@@ -30,10 +35,10 @@ export function ChartMacro({ code, metadata }) {
   function handleSubmit(e) {
     e.preventDefault();
 
-    const { initialDate, finalDate, lastN } = e.target.elements;
+    const { startDate, endDate, lastN } = e.target.elements;
 
-    if (initialDate.value) setInitialDate(initialDate.value);
-    if (finalDate.value) setFinalDate(finalDate.value);
+    if (startDate.value) setStartDate(startDate.value);
+    if (endDate.value) setEndDate(endDate.value);
     if (lastN.value) setLastN(lastN.value);
   }
 

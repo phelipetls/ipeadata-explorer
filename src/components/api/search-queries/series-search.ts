@@ -1,5 +1,5 @@
-import { BASE_URL } from "./odata";
-import { formatDateFromDatePicker } from "./date-utils";
+import { BASE_URL } from "../odata";
+import { formatDateFromDatePicker } from "../date-utils";
 
 const ORDER_BY_UPDATED_DATE_DESCENDING = "$orderby=SERATUALIZACAO desc";
 const INCLUDE_COUNT = "$count=true";

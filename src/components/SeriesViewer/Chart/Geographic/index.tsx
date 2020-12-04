@@ -15,7 +15,7 @@ import { GeographyInputs } from "./GeographyInputs";
 import { GeographicLineChart } from "./GeographicLineChart";
 
 import {
-  buildSeriesUrl,
+  buildSeriesValuesUrl,
   getDateFilter,
   buildFilter,
   buildGeographicDivisionsUrl,
@@ -57,7 +57,7 @@ export function ChartGeographic({ code, metadata }) {
       const divisionFilter = `NIVNOME eq '${division}'`;
 
       const url =
-        buildSeriesUrl(code) +
+        buildSeriesValuesUrl(code) +
         buildFilter(dateFilter, divisionFilter, boundaryFilter);
 
       return await (await fetch(url)).json();
