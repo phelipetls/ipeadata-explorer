@@ -1,13 +1,22 @@
-import React from "react";
+import * as React from "react";
 
 import { NoData } from "./common/NoData";
 
+interface ErrorBoundaryProps {
+  children: React.Component[];
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+}
+
 export class ErrorBoundary extends React.Component {
-  constructor(props) {
+  state: ErrorBoundaryState = {
+    hasError: false,
+  };
+
+  constructor(props: ErrorBoundaryProps) {
     super(props);
-    this.state = {
-      hasError: false,
-    };
   }
 
   static getDerivedStateFromError() {

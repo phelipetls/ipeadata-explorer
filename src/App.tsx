@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import * as React from "react";
 
 import { Route, Switch } from "react-router-dom";
 import { Container } from "@material-ui/core";
@@ -36,7 +36,7 @@ function App() {
     <div className={classes.app}>
       <NavigationBar />
       <Container component="main" className={classes.mainSection}>
-        <Suspense fallback={<Loading />}>
+        <React.Suspense fallback={<Loading />}>
           <Switch>
             <ErrorBoundary>
               <Route exact path="/" component={HomePage} />
@@ -46,7 +46,7 @@ function App() {
               <Route path="/serie/:code" component={SeriesViewer} />
             </ErrorBoundary>
           </Switch>
-        </Suspense>
+        </React.Suspense>
       </Container>
       <Footer />
     </div>
