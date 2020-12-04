@@ -1,15 +1,22 @@
-import React from "react";
+import * as React from "react";
 
 import { IconButton } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
 
-export function SearchButton(props) {
+interface Props {
+  activateSearch: () => void;
+}
+
+export function SearchButton({ activateSearch, ...props }: Props) {
+  const handleClick = () => activateSearch();
+
   return (
     <IconButton
       color="default"
-      onClick={props.onClick}
+      onClick={handleClick}
       style={{ alignSelf: "center" }}
-      type={props.type || "button"}
+      type="button"
+      {...props}
     >
       <Search />
     </IconButton>

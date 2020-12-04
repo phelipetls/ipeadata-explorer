@@ -1,16 +1,17 @@
-import React from "react";
+import * as React from "react";
 
 import { Link, List, ListItem } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
 import { Link as RouterLink } from "react-router-dom";
 
+import { NavigationLink } from "./types";
+
 const useStyles = makeStyles(theme => ({
-  navigationList: {
+  list: {
     display: "flex",
     flexDirection: "row",
   },
-  navigationListItem: {
+  item: {
     cursor: "pointer",
     textAlign: "center",
     "&:hover": {
@@ -19,17 +20,21 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function NavigationBarList(props) {
+interface Props {
+  links: NavigationLink[];
+}
+
+export function NavigationLinksList(props: Props) {
   const classes = useStyles();
 
   return (
-    <List className={classes.navigationList}>
+    <List className={classes.list}>
       {props.links.map((link, index) => (
         <ListItem
           to={link.url}
           component={RouterLink}
           key={index}
-          className={classes.navigationListItem}
+          className={classes.item}
         >
           <Link component="div" underline="none">
             {link.text}
