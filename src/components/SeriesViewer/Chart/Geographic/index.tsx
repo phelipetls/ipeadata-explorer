@@ -36,8 +36,8 @@ function getBoundaryFilter(boundaryId, division) {
 }
 
 export function ChartGeographic({ code, metadata }) {
-  const [initialDate, setInitialDate] = useState(null);
-  const [finalDate, setFinalDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
   const [division, setDivision] = useState(null);
@@ -50,9 +50,14 @@ export function ChartGeographic({ code, metadata }) {
   );
 
   const { isLoading: isLoadingData, data = {} } = useQuery(
-    [code, initialDate, finalDate, lastN, division, boundaryId],
+    [code, startDate, endDate, lastN, division, boundaryId],
     async () => {
-      const dateFilter = getDateFilter(initialDate, finalDate, lastN, metadata);
+      const dateFilter = getDateFilter({
+        start: startDate,
+        end: endDate,
+        lastN,
+        metadata,
+      });
       const boundaryFilter = getBoundaryFilter(boundaryId, division);
       const divisionFilter = `NIVNOME eq '${division}'`;
 
@@ -69,15 +74,15 @@ export function ChartGeographic({ code, metadata }) {
     e.preventDefault();
 
     const {
-      initialDate,
-      finalDate,
+      startDate,
+      endDate,
       lastN,
       division,
       boundaryId,
     } = e.target.elements;
 
-    if (initialDate.value) setInitialDate(initialDate.value);
-    if (finalDate.value) setFinalDate(finalDate.value);
+    if (startDate.value) setStartDate(startDate.value);
+    if (endDate.value) setEndDate(endDate.value);
     if (lastN.value) setLastN(lastN.value);
     if (division) setDivision(division.value);
     if (boundaryId) setBoundaryId(boundaryId.value);

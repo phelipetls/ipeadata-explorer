@@ -45,8 +45,8 @@ export function DateInputs({ metadata }) {
   return (
     <>
       <StyledKeyboardDatePicker
-        name="initialDate"
-        id="initial-date"
+        name="startDate"
+        id="start-date"
         label="Data inicial"
         minDate={minDate}
         maxDate={maxDate}
@@ -58,7 +58,7 @@ export function DateInputs({ metadata }) {
       />
 
       <StyledKeyboardDatePicker
-        name="finalDate"
+        name="endDate"
         id="end-date"
         label="Data final"
         minDate={minDate}

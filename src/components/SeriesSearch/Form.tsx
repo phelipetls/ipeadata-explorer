@@ -135,7 +135,7 @@ export function Form({ searchParams, onSubmit }) {
           <StyledKeyboardDatePicker
             size="small"
             name="SERMINDATA"
-            id="initial-date"
+            id="start-date"
             label="Data inicial"
             style={{ width: "19ch" }}
           />

@@ -17,36 +17,45 @@ export function offsetQuery(offset: number) {
   return `&$skip=${offset}`;
 }
 
-export function limitByDate(initialDate: string, finalDate?: string) {
-  const startInterval = initialDate ? `VALDATA ge ${initialDate}` : "";
-  const endInterval = finalDate ? `VALDATA le ${finalDate}` : "";
-  return joinFilters(startInterval, endInterval);
+interface dateLimits {
+  start?: string;
+  end?: string;
 }
 
-export function getDateFilter(
-  initialDate: string | null,
-  finalDate: string | null,
-  lastN: number,
-  metadata: SeriesMetadata
-) {
-  if (initialDate && finalDate) {
-    return limitByDate(
-      formatDateFromDatePicker(initialDate),
-      formatDateFromDatePicker(finalDate, { isEndDate: true })
-    );
+export function limitByDate({ start, end }: dateLimits) {
+  const intervalStart = start ? `VALDATA ge ${start}` : "";
+  const intervalEnd = end ? `VALDATA le ${end}` : "";
+  return joinFilters(intervalStart, intervalEnd);
+}
+
+interface dateFilters {
+  start: string | null;
+  end: string | null;
+  lastN: number;
+  metadata: SeriesMetadata;
+}
+
+export function getDateFilter({ start, end, lastN, metadata }: dateFilters) {
+  if (start && end) {
+    return limitByDate({
+      start: formatDateFromDatePicker(start),
+      end: formatDateFromDatePicker(end),
+    });
   }
 
-  if (initialDate) {
-    return limitByDate(formatDateFromDatePicker(initialDate));
-  } else if (finalDate) {
-    return limitByDate(formatDateFromDatePicker(finalDate));
+  if (start) {
+    return limitByDate({ start: formatDateFromDatePicker(start) });
   }
 
-  return limitByDate(
-    offsetDate({
+  if (end) {
+    return limitByDate({ end: formatDateFromDatePicker(end) });
+  }
+
+  return limitByDate({
+    start: offsetDate({
       date: new Date(metadata.SERMAXDATA),
       period: metadata.PERNOME,
       offset: lastN,
-    })
-  );
+    }),
+  });
 }

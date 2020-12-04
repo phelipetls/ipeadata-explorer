@@ -5,7 +5,7 @@ export interface formatDateToBackendOptions {
 export function formatDateToBackend(
   date: Date,
   options: formatDateToBackendOptions = { isEndDate: false }
-) {
+): string {
   // When date is at the end of an interval, give it a UTC -3 offset. This is
   // done to avoid excluding the end date because of timezone offsets.
   return (

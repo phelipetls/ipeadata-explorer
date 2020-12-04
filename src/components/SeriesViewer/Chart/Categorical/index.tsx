@@ -15,14 +15,19 @@ import { BarChart } from "./BarChart";
 const DEFAULT_LIMIT = 1;
 
 export function ChartCategorical({ code, metadata }) {
-  const [initialDate, setInitialDate] = useState(null);
-  const [finalDate, setFinalDate] = useState(null);
+  const [startDate, setStartDate] = useState(null);
+  const [endDate, setEndDate] = useState(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
   const { isLoading, data } = useQuery(
-    [code, initialDate, finalDate, lastN],
+    [code, startDate, endDate, lastN],
     async () => {
-      const dateFilter = getDateFilter(initialDate, finalDate, lastN, metadata);
+      const dateFilter = getDateFilter({
+        start: startDate,
+        end: endDate,
+        lastN,
+        metadata,
+      });
       const url = buildCountByCategoryUrl(code, { filter: dateFilter });
       return await (await fetch(url)).json();
     }
@@ -30,10 +35,10 @@ export function ChartCategorical({ code, metadata }) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    let { initialDate, finalDate, lastN } = e.target.elements;
+    let { startDate, endDate, lastN } = e.target.elements;
 
-    if (initialDate.value) setInitialDate(initialDate.value);
-    if (finalDate.value) setFinalDate(finalDate.value);
+    if (startDate.value) setStartDate(startDate.value);
+    if (endDate.value) setEndDate(endDate.value);
     if (lastN.value) setLastN(lastN.value);
   }
 
