@@ -9,9 +9,9 @@ import {
 } from "@material-ui/core";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-
 import { Form } from "./Form";
-import { SeriesMetadata } from "../types";
+
+import { SeriesMetadata } from "components/types";
 
 const useStyles = makeStyles(theme => ({
   filterContainer: {
@@ -52,7 +52,7 @@ export function Filters(props: Props) {
       </Grid>
 
       <Collapse in={filterActive}>
-        <Form searchParams={searchParams} onSubmit={handleSubmit} />
+        <Form searchParams={searchParams} handleSubmit={handleSubmit} />
       </Collapse>
     </Paper>
   );

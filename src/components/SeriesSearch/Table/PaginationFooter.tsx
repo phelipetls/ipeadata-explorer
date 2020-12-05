@@ -1,7 +1,7 @@
-import React from "react";
+import * as React from "react";
 
 import { TableRow, TableFooter, TablePagination } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 import { PaginationActions } from "./PaginationActions";
 
@@ -16,9 +16,26 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function PaginationFooter(props) {
+interface Props {
+  page: number;
+  count: number;
+  rowsPerPage: number;
+  handleChangePage: (
+    e: React.MouseEvent<HTMLButtonElement>,
+    newPage: number
+  ) => void;
+  handleChangeRowsPerPage: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}
+
+export function PaginationFooter(props: Props) {
   const classes = useStyles();
-  const { page, count, rowsPerPage, onChangePage, onChangeRowsPerPage } = props;
+  const {
+    page,
+    count,
+    rowsPerPage,
+    handleChangePage,
+    handleChangeRowsPerPage,
+  } = props;
 
   return (
     <TableFooter>
@@ -29,8 +46,8 @@ export function PaginationFooter(props) {
           count={count}
           rowsPerPage={rowsPerPage}
           page={page}
-          onChangePage={onChangePage}
-          onChangeRowsPerPage={onChangeRowsPerPage}
+          onChangePage={handleChangePage}
+          onChangeRowsPerPage={handleChangeRowsPerPage}
           SelectProps={{
             native: true,
           }}

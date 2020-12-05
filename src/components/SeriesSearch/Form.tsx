@@ -17,7 +17,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { StyledKeyboardDatePicker } from "../common/StyledKeyboardDatePicker";
 
 import { useBreakpoint } from "../utils/responsive";
-import { SeriesMetadata } from "../types/series-metadata";
+import { SeriesMetadata } from "../types";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -44,16 +44,16 @@ const useStyles = makeStyles(theme => ({
 
 interface Props {
   searchParams: URLSearchParams;
-  onSubmit: (data: SeriesMetadata) => void;
+  handleSubmit: (data: SeriesMetadata) => void;
 }
 
 export function Form(props: Props) {
   const classes = useStyles();
 
   const isExtraSmallScreen = useBreakpoint("xs");
-  const { register, handleSubmit } = useForm();
+  const { register, handleSubmit: handleSubmitDecorator } = useForm();
 
-  const { searchParams, onSubmit } = props;
+  const { searchParams, handleSubmit } = props;
 
   const {
     SERNOME,
@@ -69,7 +69,7 @@ export function Form(props: Props) {
       container
       spacing={3}
       component="form"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmitDecorator(handleSubmit)}
       className={classes.form}
     >
       <Grid container item spacing={3}>

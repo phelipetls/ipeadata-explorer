@@ -58,6 +58,7 @@
   "devDependencies": {
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^7.2.1",
+    "@types/lodash": "^4.14.165",
     "babel-plugin-import": "^1.13.0",
     "canvas": "^2.6.1",
     "customize-cra": "^1.0.0",

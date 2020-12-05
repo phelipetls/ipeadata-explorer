@@ -1,18 +1,17 @@
 import * as React from "react";
-
 import { Paper, TableContainer, Link } from "@material-ui/core";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useQuery, useQueryCache } from "react-query";
+import { useBreakpoint } from "../utils/responsive";
 
-import { TableSortable } from "../common/Table/Sortable";
-import { PaginationFooter } from "../common/Table/PaginationFooter";
-import { TableSkeleton } from "../common/Table/Skeleton";
-import { CollapsedRows } from "../common/Table/CollapsedRows";
-import { NoData } from "../common/NoData";
+import { TableSortable } from "./Table/Sortable";
+import { PaginationFooter } from "./Table/PaginationFooter";
+import { TableSkeleton } from "./Table/Skeleton";
+import { CollapsedRows } from "./Table/CollapsedRows";
 import { Filters } from "./Filters";
 import { MetadataTable } from "../SeriesViewer/Metadata/MetadataTable";
+import { NoData } from "components/common/NoData";
 
-import { useBreakpoint } from "../utils/responsive";
 import { limitQuery, offsetQuery } from "../api/odata";
 import {
   DEFAULT_SEARCH_QUERY,
@@ -20,16 +19,13 @@ import {
   getSearchQueryFromUrl,
 } from "../api/search-queries";
 
-import { TableRow, TableColumn } from "./types";
+import { SeriesMetadata } from "components/types";
+import { Row, Column } from "./types";
 
-function useSearchParams() {
-  return new URLSearchParams(useLocation().search);
-}
-
-const getYear = (row: TableRow, column: string) =>
+const getYear = (row: Row, column: string) =>
   new Date(row[column] as string).getFullYear();
 
-const columns: TableColumn[] = [
+const columns: Column[] = [
   {
     key: "SERNOME",
     label: "Nome",
@@ -52,6 +48,10 @@ const columns: TableColumn[] = [
     render: row => getYear(row, "SERMAXDATA"),
   },
 ];
+
+function useSearchParams() {
+  return new URLSearchParams(useLocation().search);
+}
 
 export function SeriesSearch() {
   const isSmallScreen = useBreakpoint("sm");
@@ -80,7 +80,7 @@ export function SeriesSearch() {
     }
   );
 
-  const rows: TableRow[] = (data && data.value) || [];
+  const rows: Row[] = (data && data.value) || [];
 
   function handlePageChange(
     _: React.MouseEvent<HTMLButtonElement>,
@@ -98,7 +98,7 @@ export function SeriesSearch() {
     });
   }
 
-  function handleSubmit(data: TableRow) {
+  function handleSubmit(data: SeriesMetadata) {
     let newSearchUrl = getSearchQueryFromForm(data);
 
     setSearchUrl(newSearchUrl);
@@ -120,20 +120,20 @@ export function SeriesSearch() {
 
   const table = isSmallScreen ? (
     <CollapsedRows
-      isLoading={isLoading || isFetching}
+      render={row => <MetadataTable metadata={row} />}
       rows={rows}
       columns={columns}
-      footer={paginationActions}
+      isLoading={isLoading || isFetching}
       skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={2} />}
-      render={row => <MetadataTable metadata={row} />}
+      footer={paginationActions}
     />
   ) : (
     <TableSortable
-      isLoading={isLoading || isFetching}
       rows={rows}
       columns={columns}
-      footer={paginationActions}
+      isLoading={isLoading || isFetching}
       skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={columns.length} />}
+      footer={paginationActions}
     />
   );
 

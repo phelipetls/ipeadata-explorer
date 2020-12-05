@@ -1,4 +1,5 @@
 export interface SeriesMetadata {
+  [index: string]: string | number | boolean | null;
   SERCODIGO: string;
   SERNOME: string;
   SERCOMENTARIO: string | null;

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { TableCell, TableRow, Collapse, IconButton } from "@material-ui/core";
 import { KeyboardArrowUp, KeyboardArrowDown } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   row: {
@@ -19,7 +19,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function CollapsedRow({ row, columns, children }) {
+import { Row, Column } from "../types";
+
+interface Props {
+  row: Row;
+  columns: Column[];
+  children: JSX.Element;
+}
+
+export function CollapsedRow({ row, columns, children }: Props) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
