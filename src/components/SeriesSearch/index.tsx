@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 
 import { Paper, TableContainer, Link } from "@material-ui/core";
 import { Link as RouterLink, useLocation } from "react-router-dom";
@@ -16,9 +16,11 @@ import { useBreakpoint } from "../utils/responsive";
 import { limitQuery, offsetQuery } from "../api/odata";
 import {
   DEFAULT_URL,
-  searchSeriesFromForm,
+  searchSeriesFromInputs,
   searchSeriesFromUrl,
-} from "../api/series-search-queries";
+} from "../api/search-queries";
+
+import { SeriesMetadata } from "../types/series-metadata.ts";
 
 function useSearchParams() {
   return new URLSearchParams(useLocation().search);
@@ -48,13 +50,13 @@ export function SeriesSearch() {
   const queryCache = useQueryCache();
   const searchParams = useSearchParams();
 
-  const [searchUrl, setSearchUrl] = useState(
+  const [searchUrl, setSearchUrl] = React.useState(
     () => searchSeriesFromUrl(searchParams) || DEFAULT_URL
   );
-  const [page, setPage] = useState(0);
-  const [rowsCount, setRowsCount] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const [formOpen, setFormOpen] = useState(false);
+  const [page, setPage] = React.useState(0);
+  const [rowsCount, setRowsCount] = React.useState(0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(10);
+  const [filterActive, setFilterActive] = React.useState(false);
 
   const { isLoading, isFetching, data } = useQuery(
     [searchUrl, { page, rowsPerPage }],
@@ -84,13 +86,14 @@ export function SeriesSearch() {
     });
   }
 
-  function handleSubmit(e) {
-    e.preventDefault();
-    let newSearchUrl = searchSeriesFromForm(e.target.elements);
+  function handleSubmit(data: SeriesMetadata) {
     queryCache.invalidateQueries([searchUrl], { refetchActive: false });
+
+    let newSearchUrl = searchSeriesFromInputs(data);
+
     setSearchUrl(newSearchUrl);
     setPage(0);
-    setFormOpen(false);
+    setFilterActive(false);
   }
 
   const paginationActions = (
@@ -128,8 +131,8 @@ export function SeriesSearch() {
     <>
       <Filters
         searchParams={searchParams}
-        formOpen={formOpen}
-        setFormOpen={setFormOpen}
+        formOpen={filterActive}
+        setFormOpen={setFilterActive}
         onSubmit={handleSubmit}
       />
 

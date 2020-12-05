@@ -1,4 +1,5 @@
 import React from "react";
+import { useForm } from "react-hook-form";
 
 import {
   Grid,
@@ -13,10 +14,10 @@ import {
   Checkbox,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
 import { StyledKeyboardDatePicker } from "../common/StyledKeyboardDatePicker";
 
 import { useBreakpoint } from "../utils/responsive";
+import { SeriesMetadata } from "../types/series-metadata";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -41,9 +42,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function Form({ searchParams, onSubmit }) {
+interface Props {
+  searchParams: URLSearchParams;
+  onSubmit: (data: SeriesMetadata) => void;
+}
+
+export function Form({ searchParams, onSubmit }: Props) {
   const classes = useStyles();
+
   const isExtraSmallScreen = useBreakpoint("xs");
+  const { register, handleSubmit } = useForm<keyof SeriesMetadata>();
 
   const {
     SERNOME,
@@ -52,19 +60,20 @@ export function Form({ searchParams, onSubmit }) {
     PERNOME,
     TEMNOME,
     PAINOME,
-  } = Object.fromEntries(searchParams);
+  }: SeriesMetadata = Object.fromEntries(searchParams);
 
   return (
     <Grid
       container
       spacing={3}
       component="form"
-      onSubmit={onSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       className={classes.form}
     >
       <Grid container item spacing={3}>
         <Grid item xs={6} sm={4} className={classes.textField}>
           <TextField
+            inputRef={register}
             size="small"
             name="SERNOME"
             id="SERNOME"
@@ -76,6 +85,7 @@ export function Form({ searchParams, onSubmit }) {
 
         <Grid item xs={6} sm={4} className={classes.textField}>
           <TextField
+            inputRef={register}
             size="small"
             name="FNTNOME"
             id="FNTNOME"
@@ -87,6 +97,7 @@ export function Form({ searchParams, onSubmit }) {
 
         <Grid item xs={6} sm={4} className={classes.textField}>
           <TextField
+            inputRef={register}
             size="small"
             name="UNINOME"
             id="UNINOME"
@@ -98,6 +109,7 @@ export function Form({ searchParams, onSubmit }) {
 
         <Grid item xs={6} sm={4} className={classes.textField}>
           <TextField
+            inputRef={register}
             size="small"
             name="PERNOME"
             id="PERNOME"
@@ -109,6 +121,7 @@ export function Form({ searchParams, onSubmit }) {
 
         <Grid item xs={6} sm={4} className={classes.textField}>
           <TextField
+            inputRef={register}
             size="small"
             name="TEMNOME"
             id="TEMNOME"
@@ -120,6 +133,7 @@ export function Form({ searchParams, onSubmit }) {
 
         <Grid item xs={6} sm={4} className={classes.textField}>
           <TextField
+            inputRef={register}
             size="small"
             name="PAINOME"
             id="PAINOME"
@@ -133,6 +147,7 @@ export function Form({ searchParams, onSubmit }) {
       <Grid container item spacing={3} justify="center">
         <Grid item>
           <StyledKeyboardDatePicker
+            inputRef={register}
             size="small"
             name="SERMINDATA"
             id="start-date"
@@ -143,6 +158,7 @@ export function Form({ searchParams, onSubmit }) {
 
         <Grid item>
           <StyledKeyboardDatePicker
+            inputRef={register}
             size="small"
             name="SERMAXDATA"
             id="end-date"
@@ -162,6 +178,7 @@ export function Form({ searchParams, onSubmit }) {
           >
             <InputLabel htmlFor="BASNOME">Base</InputLabel>
             <Select
+              inputRef={register}
               multiple
               label="Base"
               inputProps={{ name: "BASNOME", id: "BASNOME" }}
@@ -178,6 +195,7 @@ export function Form({ searchParams, onSubmit }) {
           <FormControl size="small" variant="outlined" component="fieldset">
             <InputLabel htmlFor="SERSTATUS">Status</InputLabel>
             <Select
+              inputRef={register}
               native
               label="Status"
               inputProps={{ name: "SERSTATUS", id: "SERSTATUS" }}
@@ -193,6 +211,7 @@ export function Form({ searchParams, onSubmit }) {
           <FormControl size="small" variant="outlined" component="fieldset">
             <InputLabel htmlFor="SERNUMERICA">Tipo</InputLabel>
             <Select
+              inputRef={register}
               native
               label="Tipo"
               inputProps={{ name: "SERNUMERICA", id: "SERNUMERICA" }}
@@ -207,22 +226,50 @@ export function Form({ searchParams, onSubmit }) {
 
       <FormGroup row={!isExtraSmallScreen} className={classes.formGroup}>
         <FormControlLabel
-          control={<Checkbox size="small" name="SERTEMBR" color="primary" />}
+          control={
+            <Checkbox
+              inputRef={register}
+              name="SERTEMBR"
+              size="small"
+              color="primary"
+            />
+          }
           label="Brasil"
         />
 
         <FormControlLabel
-          control={<Checkbox size="small" name="SERTEMMUN" color="primary" />}
+          control={
+            <Checkbox
+              inputRef={register}
+              name="SERTEMMUN"
+              size="small"
+              color="primary"
+            />
+          }
           label="Municípios"
         />
 
         <FormControlLabel
-          control={<Checkbox size="small" name="SERTEMEST" color="primary" />}
+          control={
+            <Checkbox
+              inputRef={register}
+              name="SERTEMEST"
+              size="small"
+              color="primary"
+            />
+          }
           label="Estados"
         />
 
         <FormControlLabel
-          control={<Checkbox size="small" name="SERTEMMET" color="primary" />}
+          control={
+            <Checkbox
+              inputRef={register}
+              name="SERTEMMET"
+              size="small"
+              color="primary"
+            />
+          }
           label="Área metropolitana"
         />
       </FormGroup>
