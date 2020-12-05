@@ -15,23 +15,23 @@ import { MetadataTable } from "../SeriesViewer/Metadata/MetadataTable";
 import { useBreakpoint } from "../utils/responsive";
 import { limitQuery, offsetQuery } from "../api/odata";
 import {
-  DEFAULT_URL,
-  searchSeriesFromInputs,
-  searchSeriesFromUrl,
+  DEFAULT_SEARCH_QUERY,
+  getSearchQueryFromForm,
+  getSearchQueryFromUrl,
 } from "../api/search-queries";
 
-import { SeriesMetadata } from "../types/series-metadata.ts";
+import { TableRow, TableColumn } from "./types";
 
 function useSearchParams() {
   return new URLSearchParams(useLocation().search);
 }
 
-const getYear = (row, column) => new Date(row[column.key]).getFullYear();
+const getYear = (row: TableRow, column: string) =>
+  new Date(row[column] as string).getFullYear();
 
-const columns = [
+const columns: TableColumn[] = [
   {
     key: "SERNOME",
-    type: "string",
     label: "Nome",
     render: row => (
       <Link component={RouterLink} to={`/serie/${row.SERCODIGO}`}>
@@ -39,10 +39,18 @@ const columns = [
       </Link>
     ),
   },
-  { key: "PERNOME", type: "string", label: "Frequência" },
-  { key: "UNINOME", type: "string", label: "Unidade" },
-  { key: "SERMINDATA", type: "date", label: "Início", render: getYear },
-  { key: "SERMAXDATA", type: "date", label: "Fim", render: getYear },
+  { key: "PERNOME", label: "Frequência" },
+  { key: "UNINOME", label: "Unidade" },
+  {
+    key: "SERMINDATA",
+    label: "Início",
+    render: row => getYear(row, "SERMINDATA"),
+  },
+  {
+    key: "SERMAXDATA",
+    label: "Fim",
+    render: row => getYear(row, "SERMAXDATA"),
+  },
 ];
 
 export function SeriesSearch() {
@@ -51,7 +59,7 @@ export function SeriesSearch() {
   const searchParams = useSearchParams();
 
   const [searchUrl, setSearchUrl] = React.useState(
-    () => searchSeriesFromUrl(searchParams) || DEFAULT_URL
+    () => getSearchQueryFromUrl(searchParams) || DEFAULT_SEARCH_QUERY
   );
   const [page, setPage] = React.useState(0);
   const [rowsCount, setRowsCount] = React.useState(0);
@@ -72,28 +80,32 @@ export function SeriesSearch() {
     }
   );
 
-  const rows = (data && data.value) || [];
+  const rows: TableRow[] = (data && data.value) || [];
 
-  function handlePageChange(_, newPage) {
+  function handlePageChange(
+    _: React.MouseEvent<HTMLButtonElement>,
+    newPage: number
+  ) {
     setPage(newPage);
   }
 
-  function handleRowsPerPageChange(e) {
+  function handleRowsPerPageChange(e: React.ChangeEvent<HTMLInputElement>) {
     setPage(0);
     setRowsPerPage(parseInt(e.target.value, 10));
+
     queryCache.invalidateQueries([searchUrl, { rowsPerPage }], {
       refetchActive: false,
     });
   }
 
-  function handleSubmit(data: SeriesMetadata) {
-    queryCache.invalidateQueries([searchUrl], { refetchActive: false });
-
-    let newSearchUrl = searchSeriesFromInputs(data);
+  function handleSubmit(data: TableRow) {
+    let newSearchUrl = getSearchQueryFromForm(data);
 
     setSearchUrl(newSearchUrl);
     setPage(0);
     setFilterActive(false);
+
+    queryCache.invalidateQueries([searchUrl], { refetchActive: false });
   }
 
   const paginationActions = (
@@ -101,8 +113,8 @@ export function SeriesSearch() {
       page={page}
       count={rowsCount}
       rowsPerPage={rowsPerPage}
-      onChangePage={handlePageChange}
-      onChangeRowsPerPage={handleRowsPerPageChange}
+      handleChangePage={handlePageChange}
+      handleChangeRowsPerPage={handleRowsPerPageChange}
     />
   );
 
@@ -113,14 +125,12 @@ export function SeriesSearch() {
       columns={columns}
       footer={paginationActions}
       skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={2} />}
-    >
-      {row => <MetadataTable metadata={row} />}
-    </CollapsedRows>
+      render={row => <MetadataTable metadata={row} />}
+    />
   ) : (
     <TableSortable
       isLoading={isLoading || isFetching}
       rows={rows}
-      rowKey="SERCODIGO"
       columns={columns}
       footer={paginationActions}
       skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={columns.length} />}
@@ -131,9 +141,9 @@ export function SeriesSearch() {
     <>
       <Filters
         searchParams={searchParams}
-        formOpen={filterActive}
-        setFormOpen={setFilterActive}
-        onSubmit={handleSubmit}
+        handleSubmit={handleSubmit}
+        filterActive={filterActive}
+        setFilterActive={setFilterActive}
       />
 
       {!isLoading && rows.length === 0 ? (

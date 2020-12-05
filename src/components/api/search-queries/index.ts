@@ -1,44 +1,37 @@
 import { BASE_URL } from "../odata";
 import { formatDateFromDatePicker } from "../date-utils";
+import { SeriesMetadata } from "../../types/series-metadata";
+import isEmpty from "lodash/isEmpty";
 
 const ORDER_BY_UPDATED_DATE_DESCENDING = "$orderby=SERATUALIZACAO desc";
 const INCLUDE_COUNT = "$count=true";
 
-export const DEFAULT_URL =
+export const DEFAULT_SEARCH_QUERY =
   BASE_URL + `/Metadados?${INCLUDE_COUNT}&${ORDER_BY_UPDATED_DATE_DESCENDING}`;
 
-function getFormElementValue(element) {
-  return element.type === "checkbox" ? element.checked : element.value;
+export function getSearchQueryFromForm(data: SeriesMetadata): string {
+  return isEmpty(data)
+    ? DEFAULT_SEARCH_QUERY
+    : getSearchQuery(Object.entries(data));
 }
 
-function getNonEmptyFormElements(elements) {
-  return elements.filter(
-    element => Boolean(getFormElementValue(element)) && !element.disabled
+export function getSearchQueryFromUrl(searchParams: URLSearchParams): string {
+  if (searchParams.toString() === "") return "";
+  return getSearchQuery(Array.from(searchParams));
+}
+
+type Query = [string, string];
+
+function getSearchQuery(queries: Query[]) {
+  const filterQuery = queries.map(getFilter).join(" and ");
+  return (
+    DEFAULT_SEARCH_QUERY +
+    `&$filter=${filterQuery}` +
+    getHelperQuery(filterQuery)
   );
 }
 
-export function searchSeriesFromForm(formElements) {
-  const nonEmptyFormElements = getNonEmptyFormElements(
-    Array.from(formElements)
-  ).map(element => [element.name, getFormElementValue(element)]);
-
-  return nonEmptyFormElements.length > 0
-    ? searchSeries(nonEmptyFormElements)
-    : DEFAULT_URL;
-}
-
-export function searchSeriesFromUrl(searchParams) {
-  if (searchParams.toString() !== "") {
-    return searchSeries(Array.from(searchParams));
-  }
-}
-
-function searchSeries(nameValuePairs) {
-  const filterQuery = nameValuePairs.map(getSearchQuery).join(" and ");
-  return DEFAULT_URL + `&$filter=${filterQuery}` + getHelperQuery(filterQuery);
-}
-
-function getSearchQuery([name, value]) {
+function getFilter([name, value]: Query) {
   switch (name) {
     case "SERNOME":
     case "UNINOME":
@@ -82,10 +75,10 @@ function getSearchQuery([name, value]) {
     case "SERTEMMET":
       return `${name} eq ${Number(value)}`;
     default:
-      throw new Error("Este parâmetro não é suportado para filtragem.");
+      throw new Error();
   }
 }
 
-function getHelperQuery(filter) {
+function getHelperQuery(filter: string) {
   return filter.includes("Pais/PAINOME") ? "&$expand=Pais" : "";
 }

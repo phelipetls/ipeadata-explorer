@@ -47,11 +47,13 @@ interface Props {
   onSubmit: (data: SeriesMetadata) => void;
 }
 
-export function Form({ searchParams, onSubmit }: Props) {
+export function Form(props: Props) {
   const classes = useStyles();
 
   const isExtraSmallScreen = useBreakpoint("xs");
-  const { register, handleSubmit } = useForm<keyof SeriesMetadata>();
+  const { register, handleSubmit } = useForm();
+
+  const { searchParams, onSubmit } = props;
 
   const {
     SERNOME,
@@ -60,7 +62,7 @@ export function Form({ searchParams, onSubmit }: Props) {
     PERNOME,
     TEMNOME,
     PAINOME,
-  }: SeriesMetadata = Object.fromEntries(searchParams);
+  } = Object.fromEntries(searchParams);
 
   return (
     <Grid

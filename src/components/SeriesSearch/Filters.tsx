@@ -11,6 +11,7 @@ import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { Form } from "./Form";
+import { SeriesMetadata } from "../types";
 
 const useStyles = makeStyles(theme => ({
   filterContainer: {
@@ -23,9 +24,17 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function Filters(props) {
+interface Props {
+  searchParams: URLSearchParams;
+  handleSubmit: (data: SeriesMetadata) => void;
+  filterActive: boolean;
+  setFilterActive: (state: boolean) => void;
+}
+
+export function Filters(props: Props) {
   const classes = useStyles();
-  const { searchParams, onSubmit, formOpen, setFormOpen } = props;
+
+  const { searchParams, handleSubmit, filterActive, setFilterActive } = props;
 
   return (
     <Paper className={classes.filterContainer}>
@@ -35,15 +44,15 @@ export function Filters(props) {
         <IconButton
           aria-label="Expande filtros"
           size="small"
-          onClick={() => setFormOpen(!formOpen)}
+          onClick={() => setFilterActive(!filterActive)}
           className={classes.arrow}
         >
-          {formOpen ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
+          {filterActive ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
         </IconButton>
       </Grid>
 
-      <Collapse in={formOpen}>
-        <Form searchParams={searchParams} onSubmit={onSubmit} />
+      <Collapse in={filterActive}>
+        <Form searchParams={searchParams} onSubmit={handleSubmit} />
       </Collapse>
     </Paper>
   );
