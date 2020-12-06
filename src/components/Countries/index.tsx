@@ -1,21 +1,28 @@
 import React from "react";
 
-import { Link, TableContainer, Paper } from "@material-ui/core";
+import { Link, TableContainer, Paper, TableRow, TableCell } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import { useQuery } from "react-query";
 
-import { TableSortable } from "components/common/TableSortable";
-import { TableSkeleton } from "components/common/TableSkeleton";
+import { TableSortable } from "components/common/Table/TableSortable";
+import { TableConfig } from "components/common/Table/TableSortable/types";
+import { TableSkeleton } from "components/common/Table/TableSkeleton";
 
 const COUNTRIES_URL =
   "http://ipeadata2-homologa.ipea.gov.br/api/v1/Paises?$expand=Metadados($select=SERCODIGO;$count=true)";
 
-const columns = [
+interface Country {
+  [index: string]: string | number;
+  PAINOME: string;
+  "Metadados@odata.count": number;
+}
+
+const columns: TableConfig[] = [
   {
     key: "PAINOME",
-    type: "string",
     label: "País",
-    render: (row) => (
+    dataType: "text",
+    render: (row: Country) => (
       <Link component={RouterLink} to={`/series?PAINOME=${row["PAINOME"]}`}>
         {row["PAINOME"]}
       </Link>
@@ -23,8 +30,8 @@ const columns = [
   },
   {
     key: "Metadados@odata.count",
-    type: "numeric",
     label: "Qtd. de séries",
+    dataType: "numeric",
   },
 ];
 
@@ -33,18 +40,25 @@ export function Countries() {
     return await (await fetch(COUNTRIES_URL)).json();
   });
 
-  const countries = (data && data.value) || [];
+  const countries: Country[] = (data && data.value) || [];
 
   return (
     <TableContainer component={Paper}>
       <TableSortable
-        isLoading={isLoading}
         rows={countries}
-        rowKey="PAICODIGO"
         columns={columns}
-        defaultOrderBy="Metadados@odata.count"
+        isLoading={isLoading}
         skeleton={<TableSkeleton nRows={10} nColumns={columns.length} />}
-      />
+      >
+        {row => <TableRow key={row["PAINOME"]}>
+          {columns.map(column => (
+            <TableCell key={column.key} align="left">
+              {column.render ? column.render(row) : row[column.key]}
+            </TableCell>
+          ))}
+        </TableRow>
+        }
+      </TableSortable>
     </TableContainer>
   );
 }

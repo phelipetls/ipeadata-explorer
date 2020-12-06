@@ -20,7 +20,8 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-type sortFunction = (a: string, b: string) => number;
+type sortArgument = string | number;
+type sortFunction = (a: sortArgument, b: sortArgument) => number;
 
 interface sortFunctions {
   [index: string]: sortFunction;
@@ -28,7 +29,8 @@ interface sortFunctions {
 
 const sortFunctions: sortFunctions = {
   date: (a, b) => new Date(a).getTime() - new Date(b).getTime(),
-  str: (a, b) => a.localeCompare(b),
+  text: (a, b) => (a as string).localeCompare(b as string),
+  numeric: (a, b) => (a as number) - (b as number)
 };
 
 function buildSortFunction(fn: sortFunction, direction: string): sortFunction {
@@ -42,11 +44,11 @@ interface Props<T extends Row> {
   children: (row: T) => JSX.Element;
   isLoading: boolean;
   skeleton: JSX.Element;
-  footer: JSX.Element;
+  footer?: JSX.Element;
 }
 
 interface Row {
-  [index: string]: string | null;
+  [index: string]: string | number | null;
 }
 
 export function TableSortable<T extends Row>(props: Props<T>) {
@@ -107,7 +109,7 @@ export function TableSortable<T extends Row>(props: Props<T>) {
 
       <TableBody>{rows.map(row => children(row))}</TableBody>
 
-      {footer}
+      {footer ? footer : null}
     </Table>
   );
 }

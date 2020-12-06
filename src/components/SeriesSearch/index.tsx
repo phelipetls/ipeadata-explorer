@@ -39,15 +39,15 @@ const columns: TableConfig[] = [
   {
     key: "SERNOME",
     label: "Nome",
-    dataType: "string",
+    dataType: "text",
     render: (row: Row) => (
       <Link component={RouterLink} to={`/serie/${row.SERCODIGO}`}>
         {row.SERNOME}
       </Link>
     ),
   },
-  { key: "PERNOME", label: "Frequência", dataType: "string" },
-  { key: "UNINOME", label: "Unidade", dataType: "string" },
+  { key: "PERNOME", label: "Frequência", dataType: "text" },
+  { key: "UNINOME", label: "Unidade", dataType: "text" },
   {
     key: "SERMINDATA",
     label: "Início",
