@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { Row, Column } from "../types";
+import { TableConfig } from "./types";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -22,36 +22,40 @@ const useStyles = makeStyles(() => ({
 
 type sortFunction = (a: string, b: string) => number;
 
-const stringSort: sortFunction = (a, b) => a.localeCompare(b);
-const dateSort: sortFunction = (a, b) => {
-  return new Date(a).getTime() - new Date(b).getTime();
-};
-
-const getColumnSortFunction = (column: Column) => {
-  if (column.key.endsWith("DATA")) return dateSort;
-  return stringSort;
-};
-
-const getSortFunction = (fn: sortFunction, direction: string): sortFunction => {
-  const sortDirection = direction === "asc" ? 1 : -1;
-  return (a, b) => sortDirection * fn(a, b);
-};
-
-interface Props {
-  isLoading: boolean;
-  rows: Row[];
-  columns: Column[];
-  footer: JSX.Element;
-  skeleton: JSX.Element;
+interface sortFunctions {
+  [index: string]: sortFunction;
 }
 
-export function TableSortable(props: Props) {
+const sortFunctions: sortFunctions = {
+  date: (a, b) => new Date(a).getTime() - new Date(b).getTime(),
+  str: (a, b) => a.localeCompare(b),
+};
+
+function buildSortFunction(fn: sortFunction, direction: string): sortFunction {
+  const sortDirection = direction === "asc" ? 1 : -1;
+  return (a, b) => sortDirection * fn(a, b);
+}
+
+interface Props<T extends Row> {
+  rows: T[];
+  columns: TableConfig[];
+  children: (row: T) => JSX.Element;
+  isLoading: boolean;
+  skeleton: JSX.Element;
+  footer: JSX.Element;
+}
+
+interface Row {
+  [index: string]: string | null;
+}
+
+export function TableSortable<T extends Row>(props: Props<T>) {
   const classes = useStyles();
 
   const [orderBy, setOrderBy] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<"desc" | "asc">("desc");
 
-  const { columns, rows, footer, isLoading, skeleton } = props;
+  const { rows, columns, children, footer } = props;
 
   const handleClick = (clickedColumn: string) => {
     if (clickedColumn === orderBy) {
@@ -64,11 +68,18 @@ export function TableSortable(props: Props) {
 
   const sortedColumn = columns.find(column => column.key === orderBy);
 
-  if (orderBy !== null && sortedColumn) {
-    const sortFunction = getColumnSortFunction(sortedColumn);
-    const sorter = getSortFunction(sortFunction, sortDirection);
+  if (sortedColumn && orderBy !== null) {
+    const sortFunctionType = sortFunctions[sortedColumn.dataType];
+    const sortFunction = buildSortFunction(sortFunctionType, sortDirection);
 
-    rows.sort((a, b) => sorter(a[orderBy], b[orderBy]));
+    rows.sort((a, b) => {
+      const valueA = a[orderBy];
+      const valueB = b[orderBy];
+      if (valueA !== null && valueB !== null) {
+        return sortFunction(valueA, valueB);
+      }
+      return 0;
+    });
   }
 
   const headers = columns.map(column => (
@@ -94,21 +105,8 @@ export function TableSortable(props: Props) {
         <TableRow>{headers}</TableRow>
       </TableHead>
 
-      <TableBody>
-        {isLoading || rows.length === 0
-          ? skeleton
-          : rows.map(row => (
-              <TableRow key={row["SERCODIGO"]}>
-                {columns.map(column => (
-                  <TableCell key={column.key} align="left">
-                    {column.render
-                      ? column.render(row, column)
-                      : row[column.key]}
-                  </TableCell>
-                ))}
-              </TableRow>
-            ))}
-      </TableBody>
+      <TableBody>{rows.map(row => children(row))}</TableBody>
+
       {footer}
     </Table>
   );

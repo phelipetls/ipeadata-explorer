@@ -1,14 +1,23 @@
 import * as React from "react";
-import { Paper, TableContainer, Link } from "@material-ui/core";
+import {
+  Link,
+  Paper,
+  TableContainer,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+} from "@material-ui/core";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useQuery, useQueryCache } from "react-query";
 import { useBreakpoint } from "../utils/responsive";
 
-import { TableSortable } from "./Table/Sortable";
-import { PaginationFooter } from "./Table/PaginationFooter";
-import { TableSkeleton } from "./Table/Skeleton";
-import { CollapsedRows } from "./Table/CollapsedRows";
 import { Filters } from "./Filters";
+import { PaginationFooter } from "components/common/Table/PaginationFooter";
+import { CollapsedRow } from "components/common/Table/CollapsedRow";
+import { TableSkeleton } from "components/common/Table/TableSkeleton";
+import { TableSortable } from "components/common/Table/TableSortable";
 import { MetadataTable } from "../SeriesViewer/Metadata/MetadataTable";
 import { NoData } from "components/common/NoData";
 
@@ -19,33 +28,37 @@ import {
   getSearchQueryFromUrl,
 } from "../api/search-queries";
 
+import { Row } from "./types";
 import { SeriesMetadata } from "components/types";
-import { Row, Column } from "./types";
+import { TableConfig } from "components/common/Table/TableSortable/types";
 
 const getYear = (row: Row, column: string) =>
   new Date(row[column] as string).getFullYear();
 
-const columns: Column[] = [
+const columns: TableConfig[] = [
   {
     key: "SERNOME",
     label: "Nome",
-    render: row => (
+    dataType: "string",
+    render: (row: Row) => (
       <Link component={RouterLink} to={`/serie/${row.SERCODIGO}`}>
         {row.SERNOME}
       </Link>
     ),
   },
-  { key: "PERNOME", label: "Frequência" },
-  { key: "UNINOME", label: "Unidade" },
+  { key: "PERNOME", label: "Frequência", dataType: "string" },
+  { key: "UNINOME", label: "Unidade", dataType: "string" },
   {
     key: "SERMINDATA",
     label: "Início",
-    render: row => getYear(row, "SERMINDATA"),
+    dataType: "date",
+    render: (row: Row) => getYear(row, "SERMINDATA"),
   },
   {
     key: "SERMAXDATA",
     label: "Fim",
-    render: row => getYear(row, "SERMAXDATA"),
+    dataType: "date",
+    render: (row: Row) => getYear(row, "SERMAXDATA"),
   },
 ];
 
@@ -55,6 +68,7 @@ function useSearchParams() {
 
 export function SeriesSearch() {
   const isSmallScreen = useBreakpoint("sm");
+
   const queryCache = useQueryCache();
   const searchParams = useSearchParams();
 
@@ -118,24 +132,46 @@ export function SeriesSearch() {
     />
   );
 
-  const table = isSmallScreen ? (
-    <CollapsedRows
-      render={row => <MetadataTable metadata={row} />}
-      rows={rows}
-      columns={columns}
-      isLoading={isLoading || isFetching}
-      skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={2} />}
-      footer={paginationActions}
-    />
-  ) : (
-    <TableSortable
-      rows={rows}
-      columns={columns}
-      isLoading={isLoading || isFetching}
-      skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={columns.length} />}
-      footer={paginationActions}
-    />
-  );
+  let table: JSX.Element;
+  const loadingRows = isLoading || isFetching || rows.length === 0;
+
+  if (isSmallScreen) {
+    table = <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>Nome</TableCell>
+          <TableCell></TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {loadingRows ? <TableSkeleton nRows={rowsPerPage} nColumns={2} /> : rows.map(row => (
+          <CollapsedRow summary={row["SERNOME"]} key={row["SERCODIGO"]}>
+            <MetadataTable metadata={row} />
+          </CollapsedRow>
+        ))}
+      </TableBody>
+    </Table>
+  } else {
+    table = (
+      <TableSortable
+        rows={rows}
+        columns={columns}
+        isLoading={loadingRows}
+        skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={columns.length} />}
+        footer={paginationActions}
+      >
+        {row => (
+          <TableRow key={row["SERCODIGO"]}>
+            {columns.map(column => (
+              <TableCell key={column.key} align="left">
+                {column.render ? column.render(row) : row[column.key]}
+              </TableCell>
+            ))}
+          </TableRow>
+        )}
+      </TableSortable>
+    );
+  }
 
   return (
     <>
@@ -154,8 +190,8 @@ export function SeriesSearch() {
           />
         </Paper>
       ) : (
-        <TableContainer component={Paper}>{table}</TableContainer>
-      )}
+          <TableContainer component={Paper}>{table}</TableContainer>
+        )}
     </>
   );
 }

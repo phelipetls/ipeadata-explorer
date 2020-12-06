@@ -5,38 +5,34 @@ import { KeyboardArrowUp, KeyboardArrowDown } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
-  row: {
+  summaryRow: {
     "& > *": {
       borderBottom: "unset",
     },
   },
-  metadataCell: {
+  collapsedCell: {
     paddingTop: 0,
     paddingBottom: 0,
   },
-  metadataTable: {
+  collapsed: {
     paddingBottom: theme.spacing(1),
   },
 }));
 
-import { Row, Column } from "../types";
-
 interface Props {
-  row: Row;
-  columns: Column[];
+  summary: string;
   children: JSX.Element;
 }
 
-export function CollapsedRow({ row, columns, children }: Props) {
+export function CollapsedRow({ summary, children }: Props) {
   const classes = useStyles();
 
   const [open, setOpen] = useState(false);
-  const renderSeriesName = columns[0].render;
 
   return (
     <>
-      <TableRow className={classes.row}>
-        <TableCell>{renderSeriesName(row)}</TableCell>
+      <TableRow className={classes.summaryRow}>
+        <TableCell>{summary}</TableCell>
         <TableCell align="right">
           <IconButton
             aria-label="Expandir linha"
@@ -49,8 +45,8 @@ export function CollapsedRow({ row, columns, children }: Props) {
       </TableRow>
 
       <TableRow>
-        <TableCell colSpan={2} className={classes.metadataCell}>
-          <Collapse in={open} className={classes.metadataTable} unmountOnExit>
+        <TableCell colSpan={2} className={classes.collapsedCell}>
+          <Collapse in={open} unmountOnExit className={classes.collapsed}>
             {children}
           </Collapse>
         </TableCell>

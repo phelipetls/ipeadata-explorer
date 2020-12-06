@@ -4,8 +4,8 @@ import { Link, TableContainer, Paper } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import { useQuery } from "react-query";
 
-import { TableSortable } from "../common/Table/Sortable";
-import { TableSkeleton } from "../common/Table/Skeleton";
+import { TableSortable } from "components/common/TableSortable";
+import { TableSkeleton } from "components/common/TableSkeleton";
 
 const COUNTRIES_URL =
   "http://ipeadata2-homologa.ipea.gov.br/api/v1/Paises?$expand=Metadados($select=SERCODIGO;$count=true)";
@@ -15,9 +15,9 @@ const columns = [
     key: "PAINOME",
     type: "string",
     label: "País",
-    render: (row, column) => (
+    render: (row) => (
       <Link component={RouterLink} to={`/series?PAINOME=${row["PAINOME"]}`}>
-        {row[column.key]}
+        {row["PAINOME"]}
       </Link>
     ),
   },

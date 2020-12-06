@@ -1,6 +1,6 @@
 import { BASE_URL } from "../odata";
 import { formatDateFromDatePicker } from "../date-utils";
-import { SeriesMetadata } from "../../types/series-metadata";
+import { SeriesMetadata } from "components/types";
 import isEmpty from "lodash/isEmpty";
 
 const ORDER_BY_UPDATED_DATE_DESCENDING = "$orderby=SERATUALIZACAO desc";
@@ -8,6 +8,8 @@ const INCLUDE_COUNT = "$count=true";
 
 export const DEFAULT_SEARCH_QUERY =
   BASE_URL + `/Metadados?${INCLUDE_COUNT}&${ORDER_BY_UPDATED_DATE_DESCENDING}`;
+
+type Query = [string, string];
 
 export function getSearchQueryFromForm(data: SeriesMetadata): string {
   return isEmpty(data)
@@ -19,8 +21,6 @@ export function getSearchQueryFromUrl(searchParams: URLSearchParams): string {
   if (searchParams.toString() === "") return "";
   return getSearchQuery(Array.from(searchParams));
 }
-
-type Query = [string, string];
 
 function getSearchQuery(queries: Query[]) {
   const filterQuery = queries.map(getFilter).join(" and ");
