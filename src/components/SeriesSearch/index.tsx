@@ -1,23 +1,14 @@
 import * as React from "react";
-import {
-  Link,
-  Paper,
-  TableContainer,
-  Table,
-  TableHead,
-  TableBody,
-  TableRow,
-  TableCell,
-} from "@material-ui/core";
+import { Link, Paper, TableContainer } from "@material-ui/core";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useQuery, useQueryCache } from "react-query";
 import { useBreakpoint } from "../utils/responsive";
 
 import { Filters } from "./Filters";
-import { PaginationFooter } from "components/common/Table/PaginationFooter";
-import { CollapsedRow } from "components/common/Table/CollapsedRow";
-import { TableSkeleton } from "components/common/Table/TableSkeleton";
 import { TableSortable } from "components/common/Table/TableSortable";
+import { TableCollapsedRows } from "components/common/Table/TableCollapsedRows";
+import { TableSkeleton } from "components/common/Table/TableSkeleton";
+import { PaginationFooter } from "components/common/Table/PaginationFooter";
 import { MetadataTable } from "../SeriesViewer/Metadata/MetadataTable";
 import { NoData } from "components/common/NoData";
 
@@ -133,43 +124,30 @@ export function SeriesSearch() {
   );
 
   let table: JSX.Element;
-  const loadingRows = isLoading || isFetching || rows.length === 0;
+  const isLoadingRows = isLoading || isFetching || rows.length === 0;
 
   if (isSmallScreen) {
-    table = <Table>
-      <TableHead>
-        <TableRow>
-          <TableCell>Nome</TableCell>
-          <TableCell></TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {loadingRows ? <TableSkeleton nRows={rowsPerPage} nColumns={2} /> : rows.map(row => (
-          <CollapsedRow summary={row["SERNOME"]} key={row["SERCODIGO"]}>
-            <MetadataTable metadata={row} />
-          </CollapsedRow>
-        ))}
-      </TableBody>
-    </Table>
+    table = (
+      <TableCollapsedRows
+        rows={rows}
+        summary={row => row["SERNOME"]}
+        render={row => <MetadataTable metadata={row} />}
+        columns={["Nome", ""]}
+        isLoading={isLoadingRows}
+        skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={2} />}
+      />
+    );
   } else {
     table = (
       <TableSortable
         rows={rows}
         columns={columns}
-        isLoading={loadingRows}
-        skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={columns.length} />}
+        isLoading={isLoadingRows}
+        skeleton={
+          <TableSkeleton nRows={rowsPerPage} nColumns={columns.length} />
+        }
         footer={paginationActions}
-      >
-        {row => (
-          <TableRow key={row["SERCODIGO"]}>
-            {columns.map(column => (
-              <TableCell key={column.key} align="left">
-                {column.render ? column.render(row) : row[column.key]}
-              </TableCell>
-            ))}
-          </TableRow>
-        )}
-      </TableSortable>
+      />
     );
   }
 
@@ -190,8 +168,8 @@ export function SeriesSearch() {
           />
         </Paper>
       ) : (
-          <TableContainer component={Paper}>{table}</TableContainer>
-        )}
+        <TableContainer component={Paper}>{table}</TableContainer>
+      )}
     </>
   );
 }

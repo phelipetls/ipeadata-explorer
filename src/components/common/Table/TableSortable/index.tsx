@@ -38,17 +38,16 @@ function buildSortFunction(fn: sortFunction, direction: string): sortFunction {
   return (a, b) => sortDirection * fn(a, b);
 }
 
+interface Row {
+  [index: string]: string | number | null;
+}
+
 interface Props<T extends Row> {
   rows: T[];
   columns: TableConfig[];
-  children: (row: T) => JSX.Element;
   isLoading: boolean;
   skeleton: JSX.Element;
   footer?: JSX.Element;
-}
-
-interface Row {
-  [index: string]: string | number | null;
 }
 
 export function TableSortable<T extends Row>(props: Props<T>) {
@@ -57,7 +56,7 @@ export function TableSortable<T extends Row>(props: Props<T>) {
   const [orderBy, setOrderBy] = useState<string | null>(null);
   const [sortDirection, setSortDirection] = useState<"desc" | "asc">("desc");
 
-  const { rows, columns, children, footer } = props;
+  const { rows, columns, isLoading, skeleton, footer } = props;
 
   const handleClick = (clickedColumn: string) => {
     if (clickedColumn === orderBy) {
@@ -101,13 +100,21 @@ export function TableSortable<T extends Row>(props: Props<T>) {
     </TableCell>
   ));
 
+  const body = isLoading ? skeleton : rows.map(row => <TableRow key={row["PAINOME"]}>
+    {columns.map(column => (
+      <TableCell key={column.key} align="left">
+        {column.render ? column.render(row) : row[column.key]}
+      </TableCell>
+    ))}
+  </TableRow>);
+
   return (
     <Table className={classes.root} size="small">
       <TableHead>
         <TableRow>{headers}</TableRow>
       </TableHead>
 
-      <TableBody>{rows.map(row => children(row))}</TableBody>
+      <TableBody>{body}</TableBody>
 
       {footer ? footer : null}
     </Table>

@@ -49,16 +49,7 @@ export function Countries() {
         columns={columns}
         isLoading={isLoading}
         skeleton={<TableSkeleton nRows={10} nColumns={columns.length} />}
-      >
-        {row => <TableRow key={row["PAINOME"]}>
-          {columns.map(column => (
-            <TableCell key={column.key} align="left">
-              {column.render ? column.render(row) : row[column.key]}
-            </TableCell>
-          ))}
-        </TableRow>
-        }
-      </TableSortable>
+      />
     </TableContainer>
   );
 }
