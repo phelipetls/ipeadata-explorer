@@ -10,7 +10,7 @@ import {
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { TableConfig } from "./types";
+import { TableColumn } from "../types";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -44,7 +44,7 @@ interface Row {
 
 interface Props<T extends Row> {
   rows: T[];
-  columns: TableConfig[];
+  columns: TableColumn[];
   isLoading: boolean;
   skeleton: JSX.Element;
   footer?: JSX.Element;
@@ -69,8 +69,8 @@ export function TableSortable<T extends Row>(props: Props<T>) {
 
   const sortedColumn = columns.find(column => column.key === orderBy);
 
-  if (sortedColumn && orderBy !== null) {
-    const sortFunctionType = sortFunctions[sortedColumn.dataType];
+  if (sortedColumn && sortedColumn.type && orderBy !== null) {
+    const sortFunctionType = sortFunctions[sortedColumn.type];
     const sortFunction = buildSortFunction(sortFunctionType, sortDirection);
 
     rows.sort((a, b) => {

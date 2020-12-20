@@ -3,14 +3,18 @@ import React from "react";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   title: {
     flex: 1,
     fontSize: "0.7rem",
   },
-}));
+});
 
-export function ThemeName(props) {
+interface Props {
+  name: string,
+}
+
+export function ThemeName(props: Props) {
   const classes = useStyles();
 
   return (

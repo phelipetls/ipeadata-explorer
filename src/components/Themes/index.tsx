@@ -12,6 +12,7 @@ import { ThemeBasesButtons } from "./ThemeBasesButtons";
 import { Loading } from "../common/Loading";
 
 import { BASE_URL } from "../api/odata";
+import { SeriesBase } from "components/types"
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -26,29 +27,39 @@ const useStyles = makeStyles(theme => ({
 
 const ENDPOINT = BASE_URL + "Temas";
 
+interface ThemeMetadata {
+  TEMCODIGO: number,
+  TEMCODIGO_PAI?: number,
+  TEMNOME: string,
+  MACRO?: number,
+  REGIONAL?: number,
+  SOCIAL?: number,
+}
+
 export function Themes() {
   const classes = useStyles();
 
-  const [bases, setBases] = useState(["MACRO", "REGIONAL", "SOCIAL"]);
+  const [bases, setBases] = useState<SeriesBase[]>(["MACRO", "REGIONAL", "SOCIAL"]);
 
-  const handleChangeBases = (_, newBases) => {
+  const handleChangeBases = (_: any, newBases: SeriesBase[]) => {
     setBases(newBases);
   };
 
-  const { isLoading, data } = useQuery("Countries", async () => {
+  const { isLoading, data } = useQuery("Themes", async () => {
     return await (await fetch(ENDPOINT)).json();
   });
 
-  const themes = (data && data.value) || [];
+  const themes: ThemeMetadata[] = (data && data.value) || [];
 
   return isLoading ? (
     <Loading />
   ) : (
     <div>
-      <ThemeBasesButtons value={bases} onChange={handleChangeBases} />
+      <ThemeBasesButtons bases={bases} onChange={handleChangeBases} />
+
       <Container maxWidth="sm" className={classes.grid}>
         {themes
-          .filter(theme => bases.some(base => theme[base]))
+          .filter(theme => bases.some(base => theme[base] !== null))
           .map(theme => {
             const {
               TEMNOME,
@@ -66,14 +77,16 @@ export function Themes() {
             return (
               <ThemeCard themeName={TEMNOME} key={TEMCODIGO}>
                 <ThemeName name={TEMNOME} />
-                {parentTheme && <ThemeParent name={parentTheme.TEMNOME} />}
-                {(MACRO || REGIONAL || SOCIAL) && (
+
+                {parentTheme ? <ThemeParent name={parentTheme.TEMNOME} /> : null}
+
+                {(MACRO || REGIONAL || SOCIAL) ? (
                   <ThemeBases
                     macro={MACRO}
                     regional={REGIONAL}
                     social={SOCIAL}
                   />
-                )}
+                ) : null}
               </ThemeCard>
             );
           })}

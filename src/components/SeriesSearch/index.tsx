@@ -21,34 +21,34 @@ import {
 
 import { Row } from "./types";
 import { SeriesMetadata } from "components/types";
-import { TableConfig } from "components/common/Table/TableSortable/types";
+import { TableColumn } from "components/common/Table/types";
 
 const getYear = (row: Row, column: string) =>
   new Date(row[column] as string).getFullYear();
 
-const columns: TableConfig[] = [
+const columns: TableColumn[] = [
   {
     key: "SERNOME",
     label: "Nome",
-    dataType: "text",
+    type: "string",
     render: (row: Row) => (
       <Link component={RouterLink} to={`/serie/${row.SERCODIGO}`}>
         {row.SERNOME}
       </Link>
     ),
   },
-  { key: "PERNOME", label: "Frequência", dataType: "text" },
-  { key: "UNINOME", label: "Unidade", dataType: "text" },
+  { key: "PERNOME", label: "Frequência", type: "string" },
+  { key: "UNINOME", label: "Unidade", type: "string" },
   {
     key: "SERMINDATA",
     label: "Início",
-    dataType: "date",
+    type: "date",
     render: (row: Row) => getYear(row, "SERMINDATA"),
   },
   {
     key: "SERMAXDATA",
     label: "Fim",
-    dataType: "date",
+    type: "date",
     render: (row: Row) => getYear(row, "SERMAXDATA"),
   },
 ];
@@ -130,9 +130,9 @@ export function SeriesSearch() {
     table = (
       <TableCollapsedRows
         rows={rows}
-        summary={row => row["SERNOME"]}
-        render={row => <MetadataTable metadata={row} />}
         columns={["Nome", ""]}
+        renderSummary={row => row["SERNOME"]}
+        renderRow={row => <MetadataTable metadata={row} />}
         isLoading={isLoadingRows}
         skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={2} />}
       />
@@ -168,8 +168,8 @@ export function SeriesSearch() {
           />
         </Paper>
       ) : (
-        <TableContainer component={Paper}>{table}</TableContainer>
-      )}
+          <TableContainer component={Paper}>{table}</TableContainer>
+        )}
     </>
   );
 }

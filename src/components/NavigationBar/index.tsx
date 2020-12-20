@@ -61,7 +61,7 @@ export function NavigationBar() {
               <NavigationLinksList links={navigationBarLinks} />
             </Hidden>
 
-            <SearchButton activateSearch={activateSearch} />
+            <SearchButton onClick={activateSearch} />
 
             <Hidden smUp>
               <NavigationLinksMenu links={navigationBarLinks} />

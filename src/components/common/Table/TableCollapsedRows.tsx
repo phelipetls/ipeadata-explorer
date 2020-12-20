@@ -16,20 +16,20 @@ interface Row {
 interface Props<T> {
   rows: T[];
   columns: string[];
-  summary: (row: T) => string;
-  render: (row: T) => JSX.Element;
+  renderSummary: (row: T) => string;
+  renderRow: (row: T) => JSX.Element;
   isLoading: boolean;
   skeleton: JSX.Element;
 }
 
 export function TableCollapsedRows<T extends Row>(props: Props<T>) {
-  const { columns, rows, summary, render, isLoading, skeleton } = props;
+  const { columns, rows, renderSummary, renderRow, isLoading, skeleton } = props;
 
   const body = isLoading
     ? skeleton
     : rows.map(row => (
-      <CollapsedRow summary={summary(row)} key={row["SERCODIGO"]}>
-        {render(row)}
+      <CollapsedRow summary={renderSummary(row)} key={row["SERCODIGO"]}>
+        {renderRow(row)}
       </CollapsedRow>
     ));
 

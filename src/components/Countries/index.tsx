@@ -1,11 +1,11 @@
 import React from "react";
 
-import { Link, TableContainer, Paper, TableRow, TableCell } from "@material-ui/core";
+import { Link, TableContainer, Paper } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import { useQuery } from "react-query";
 
 import { TableSortable } from "components/common/Table/TableSortable";
-import { TableConfig } from "components/common/Table/TableSortable/types";
+import { TableColumn } from "components/common/Table/types";
 import { TableSkeleton } from "components/common/Table/TableSkeleton";
 
 const COUNTRIES_URL =
@@ -17,11 +17,11 @@ interface Country {
   "Metadados@odata.count": number;
 }
 
-const columns: TableConfig[] = [
+const columns: TableColumn[] = [
   {
     key: "PAINOME",
     label: "País",
-    dataType: "text",
+    type: "string",
     render: (row: Country) => (
       <Link component={RouterLink} to={`/series?PAINOME=${row["PAINOME"]}`}>
         {row["PAINOME"]}
@@ -31,7 +31,7 @@ const columns: TableConfig[] = [
   {
     key: "Metadados@odata.count",
     label: "Qtd. de séries",
-    dataType: "numeric",
+    type: "string",
   },
 ];
 

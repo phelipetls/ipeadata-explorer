@@ -20,17 +20,22 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function ThemeCard({ themeName, children }) {
+interface Props {
+  themeName: string,
+  children: Array<JSX.Element | null>
+}
+
+export function ThemeCard({ themeName, children }: Props) {
   const classes = useStyles();
 
   return (
-    <Paper
-      component={RouterLink}
-      to={`/series?TEMNOME=${themeName}`}
-      variant="outlined"
-      className={classes.container}
-    >
-      <div className={classes.content}>{children}</div>
-    </Paper>
+    <RouterLink to={`/series?TEMNOME=${themeName}`}>
+      <Paper
+        variant="outlined"
+        className={classes.container}
+      >
+        <div className={classes.content}>{children}</div>
+      </Paper>
+    </RouterLink>
   );
 }

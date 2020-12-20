@@ -1,9 +1,13 @@
 import React from "react";
 
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
-import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(theme => ({
+import { theme } from "styles/Theme"
+import { makeStyles } from "@material-ui/styles";
+
+import { SeriesBase } from "components/types"
+
+const useStyles = makeStyles(({
   buttonsGroup: {
     display: "flex",
     margin: "2em 0",
@@ -20,13 +24,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function ThemeBasesButtons(props) {
+interface Props {
+  bases: SeriesBase[],
+  onChange: (_: any, bases: SeriesBase[]) => void,
+}
+
+export function ThemeBasesButtons({ bases, onChange }: Props) {
   const classes = useStyles();
 
   return (
     <ToggleButtonGroup
-      value={props.value}
-      onChange={props.onChange}
+      value={bases}
+      onChange={onChange}
       size="large"
       className={classes.buttonsGroup}
     >

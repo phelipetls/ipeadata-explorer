@@ -3,13 +3,17 @@ import React from "react";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   subtitle: {
     fontSize: "0.6rem",
   },
-}));
+});
 
-export function ThemeParent(props) {
+interface Props {
+  name: string,
+}
+
+export function ThemeParent({ name }: Props) {
   const classes = useStyles();
 
   return (
@@ -19,7 +23,7 @@ export function ThemeParent(props) {
       color="textSecondary"
       className={classes.subtitle}
     >
-      {props.name}
+      {name}
     </Typography>
   );
 }
