@@ -8,7 +8,7 @@ import {
   waitForElementToBeRemoved,
 } from "test-utils";
 import { ChartGeographic } from "./index";
-import { server } from "server";
+import { server } from "test-utils/server";
 import { handlers } from "./mocks/handlers";
 
 beforeEach(() => server.use(...handlers));

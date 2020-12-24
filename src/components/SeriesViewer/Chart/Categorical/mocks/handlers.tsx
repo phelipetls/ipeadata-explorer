@@ -1,7 +1,7 @@
 import { rest } from "msw";
 import { readJson } from "test-utils";
 
-const readLocalJson = path => {
+const readLocalJson = (path: string) => {
   return readJson(__dirname + "/" + path);
 };
 

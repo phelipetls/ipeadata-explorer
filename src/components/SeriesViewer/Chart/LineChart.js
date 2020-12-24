@@ -21,7 +21,7 @@ export function LineChart({ metadata, datasets, ...rest }) {
   return (
     <ChartJS
       {...rest}
-      type="line"
+      chartType="line"
       datasets={coloredDatasets}
       title={{ display: true, text: metadata.SERNOME }}
       xScale={{
@@ -30,7 +30,7 @@ export function LineChart({ metadata, datasets, ...rest }) {
       }}
       yScale={{
         type: "linear",
-        scaleLabel: { display: true, labelString: metadata.UNINOME },
+        scaleLabel: { display: true, labelString: metadata.UNINOME || metadata.SERNOME },
       }}
     />
   );

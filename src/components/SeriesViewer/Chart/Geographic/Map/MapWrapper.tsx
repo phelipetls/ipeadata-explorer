@@ -1,11 +1,14 @@
 import React from "react";
 
 import { ComposableMap } from "react-simple-maps";
-import { geoMercator } from "d3-geo";
+import { ExtendedFeature, geoMercator } from "d3-geo";
 
 import { useBreakpoint } from "../../../../utils/responsive";
 
 import { MapLegend } from "./Legend";
+import { ScaleQuantile } from "d3-scale";
+import { SeriesMetadata } from "components/types";
+import { Feature } from "geojson";
 
 const SVG_WIDTH = 800;
 const LEGEND_WIDTH = 320;
@@ -15,16 +18,32 @@ const MAP_HEIGHT = 480;
 const LEGEND_HEIGHT = 44;
 const SVG_HEIGHT = TITLE_HEIGHT + MAP_HEIGHT + LEGEND_HEIGHT;
 
-function getProjection(outline, { mapWidth, mapHeight }) {
-  const boundingBox = [
-    [0, TITLE_HEIGHT],
-    [mapWidth, mapHeight],
-  ];
-
-  return geoMercator().fitExtent(boundingBox, outline);
+interface getProjectionOptions {
+  mapWidth: number;
+  mapHeight: number;
 }
 
-export function MapWrapper(props) {
+function getProjection(
+  outline: ExtendedFeature,
+  { mapWidth, mapHeight }: getProjectionOptions
+) {
+  return geoMercator().fitExtent(
+    [
+      [0, TITLE_HEIGHT],
+      [mapWidth, mapHeight],
+    ],
+    outline
+  );
+}
+
+interface MapWrapperProps {
+  scale: ScaleQuantile<string>;
+  metadata: SeriesMetadata,
+  outline: Feature,
+  children: JSX.Element,
+}
+
+export function MapWrapper(props: MapWrapperProps) {
   const isExtraSmallScreen = useBreakpoint("xs");
 
   const { scale, metadata, outline, children: map } = props;
@@ -32,13 +51,13 @@ export function MapWrapper(props) {
   const svgWidth = Math.min(window.innerWidth, SVG_WIDTH);
   const svgHeight = SVG_HEIGHT;
 
-  const projection = getProjection(outline, {
+  const getProjectionFn = () => getProjection(outline, {
     mapWidth: svgWidth,
     mapHeight: MAP_HEIGHT,
   });
 
   return (
-    <ComposableMap width={svgWidth} height={svgHeight} projection={projection}>
+    <ComposableMap width={svgWidth} height={svgHeight} projection={getProjectionFn}>
       <text x={svgWidth / 2} textAnchor="middle" dominantBaseline="hanging">
         {metadata.SERNOME}
       </text>
@@ -47,7 +66,7 @@ export function MapWrapper(props) {
 
       <MapLegend
         scale={scale}
-        title={metadata.UNINOME}
+        title={metadata.UNINOME || ""}
         width={LEGEND_WIDTH}
         height={LEGEND_HEIGHT}
         x={

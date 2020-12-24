@@ -3,10 +3,25 @@ import React, { useState } from "react";
 import { ChoroplethMap } from "./ChoroplethMap";
 import { MapTooltip } from "./Tooltip";
 
-export const Map = props => {
+import { divisionType } from "../api/ibge";
+import { SeriesMetadata, SeriesValues } from "components/types";
+
+interface tooltipPositionType {
+  x: number | undefined,
+  y: number | undefined,
+}
+
+interface Props {
+  series: SeriesValues[];
+  metadata: SeriesMetadata;
+  division: divisionType;
+  boundaryId: string;
+}
+
+export const Map: React.FC<Props> = props => {
   const [tooltipText, setTooltipText] = useState("");
   const [tooltipOpen, setTooltipOpen] = useState(false);
-  const [tooltipPosition, setTooltipPosition] = useState({
+  const [tooltipPosition, setTooltipPosition] = useState<tooltipPositionType>({
     x: undefined,
     y: undefined,
   });

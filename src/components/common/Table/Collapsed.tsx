@@ -3,13 +3,18 @@ import React, { useState } from "react";
 import { Typography, Paper, Collapse, IconButton } from "@material-ui/core";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 
-export function Collapsed(props) {
+interface Props {
+  label: string;
+  children: JSX.Element;
+}
+
+export function Collapsed({ label, children }: Props) {
   const [open, setOpen] = useState(false);
 
   return (
     <Paper>
       <Typography variant="h5">
-        {props.label}
+        {label}
         <IconButton
           aria-label="Expande filtros"
           size="small"
@@ -19,7 +24,7 @@ export function Collapsed(props) {
         </IconButton>
       </Typography>
 
-      <Collapse in={open}>{props.children}</Collapse>
+      <Collapse in={open}>{children}</Collapse>
     </Paper>
   );
 }

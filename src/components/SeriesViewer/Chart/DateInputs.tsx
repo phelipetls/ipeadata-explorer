@@ -2,9 +2,11 @@ import React from "react";
 
 import { TextField } from "@material-ui/core";
 import { Event } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/styles";
-
-import { StyledKeyboardDatePicker } from "../../common/StyledKeyboardDatePicker";
+import { makeStyles } from "@material-ui/core/styles";
+import { KeyboardDatePicker } from "components/common/KeyboardDatePicker";
+import { DatePickerView } from "@material-ui/pickers";
+import { useForm } from "react-hook-form";
+import { SeriesMetadata } from "components/types"
 
 const useStyles = makeStyles(theme => ({
   datePicker: {
@@ -14,7 +16,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const dateViewsByPeriodicity = {
+const dateViewsByPeriodicity: Record<string, DatePickerView[]> = {
   Mensal: ["year", "month"],
   Trimestral: ["year", "month"],
   Semestral: ["year", "month"],
@@ -24,10 +26,16 @@ const dateViewsByPeriodicity = {
   Quinquenal: ["year"],
 };
 
-export function DateInputs({ metadata }) {
+interface Props {
+  metadata: SeriesMetadata,
+}
+
+export function DateInputs({ metadata }: Props) {
   const classes = useStyles();
 
-  const resetDate = date => {
+  const { register } = useForm();
+
+  const resetDate = (date: Date) => {
     if (!date) return;
 
     if (metadata.PERNOME !== "Diária") {
@@ -39,38 +47,43 @@ export function DateInputs({ metadata }) {
     }
   };
 
-  const minDate = new Date(metadata.SERMINDATA);
-  const maxDate = new Date(metadata.SERMAXDATA);
+  const minDate = new Date(metadata.SERMINDATA || 0);
+  const maxDate = new Date(metadata.SERMAXDATA || Date.now());
 
   return (
     <>
-      <StyledKeyboardDatePicker
+      <KeyboardDatePicker
+        ref={register}
         name="startDate"
         id="start-date"
         label="Data inicial"
         minDate={minDate}
         maxDate={maxDate}
         initialFocusedDate={maxDate}
-        onAccept={resetDate}
+        // FIXME: improve type
+        onAccept={resetDate as any}
         views={dateViewsByPeriodicity[metadata.PERNOME]}
         keyboardIcon={<Event fontSize="small" />}
         className={classes.datePicker}
       />
 
-      <StyledKeyboardDatePicker
+      <KeyboardDatePicker
+        ref={register}
         name="endDate"
         id="end-date"
         label="Data final"
         minDate={minDate}
         maxDate={maxDate}
         initialFocusedDate={maxDate}
-        onAccept={resetDate}
+        // FIXME: improve type
+        onAccept={resetDate as any}
         views={dateViewsByPeriodicity[metadata.PERNOME]}
         keyboardIcon={<Event fontSize="small" />}
         className={classes.datePicker}
       />
 
       <TextField
+        ref={register}
         type="number"
         name="lastN"
         id="last-n"

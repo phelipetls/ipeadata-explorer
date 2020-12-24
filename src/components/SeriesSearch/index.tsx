@@ -4,7 +4,8 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useQuery, useQueryCache } from "react-query";
 import { useBreakpoint } from "../utils/responsive";
 
-import { Filters } from "./Filters";
+import { FiltersForm } from "./FiltersForm";
+import { FiltersContainer } from "./FiltersContainer";
 import { TableSortable } from "components/common/Table/TableSortable";
 import { TableCollapsedRows } from "components/common/Table/TableCollapsedRows";
 import { TableSkeleton } from "components/common/Table/TableSkeleton";
@@ -19,19 +20,22 @@ import {
   getSearchQueryFromUrl,
 } from "../api/search-queries";
 
-import { Row } from "./types";
 import { SeriesMetadata } from "components/types";
 import { TableColumn } from "components/common/Table/types";
 
-const getYear = (row: Row, column: string) =>
-  new Date(row[column] as string).getFullYear();
+type MetadataDateFields = Pick<SeriesMetadata, "SERMAXDATA" | "SERMINDATA">;
+
+const getYear = (
+  row: SeriesMetadata,
+  column: keyof MetadataDateFields
+) => new Date(row[column] as string).getFullYear();
 
 const columns: TableColumn[] = [
   {
     key: "SERNOME",
     label: "Nome",
     type: "string",
-    render: (row: Row) => (
+    render: (row: SeriesMetadata) => (
       <Link component={RouterLink} to={`/serie/${row.SERCODIGO}`}>
         {row.SERNOME}
       </Link>
@@ -43,13 +47,13 @@ const columns: TableColumn[] = [
     key: "SERMINDATA",
     label: "Início",
     type: "date",
-    render: (row: Row) => getYear(row, "SERMINDATA"),
+    render: (row: SeriesMetadata) => getYear(row, "SERMINDATA"),
   },
   {
     key: "SERMAXDATA",
     label: "Fim",
     type: "date",
-    render: (row: Row) => getYear(row, "SERMAXDATA"),
+    render: (row: SeriesMetadata) => getYear(row, "SERMAXDATA"),
   },
 ];
 
@@ -85,12 +89,9 @@ export function SeriesSearch() {
     }
   );
 
-  const rows: Row[] = (data && data.value) || [];
+  const rows: SeriesMetadata[] = (data && data.value) || [];
 
-  function handlePageChange(
-    _: React.MouseEvent<HTMLButtonElement>,
-    newPage: number
-  ) {
+  function handlePageChange(_: any, newPage: number) {
     setPage(newPage);
   }
 
@@ -103,7 +104,7 @@ export function SeriesSearch() {
     });
   }
 
-  function handleSubmit(data: SeriesMetadata) {
+  function onSubmit(data: Record<string, string>) {
     let newSearchUrl = getSearchQueryFromForm(data);
 
     setSearchUrl(newSearchUrl);
@@ -141,6 +142,7 @@ export function SeriesSearch() {
     table = (
       <TableSortable
         rows={rows}
+        rowKey="SERCODIGO"
         columns={columns}
         isLoading={isLoadingRows}
         skeleton={
@@ -153,12 +155,12 @@ export function SeriesSearch() {
 
   return (
     <>
-      <Filters
-        searchParams={searchParams}
-        handleSubmit={handleSubmit}
+      <FiltersContainer
         filterActive={filterActive}
         setFilterActive={setFilterActive}
-      />
+      >
+        <FiltersForm searchParams={searchParams} onSubmit={onSubmit} />
+      </FiltersContainer>
 
       {!isLoading && rows.length === 0 ? (
         <Paper>
@@ -168,8 +170,8 @@ export function SeriesSearch() {
           />
         </Paper>
       ) : (
-          <TableContainer component={Paper}>{table}</TableContainer>
-        )}
+        <TableContainer component={Paper}>{table}</TableContainer>
+      )}
     </>
   );
 }

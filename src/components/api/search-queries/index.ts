@@ -1,6 +1,5 @@
 import { BASE_URL } from "../odata";
 import { formatDateFromDatePicker } from "../date-utils";
-import { SeriesMetadata } from "components/types";
 import isEmpty from "lodash/isEmpty";
 
 const ORDER_BY_UPDATED_DATE_DESCENDING = "$orderby=SERATUALIZACAO desc";
@@ -9,21 +8,25 @@ const INCLUDE_COUNT = "$count=true";
 export const DEFAULT_SEARCH_QUERY =
   BASE_URL + `/Metadados?${INCLUDE_COUNT}&${ORDER_BY_UPDATED_DATE_DESCENDING}`;
 
-type Query = [string, string];
+export function getSearchQueryFromForm(inputs: Record<string, string>): string {
+  if (isEmpty(inputs)) {
+    return DEFAULT_SEARCH_QUERY;
+  }
 
-export function getSearchQueryFromForm(data: SeriesMetadata): string {
-  return isEmpty(data)
-    ? DEFAULT_SEARCH_QUERY
-    : getSearchQuery(Object.entries(data));
+  return getSearchQuery(Object.entries(inputs));
 }
 
 export function getSearchQueryFromUrl(searchParams: URLSearchParams): string {
-  if (searchParams.toString() === "") return "";
+  if (searchParams.toString() === "") {
+    return "";
+  }
+
   return getSearchQuery(Array.from(searchParams));
 }
 
-function getSearchQuery(queries: Query[]) {
-  const filterQuery = queries.map(getFilter).join(" and ");
+function getSearchQuery(queries: [string, string][]) {
+  const filterQuery = queries.map(query => getFilter(query)).join(" and ");
+
   return (
     DEFAULT_SEARCH_QUERY +
     `&$filter=${filterQuery}` +
@@ -31,7 +34,7 @@ function getSearchQuery(queries: Query[]) {
   );
 }
 
-function getFilter([name, value]: Query) {
+function getFilter([name, value]: [string, string]) {
   switch (name) {
     case "SERNOME":
     case "UNINOME":
@@ -44,15 +47,16 @@ function getFilter([name, value]: Query) {
         ` contains(FNTSIGLA,'${value}') or` +
         ` contains(FNTURL,'${value}'))`
       );
+    // FIXME: PAINOME is not in SeriesMetadata, use PAICODIGO instead
     case "PAINOME":
       return (
         `(contains(Pais/PAINOME,'${value}') or` +
         ` contains(PAICODIGO,'${value}'))`
       );
     case "SERMINDATA":
-      return `SERMINDATA ge ${formatDateFromDatePicker(value)}`;
+      return `SERMINDATA ge ${formatDateFromDatePicker(value as string)}`;
     case "SERMAXDATA":
-      return `SERMAXDATA le ${formatDateFromDatePicker(value)}`;
+      return `SERMAXDATA le ${formatDateFromDatePicker(value as string)}`;
     case "BASNOME":
       return (
         "(" +

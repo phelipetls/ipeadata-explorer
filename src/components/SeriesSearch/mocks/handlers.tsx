@@ -1,7 +1,7 @@
 import { rest } from "msw";
 import { readJson } from "test-utils";
 
-const readLocalJson = path => {
+const readLocalJson = (path: string) => {
   return readJson(__dirname + "/" + path);
 };
 
@@ -11,7 +11,7 @@ export const handlers = [
     const filter = searchParams.get("$filter");
     const skip = searchParams.get("$skip");
 
-    const isFirstPage = parseInt(skip) === 0;
+    const isFirstPage = parseInt(skip!) === 0;
 
     const json = !filter
       ? readLocalJson("results.json")

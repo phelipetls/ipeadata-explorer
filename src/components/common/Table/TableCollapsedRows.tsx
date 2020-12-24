@@ -8,10 +8,7 @@ import {
   TableCell,
 } from "@material-ui/core";
 import { CollapsedRow } from "./CollapsedRow";
-
-interface Row {
-  [index: string]: string | number | null;
-}
+import { SeriesMetadata } from "components/types";
 
 interface Props<T> {
   rows: T[];
@@ -22,7 +19,7 @@ interface Props<T> {
   skeleton: JSX.Element;
 }
 
-export function TableCollapsedRows<T extends Row>(props: Props<T>) {
+export function TableCollapsedRows<T extends SeriesMetadata>(props: Props<T>) {
   const { columns, rows, renderSummary, renderRow, isLoading, skeleton } = props;
 
   const body = isLoading

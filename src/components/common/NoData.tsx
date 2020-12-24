@@ -1,9 +1,13 @@
 import React from "react";
 
-import { Grid, Typography } from "@material-ui/core";
+import { Grid, GridProps, Typography } from "@material-ui/core";
 import { Error } from "@material-ui/icons";
 
-export function NoData({ text, ...props }) {
+interface Props {
+  text: string;
+}
+
+export function NoData({ text, ...rest }: Props & GridProps) {
   return (
     <Grid
       container
@@ -13,7 +17,7 @@ export function NoData({ text, ...props }) {
       alignItems="center"
       justify="center"
       style={{ height: "100%" }}
-      {...props}
+      {...rest}
     >
       <Error fontSize="large" />
       <Typography variant="h6">{text}</Typography>

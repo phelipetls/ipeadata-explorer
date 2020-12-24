@@ -4,6 +4,7 @@ import { Grid, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { MetadataTable } from "./MetadataTable";
+import { SeriesMetadata } from "components/types";
 
 const useStyles = makeStyles(theme => ({
   metadata: {
@@ -14,7 +15,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function Metadata({ metadata }) {
+interface Props {
+  metadata: SeriesMetadata,
+}
+
+export function Metadata({ metadata }: Props) {
   const classes = useStyles();
 
   return (

@@ -1,10 +1,6 @@
 import { format } from "date-fns";
 
-interface dateFormatsType {
-  [format: string]: string;
-}
-
-const dateFormats: dateFormatsType = {
+const dateFormats: Record<string, string> = {
   Diária: "dd-MM-yyyy",
   Mensal: "MM-yyyy",
   Trimestral: "qQ yyyy",

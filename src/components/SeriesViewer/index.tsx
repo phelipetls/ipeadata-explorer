@@ -13,13 +13,13 @@ import { Metadata } from "./Metadata";
 
 import { buildMetadataUrl } from "../api/odata";
 
-async function fetchMetadata(_, code) {
+async function fetchMetadata(_: string, code: string) {
   const url = buildMetadataUrl(code);
   return await (await fetch(url)).json();
 }
 
 export function SeriesViewer() {
-  let { code } = useParams();
+  let { code }: { code: string } = useParams();
 
   const { isLoading, data } = useQuery(
     ["Fetch series metadata", code],

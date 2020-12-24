@@ -1,12 +1,10 @@
 import React, { useEffect, useRef } from "react";
 
 import { makeStyles } from "@material-ui/styles";
+import { theme } from "styles";
 
 import {
   Chart,
-  Line,
-  Point,
-  Rectangle,
   BarController,
   LineController,
   CategoryScale,
@@ -19,9 +17,6 @@ import {
 import "chartjs-adapter-date-fns";
 
 Chart.register(
-  Line,
-  Point,
-  Rectangle,
   BarController,
   LineController,
   CategoryScale,
@@ -29,7 +24,7 @@ Chart.register(
   LinearScale,
   Title,
   Legend,
-  Tooltip
+  Tooltip,
 );
 
 Chart.defaults.elements.point.radius = 0;
@@ -42,22 +37,24 @@ Chart.defaults.plugins.title.font = {
   color: "black",
 };
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles({
   root: {
     position: "relative",
     height: theme.chart.height,
   },
-}));
+});
 
 export function ChartJS(props) {
   const classes = useStyles();
-  const canvasRef = useRef();
+  const canvasRef = useRef(null);
 
-  const { type, labels, datasets, xScale, yScale, ...options } = props;
+  const { chartType, labels, datasets, xScale, yScale, ...options } = props;
 
   useEffect(() => {
+    if (canvasRef.current === null) return;
+
     const config = {
-      type,
+      type: chartType,
       data: { labels, datasets },
       options: {
         maintainAspectRatio: false,
@@ -69,7 +66,7 @@ export function ChartJS(props) {
     const chart = new Chart(canvasRef.current, config);
 
     return () => chart.destroy();
-  }, [type, labels, datasets, xScale, yScale, options]);
+  }, [chartType, labels, datasets, xScale, yScale, options]);
 
   return (
     <div className={classes.root}>

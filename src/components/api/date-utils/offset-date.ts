@@ -6,11 +6,7 @@ interface Periodicity {
   amount: number;
 }
 
-interface Periodicities {
-  [periodicity: string]: Periodicity;
-}
-
-const periodicities: Periodicities = {
+const periodicities: Record<string, Periodicity> = {
   Diária: { name: "days", amount: 1 },
   Mensal: { name: "months", amount: 1 },
   Anual: { name: "years", amount: 1 },

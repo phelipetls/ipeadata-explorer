@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 
 import { useQuery } from "react-query";
+import { useForm } from "react-hook-form";
 
 import { Loading } from "../../../common/Loading";
-
 import { ChartLoading } from "../ChartLoading";
 import { ChartNoData } from "../ChartNoData";
 import { ChartFilters } from "../ChartFilters";
@@ -20,30 +20,45 @@ import {
   buildFilter,
   buildGeographicDivisionsUrl,
 } from "../../../api/odata";
-import { shouldPlotMap } from "./api/ibge";
+import { divisionType, shouldPlotMap } from "./api/ibge";
+import { SeriesMetadata } from "components/types";
 
 const DEFAULT_LIMIT = 5;
 
-async function fetchGeographicDivisions(_, code) {
+interface GeographicDivisionMetadata {
+  value: {
+    NIVNOME: divisionType,
+    Count: number,
+  }[]
+}
+
+async function fetchGeographicDivisions(_: string, code: string): Promise<divisionType[]> {
   const url = buildGeographicDivisionsUrl(code);
-  const json = await (await fetch(url)).json();
+  const json: GeographicDivisionMetadata = await (await fetch(url)).json();
   return json.value.map(division => division.NIVNOME);
 }
 
-function getBoundaryFilter(boundaryId, division) {
+function getBoundaryFilter(boundaryId: string, division: divisionType) {
   if (!shouldPlotMap(division) || boundaryId === "BR") return "";
   return `startswith(TERCODIGO,'${String(boundaryId).slice(0, 2)}')`;
 }
 
-export function ChartGeographic({ code, metadata }) {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+interface Props {
+  code: string,
+  metadata: SeriesMetadata,
+}
+
+export function ChartGeographic({ code, metadata }: Props) {
+  const { handleSubmit } = useForm();
+
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
-  const [division, setDivision] = useState(null);
+  const [division, setDivision] = useState<divisionType | null>(null);
   const [boundaryId, setBoundaryId] = useState("BR");
 
-  const { isLoading: isLoadingDivisions, data: divisions = [] } = useQuery(
+  const { isLoading: isLoadingDivisions, data: divisions = [] } = useQuery<divisionType[]>(
     ["Fetch available geographic divisions", code],
     fetchGeographicDivisions,
     { onSuccess: ([firstDivision]) => setDivision(firstDivision) }
@@ -58,7 +73,7 @@ export function ChartGeographic({ code, metadata }) {
         lastN,
         metadata,
       });
-      const boundaryFilter = getBoundaryFilter(boundaryId, division);
+      const boundaryFilter = getBoundaryFilter(boundaryId, division!);
       const divisionFilter = `NIVNOME eq '${division}'`;
 
       const url =
@@ -70,22 +85,20 @@ export function ChartGeographic({ code, metadata }) {
     { enabled: division }
   );
 
-  function handleSubmit(e) {
-    e.preventDefault();
-
+  function onSubmit(data: Record<string, string>) {
     const {
       startDate,
       endDate,
       lastN,
       division,
       boundaryId,
-    } = e.target.elements;
+    } = data;
 
-    if (startDate.value) setStartDate(startDate.value);
-    if (endDate.value) setEndDate(endDate.value);
-    if (lastN.value) setLastN(lastN.value);
-    if (division) setDivision(division.value);
-    if (boundaryId) setBoundaryId(boundaryId.value);
+    if (startDate) setStartDate(startDate);
+    if (endDate) setEndDate(endDate);
+    if (lastN) setLastN(+lastN);
+    if (division) setDivision(division as divisionType);
+    if (boundaryId) setBoundaryId(boundaryId);
   }
 
   const isLoading = isLoadingData || isLoadingDivisions;
@@ -94,12 +107,12 @@ export function ChartGeographic({ code, metadata }) {
 
   return (
     <ChartSection>
-      <ChartFilters onSubmit={handleSubmit}>
+      <ChartFilters onSubmit={handleSubmit(onSubmit)}>
         <DateInputs metadata={metadata} />
         {isLoadingDivisions ? (
           <Loading />
         ) : (
-          <GeographyInputs division={division} divisions={divisions} />
+          <GeographyInputs division={division!} divisions={divisions} />
         )}
       </ChartFilters>
 
@@ -107,7 +120,7 @@ export function ChartGeographic({ code, metadata }) {
         <ChartLoading />
       ) : series.length === 0 ? (
         <ChartNoData />
-      ) : shouldPlotMap(division) ? (
+      ) : division && shouldPlotMap(division) ? (
         <Map
           series={series}
           metadata={metadata}

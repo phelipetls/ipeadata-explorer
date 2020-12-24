@@ -2,19 +2,24 @@ import React from "react";
 
 import { useQuery } from "react-query";
 import { Select, InputLabel, FormControl, Grow } from "@material-ui/core";
-import { unpluralize, getDivisionsUrl } from "../api/ibge";
+import {
+  unpluralize,
+  divisionType,
+  brazilSubDivisionType,
+  getDivisionsMetadata,
+} from "../api/ibge";
 
 import { Loading } from "../../../../common/Loading";
 
-async function getDivisionsNames(_, division) {
-  const url = getDivisionsUrl(division);
-  return await (await fetch(url)).json();
+interface Props {
+  boundaryDivision: divisionType;
 }
 
-export function SelectBoundaryId({ boundaryDivision }) {
+export function SelectBoundaryId({ boundaryDivision }: Props) {
   const { isLoading, data = [] } = useQuery(
     ["Fetch geographic divisions names", boundaryDivision],
-    getDivisionsNames
+    (_: string, boundaryDivision: brazilSubDivisionType) =>
+      getDivisionsMetadata(boundaryDivision)
   );
 
   if (isLoading) return <Loading />;

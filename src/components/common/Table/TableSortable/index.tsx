@@ -11,6 +11,7 @@ import {
 import { makeStyles } from "@material-ui/core/styles";
 
 import { TableColumn } from "../types";
+import { SeriesMetadata } from "components/types";
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -20,79 +21,77 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-type sortArgument = string | number;
-type sortFunction = (a: sortArgument, b: sortArgument) => number;
+type sortFunction = (a: any, b: any) => number;
 
-interface sortFunctions {
-  [index: string]: sortFunction;
+const sortFunctionNumeric: sortFunction = (a, b) => a - b;
+const sortFunctionString: sortFunction = (a, b) => a.localeCompare(b);
+const sortFunctionDate: sortFunction = (a, b) => {
+  return new Date(a).getTime() - new Date(b).getTime();
 }
 
-const sortFunctions: sortFunctions = {
-  date: (a, b) => new Date(a).getTime() - new Date(b).getTime(),
-  text: (a, b) => (a as string).localeCompare(b as string),
-  numeric: (a, b) => (a as number) - (b as number)
+type ColumnType = NonNullable<TableColumn["type"]>;
+
+const sortFunctions: Record<ColumnType, sortFunction> = {
+  string: sortFunctionString,
+  numeric: sortFunctionNumeric,
+  date: sortFunctionDate,
 };
 
-function buildSortFunction(fn: sortFunction, direction: string): sortFunction {
-  const sortDirection = direction === "asc" ? 1 : -1;
-  return (a, b) => sortDirection * fn(a, b);
-}
-
-interface Row {
-  [index: string]: string | number | null;
-}
-
-interface Props<T extends Row> {
+interface Props<T = SeriesMetadata> {
   rows: T[];
-  columns: TableColumn[];
+  rowKey: keyof T;
+  columns: TableColumn<T>[];
   isLoading: boolean;
   skeleton: JSX.Element;
   footer?: JSX.Element;
 }
 
-export function TableSortable<T extends Row>(props: Props<T>) {
+export function TableSortable<T = SeriesMetadata>(props: Props<T>) {
   const classes = useStyles();
 
-  const [orderBy, setOrderBy] = useState<string | null>(null);
+  const [orderByColumn, setOrderByColumn] = useState<keyof T | null>(null);
   const [sortDirection, setSortDirection] = useState<"desc" | "asc">("desc");
 
-  const { rows, columns, isLoading, skeleton, footer } = props;
+  const { rows, rowKey, columns, isLoading, skeleton, footer } = props;
 
-  const handleClick = (clickedColumn: string) => {
-    if (clickedColumn === orderBy) {
+  const handleClick = (targetColumn: keyof T) => {
+    if (targetColumn === orderByColumn) {
       setSortDirection(order => (order == "desc" ? "asc" : "desc"));
     } else {
       setSortDirection("desc");
-      setOrderBy(clickedColumn);
+      setOrderByColumn(targetColumn);
     }
   };
 
-  const sortedColumn = columns.find(column => column.key === orderBy);
+  const sortedColumn = columns.find(column => column.key === orderByColumn);
 
-  if (sortedColumn && sortedColumn.type && orderBy !== null) {
-    const sortFunctionType = sortFunctions[sortedColumn.type];
-    const sortFunction = buildSortFunction(sortFunctionType, sortDirection);
+  if (sortedColumn && sortedColumn.type && orderByColumn !== null) {
+    const sortFunction = sortFunctions[sortedColumn.type];
 
     rows.sort((a, b) => {
-      const valueA = a[orderBy];
-      const valueB = b[orderBy];
-      if (valueA !== null && valueB !== null) {
-        return sortFunction(valueA, valueB);
+      const valueA = a[orderByColumn];
+      const valueB = b[orderByColumn];
+
+      const direction = sortDirection === "asc" ? 1 : -1;
+
+      if (valueA === null || valueB === null) {
+        return -1;
       }
-      return 0;
+
+      return direction * sortFunction(valueA, valueB);
     });
   }
 
   const headers = columns.map(column => (
     <TableCell
       component="th"
-      key={column.key}
+      key={String(column.key)}
       align="left"
-      sortDirection={column.key === orderBy ? sortDirection : false}
+      sortDirection={column.key === orderByColumn ? sortDirection : false}
     >
       <TableSortLabel
-        active={orderBy === column.key}
-        direction={orderBy === column.key ? sortDirection : "asc"}
+        active={orderByColumn === column.key}
+        direction={orderByColumn === column.key ? sortDirection : "asc"}
         onClick={() => handleClick(column.key)}
       >
         {column.label}
@@ -100,13 +99,17 @@ export function TableSortable<T extends Row>(props: Props<T>) {
     </TableCell>
   ));
 
-  const body = isLoading ? skeleton : rows.map(row => <TableRow key={row["PAINOME"]}>
-    {columns.map(column => (
-      <TableCell key={column.key} align="left">
-        {column.render ? column.render(row) : row[column.key]}
-      </TableCell>
-    ))}
-  </TableRow>);
+  const body = isLoading
+    ? skeleton
+    : rows.map(row => (
+        <TableRow key={String(row[rowKey])}>
+          {columns.map(column => (
+            <TableCell key={String(column.key)} align="left">
+              {column.render ? column.render(row) : row[column.key]}
+            </TableCell>
+          ))}
+        </TableRow>
+      ));
 
   return (
     <Table className={classes.root} size="small">

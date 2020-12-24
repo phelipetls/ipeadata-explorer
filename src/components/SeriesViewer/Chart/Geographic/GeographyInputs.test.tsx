@@ -2,7 +2,7 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { GeographyInputs } from "./GeographyInputs";
-import { server } from "server";
+import { server } from "test-utils/server";
 import { handlers } from "./mocks/handlers";
 
 beforeEach(() => server.use(...handlers));

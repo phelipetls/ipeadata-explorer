@@ -1,9 +1,16 @@
 import React from "react";
 
 import { Select, InputLabel, FormControl } from "@material-ui/core";
+import { divisionType } from "../api/ibge";
 
-export function SelectGeographicDivisions(props) {
-  const { divisions, handleChange, ...rest } = props;
+interface Props {
+  division: divisionType,
+  divisions: divisionType[],
+  handleChange: (e: React.ChangeEvent<{ value: unknown }>) => void
+}
+
+export function SelectGeographicDivisions(props: Props) {
+  const { division, divisions, handleChange } = props;
 
   return (
     <FormControl required variant="outlined">
@@ -12,7 +19,7 @@ export function SelectGeographicDivisions(props) {
       </InputLabel>
 
       <Select
-        {...rest}
+        defaultValue={division}
         native
         label="Divisões geográficas"
         onChange={handleChange}

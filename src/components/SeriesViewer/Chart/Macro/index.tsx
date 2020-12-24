@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 
 import { useQuery } from "react-query";
+import { useForm } from "react-hook-form";
 
 import { ChartFilters } from "../ChartFilters";
 import { DateInputs } from "../DateInputs";
@@ -9,13 +10,21 @@ import { LineChart } from "../LineChart";
 import { ChartLoading } from "../ChartLoading";
 import { ChartNoData } from "../ChartNoData";
 
+import { SeriesMetadata, SeriesValues } from "components/types";
 import { buildSeriesValuesUrl, getDateFilter, buildFilter } from "../../../api/odata";
 
 const DEFAULT_LIMIT = 50;
 
-export function ChartMacro({ code, metadata }) {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+interface Props {
+  code: string,
+  metadata: SeriesMetadata,
+}
+
+export function ChartMacro({ code, metadata }: Props) {
+  const { handleSubmit } = useForm();
+
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
   const { isLoading, data } = useQuery(
@@ -32,17 +41,15 @@ export function ChartMacro({ code, metadata }) {
     }
   );
 
-  function handleSubmit(e) {
-    e.preventDefault();
+  function onSubmit(data: Record<string, string>) {
+    const { startDate, endDate, lastN } = data;
 
-    const { startDate, endDate, lastN } = e.target.elements;
-
-    if (startDate.value) setStartDate(startDate.value);
-    if (endDate.value) setEndDate(endDate.value);
-    if (lastN.value) setLastN(lastN.value);
+    if (startDate) setStartDate(startDate);
+    if (endDate) setEndDate(endDate);
+    if (lastN) setLastN(+lastN);
   }
 
-  const series = (data && data.value) || [];
+  const series: SeriesValues[] = (data && data.value) || [];
 
   const labels = series.map(series => series.VALDATA);
   const datasets = [
@@ -54,7 +61,7 @@ export function ChartMacro({ code, metadata }) {
 
   return (
     <ChartSection>
-      <ChartFilters onSubmit={handleSubmit}>
+      <ChartFilters onSubmit={handleSubmit(onSubmit)}>
         <DateInputs metadata={metadata} />
       </ChartFilters>
 

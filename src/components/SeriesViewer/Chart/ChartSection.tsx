@@ -10,7 +10,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function ChartSection({ children }) {
+interface Props {
+  children: JSX.Element[],
+}
+
+export function ChartSection({ children }: Props) {
   const classes = useStyles();
 
   return <Paper className={classes.root}>{children}</Paper>;

@@ -2,7 +2,7 @@ import React from "react";
 import userEvent from "@testing-library/user-event";
 import { SeriesSearch } from "./index";
 import { render, screen, waitFor } from "test-utils";
-import { server } from "server";
+import { server } from "test-utils/server";
 
 import { handlers } from "./mocks/handlers";
 beforeEach(() => server.use(...handlers));

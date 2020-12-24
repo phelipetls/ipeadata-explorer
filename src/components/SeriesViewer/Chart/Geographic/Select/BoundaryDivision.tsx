@@ -1,8 +1,15 @@
 import React from "react";
 
 import { Select, InputLabel, FormControl, Grow } from "@material-ui/core";
+import { divisionType } from "../api/ibge";
 
-export function SelectBoundaryDivision(props) {
+interface Props {
+  boundaries: divisionType[],
+  boundaryDivision: divisionType,
+  handleChange: (e: React.ChangeEvent<{ value: unknown }>) => void
+}
+
+export function SelectBoundaryDivision(props: Props) {
   const { boundaries, boundaryDivision, handleChange } = props;
 
   return (

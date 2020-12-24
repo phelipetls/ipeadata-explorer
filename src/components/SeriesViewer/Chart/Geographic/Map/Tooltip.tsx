@@ -1,27 +1,36 @@
 import React from "react";
 
-import { Tooltip } from "@material-ui/core";
+import { Tooltip as MuiTooltip } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
 
-const StyledTooltip = withStyles(() => ({
+const Tooltip = withStyles(() => ({
   tooltip: {
     fontSize: 13,
   },
-}))(Tooltip);
+}))(MuiTooltip);
 
-export function MapTooltip({ position, children, ...props }) {
+interface Props {
+  position: { x: number | undefined, y: number | undefined };
+  title: string;
+  open: boolean;
+  children: JSX.Element;
+}
+
+export function MapTooltip({ position, children, ...props }: Props) {
+  if (!position.x || !position.y) return null;
+
   return (
-    <StyledTooltip
+    <Tooltip
       {...props}
       PopperProps={{
         anchorEl: {
           clientHeight: 0,
           clientWidth: 0,
           getBoundingClientRect: () => ({
-            top: position.y,
-            left: position.x,
-            right: position.x,
-            bottom: position.y,
+            top: position.y!,
+            left: position.x!,
+            right: position.x!,
+            bottom: position.y!,
             width: 0,
             height: 0,
           }),
@@ -29,6 +38,6 @@ export function MapTooltip({ position, children, ...props }) {
       }}
     >
       {children}
-    </StyledTooltip>
+    </Tooltip>
   );
 }

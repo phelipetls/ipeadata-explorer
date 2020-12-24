@@ -12,7 +12,7 @@ export function BarChart({ metadata, datasets, ...rest }) {
   return (
     <ChartJS
       {...rest}
-      type="bar"
+      chartType="bar"
       datasets={datasetsWithColors}
       title={{ display: true, text: metadata.SERNOME }}
       yScale={{

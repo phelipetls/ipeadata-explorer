@@ -14,10 +14,9 @@ import {
   Checkbox,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { StyledKeyboardDatePicker } from "../common/StyledKeyboardDatePicker";
+import { KeyboardDatePicker } from "../common/KeyboardDatePicker";
 
 import { useBreakpoint } from "../utils/responsive";
-import { SeriesMetadata } from "../types";
 
 const useStyles = makeStyles(theme => ({
   title: {
@@ -44,16 +43,15 @@ const useStyles = makeStyles(theme => ({
 
 interface Props {
   searchParams: URLSearchParams;
-  handleSubmit: (data: SeriesMetadata) => void;
+  onSubmit: (data: Record<string, string>) => void;
 }
 
-export function Form(props: Props) {
+export function FiltersForm(props: Props) {
   const classes = useStyles();
-
+  const { register, handleSubmit } = useForm();
   const isExtraSmallScreen = useBreakpoint("xs");
-  const { register, handleSubmit: handleSubmitDecorator } = useForm();
 
-  const { searchParams, handleSubmit } = props;
+  const { searchParams, onSubmit } = props;
 
   const {
     SERNOME,
@@ -69,7 +67,7 @@ export function Form(props: Props) {
       container
       spacing={3}
       component="form"
-      onSubmit={handleSubmitDecorator(handleSubmit)}
+      onSubmit={handleSubmit(onSubmit)}
       className={classes.form}
     >
       <Grid container item spacing={3}>
@@ -148,7 +146,7 @@ export function Form(props: Props) {
 
       <Grid container item spacing={3} justify="center">
         <Grid item>
-          <StyledKeyboardDatePicker
+          <KeyboardDatePicker
             inputRef={register}
             size="small"
             name="SERMINDATA"
@@ -159,7 +157,7 @@ export function Form(props: Props) {
         </Grid>
 
         <Grid item>
-          <StyledKeyboardDatePicker
+          <KeyboardDatePicker
             inputRef={register}
             size="small"
             name="SERMAXDATA"

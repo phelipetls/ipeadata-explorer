@@ -8,7 +8,11 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function Container(props) {
+interface Props {
+  children: JSX.Element | JSX.Element[],
+}
+
+export function Container(props: Props) {
   const classes = useStyles();
 
   const { children, ...rest } = props;

@@ -5,7 +5,7 @@ import {
   screen,
   waitForElementToBeRemoved,
 } from "test-utils";
-import { server } from "server";
+import { server } from "test-utils/server";
 import { Chart } from "chart.js";
 import { ChartCategorical } from "./index";
 

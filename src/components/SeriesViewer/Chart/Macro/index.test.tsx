@@ -8,20 +8,21 @@ import {
   readJson,
 } from "test-utils";
 import { ChartMacro } from "./index";
-import { server } from "server";
+import { server } from "test-utils/server";
 import { handlers } from "./mocks/handlers";
+import { SeriesMetadata } from "components/types";
 
 beforeEach(() => server.use(...handlers));
 const MOCKED_METADATA = readJson(__dirname + "/mocks/metadata.json");
 
 it("should show and filter macroeconomic data correctly", async () => {
-  render(<ChartMacro code="BM12_TJOVER12" metadata={MOCKED_METADATA} />);
+  render(<ChartMacro code="BM12_TJOVER12" metadata={MOCKED_METADATA as SeriesMetadata} />);
 
   await waitForElementToBeRemoved(() => screen.queryByRole("progressbar"));
 
   // Expect a line chart
   let chart = Chart.getChart("chart-id");
-  expect(chart.config.type).toBe("line");
+  expect(chart?.config.type).toBe("line");
 
   // Getting last 5 values
   userEvent.type(screen.getByLabelText("Últimos N"), "5");
@@ -30,7 +31,7 @@ it("should show and filter macroeconomic data correctly", async () => {
   await waitForElementToBeRemoved(() => screen.queryByRole("progressbar"));
 
   chart = Chart.getChart("chart-id");
-  expect(chart.data.labels.length).toBe(5);
+  expect(chart?.data.labels.length).toBe(5);
 
   // Getting values from 01/01/2019 to 01/01/2020
   userEvent.type(screen.getByLabelText("Data inicial"), "01/01/2019");
@@ -40,6 +41,6 @@ it("should show and filter macroeconomic data correctly", async () => {
   await waitForElementToBeRemoved(() => screen.queryByRole("progressbar"));
 
   chart = Chart.getChart("chart-id");
-  expect(chart.data.labels.slice(-1)[0]).toMatch(/^2019-01-01/);
-  expect(chart.data.labels[0]).toMatch(/^2020-01-01/);
+  expect(chart?.data.labels.slice(-1)[0]).toMatch(/^2019-01-01/);
+  expect(chart?.data.labels[0]).toMatch(/^2020-01-01/);
 });

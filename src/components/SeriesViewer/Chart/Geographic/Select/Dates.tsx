@@ -12,7 +12,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function SelectDates({ isLoading, date, dates, handleChange }) {
+interface Props {
+  isLoading: boolean;
+  date: string;
+  dates: string[];
+  handleChange(e: any): void;
+}
+
+export function SelectDates({ isLoading, date, dates, handleChange }: Props) {
   const classes = useStyles();
 
   if (isLoading) return null;

@@ -21,7 +21,13 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export function ThemeBases(props) {
+interface Props {
+  macro?: number,
+  regional?: number,
+  social?: number,
+}
+
+export function ThemeBases(props: Props) {
   const { macro, regional, social } = props;
 
   const theme = useTheme();

@@ -1,7 +1,7 @@
 import { rest } from "msw";
 import { readJson } from "test-utils";
 
-const readLocalJson = path => {
+const readLocalJson = (path: string) => {
   return readJson(__dirname + "/" + path);
 };
 
@@ -15,7 +15,7 @@ export const handlers = [
 
     const json = queries.get("$apply")
       ? readLocalJson("geographic-divisions.json")
-      : queries.get("$filter").includes("NIVNOME eq 'Estados'")
+      : queries.get("$filter")?.includes("NIVNOME eq 'Estados'")
       ? readLocalJson("values-by-state.json")
       : readLocalJson("values.json");
 

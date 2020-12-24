@@ -12,7 +12,7 @@ import { ThemeBasesButtons } from "./ThemeBasesButtons";
 import { Loading } from "../common/Loading";
 
 import { BASE_URL } from "../api/odata";
-import { SeriesBase } from "components/types"
+import { BaseType } from "./types"
 
 const useStyles = makeStyles(theme => ({
   grid: {
@@ -39,9 +39,9 @@ interface ThemeMetadata {
 export function Themes() {
   const classes = useStyles();
 
-  const [bases, setBases] = useState<SeriesBase[]>(["MACRO", "REGIONAL", "SOCIAL"]);
+  const [bases, setBases] = useState<BaseType[]>(["MACRO", "REGIONAL", "SOCIAL"]);
 
-  const handleChangeBases = (_: any, newBases: SeriesBase[]) => {
+  const handleChangeBases = (_: any, newBases: BaseType[]) => {
     setBases(newBases);
   };
 

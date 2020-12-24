@@ -6,31 +6,38 @@ import { KeyboardArrowRight, KeyboardArrowLeft } from "@material-ui/icons";
 
 const useStyles = makeStyles(theme => ({
   root: {
-    flexShrink: 0,
-    marginLeft: theme.spacing(2.5),
-    [theme.breakpoints.down("sm")]: {
-      marginLeft: "auto",
-    },
+  flexShrink: 0,
+  marginLeft: theme.spacing(2.5),
+  [theme.breakpoints.down("sm")]: {
+    marginLeft: "auto",
   },
+},
 }));
 
-export function PaginationActions(props) {
+interface Props {
+count: number;
+page: number;
+rowsPerPage: number;
+onChangePage: (_: any, page: number) => void;
+}
+
+export function PaginationActions(props: Props) {
   const classes = useStyles();
 
   const { count, page, rowsPerPage, onChangePage } = props;
 
-  const handleBackButtonClick = event => {
-    onChangePage(event, page - 1);
+  const handlePageIncrement = () => {
+    onChangePage({}, page - 1);
   };
 
-  const handleNextButtonClick = event => {
-    onChangePage(event, page + 1);
+  const handlePageDecrement = () => {
+    onChangePage({}, page + 1);
   };
 
   return (
     <div className={classes.root}>
       <IconButton
-        onClick={handleBackButtonClick}
+        onClick={handlePageIncrement}
         disabled={page === 0}
         aria-label="Página anterior"
       >
@@ -39,7 +46,7 @@ export function PaginationActions(props) {
 
       <IconButton
         disabled={page >= Math.ceil(count / rowsPerPage) - 1}
-        onClick={handleNextButtonClick}
+        onClick={handlePageDecrement}
         aria-label="Próxima página"
       >
         <KeyboardArrowRight fontSize="small" />

@@ -1,22 +1,30 @@
 import React, { useState } from "react";
 
 import { useQuery } from "react-query";
+import { useForm } from "react-hook-form";
 
 import { ChartLoading } from "../ChartLoading";
 import { ChartNoData } from "../ChartNoData";
 import { ChartSection } from "../ChartSection";
 import { ChartFilters } from "../ChartFilters";
 import { DateInputs } from "../DateInputs";
-
-import { buildCountByCategoryUrl, getDateFilter } from "../../../api/odata";
-
 import { BarChart } from "./BarChart";
+
+import { buildCountByCategoryUrl, CategoriesMetadata, getDateFilter } from "../../../api/odata";
+import { SeriesMetadata } from "components/types";
 
 const DEFAULT_LIMIT = 1;
 
-export function ChartCategorical({ code, metadata }) {
-  const [startDate, setStartDate] = useState(null);
-  const [endDate, setEndDate] = useState(null);
+interface Props {
+  code: string,
+  metadata: SeriesMetadata,
+}
+
+export function ChartCategorical({ code, metadata }: Props) {
+  const { handleSubmit } = useForm();
+
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
   const { isLoading, data } = useQuery(
@@ -33,16 +41,15 @@ export function ChartCategorical({ code, metadata }) {
     }
   );
 
-  async function handleSubmit(e) {
-    e.preventDefault();
-    let { startDate, endDate, lastN } = e.target.elements;
+  async function onSubmit(data: Record<string, string>) {
+    let { startDate, endDate, lastN } = data;
 
-    if (startDate.value) setStartDate(startDate.value);
-    if (endDate.value) setEndDate(endDate.value);
-    if (lastN.value) setLastN(lastN.value);
+    if (startDate) setStartDate(startDate);
+    if (endDate) setEndDate(endDate);
+    if (lastN) setLastN(+lastN);
   }
 
-  const categories = (data && data.value) || [];
+  const categories: CategoriesMetadata[] = (data && data.value) || [];
 
   const labels = categories.map(category => category.VALVALOR);
   const datasets = [
@@ -54,7 +61,7 @@ export function ChartCategorical({ code, metadata }) {
 
   return (
     <ChartSection>
-      <ChartFilters onSubmit={handleSubmit}>
+      <ChartFilters onSubmit={handleSubmit(onSubmit)}>
         <DateInputs metadata={metadata} />
       </ChartFilters>
 

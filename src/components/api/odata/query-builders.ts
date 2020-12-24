@@ -1,4 +1,4 @@
-import { SeriesMetadata } from "../../types/series-metadata";
+import { SeriesMetadata } from "components/types";
 import { formatDateFromDatePicker, offsetDate } from "../date-utils";
 
 export function joinFilters(...filters: Array<string | null>) {
@@ -53,7 +53,7 @@ export function getDateFilter({ start, end, lastN, metadata }: dateFilters) {
 
   return limitByDate({
     start: offsetDate({
-      date: new Date(metadata.SERMAXDATA),
+      date: new Date(metadata.SERMAXDATA || Date.now()),
       period: metadata.PERNOME,
       offset: lastN,
     }),

@@ -1,10 +1,12 @@
+export type SeriesBase = "Macroeconômico" | "Regional" | "Social"
+
 export interface SeriesMetadata {
-  [index: string]: string | number | boolean | null;
+  // [index: string]: string | number | boolean | null;
   SERCODIGO: string;
   SERNOME: string;
   SERCOMENTARIO: string | null;
   SERATUALIZACAO: string;
-  BASNOME: string;
+  BASNOME: SeriesBase;
   FNTID: number;
   FNTSIGLA: string | null;
   FNTNOME: string | null;
@@ -28,4 +30,11 @@ export interface SeriesMetadata {
   SERPROGRAMAGERADOR: null;
   SERDECIMAIS: number;
   SERQNT: number;
+}
+
+export interface SeriesValues {
+  VALDATA: string;
+  VALVALOR: number;
+  TERCODIGO: string;
+  TERNOME: string;
 }

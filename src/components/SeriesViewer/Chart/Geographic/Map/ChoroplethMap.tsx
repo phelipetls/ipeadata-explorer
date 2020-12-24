@@ -6,8 +6,16 @@ import { Geographies, Geography } from "react-simple-maps";
 import { schemeBlues as palette } from "d3-scale-chromatic";
 import { scaleQuantile } from "d3-scale";
 
-import { getMapUrl, getDivisionsUrl } from "../api/ibge";
+import {
+  getMapUrl,
+  divisionType,
+  brazilSubDivisionType,
+  divisionMetadataType,
+  getDivisionsMetadata,
+} from "../api/ibge";
 import { formatDate } from "../../../../api/date-utils";
+import { SeriesMetadata, SeriesValues } from "components/types";
+import { Feature } from "geojson";
 
 import { ChartLoading } from "../../ChartLoading";
 import { SelectDates } from "../Select/Dates";
@@ -16,17 +24,25 @@ import { MapWrapper } from "./MapWrapper";
 import keyBy from "lodash/keyBy";
 import groupBy from "lodash/groupBy";
 
-async function getOutlineMap(_, boundaryId) {
+async function getOutlineMap(_: string, boundaryId: string) {
   const url = getMapUrl({ boundaryId, format: "application/vnd.geo+json" });
   return await (await fetch(url)).json();
 }
 
-async function fetchGeographicDivisionsNames(_, division) {
-  const url = getDivisionsUrl(division);
-  return await (await fetch(url)).json();
+interface Props {
+  series: SeriesValues[];
+  metadata: SeriesMetadata;
+  division: divisionType;
+  boundaryId: string;
+  setTooltipPosition(state: {
+    x: number | undefined;
+    y: number | undefined;
+  }): void;
+  setTooltipText(state: string): void;
+  setTooltipOpen(state: boolean): void;
 }
 
-export const ChoroplethMap = React.memo(props => {
+export const ChoroplethMap: React.FC<Props> = React.memo(props => {
   const {
     series,
     metadata,
@@ -40,20 +56,22 @@ export const ChoroplethMap = React.memo(props => {
   const [date, setDate] = useState("");
 
   const {
-    isLoading: isLoadingDivisionsNames,
-    data: divisionsNames,
-  } = useQuery(
-    ["Fetch geographic divisions names", division],
-    fetchGeographicDivisionsNames,
+    isLoading: isLoadingDivisionsMetadata,
+    data: divisionsMetadata,
+  } = useQuery<divisionMetadataType[]>(
+    ["Fetch geographic divisions metadata", division],
+    (_: string, division: brazilSubDivisionType) =>
+      getDivisionsMetadata(division),
     { enabled: division }
   );
 
-  const { isLoading: isLoadingOutlineMap, data: outline } = useQuery(
+  const { isLoading: isLoadingOutlineMap, data: outline } = useQuery<Feature>(
     ["Fetch outline map given a boundary region id", boundaryId],
     getOutlineMap
   );
 
-  const divisionsNamesById = divisionsNames && keyBy(divisionsNames, "id");
+  const divisionsMetadataById =
+    divisionsMetadata && keyBy(divisionsMetadata, "id");
 
   const seriesByDate = groupBy(series, row =>
     formatDate(new Date(row.VALDATA), { periodicity: metadata.PERNOME })
@@ -68,23 +86,26 @@ export const ChoroplethMap = React.memo(props => {
   const rowsInDate = seriesByDate[date] || {};
   const valuesInDate = Object.values(rowsInDate).map(row => row["VALVALOR"]);
 
-  const scale = scaleQuantile()
+  const scale = scaleQuantile<string>()
     .domain(valuesInDate)
     .range(palette[4]);
 
-  const isLoading = isLoadingOutlineMap || isLoadingDivisionsNames;
+  const isLoading = isLoadingOutlineMap || isLoadingDivisionsMetadata;
 
   return (
     <>
       {isLoading ? (
         <ChartLoading />
       ) : (
-        <MapWrapper scale={scale} metadata={metadata} outline={outline}>
+        <MapWrapper scale={scale} metadata={metadata} outline={outline!}>
           <Geographies geography={getMapUrl({ boundaryId, division })}>
             {({ geographies }) =>
               geographies.map(geo => {
                 const id = geo.properties.codarea;
-                const name = divisionsNamesById[id]["nome"];
+                const name = divisionsMetadataById![id]["nome"];
+
+                if (!name) return;
+
                 const divisionValue = rowsInDate.find(
                   row => row["TERCODIGO"] === id
                 );
@@ -117,7 +138,7 @@ export const ChoroplethMap = React.memo(props => {
         isLoading={isLoading}
         date={date}
         dates={dates}
-        handleChange={e => setDate(e.target.value)}
+        handleChange={(e: any) => setDate(e.target.value)}
       />
     </>
   );

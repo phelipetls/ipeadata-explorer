@@ -20,15 +20,13 @@ interface Props {
   page: number;
   count: number;
   rowsPerPage: number;
-  handleChangePage: (
-    e: React.MouseEvent<HTMLButtonElement>,
-    newPage: number
-  ) => void;
+  handleChangePage: (e: any, newPage: number) => void;
   handleChangeRowsPerPage: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export function PaginationFooter(props: Props) {
   const classes = useStyles();
+
   const {
     page,
     count,
