@@ -6,8 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import { NavigationBar } from "./components/NavigationBar";
 import { Footer } from "./components/Footer";
-import { Loading } from "./components/common/Loading";
-import { ErrorBoundary } from "./components/ErrorBoundary";
+import { Loading, ErrorBoundary } from "./components/common";
 
 const HomePage = React.lazy(() => import("./components/HomePage"));
 const Themes = React.lazy(() => import("./components/Themes"));
