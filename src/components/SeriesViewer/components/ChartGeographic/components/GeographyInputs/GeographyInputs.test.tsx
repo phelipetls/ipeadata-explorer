@@ -2,13 +2,13 @@ import React from "react";
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { GeographyInputs } from "./GeographyInputs";
-import { server } from "test-utils";
+import { server } from "test-utils/server";
 import { handlers } from "./mocks/handlers";
-import { seriesDivisionType } from "api/ibge";
+import { SeriesDivision } from "api/ibge";
 
 beforeEach(() => server.use(...handlers));
 
-const MOCKED_DIVISIONS: seriesDivisionType[] = [
+const MOCKED_DIVISIONS: SeriesDivision[] = [
   "Brasil",
   "Área metropolitana",
   "Regiões",

@@ -1,11 +1,11 @@
 import React from "react";
 
-import { Loading, Container } from "components/common";
+import { Loading, ChartContainer } from "components/common";
 
 export function ChartLoading() {
   return (
-    <Container>
+    <ChartContainer>
       <Loading />
-    </Container>
+    </ChartContainer>
   );
 }

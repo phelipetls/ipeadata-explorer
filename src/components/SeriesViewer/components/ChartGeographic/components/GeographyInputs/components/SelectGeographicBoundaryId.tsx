@@ -4,21 +4,20 @@ import { useQuery } from "react-query";
 import { Select, InputLabel, FormControl, Grow } from "@material-ui/core";
 import {
   unpluralize,
-  mapBoundaryType,
-  brazilSubDivisionsType,
   getDivisionsMetadata,
+  BoundaryDivisionToBeListed,
 } from "api/ibge";
 
 import { Loading } from "components/common/Loading";
 
 interface Props {
-  boundaryDivision: mapBoundaryType;
+  boundaryDivision: BoundaryDivisionToBeListed;
 }
 
 export function SelectGeographicBoundaryId({ boundaryDivision }: Props) {
   const { isLoading, data = [] } = useQuery(
     ["Fetch geographic divisions names", boundaryDivision],
-    (_: string, boundaryDivision: brazilSubDivisionsType) =>
+    (_: string, boundaryDivision: BoundaryDivisionToBeListed) =>
       getDivisionsMetadata(boundaryDivision)
   );
 

@@ -1,6 +1,6 @@
 // TODO: use this is SeriesMetadata
 // Possible values that the field NIVNOME from a series metadata may assume
-export type seriesDivisionType =
+export type SeriesDivision =
   | "Brasil"
   | "Área metropolitana"
   | "Regiões"
@@ -15,13 +15,9 @@ export type seriesDivisionType =
 const BASE_URL_MAPS = "https://servicodados.ibge.gov.br/api/v2/malhas/";
 
 // We can use these to divide a map
-export type mapDivisionType = Exclude<seriesDivisionType, "Área metropolitana">;
+export type IbgeMapDivision = Exclude<SeriesDivision, "Área metropolitana">;
 
-// Municipalities are useless as a boundary because they can't be further
-// divided by district, neighborhood etc.
-export type mapBoundaryType = Exclude<mapDivisionType, "Munícipios">;
-
-const mapDivisionsCode: Record<mapDivisionType, number> = {
+const mapDivisionsCode: Record<IbgeMapDivision, number> = {
   Brasil: 0,
   Regiões: 1,
   Estados: 2,
@@ -32,7 +28,7 @@ const mapDivisionsCode: Record<mapDivisionType, number> = {
 
 interface getMapUrlOptions {
   boundaryId: string;
-  division?: mapDivisionType;
+  division?: IbgeMapDivision;
   format?: string;
 }
 
@@ -57,14 +53,14 @@ export function getMapUrl({
 // * Metropolitan area
 // * Regions
 // A line chart will be plotted instead.
-export type mapBoundaryDivisionType = Exclude<
-  seriesDivisionType,
+export type MapDivision = Exclude<
+  SeriesDivision,
   "Brasil" | "Regiões" | "Área metropolitana"
 >;
 
 export function shouldPlotMap(
-  division: seriesDivisionType
-): division is mapBoundaryDivisionType {
+  division: SeriesDivision
+): division is MapDivision {
   return (
     division !== "Brasil" &&
     division !== "Regiões" &&
@@ -78,14 +74,14 @@ export function shouldPlotMap(
  * contained region.
  */
 export function getContainingDivisions(
-  targetDivision: mapBoundaryDivisionType
-): mapDivisionType[] {
-  const divisions = [] as mapDivisionType[];
+  targetDivision: MapDivision
+): IbgeMapDivision[] {
+  const divisions = [] as IbgeMapDivision[];
   const mapDivisionCode = mapDivisionsCode[targetDivision];
 
   for (const [division, code] of Object.entries(mapDivisionsCode)) {
     if (code < mapDivisionCode) {
-      divisions.push(division as mapDivisionType);
+      divisions.push(division as IbgeMapDivision);
     }
   }
 
@@ -98,18 +94,24 @@ export function getContainingDivisions(
 const BASE_URL_DIVISIONS =
   "https://servicodados.ibge.gov.br/api/v1/localidades/";
 
-export type brazilSubDivisionsType = Exclude<mapDivisionType, "Brasil">;
+// Municipalities are useless as a boundary because they can't be further
+// divided by district, neighborhood etc.
+export type BoundaryDivision = Exclude<IbgeMapDivision, "Municípios">;
+
+// We need to fetch each municipality, state, region etc. so the user can
+// choose which one be used as a boundary, e.g. Rio de Janeiro if boundary is
+// state.
+export type BoundaryDivisionToBeListed = Exclude<BoundaryDivision, "Brasil">;
 
 // We need this to get a list of all Brazil's states, municipalities etc.
-const divisionsEndpoints: Record<brazilSubDivisionsType, string> = {
+const divisionsEndpoints: Record<BoundaryDivisionToBeListed, string> = {
   Regiões: "regioes",
   Estados: "estados",
   Mesorregiões: "mesorregioes",
   Microrregiões: "microrregioes",
-  Municípios: "municipios",
 };
 
-export function getDivisionsUrl(division: brazilSubDivisionsType) {
+export function listBoundaryDivision(division: BoundaryDivisionToBeListed) {
   return BASE_URL_DIVISIONS + divisionsEndpoints[division];
 }
 
@@ -123,8 +125,8 @@ export interface divisionMetadataType {
 }
 
 export async function getDivisionsMetadata(
-  division: brazilSubDivisionsType
+  division: BoundaryDivisionToBeListed
 ): Promise<divisionMetadataType[]> {
-  const url = getDivisionsUrl(division);
+  const url = listBoundaryDivision(division);
   return await (await fetch(url)).json();
 }

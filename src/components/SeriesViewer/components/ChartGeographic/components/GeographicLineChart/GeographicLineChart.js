@@ -1,7 +1,5 @@
 import React from "react";
-
-import { LineChart } from "components/LineChart";
-
+import { LineChart } from "components/common";
 import groupBy from "lodash/groupBy";
 
 export function GeographicLineChart(props) {

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { ChartJS } from "../ChartJS";
+import { ChartJS } from "components/common";
 import { schemeCategory10 as palette } from "d3-scale-chromatic";
 
 export function BarChart({ metadata, datasets, ...rest }) {

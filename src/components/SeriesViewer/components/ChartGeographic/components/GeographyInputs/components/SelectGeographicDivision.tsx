@@ -1,11 +1,11 @@
 import React from "react";
 
 import { Select, InputLabel, FormControl } from "@material-ui/core";
-import { seriesDivisionType } from "api/ibge";
+import { SeriesDivision } from "api/ibge";
 
 interface Props {
-  division: seriesDivisionType,
-  divisions: seriesDivisionType[],
+  division: SeriesDivision,
+  divisions: SeriesDivision[],
   handleChange: (e: React.ChangeEvent<{ value: unknown }>) => void
 }
 

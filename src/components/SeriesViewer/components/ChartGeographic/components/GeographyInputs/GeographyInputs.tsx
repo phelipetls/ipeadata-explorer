@@ -1,11 +1,6 @@
 import React, { useState } from "react";
 
-import {
-  mapBoundaryType,
-  seriesDivisionType,
-  shouldPlotMap,
-  getContainingDivisions,
-} from "api/ibge";
+import { BoundaryDivision, SeriesDivision, shouldPlotMap } from "api/ibge";
 
 import {
   SelectGeographicDivision,
@@ -14,13 +9,13 @@ import {
 } from "./components";
 
 interface Props {
-  division: seriesDivisionType;
-  divisions: seriesDivisionType[];
+  division: SeriesDivision;
+  divisions: SeriesDivision[];
 }
 
 export function GeographyInputs(props: Props) {
-  const [division, setDivisions] = useState<seriesDivisionType>(props.division);
-  const [boundaryDivision, setBoundaryDivision] = useState<mapBoundaryType>(
+  const [division, setDivisions] = useState<SeriesDivision>(props.division);
+  const [boundaryDivision, setBoundaryDivision] = useState<BoundaryDivision>(
     "Brasil"
   );
 
@@ -29,7 +24,7 @@ export function GeographyInputs(props: Props) {
       <SelectGeographicDivision
         division={props.division}
         divisions={props.divisions}
-        handleChange={e => setDivisions(e.target.value as seriesDivisionType)}
+        handleChange={e => setDivisions(e.target.value as SeriesDivision)}
       />
 
       {shouldPlotMap(division) && (
@@ -38,13 +33,13 @@ export function GeographyInputs(props: Props) {
             division={division}
             boundaryDivision={boundaryDivision}
             handleChange={e =>
-              setBoundaryDivision(e.target.value as mapBoundaryType)
+              setBoundaryDivision(e.target.value as BoundaryDivision)
             }
           />
 
-          {boundaryDivision !== "Brasil" && (
+          {boundaryDivision !== "Brasil" ? (
             <SelectGeographicBoundaryId boundaryDivision={boundaryDivision} />
-          )}
+          ) : null}
         </>
       )}
     </>

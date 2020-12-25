@@ -5,7 +5,7 @@ import {
   screen,
   waitForElementToBeRemoved,
 } from "test-utils";
-import { server } from "test-utils";
+import { server } from "test-utils/server";
 import { SeriesMetadata } from "components/types";
 
 import { Chart } from "chart.js";

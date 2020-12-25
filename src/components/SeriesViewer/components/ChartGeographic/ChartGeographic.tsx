@@ -20,13 +20,13 @@ import {
   buildFilter,
   buildGeographicDivisionsUrl,
 } from "api/odata";
-import { seriesDivisionType, shouldPlotMap } from "api/ibge";
+import { SeriesDivision, shouldPlotMap } from "api/ibge";
 
 const DEFAULT_LIMIT = 5;
 
 interface GeographicDivisionMetadata {
   value: {
-    NIVNOME: seriesDivisionType;
+    NIVNOME: SeriesDivision;
     Count: number;
   }[];
 }
@@ -34,13 +34,13 @@ interface GeographicDivisionMetadata {
 async function fetchGeographicDivisions(
   _: string,
   code: string
-): Promise<seriesDivisionType[]> {
+): Promise<SeriesDivision[]> {
   const url = buildGeographicDivisionsUrl(code);
   const json: GeographicDivisionMetadata = await (await fetch(url)).json();
   return json.value.map(division => division.NIVNOME);
 }
 
-function getBoundaryFilter(boundaryId: string, division: seriesDivisionType) {
+function getBoundaryFilter(boundaryId: string, division: SeriesDivision) {
   if (!shouldPlotMap(division) || boundaryId === "BR") return "";
   return `startswith(TERCODIGO,'${String(boundaryId).slice(0, 2)}')`;
 }
@@ -57,11 +57,11 @@ export function ChartGeographic({ code, metadata }: Props) {
   const [endDate, setEndDate] = useState<string | null>(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
-  const [division, setDivision] = useState<seriesDivisionType | null>(null);
+  const [division, setDivision] = useState<SeriesDivision | null>(null);
   const [boundaryId, setBoundaryId] = useState("BR");
 
   const { isLoading: isLoadingDivisions, data: divisions = [] } = useQuery<
-    seriesDivisionType[]
+    SeriesDivision[]
   >(["Fetch available geographic divisions", code], fetchGeographicDivisions, {
     onSuccess: ([firstDivision]) => setDivision(firstDivision),
   });
@@ -93,7 +93,7 @@ export function ChartGeographic({ code, metadata }: Props) {
     if (startDate) setStartDate(startDate);
     if (endDate) setEndDate(endDate);
     if (lastN) setLastN(+lastN);
-    if (division) setDivision(division as seriesDivisionType);
+    if (division) setDivision(division as SeriesDivision);
     if (boundaryId) setBoundaryId(boundaryId);
   }
 

@@ -8,10 +8,10 @@ import { scaleQuantile } from "d3-scale";
 
 import {
   getMapUrl,
-  mapDivisionType,
+  IbgeMapDivision,
   divisionMetadataType,
   getDivisionsMetadata,
-  brazilSubDivisionsType,
+  BoundaryDivisionToBeListed,
 } from "api/ibge";
 import { formatDate } from "api/date-utils";
 import { SeriesMetadata, SeriesValues } from "components/types";
@@ -31,7 +31,7 @@ async function getOutlineMap(_: string, boundaryId: string) {
 interface Props {
   series: SeriesValues[];
   metadata: SeriesMetadata;
-  division: mapDivisionType;
+  division: IbgeMapDivision;
   boundaryId: string;
   setTooltipPosition(state: {
     x: number | undefined;
@@ -59,7 +59,7 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
     data: divisionsMetadata,
   } = useQuery<divisionMetadataType[]>(
     ["Fetch geographic divisions metadata", division],
-    (_: string, division: brazilSubDivisionsType) =>
+    (_: string, division: BoundaryDivisionToBeListed) =>
       getDivisionsMetadata(division),
     { enabled: division }
   );

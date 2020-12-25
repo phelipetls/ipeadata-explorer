@@ -1,11 +1,11 @@
 import React from "react";
 
-import { NoData, Container  } from "components/common";
+import { NoData, ChartContainer  } from "components/common";
 
 export function ChartNoData() {
   return (
-    <Container>
+    <ChartContainer>
       <NoData text="Sem dados" />
-    </Container>
+    </ChartContainer>
   );
 }

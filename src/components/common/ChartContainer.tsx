@@ -9,10 +9,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface Props {
-  children: JSX.Element | JSX.Element[],
+  children: JSX.Element | JSX.Element[];
 }
 
-export function Container(props: Props) {
+export function ChartContainer(props: Props) {
   const classes = useStyles();
 
   const { children, ...rest } = props;

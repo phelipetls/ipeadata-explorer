@@ -1,11 +1,11 @@
 import React from "react";
 
 import { Select, InputLabel, FormControl, Grow } from "@material-ui/core";
-import { getContainingDivisions, mapBoundaryDivisionType, mapBoundaryType } from "api/ibge";
+import { getContainingDivisions, MapDivision, IbgeMapDivision } from "api/ibge";
 
 interface Props {
-  division: mapBoundaryDivisionType,
-  boundaryDivision: mapBoundaryType;
+  division: MapDivision;
+  boundaryDivision: IbgeMapDivision;
   handleChange: (e: React.ChangeEvent<{ value: unknown }>) => void;
 }
 
