@@ -105,7 +105,7 @@ export function SeriesSearch() {
     });
   }
 
-  function onSubmit(data: Record<string, string>) {
+  function onSubmit(data: Record<string, any>) {
     let newSearchUrl = getSearchQueryFromForm(data);
 
     setSearchUrl(newSearchUrl);

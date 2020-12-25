@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { useForm } from "react-hook-form";
 
 import {
@@ -45,12 +45,9 @@ interface Props {
   onSubmit: (data: Record<string, string>) => void;
 }
 
-export function FiltersForm(props: Props) {
+export function FiltersForm({ searchParams, onSubmit }: Props) {
   const classes = useStyles();
-  const { register, handleSubmit } = useForm();
   const isExtraSmallScreen = useBreakpoint("xs");
-
-  const { searchParams, onSubmit } = props;
 
   const {
     SERNOME,
@@ -58,15 +55,32 @@ export function FiltersForm(props: Props) {
     UNINOME,
     PERNOME,
     TEMNOME,
-    PAINOME,
+    PAICODIGO,
   } = Object.fromEntries(searchParams);
+
+  const { register, handleSubmit, formState } = useForm();
+
+  const onSubmitDirtyFields = React.useCallback(
+    data => {
+      const dirtyFieldsData = {} as Record<string, any>;
+
+      for (const [name, value] of Object.entries(data)) {
+        if (name in formState.dirtyFields) {
+          dirtyFieldsData[name] = value;
+        }
+      }
+
+      return onSubmit(dirtyFieldsData);
+    },
+    [formState.dirtyFields]
+  );
 
   return (
     <Grid
       container
       spacing={3}
       component="form"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={handleSubmit(onSubmitDirtyFields)}
       className={classes.form}
     >
       <Grid container item spacing={3}>
@@ -134,10 +148,10 @@ export function FiltersForm(props: Props) {
           <TextField
             inputRef={register}
             size="small"
-            name="PAINOME"
-            id="PAINOME"
+            name="PAICODIGO"
+            id="PAICODIGO"
             label="País"
-            defaultValue={PAINOME}
+            defaultValue={PAICODIGO}
             variant="outlined"
           />
         </Grid>

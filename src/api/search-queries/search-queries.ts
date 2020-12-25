@@ -8,7 +8,7 @@ const INCLUDE_COUNT = "$count=true";
 export const DEFAULT_SEARCH_QUERY =
   BASE_URL + `/Metadados?${INCLUDE_COUNT}&${ORDER_BY_UPDATED_DATE_DESCENDING}`;
 
-export function getSearchQueryFromForm(inputs: Record<string, string>): string {
+export function getSearchQueryFromForm(inputs: Record<string, any>): string {
   if (isEmpty(inputs)) {
     return DEFAULT_SEARCH_QUERY;
   }
@@ -24,7 +24,7 @@ export function getSearchQueryFromUrl(searchParams: URLSearchParams): string {
   return getSearchQuery(Array.from(searchParams));
 }
 
-function getSearchQuery(queries: [string, string][]) {
+function getSearchQuery(queries: [string, any][]) {
   const filterQuery = queries.map(query => getFilter(query)).join(" and ");
 
   return (
@@ -34,7 +34,7 @@ function getSearchQuery(queries: [string, string][]) {
   );
 }
 
-function getFilter([name, value]: [string, string]) {
+function getFilter([name, value]: [string, any]) {
   switch (name) {
     case "SERNOME":
     case "UNINOME":
@@ -62,7 +62,7 @@ function getFilter([name, value]: [string, string]) {
         "(" +
         value
           .split(",")
-          .map(base => `BASNOME eq '${base}'`)
+          .map((base: string) => `BASNOME eq '${base}'`)
           .join(" or ") +
         ")"
       );
