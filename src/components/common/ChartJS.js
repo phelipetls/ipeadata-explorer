@@ -5,6 +5,8 @@ import { theme } from "styles";
 
 import {
   Chart,
+  Line,
+  Point,
   BarController,
   LineController,
   CategoryScale,
@@ -17,6 +19,8 @@ import {
 import "chartjs-adapter-date-fns";
 
 Chart.register(
+  Point,
+  Line,
   BarController,
   LineController,
   CategoryScale,
@@ -67,7 +71,7 @@ export function ChartJS(props) {
     const chart = new Chart(canvasRef.current, config);
 
     return () => chart.destroy();
-  }, [chartType, labels, datasets, xScale, yScale, options]);
+  }, [labels, datasets, xScale, yScale, options]);
 
   return (
     <div className={classes.root}>

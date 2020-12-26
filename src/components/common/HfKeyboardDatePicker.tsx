@@ -9,19 +9,20 @@ import {
 type Props = Required<
   Pick<ControllerProps<typeof KeyboardDatePicker>, "control" | "name">
 > &
+  Pick<ControllerProps<typeof KeyboardDatePicker>, "defaultValue"> &
   Omit<KeyboardDatePickerProps, "value" | "onChange">;
 
 export const HfKeyboardDatePicker: React.FC<Props> = props => {
   const [date, setDate] = React.useState<Date | null>(null);
 
-  const { name, control, ...rest } = props;
+  const { name, defaultValue, control, ...rest } = props;
 
   return (
     <Controller
       control={control}
       name={name}
+      defaultValue={defaultValue || null}
       value={date}
-      defaultValue={null}
       onChange={setDate}
       render={({ name, value, onChange }) => {
         return (

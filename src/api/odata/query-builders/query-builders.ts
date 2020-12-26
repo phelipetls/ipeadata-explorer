@@ -55,7 +55,7 @@ export function getDateFilter({ start, end, lastN, metadata }: dateFilters) {
     start: offsetDate({
       date: new Date(metadata.SERMAXDATA || Date.now()),
       period: metadata.PERNOME,
-      offset: lastN,
+      offset: lastN - 1,
     }),
   });
 }

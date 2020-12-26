@@ -1,20 +1,23 @@
 import React from "react";
+import { useFormContext } from "react-hook-form";
 
 import { useQuery } from "react-query";
 import { Select, InputLabel, FormControl, Grow } from "@material-ui/core";
+
+import { Loading } from "components/common";
 import {
   unpluralize,
   getDivisionsMetadata,
   BoundaryDivisionToBeListed,
 } from "api/ibge";
 
-import { Loading } from "components/common/Loading";
-
 interface Props {
   boundaryDivision: BoundaryDivisionToBeListed;
 }
 
 export function SelectGeographicBoundaryId({ boundaryDivision }: Props) {
+  const { register } = useFormContext();
+
   const { isLoading, data = [] } = useQuery(
     ["Fetch geographic divisions names", boundaryDivision],
     (_: string, boundaryDivision: BoundaryDivisionToBeListed) =>
@@ -37,6 +40,7 @@ export function SelectGeographicBoundaryId({ boundaryDivision }: Props) {
 
         <Select
           native
+          inputRef={register}
           defaultValue={boundaries[0]}
           label={unpluralize(boundaryDivision)}
           inputProps={{

@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import { useQuery } from "react-query";
-import { useForm } from "react-hook-form";
 
 import { Map, GeographyInputs, GeographicLineChart } from "./components";
 import {
@@ -51,8 +50,6 @@ interface Props {
 }
 
 export function ChartGeographic({ code, metadata }: Props) {
-  const { handleSubmit } = useForm();
-
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
@@ -92,8 +89,8 @@ export function ChartGeographic({ code, metadata }: Props) {
 
     if (startDate) setStartDate(startDate);
     if (endDate) setEndDate(endDate);
-    if (lastN) setLastN(+lastN);
-    if (division) setDivision(division as SeriesDivision);
+    if (lastN) setLastN(lastN);
+    if (division) setDivision(division);
     if (boundaryId) setBoundaryId(boundaryId);
   }
 
@@ -103,7 +100,7 @@ export function ChartGeographic({ code, metadata }: Props) {
 
   return (
     <ChartSection>
-      <ChartFilters onSubmit={handleSubmit(onSubmit)}>
+      <ChartFilters onSubmit={onSubmit}>
         <DateInputs metadata={metadata} />
         {isLoadingDivisions ? (
           <Loading />

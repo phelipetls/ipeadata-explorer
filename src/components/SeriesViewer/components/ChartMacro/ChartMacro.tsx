@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import { useQuery } from "react-query";
-import { useForm } from "react-hook-form";
 
 import {
   ChartFilters,
@@ -22,8 +21,6 @@ interface Props {
 }
 
 export function ChartMacro({ code, metadata }: Props) {
-  const { handleSubmit } = useForm();
-
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
@@ -44,10 +41,11 @@ export function ChartMacro({ code, metadata }: Props) {
 
   function onSubmit(data: Record<string, any>) {
     const { startDate, endDate, lastN } = data;
+    console.log(data);
 
     if (startDate) setStartDate(startDate);
     if (endDate) setEndDate(endDate);
-    if (lastN) setLastN(+lastN);
+    if (lastN) setLastN(lastN);
   }
 
   const series: SeriesValues[] = (data && data.value) || [];
@@ -62,7 +60,7 @@ export function ChartMacro({ code, metadata }: Props) {
 
   return (
     <ChartSection>
-      <ChartFilters onSubmit={handleSubmit(onSubmit)}>
+      <ChartFilters onSubmit={onSubmit}>
         <DateInputs metadata={metadata} />
       </ChartFilters>
 

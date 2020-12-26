@@ -58,7 +58,23 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
     PAICODIGO,
   } = Object.fromEntries(searchParams);
 
-  const { register, handleSubmit, formState, control } = useForm();
+  const { register, handleSubmit, formState, control } = useForm({
+    defaultValues: {
+      SERNOME,
+      FNTNOME,
+      UNINOME,
+      PERNOME,
+      TEMNOME,
+      PAICODIGO,
+      BASNOME: [],
+      SERSTATUS: "",
+      SERNUMERICA: "",
+      SERTEMBR: false,
+      SERTEMMUN: false,
+      SERTEMEST: false,
+      SERTEMMET: false,
+    },
+  });
 
   const onSubmitDirtyFields = React.useCallback(
     data => {
@@ -91,7 +107,6 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
             name="SERNOME"
             id="SERNOME"
             label="Nome da série"
-            defaultValue={SERNOME}
             variant="outlined"
           />
         </Grid>
@@ -103,7 +118,6 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
             name="FNTNOME"
             id="FNTNOME"
             label="Fonte"
-            defaultValue={FNTNOME}
             variant="outlined"
           />
         </Grid>
@@ -115,7 +129,6 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
             name="UNINOME"
             id="UNINOME"
             label="Unidade"
-            defaultValue={UNINOME}
             variant="outlined"
           />
         </Grid>
@@ -127,7 +140,6 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
             name="PERNOME"
             id="PERNOME"
             label="Periodicidade"
-            defaultValue={PERNOME}
             variant="outlined"
           />
         </Grid>
@@ -139,7 +151,6 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
             name="TEMNOME"
             id="TEMNOME"
             label="Tema"
-            defaultValue={TEMNOME}
             variant="outlined"
           />
         </Grid>
@@ -151,7 +162,6 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
             name="PAICODIGO"
             id="PAICODIGO"
             label="País"
-            defaultValue={PAICODIGO}
             variant="outlined"
           />
         </Grid>
@@ -193,7 +203,6 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
             <Controller
               control={control}
               name="BASNOME"
-              defaultValue={[]}
               as={
                 <Select
                   multiple

@@ -1,8 +1,8 @@
-import * as React from 'react';
+import * as React from "react";
 
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useForm } from "react-hook-form";
+import { useForm, FormProvider } from "react-hook-form";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -30,15 +30,18 @@ interface Props {
 
 export function ChartFilters({ onSubmit, children }: Props) {
   const classes = useStyles();
-  const { handleSubmit } = useForm();
+
+  const { ...methods } = useForm();
 
   return (
-    <form className={classes.form} onSubmit={handleSubmit(onSubmit)}>
-      {children}
+    <FormProvider {...methods}>
+      <form className={classes.form} onSubmit={methods.handleSubmit(onSubmit)}>
+        {children}
 
-      <Button type="submit" variant="contained" color="primary">
-        Filtrar
-      </Button>
-    </form>
+        <Button type="submit" variant="contained" color="primary">
+          Filtrar
+        </Button>
+      </form>
+    </FormProvider>
   );
 }

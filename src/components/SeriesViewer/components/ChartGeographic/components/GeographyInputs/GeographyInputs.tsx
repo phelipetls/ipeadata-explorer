@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 
 import { BoundaryDivision, SeriesDivision, shouldPlotMap } from "api/ibge";
-
 import {
   SelectGeographicDivision,
   SelectGeographicBoundaryDivision,

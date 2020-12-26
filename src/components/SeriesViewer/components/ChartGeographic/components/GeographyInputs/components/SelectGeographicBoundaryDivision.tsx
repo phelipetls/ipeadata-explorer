@@ -1,4 +1,5 @@
 import React from "react";
+import { useFormContext } from "react-hook-form";
 
 import { Select, InputLabel, FormControl, Grow } from "@material-ui/core";
 import { getContainingDivisions, MapDivision, IbgeMapDivision } from "api/ibge";
@@ -10,6 +11,7 @@ interface Props {
 }
 
 export function SelectGeographicBoundaryDivision(props: Props) {
+  const { register } = useFormContext();
   const { division, boundaryDivision, handleChange } = props;
 
   const boundaries = getContainingDivisions(division);
@@ -23,6 +25,7 @@ export function SelectGeographicBoundaryDivision(props: Props) {
 
         <Select
           native
+          inputRef={register}
           value={boundaryDivision}
           label="Limite geográfico"
           onChange={handleChange}

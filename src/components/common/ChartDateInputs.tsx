@@ -5,10 +5,10 @@ import { Event } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
 import { DatePickerView } from "@material-ui/pickers";
 
-import { useForm } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 import { HfKeyboardDatePicker } from "components/common";
-import { SeriesMetadata } from "components/types"
+import { SeriesMetadata } from "components/types";
 
 const useStyles = makeStyles(theme => ({
   datePicker: {
@@ -29,13 +29,13 @@ const dateViewsByPeriodicity: Record<string, DatePickerView[]> = {
 };
 
 interface Props {
-  metadata: SeriesMetadata,
+  metadata: SeriesMetadata;
 }
 
 export function DateInputs({ metadata }: Props) {
   const classes = useStyles();
 
-  const { register, control } = useForm();
+  const { register, control } = useFormContext();
 
   const resetDate = (date: Date) => {
     if (!date) return;
@@ -85,7 +85,7 @@ export function DateInputs({ metadata }: Props) {
       />
 
       <TextField
-        ref={register}
+        inputRef={register}
         type="number"
         name="lastN"
         id="last-n"

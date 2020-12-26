@@ -1,15 +1,17 @@
 import React from "react";
+import { useFormContext } from "react-hook-form";
 
 import { Select, InputLabel, FormControl } from "@material-ui/core";
 import { SeriesDivision } from "api/ibge";
 
 interface Props {
-  division: SeriesDivision,
-  divisions: SeriesDivision[],
-  handleChange: (e: React.ChangeEvent<{ value: unknown }>) => void
+  division: SeriesDivision;
+  divisions: SeriesDivision[];
+  handleChange: (e: React.ChangeEvent<{ value: unknown }>) => void;
 }
 
 export function SelectGeographicDivision(props: Props) {
+  const { register } = useFormContext();
   const { division, divisions, handleChange } = props;
 
   return (
@@ -19,8 +21,9 @@ export function SelectGeographicDivision(props: Props) {
       </InputLabel>
 
       <Select
-        defaultValue={division}
         native
+        inputRef={register}
+        defaultValue={division}
         label="Divisões geográficas"
         onChange={handleChange}
         inputProps={{ name: "division", id: "division" }}
