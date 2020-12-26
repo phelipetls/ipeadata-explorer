@@ -1,6 +1,5 @@
 export * from "./Collapsed";
 export * from "./CollapsedRow";
-export * from "./KeyboardDatePicker";
 export * from "./Loading";
 export * from "./MetadataTable";
 export * from "./NoData";
@@ -21,3 +20,4 @@ export * from "./LineChart";
 export * from "./BarChart";
 export * from "./SearchButton";
 export * from "./BackButton";
+export * from "./HfKeyboardDatePicker";

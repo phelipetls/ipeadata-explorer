@@ -4,11 +4,12 @@ import { Link, TableContainer, Paper } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
 import { useQuery } from "react-query";
 
-import { TableSortable, TableSkeleton  } from "components/common";
+import { TableSortable, TableSkeleton } from "components/common";
 import { TableColumn } from "components/types";
 
 const COUNTRIES_URL =
-  "http://ipeadata2-homologa.ipea.gov.br/api/v1/Paises?$expand=Metadados($select=SERCODIGO;$count=true)";
+  "http://ipeadata2-homologa.ipea.gov.br/api/v1/Paises?" +
+  "$expand=Metadados($select=SERCODIGO;$count=true)";
 
 interface CountryMetadata {
   [index: string]: string | number;
@@ -22,7 +23,7 @@ const columns: TableColumn<CountryMetadata>[] = [
     label: "País",
     type: "string",
     render: (row: CountryMetadata) => (
-      <Link component={RouterLink} to={`/series?PAINOME=${row["PAINOME"]}`}>
+      <Link component={RouterLink} to={`/series?PAICODIGO=${row["PAINOME"]}`}>
         {row["PAINOME"]}
       </Link>
     ),

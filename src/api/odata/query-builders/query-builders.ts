@@ -1,5 +1,5 @@
 import { SeriesMetadata } from "components/types";
-import { formatDateFromDatePicker, offsetDate } from "api/date-utils";
+import { formatDateToBackend, offsetDate } from "api/date-utils";
 
 export function joinFilters(...filters: Array<string | null>) {
   return filters.filter(value => Boolean(value)).join(" and ");
@@ -29,8 +29,8 @@ export function limitByDate({ start, end }: dateLimits) {
 }
 
 interface dateFilters {
-  start: string | null;
-  end: string | null;
+  start: Date | null;
+  end: Date | null;
   lastN: number;
   metadata: SeriesMetadata;
 }
@@ -38,17 +38,17 @@ interface dateFilters {
 export function getDateFilter({ start, end, lastN, metadata }: dateFilters) {
   if (start && end) {
     return limitByDate({
-      start: formatDateFromDatePicker(start),
-      end: formatDateFromDatePicker(end),
+      start: formatDateToBackend(start),
+      end: formatDateToBackend(end, { isEndDate: true }),
     });
   }
 
   if (start) {
-    return limitByDate({ start: formatDateFromDatePicker(start) });
+    return limitByDate({ start: formatDateToBackend(start) });
   }
 
   if (end) {
-    return limitByDate({ end: formatDateFromDatePicker(end) });
+    return limitByDate({ end: formatDateToBackend(end, { isEndDate: true }) });
   }
 
   return limitByDate({

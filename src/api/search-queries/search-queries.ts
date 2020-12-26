@@ -1,5 +1,5 @@
 import { BASE_URL } from "../odata";
-import { formatDateFromDatePicker } from "../date-utils";
+import { formatDateToBackend } from "../date-utils";
 import isEmpty from "lodash/isEmpty";
 
 const ORDER_BY_UPDATED_DATE_DESCENDING = "$orderby=SERATUALIZACAO desc";
@@ -54,9 +54,9 @@ function getFilter([name, value]: [string, any]) {
         ` contains(PAICODIGO,'${value}'))`
       );
     case "SERMINDATA":
-      return `SERMINDATA ge ${formatDateFromDatePicker(value as string)}`;
+      return `SERMINDATA ge ${formatDateToBackend(value as Date)}`;
     case "SERMAXDATA":
-      return `SERMAXDATA le ${formatDateFromDatePicker(value as string)}`;
+      return `SERMAXDATA le ${formatDateToBackend(value as Date)}`;
     case "BASNOME":
       return (
         "(" +

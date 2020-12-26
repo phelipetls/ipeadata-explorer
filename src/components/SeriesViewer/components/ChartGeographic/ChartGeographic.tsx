@@ -53,8 +53,8 @@ interface Props {
 export function ChartGeographic({ code, metadata }: Props) {
   const { handleSubmit } = useForm();
 
-  const [startDate, setStartDate] = useState<string | null>(null);
-  const [endDate, setEndDate] = useState<string | null>(null);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
   const [division, setDivision] = useState<SeriesDivision | null>(null);
@@ -87,7 +87,7 @@ export function ChartGeographic({ code, metadata }: Props) {
     { enabled: division }
   );
 
-  function onSubmit(data: Record<string, string>) {
+  function onSubmit(data: Record<string, any>) {
     const { startDate, endDate, lastN, division, boundaryId } = data;
 
     if (startDate) setStartDate(startDate);

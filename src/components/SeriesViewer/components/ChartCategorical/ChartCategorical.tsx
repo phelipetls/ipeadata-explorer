@@ -17,8 +17,8 @@ interface Props {
 export function ChartCategorical({ code, metadata }: Props) {
   const { handleSubmit } = useForm();
 
-  const [startDate, setStartDate] = useState<string | null>(null);
-  const [endDate, setEndDate] = useState<string | null>(null);
+  const [startDate, setStartDate] = useState<Date | null>(null);
+  const [endDate, setEndDate] = useState<Date | null>(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
 
   const { isLoading, data } = useQuery(
@@ -35,7 +35,7 @@ export function ChartCategorical({ code, metadata }: Props) {
     }
   );
 
-  async function onSubmit(data: Record<string, string>) {
+  async function onSubmit(data: Record<string, any>) {
     let { startDate, endDate, lastN } = data;
 
     if (startDate) setStartDate(startDate);

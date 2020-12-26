@@ -3,9 +3,11 @@ import React from "react";
 import { TextField } from "@material-ui/core";
 import { Event } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { KeyboardDatePicker } from "components/common/KeyboardDatePicker";
 import { DatePickerView } from "@material-ui/pickers";
+
 import { useForm } from "react-hook-form";
+
+import { HfKeyboardDatePicker } from "components/common";
 import { SeriesMetadata } from "components/types"
 
 const useStyles = makeStyles(theme => ({
@@ -33,7 +35,7 @@ interface Props {
 export function DateInputs({ metadata }: Props) {
   const classes = useStyles();
 
-  const { register } = useForm();
+  const { register, control } = useForm();
 
   const resetDate = (date: Date) => {
     if (!date) return;
@@ -52,8 +54,8 @@ export function DateInputs({ metadata }: Props) {
 
   return (
     <>
-      <KeyboardDatePicker
-        ref={register}
+      <HfKeyboardDatePicker
+        control={control}
         name="startDate"
         id="start-date"
         label="Data inicial"
@@ -67,8 +69,8 @@ export function DateInputs({ metadata }: Props) {
         className={classes.datePicker}
       />
 
-      <KeyboardDatePicker
-        ref={register}
+      <HfKeyboardDatePicker
+        control={control}
         name="endDate"
         id="end-date"
         label="Data final"

@@ -14,7 +14,7 @@ import {
   Checkbox,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { KeyboardDatePicker } from "components/common";
+import { HfKeyboardDatePicker } from "components/common";
 import { useBreakpoint } from "components/utils";
 
 const useStyles = makeStyles(theme => ({
@@ -159,32 +159,24 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
 
       <Grid container item spacing={3} justify="center">
         <Grid item>
-          <Controller
+          <HfKeyboardDatePicker
             control={control}
             name="SERMINDATA"
-            as={
-              <KeyboardDatePicker
-                size="small"
-                id="start-date"
-                label="Data inicial"
-                style={{ width: "19ch" }}
-              />
-            }
+            label="Data inicial"
+            size="small"
+            id="start-date"
+            style={{ width: "19ch" }}
           />
         </Grid>
 
         <Grid item>
-          <Controller
+          <HfKeyboardDatePicker
             control={control}
             name="SERMAXDATA"
-            as={
-              <KeyboardDatePicker
-                size="small"
-                id="end-date"
-                label="Data final"
-                style={{ width: "19ch" }}
-              />
-            }
+            label="Data final"
+            size="small"
+            id="end-date"
+            style={{ width: "19ch" }}
           />
         </Grid>
       </Grid>
@@ -223,8 +215,8 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
           <FormControl size="small" variant="outlined" component="fieldset">
             <InputLabel htmlFor="SERSTATUS">Status</InputLabel>
             <Select
-              inputRef={register}
               native
+              inputRef={register}
               label="Status"
               inputProps={{ name: "SERSTATUS", id: "SERSTATUS" }}
             >
@@ -239,8 +231,8 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
           <FormControl size="small" variant="outlined" component="fieldset">
             <InputLabel htmlFor="SERNUMERICA">Tipo</InputLabel>
             <Select
-              inputRef={register}
               native
+              inputRef={register}
               label="Tipo"
               inputProps={{ name: "SERNUMERICA", id: "SERNUMERICA" }}
             >
