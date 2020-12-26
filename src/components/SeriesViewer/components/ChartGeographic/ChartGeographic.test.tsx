@@ -38,7 +38,8 @@ it("should show and filter geographic data correctly", async () => {
   userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
 
   await waitForElementToBeRemoved(() => screen.queryByTestId("chart-id"));
+  await waitForElementToBeRemoved(() => screen.queryByRole("progressbar"));
 
-  // Expect a map now
+  // Expect a svg now
   expect(document.querySelector("svg.rsm-svg")).toBeInTheDocument();
 });

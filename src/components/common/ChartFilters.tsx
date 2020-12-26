@@ -31,7 +31,7 @@ interface Props {
 export function ChartFilters({ onSubmit, children }: Props) {
   const classes = useStyles();
 
-  const { ...methods } = useForm();
+  const methods = useForm();
 
   return (
     <FormProvider {...methods}>

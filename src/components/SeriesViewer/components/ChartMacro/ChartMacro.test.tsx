@@ -28,6 +28,7 @@ it("should show and filter macroeconomic data correctly", async () => {
   userEvent.type(screen.getByLabelText("Últimos N"), "5");
   userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
 
+  await waitForElementToBeRemoved(() => screen.queryByTestId("chart-id"));
   await waitForElementToBeRemoved(() => screen.queryByRole("progressbar"));
 
   chart = Chart.getChart("chart-id");
@@ -38,9 +39,11 @@ it("should show and filter macroeconomic data correctly", async () => {
   userEvent.type(screen.getByLabelText("Data final"), "01/01/2020");
   userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
 
+  await waitForElementToBeRemoved(() => screen.queryByTestId("chart-id"));
   await waitForElementToBeRemoved(() => screen.queryByRole("progressbar"));
 
   chart = Chart.getChart("chart-id");
+  // FIXME: this is counter-intuitive and probably not needed
   expect(chart?.data.labels.slice(-1)[0]).toMatch(/^2019-01-01/);
   expect(chart?.data.labels[0]).toMatch(/^2020-01-01/);
 });

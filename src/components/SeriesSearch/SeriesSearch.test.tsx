@@ -4,6 +4,9 @@ import { SeriesSearch } from "./SeriesSearch";
 import { render, screen, waitFor } from "test-utils";
 import { server } from "test-utils/server";
 
+// This usually times out when all tests run
+jest.setTimeout(7000);
+
 import { handlers } from "./mocks/handlers";
 beforeEach(() => server.use(...handlers));
 

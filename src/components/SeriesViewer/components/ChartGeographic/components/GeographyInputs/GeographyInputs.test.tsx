@@ -1,10 +1,12 @@
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { GeographyInputs } from "./GeographyInputs";
+import { render } from "test-utils";
 import { server } from "test-utils/server";
 import { handlers } from "./mocks/handlers";
 import { SeriesDivision } from "api/ibge";
+import { FormProvider, useForm } from "react-hook-form";
 
 beforeEach(() => server.use(...handlers));
 
@@ -18,21 +20,31 @@ const MOCKED_DIVISIONS: SeriesDivision[] = [
   "Municípios",
 ];
 
-test("if geography inputs work correctly", async () => {
-  render(<GeographyInputs division="Brasil" divisions={MOCKED_DIVISIONS} />);
+const FormContext = ({ children }: { children: JSX.Element }) => {
+  const methods = useForm();
+  return <FormProvider {...methods}>{children}</FormProvider>;
+};
 
-  // A user wants to see values per states
+test("if geography inputs work correctly", async () => {
+  render(
+    <FormContext>
+      <GeographyInputs division="Brasil" divisions={MOCKED_DIVISIONS} />
+    </FormContext>
+  );
+
+  // A user wants to see values per state
   const geographicDivision = await screen.findByLabelText(
     /divisões geográficas/i
   );
   userEvent.selectOptions(geographicDivision, "Estados");
 
-  // We expect an input for geographic boundary to appear, e.g. if the user
-  // wants to see states withing the northern region only.
+  // We expect an input to select a geographic boundary to appear
+  // e.g. if the user wants to see only stats from the northern region.
   const geographicBoundary = await screen.findByLabelText(/limite geográfico/i);
   userEvent.selectOptions(geographicBoundary, "Regiões");
 
-  // A new input should appear to select a specific geographic boundary (south
-  // region, northern region etc.)
-  await screen.findByLabelText("Região");
+  // A new input should appear to select a specific region
+  await waitFor(() =>
+    expect(screen.getByLabelText("Região")).toBeInTheDocument()
+  );
 });

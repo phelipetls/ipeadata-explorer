@@ -41,7 +41,6 @@ export function ChartMacro({ code, metadata }: Props) {
 
   function onSubmit(data: Record<string, any>) {
     const { startDate, endDate, lastN } = data;
-    console.log(data);
 
     if (startDate) setStartDate(startDate);
     if (endDate) setEndDate(endDate);
