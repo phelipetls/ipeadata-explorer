@@ -1,5 +1,5 @@
 import * as React from "react";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 
 import {
   Grid,
@@ -58,7 +58,7 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
     PAICODIGO,
   } = Object.fromEntries(searchParams);
 
-  const { register, handleSubmit, formState } = useForm();
+  const { register, handleSubmit, formState, control } = useForm();
 
   const onSubmitDirtyFields = React.useCallback(
     data => {
@@ -72,7 +72,7 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
 
       return onSubmit(dirtyFieldsData);
     },
-    [formState.dirtyFields]
+    [onSubmit, formState.dirtyFields]
   );
 
   return (
@@ -159,24 +159,32 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
 
       <Grid container item spacing={3} justify="center">
         <Grid item>
-          <KeyboardDatePicker
-            inputRef={register}
-            size="small"
+          <Controller
+            control={control}
             name="SERMINDATA"
-            id="start-date"
-            label="Data inicial"
-            style={{ width: "19ch" }}
+            as={
+              <KeyboardDatePicker
+                size="small"
+                id="start-date"
+                label="Data inicial"
+                style={{ width: "19ch" }}
+              />
+            }
           />
         </Grid>
 
         <Grid item>
-          <KeyboardDatePicker
-            inputRef={register}
-            size="small"
+          <Controller
+            control={control}
             name="SERMAXDATA"
-            id="end-date"
-            label="Data final"
-            style={{ width: "19ch" }}
+            as={
+              <KeyboardDatePicker
+                size="small"
+                id="end-date"
+                label="Data final"
+                style={{ width: "19ch" }}
+              />
+            }
           />
         </Grid>
       </Grid>
@@ -190,17 +198,24 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
             className={classes.formControl}
           >
             <InputLabel htmlFor="BASNOME">Base</InputLabel>
-            <Select
-              inputRef={register}
-              multiple
-              label="Base"
-              inputProps={{ name: "BASNOME", id: "BASNOME" }}
+            <Controller
+              control={control}
+              name="BASNOME"
               defaultValue={[]}
-            >
-              <MenuItem value="Macroeconômico">Macroeconômico</MenuItem>
-              <MenuItem value="Regional">Regional</MenuItem>
-              <MenuItem value="Social">Social</MenuItem>
-            </Select>
+              as={
+                <Select
+                  multiple
+                  label="Base"
+                  inputProps={{
+                    id: "BASNOME",
+                  }}
+                >
+                  <MenuItem value="Macroeconômico">Macroeconômico</MenuItem>
+                  <MenuItem value="Regional">Regional</MenuItem>
+                  <MenuItem value="Social">Social</MenuItem>
+                </Select>
+              }
+            />
           </FormControl>
         </Grid>
 
