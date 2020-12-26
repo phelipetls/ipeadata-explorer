@@ -16,7 +16,7 @@ interface Props {
   boundaryId: string;
 }
 
-export const Map: React.FC<Props> = props => {
+export const GeographicMap: React.FC<Props> = props => {
   const [tooltipText, setTooltipText] = useState("");
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const [tooltipPosition, setTooltipPosition] = useState<tooltipPositionType>({

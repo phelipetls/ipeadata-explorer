@@ -2,13 +2,17 @@ import React, { useState } from "react";
 
 import { useQuery } from "react-query";
 
-import { Map, GeographyInputs, GeographicLineChart } from "./components";
+import {
+  GeographicMap,
+  GeographyInputs,
+  GeographicLineChart,
+} from "./components";
 import {
   Loading,
   ChartLoading,
   ChartNoData,
   ChartFilters,
-  DateInputs,
+  ChartDateInputs,
   ChartSection,
 } from "components/common";
 import { SeriesMetadata } from "components/types";
@@ -101,7 +105,7 @@ export function ChartGeographic({ code, metadata }: Props) {
   return (
     <ChartSection>
       <ChartFilters onSubmit={onSubmit}>
-        <DateInputs metadata={metadata} />
+        <ChartDateInputs metadata={metadata} />
         {isLoadingDivisions ? (
           <Loading />
         ) : (
@@ -114,7 +118,7 @@ export function ChartGeographic({ code, metadata }: Props) {
       ) : series.length === 0 ? (
         <ChartNoData />
       ) : division && shouldPlotMap(division) ? (
-        <Map
+        <GeographicMap
           series={series}
           metadata={metadata}
           division={division}

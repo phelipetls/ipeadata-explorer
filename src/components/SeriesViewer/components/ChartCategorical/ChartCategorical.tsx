@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useQuery } from "react-query";
 import { useForm } from "react-hook-form";
 
-import { ChartLoading, ChartNoData, ChartSection, ChartFilters, DateInputs, BarChart } from "components/common";
+import { ChartLoading, ChartNoData, ChartSection, ChartFilters, ChartDateInputs, BarChart } from "components/common";
 import { SeriesMetadata } from "components/types";
 import { buildCountByCategoryUrl, CategoriesMetadata, getDateFilter } from "api/odata";
 
@@ -56,7 +56,7 @@ export function ChartCategorical({ code, metadata }: Props) {
   return (
     <ChartSection>
       <ChartFilters onSubmit={handleSubmit(onSubmit)}>
-        <DateInputs metadata={metadata} />
+        <ChartDateInputs metadata={metadata} />
       </ChartFilters>
 
       {isLoading ? (

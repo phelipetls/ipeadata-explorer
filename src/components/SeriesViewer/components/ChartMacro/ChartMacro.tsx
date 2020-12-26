@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 
 import {
   ChartFilters,
-  DateInputs,
+  ChartDateInputs,
   ChartSection,
   LineChart,
   ChartLoading,
@@ -61,7 +61,7 @@ export function ChartMacro({ code, metadata }: Props) {
   return (
     <ChartSection>
       <ChartFilters onSubmit={onSubmit}>
-        <DateInputs metadata={metadata} />
+        <ChartDateInputs metadata={metadata} />
       </ChartFilters>
 
       {isLoading ? (

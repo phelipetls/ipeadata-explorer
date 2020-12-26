@@ -37,9 +37,9 @@ function getProjection(
 
 interface MapWrapperProps {
   scale: ScaleQuantile<string>;
-  metadata: SeriesMetadata,
-  outline: Feature,
-  children: JSX.Element,
+  metadata: SeriesMetadata;
+  outline: Feature;
+  children: JSX.Element;
 }
 
 export function MapWrapper(props: MapWrapperProps) {
@@ -50,13 +50,17 @@ export function MapWrapper(props: MapWrapperProps) {
   const svgWidth = Math.min(window.innerWidth, SVG_WIDTH);
   const svgHeight = SVG_HEIGHT;
 
-  const getProjectionFn = () => getProjection(outline, {
+  const projection = getProjection(outline, {
     mapWidth: svgWidth,
     mapHeight: MAP_HEIGHT,
   });
 
   return (
-    <ComposableMap width={svgWidth} height={svgHeight} projection={getProjectionFn}>
+    <ComposableMap
+      width={svgWidth}
+      height={svgHeight}
+      projection={projection as any}
+    >
       <text x={svgWidth / 2} textAnchor="middle" dominantBaseline="hanging">
         {metadata.SERNOME}
       </text>

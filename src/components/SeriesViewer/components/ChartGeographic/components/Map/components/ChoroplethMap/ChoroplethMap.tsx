@@ -23,7 +23,7 @@ import { MapWrapper, SelectDate } from "./components";
 import keyBy from "lodash/keyBy";
 import groupBy from "lodash/groupBy";
 
-async function getOutlineMap(_: string, boundaryId: string) {
+async function getOutlineMap(_: string, boundaryId: string): Promise<Feature> {
   const url = getMapUrl({ boundaryId, format: "application/vnd.geo+json" });
   return await (await fetch(url)).json();
 }

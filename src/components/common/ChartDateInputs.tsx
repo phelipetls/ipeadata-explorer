@@ -32,7 +32,7 @@ interface Props {
   metadata: SeriesMetadata;
 }
 
-export function DateInputs({ metadata }: Props) {
+export function ChartDateInputs({ metadata }: Props) {
   const classes = useStyles();
 
   const { register, control } = useFormContext();
