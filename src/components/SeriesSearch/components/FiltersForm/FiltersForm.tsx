@@ -40,6 +40,22 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+interface FiltersFormData {
+  SERNOME: string;
+  FNTNOME: string;
+  UNINOME: string;
+  PERNOME: string;
+  TEMNOME: string;
+  PAICODIGO: string;
+  BASNOME: string[];
+  SERSTATUS: string;
+  SERNUMERICA: string;
+  SERTEMBR: boolean;
+  SERTEMMUN: boolean;
+  SERTEMEST: boolean;
+  SERTEMMET: boolean;
+}
+
 interface Props {
   searchParams: URLSearchParams;
   onSubmit: (data: Record<string, string>) => void;
@@ -58,7 +74,9 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
     PAICODIGO,
   } = Object.fromEntries(searchParams);
 
-  const { register, handleSubmit, formState, control } = useForm({
+  const { register, handleSubmit, formState, control } = useForm<
+    FiltersFormData
+  >({
     defaultValues: {
       SERNOME,
       FNTNOME,

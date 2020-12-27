@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useForm, FormProvider } from "react-hook-form";
+import { useForm, FormProvider, FieldValues } from "react-hook-form";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -23,14 +23,16 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface Props {
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+interface Props<T extends FieldValues> {
+  onSubmit: (data: T) => void;
   children: JSX.Element | JSX.Element[];
 }
 
-export function ChartFilters({ onSubmit, children }: Props) {
+export function ChartFilters<T extends FieldValues>({
+  onSubmit,
+  children,
+}: Props<T>) {
   const classes = useStyles();
-
   const methods = useForm();
 
   return (

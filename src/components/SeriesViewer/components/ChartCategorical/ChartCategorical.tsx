@@ -1,22 +1,31 @@
 import React, { useState } from "react";
 
 import { useQuery } from "react-query";
-import { useForm } from "react-hook-form";
 
-import { ChartLoading, ChartNoData, ChartSection, ChartFilters, ChartDateInputs, BarChart } from "components/common";
+import {
+  ChartLoading,
+  ChartNoData,
+  ChartSection,
+  ChartFilters,
+  ChartDateInputs,
+  ChartDateInputsData,
+  BarChart,
+} from "components/common";
 import { SeriesMetadata } from "components/types";
-import { buildCountByCategoryUrl, CategoriesMetadata, getDateFilter } from "api/odata";
+import {
+  buildCountByCategoryUrl,
+  CategoriesMetadata,
+  getDateFilter,
+} from "api/odata";
 
 const DEFAULT_LIMIT = 1;
 
 interface Props {
-  code: string,
-  metadata: SeriesMetadata,
+  code: string;
+  metadata: SeriesMetadata;
 }
 
 export function ChartCategorical({ code, metadata }: Props) {
-  const { handleSubmit } = useForm();
-
   const [startDate, setStartDate] = useState<Date | null>(null);
   const [endDate, setEndDate] = useState<Date | null>(null);
   const [lastN, setLastN] = useState(DEFAULT_LIMIT);
@@ -35,7 +44,7 @@ export function ChartCategorical({ code, metadata }: Props) {
     }
   );
 
-  async function onSubmit(data: Record<string, any>) {
+  async function onSubmit(data: ChartDateInputsData) {
     let { startDate, endDate, lastN } = data;
 
     if (startDate) setStartDate(startDate);
@@ -55,7 +64,7 @@ export function ChartCategorical({ code, metadata }: Props) {
 
   return (
     <ChartSection>
-      <ChartFilters onSubmit={handleSubmit(onSubmit)}>
+      <ChartFilters onSubmit={onSubmit}>
         <ChartDateInputs metadata={metadata} />
       </ChartFilters>
 

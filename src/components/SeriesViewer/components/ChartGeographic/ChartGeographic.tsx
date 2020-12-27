@@ -5,6 +5,7 @@ import { useQuery } from "react-query";
 import {
   GeographicMap,
   GeographyInputs,
+  GeographyInputsData,
   GeographicLineChart,
 } from "./components";
 import {
@@ -13,6 +14,7 @@ import {
   ChartNoData,
   ChartFilters,
   ChartDateInputs,
+  ChartDateInputsData,
   ChartSection,
 } from "components/common";
 import { SeriesMetadata } from "components/types";
@@ -88,7 +90,7 @@ export function ChartGeographic({ code, metadata }: Props) {
     { enabled: division }
   );
 
-  function onSubmit(data: Record<string, any>) {
+  function onSubmit(data: ChartDateInputsData & GeographyInputsData) {
     const { startDate, endDate, lastN, division, boundaryId } = data;
 
     if (startDate) setStartDate(startDate);
