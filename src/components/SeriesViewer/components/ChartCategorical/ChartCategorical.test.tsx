@@ -5,13 +5,14 @@ import {
   screen,
   waitForElementToBeRemoved,
 } from "test-utils";
-import { server } from "test-utils/server";
-import { SeriesMetadata } from "components/types";
 
 import { Chart } from "chart.js";
 import { ChartCategorical } from "./ChartCategorical";
+import { SeriesMetadata } from "components/types";
 
+import { server } from "test-utils/server";
 import { handlers } from "./mocks/handlers";
+
 beforeEach(() => server.use(...handlers));
 
 const MOCKED_METADATA = readJson(

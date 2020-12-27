@@ -1,13 +1,13 @@
 import * as React from "react";
-import userEvent from "@testing-library/user-event";
-import { Chart } from "chart.js";
 import {
   render,
   readJson,
   screen,
   waitForElementToBeRemoved,
-  waitFor,
 } from "test-utils";
+import userEvent from "@testing-library/user-event";
+
+import { Chart } from "chart.js";
 import { ChartGeographic } from "./ChartGeographic";
 import { SeriesMetadata } from "components/types";
 
@@ -15,6 +15,7 @@ import { server } from "test-utils/server";
 import { handlers } from "./mocks/handlers";
 
 beforeEach(() => server.use(...handlers));
+
 const MOCKED_METADATA = readJson(__dirname + "/mocks/metadata.json");
 
 it("should show and filter geographic data correctly", async () => {

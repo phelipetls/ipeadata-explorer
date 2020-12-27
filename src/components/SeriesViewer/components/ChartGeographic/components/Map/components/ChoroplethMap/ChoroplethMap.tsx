@@ -102,9 +102,6 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
               geographies.map(geo => {
                 const id = geo.properties.codarea;
                 const name = divisionsMetadataById![id]["nome"];
-
-                if (!name) return;
-
                 const divisionValue = rowsInDate.find(
                   row => row["TERCODIGO"] === id
                 );

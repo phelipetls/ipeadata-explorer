@@ -1,18 +1,21 @@
 import * as React from "react";
 import userEvent from "@testing-library/user-event";
-import { Chart } from "chart.js";
 import {
   render,
   screen,
   waitForElementToBeRemoved,
   readJson,
 } from "test-utils";
+
+import { Chart } from "chart.js";
 import { ChartMacro } from "./ChartMacro";
-import { server } from "test-utils/server";
-import { handlers } from "./mocks/handlers";
 import { SeriesMetadata } from "components/types";
 
+import { server } from "test-utils/server";
+import { handlers } from "./mocks/handlers";
+
 beforeEach(() => server.use(...handlers));
+
 const MOCKED_METADATA = readJson(__dirname + "/mocks/metadata.json");
 
 it("should show and filter macroeconomic data correctly", async () => {

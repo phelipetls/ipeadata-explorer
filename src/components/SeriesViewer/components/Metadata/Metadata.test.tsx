@@ -1,7 +1,8 @@
-import { SeriesMetadata } from "components/types";
 import * as React from "react";
 import { render, readJson, screen } from "test-utils";
-import { Metadata } from "./index";
+
+import { SeriesMetadata } from "components/types";
+import { Metadata } from "./Metadata";
 
 const MOCKED_METADATA = readJson(__dirname + "/mocks/metadata.json");
 

@@ -1,13 +1,15 @@
 import * as React from "react";
 import userEvent from "@testing-library/user-event";
-import { SeriesSearch } from "./SeriesSearch";
 import { render, screen, waitFor } from "test-utils";
+
+import { SeriesSearch } from "./SeriesSearch";
+
 import { server } from "test-utils/server";
+import { handlers } from "./mocks/handlers";
 
 // This usually times out when all tests run
 jest.setTimeout(7000);
 
-import { handlers } from "./mocks/handlers";
 beforeEach(() => server.use(...handlers));
 
 it("should display default search results correctly", async () => {

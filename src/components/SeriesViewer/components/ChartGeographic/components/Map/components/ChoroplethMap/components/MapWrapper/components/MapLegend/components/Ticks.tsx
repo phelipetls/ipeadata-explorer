@@ -32,7 +32,7 @@ export function Ticks(props: TicksProps) {
         g.selectAll(".tick line").attr("y1", marginTop + marginBottom - height)
       )
       .call(g => g.select(".domain").remove());
-  }, [tickAxis, title, height]);
+  }, [tickAxis, marginTop, marginBottom, title, height]);
 
   return (
     <g transform={`translate(0,${height - marginBottom})`} ref={ticksRef}>
