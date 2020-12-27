@@ -101,17 +101,17 @@ export type BoundaryDivision = Exclude<IbgeMapDivision, "Municípios">;
 // We need to fetch each municipality, state, region etc. so the user can
 // choose which one be used as a boundary, e.g. Rio de Janeiro if boundary is
 // state.
-export type BoundaryDivisionToBeListed = Exclude<BoundaryDivision, "Brasil">;
+export type BoundaryDivisionToSelect = Exclude<BoundaryDivision, "Brasil">;
 
 // We need this to get a list of all Brazil's states, municipalities etc.
-const divisionsEndpoints: Record<BoundaryDivisionToBeListed, string> = {
+const divisionsEndpoints: Record<BoundaryDivisionToSelect, string> = {
   Regiões: "regioes",
   Estados: "estados",
   Mesorregiões: "mesorregioes",
   Microrregiões: "microrregioes",
 };
 
-export function listBoundaryDivision(division: BoundaryDivisionToBeListed) {
+export function listBoundaryDivision(division: BoundaryDivisionToSelect) {
   return BASE_URL_DIVISIONS + divisionsEndpoints[division];
 }
 
@@ -125,7 +125,7 @@ export interface divisionMetadataType {
 }
 
 export async function getDivisionsMetadata(
-  division: BoundaryDivisionToBeListed
+  division: BoundaryDivisionToSelect
 ): Promise<divisionMetadataType[]> {
   const url = listBoundaryDivision(division);
   return await (await fetch(url)).json();

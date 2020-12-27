@@ -11,7 +11,7 @@ import {
   IbgeMapDivision,
   divisionMetadataType,
   getDivisionsMetadata,
-  BoundaryDivisionToBeListed,
+  BoundaryDivisionToSelect,
 } from "api/ibge";
 import { formatDate } from "api/date-utils";
 import { SeriesMetadata, SeriesValues } from "components/types";
@@ -59,7 +59,7 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
     data: divisionsMetadata,
   } = useQuery<divisionMetadataType[]>(
     ["Fetch geographic divisions metadata", division],
-    (_: string, division: BoundaryDivisionToBeListed) =>
+    (_: string, division: BoundaryDivisionToSelect) =>
       getDivisionsMetadata(division),
     { enabled: division }
   );

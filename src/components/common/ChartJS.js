@@ -71,7 +71,7 @@ export function ChartJS(props) {
     const chart = new Chart(canvasRef.current, config);
 
     return () => chart.destroy();
-  }, [labels, datasets, xScale, yScale, options]);
+  }, [chartType, labels, datasets, xScale, yScale, options]);
 
   return (
     <div className={classes.root}>
