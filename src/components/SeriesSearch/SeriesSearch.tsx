@@ -21,7 +21,7 @@ import {
   DEFAULT_SEARCH_QUERY,
   getSearchQueryFromForm,
   getSearchQueryFromUrl,
-} from "api/search-queries";
+} from "api/odata";
 
 import { SeriesMetadata } from "components/types";
 import { TableColumn } from "components/types";

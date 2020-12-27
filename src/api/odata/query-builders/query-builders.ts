@@ -1,5 +1,5 @@
 import { SeriesMetadata } from "components/types";
-import { formatDateToBackend, offsetDate } from "api/date-utils";
+import { formatDateToBackend, offsetDate } from "api/odata";
 
 export function joinFilters(...filters: Array<string | null>) {
   return filters.filter(value => Boolean(value)).join(" and ");

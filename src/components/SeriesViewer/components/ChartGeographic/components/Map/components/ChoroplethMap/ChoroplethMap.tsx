@@ -13,7 +13,7 @@ import {
   getDivisionsMetadata,
   BoundaryDivisionToSelect,
 } from "api/ibge";
-import { formatDate } from "api/date-utils";
+import { formatDate } from "components/utils";
 import { SeriesMetadata, SeriesValues } from "components/types";
 import { Feature } from "geojson";
 
