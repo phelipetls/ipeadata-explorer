@@ -58,14 +58,9 @@ function getFilter([name, value]: [string, any]) {
     case "SERMAXDATA":
       return `SERMAXDATA le ${formatDateToBackend(value as Date)}`;
     case "BASNOME":
-      return (
-        "(" +
-        value
-          .split(",")
-          .map((base: string) => `BASNOME eq '${base}'`)
-          .join(" or ") +
-        ")"
-      );
+      return `(${value
+        .map((base: string) => `BASNOME eq '${base}'`)
+        .join(" or ")})`;
     case "PAICODIGO":
     case "SERSTATUS":
       return `${name} eq '${value}'`;
