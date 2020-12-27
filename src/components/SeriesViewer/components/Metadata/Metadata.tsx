@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { Grid, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -16,7 +16,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface Props {
-  metadata: SeriesMetadata,
+  metadata: SeriesMetadata;
 }
 
 export function Metadata({ metadata }: Props) {

@@ -1,6 +1,6 @@
-import React from "react";
+import * as React from "react";
 
-import { NoData, ChartContainer  } from "components/common";
+import { NoData, ChartContainer } from "components/common";
 
 export function ChartNoData() {
   return (

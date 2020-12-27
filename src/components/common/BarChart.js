@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { ChartJS } from "components/common";
 import { schemeCategory10 as palette } from "d3-scale-chromatic";

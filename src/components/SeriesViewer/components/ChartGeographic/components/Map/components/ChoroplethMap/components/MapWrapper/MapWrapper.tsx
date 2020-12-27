@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { ComposableMap } from "react-simple-maps";
 import { ExtendedFeature, geoMercator } from "d3-geo";

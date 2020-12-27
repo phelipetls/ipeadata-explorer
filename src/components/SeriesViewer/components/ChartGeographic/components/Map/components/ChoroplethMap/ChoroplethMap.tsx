@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 
 import { useQuery } from "react-query";
 
@@ -52,7 +52,7 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
     setTooltipOpen,
   } = props;
 
-  const [date, setDate] = useState("");
+  const [date, setDate] = React.useState("");
 
   const {
     isLoading: isLoadingDivisionsMetadata,

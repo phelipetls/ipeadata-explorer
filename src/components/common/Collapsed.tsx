@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 
 import { Typography, Paper, Collapse, IconButton } from "@material-ui/core";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function Collapsed({ label, children }: Props) {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
 
   return (
     <Paper>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 import { useFormContext } from "react-hook-form";
 
 import { BoundaryDivision, SeriesDivision, shouldPlotMap } from "api/ibge";
@@ -22,10 +22,12 @@ export interface GeographyInputsData {
 export function GeographyInputs(props: Props) {
   const { register } = useFormContext<GeographyInputsData>();
 
-  const [division, setDivisions] = useState<SeriesDivision>(props.division);
-  const [boundaryDivision, setBoundaryDivision] = useState<BoundaryDivision>(
-    "Brasil"
+  const [division, setDivisions] = React.useState<SeriesDivision>(
+    props.division
   );
+  const [boundaryDivision, setBoundaryDivision] = React.useState<
+    BoundaryDivision
+  >("Brasil");
 
   return (
     <>

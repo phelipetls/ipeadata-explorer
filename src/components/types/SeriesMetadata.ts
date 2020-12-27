@@ -1,4 +1,4 @@
-import { SeriesBase } from "./SeriesBase"
+import { SeriesBase } from "./SeriesBase";
 
 export interface SeriesMetadata {
   // [index: string]: string | number | boolean | null;
@@ -31,4 +31,3 @@ export interface SeriesMetadata {
   SERDECIMAIS: number;
   SERQNT: number;
 }
-

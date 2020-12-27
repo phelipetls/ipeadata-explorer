@@ -1,5 +1,5 @@
 // This module implements what is in https://observablehq.com/@d3/color-legend
-import React, { useRef } from "react";
+import * as React from "react";
 
 import { makeStyles } from "@material-ui/styles";
 
@@ -32,7 +32,7 @@ interface Props {
 
 export function MapLegend(props: Props) {
   const classes = useStyles();
-  const legendRef = useRef<SVGSVGElement | null>(null);
+  const legendRef = React.useRef<SVGSVGElement | null>(null);
 
   const { scale, title, width, height, ...rest } = props;
 

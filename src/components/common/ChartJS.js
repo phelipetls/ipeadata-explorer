@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import * as React from "react";
 
 import { makeStyles } from "@material-ui/styles";
 import { theme } from "styles";
@@ -28,7 +28,7 @@ Chart.register(
   LinearScale,
   Title,
   Legend,
-  Tooltip,
+  Tooltip
 );
 
 // FIXME: defining defaults not working
@@ -51,11 +51,11 @@ const useStyles = makeStyles({
 
 export function ChartJS(props) {
   const classes = useStyles();
-  const canvasRef = useRef(null);
+  const canvasRef = React.useRef(null);
 
   const { chartType, labels, datasets, xScale, yScale, ...options } = props;
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (canvasRef.current === null) return;
 
     const config = {

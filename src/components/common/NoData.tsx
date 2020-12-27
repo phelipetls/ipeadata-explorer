@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { Grid, GridProps, Typography } from "@material-ui/core";
 import { Error } from "@material-ui/icons";

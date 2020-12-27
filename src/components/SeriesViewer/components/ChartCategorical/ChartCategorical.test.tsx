@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {
   render,
   readJson,
@@ -14,7 +14,9 @@ import { ChartCategorical } from "./ChartCategorical";
 import { handlers } from "./mocks/handlers";
 beforeEach(() => server.use(...handlers));
 
-const MOCKED_METADATA = readJson(__dirname + "/mocks/metadata.json") as SeriesMetadata;
+const MOCKED_METADATA = readJson(
+  __dirname + "/mocks/metadata.json"
+) as SeriesMetadata;
 
 it("should show and filter categorical data correctly", async () => {
   render(<ChartCategorical code="F1PT1" metadata={MOCKED_METADATA} />);

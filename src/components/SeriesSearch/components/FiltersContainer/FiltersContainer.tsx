@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import {
   Grid,
@@ -47,9 +47,7 @@ export function FiltersContainer(props: Props) {
         </IconButton>
       </Grid>
 
-      <Collapse in={filterActive}>
-        {children}
-      </Collapse>
+      <Collapse in={filterActive}>{children}</Collapse>
     </Paper>
   );
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { ChartJS } from "./ChartJS";
 import { schemeCategory10 as palette } from "d3-scale-chromatic";
@@ -30,7 +30,10 @@ export function LineChart({ metadata, datasets, ...rest }) {
       }}
       yScale={{
         type: "linear",
-        scaleLabel: { display: true, labelString: metadata.UNINOME || metadata.SERNOME },
+        scaleLabel: {
+          display: true,
+          labelString: metadata.UNINOME || metadata.SERNOME,
+        },
       }}
     />
   );

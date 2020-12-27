@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { TextField } from "@material-ui/core";
 import { Event } from "@material-ui/icons";
@@ -29,9 +29,9 @@ const dateViewsByPeriodicity: Record<string, DatePickerView[]> = {
 };
 
 export interface ChartDateInputsData {
-  startDate: Date,
-  endDate: Date,
-  lastN: number,
+  startDate: Date;
+  endDate: Date;
+  lastN: number;
 }
 
 interface Props {

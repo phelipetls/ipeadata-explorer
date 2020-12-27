@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -21,8 +21,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface Props {
-  themeName: string,
-  children: Array<JSX.Element | null>
+  themeName: string;
+  children: Array<JSX.Element | null>;
 }
 
 export function ThemeCard({ themeName, children }: Props) {
@@ -30,10 +30,7 @@ export function ThemeCard({ themeName, children }: Props) {
 
   return (
     <RouterLink to={`/series?TEMNOME=${themeName}`}>
-      <Paper
-        variant="outlined"
-        className={classes.container}
-      >
+      <Paper variant="outlined" className={classes.container}>
         <div className={classes.content}>{children}</div>
       </Paper>
     </RouterLink>

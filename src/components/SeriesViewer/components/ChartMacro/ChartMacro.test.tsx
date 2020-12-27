@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import userEvent from "@testing-library/user-event";
 import { Chart } from "chart.js";
 import {
@@ -16,7 +16,12 @@ beforeEach(() => server.use(...handlers));
 const MOCKED_METADATA = readJson(__dirname + "/mocks/metadata.json");
 
 it("should show and filter macroeconomic data correctly", async () => {
-  render(<ChartMacro code="BM12_TJOVER12" metadata={MOCKED_METADATA as SeriesMetadata} />);
+  render(
+    <ChartMacro
+      code="BM12_TJOVER12"
+      metadata={MOCKED_METADATA as SeriesMetadata}
+    />
+  );
 
   await waitForElementToBeRemoved(() => screen.queryByRole("progressbar"));
 

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 
 import { useQuery } from "react-query";
 
@@ -21,9 +21,9 @@ interface Props {
 }
 
 export function ChartMacro({ code, metadata }: Props) {
-  const [startDate, setStartDate] = useState<Date | null>(null);
-  const [endDate, setEndDate] = useState<Date | null>(null);
-  const [lastN, setLastN] = useState(DEFAULT_LIMIT);
+  const [startDate, setStartDate] = React.useState<Date | null>(null);
+  const [endDate, setEndDate] = React.useState<Date | null>(null);
+  const [lastN, setLastN] = React.useState(DEFAULT_LIMIT);
 
   const { isLoading, data } = useQuery(
     [code, startDate, endDate, lastN],

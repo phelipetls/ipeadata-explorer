@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { ScaleLinear, ScaleQuantile } from "d3-scale";
 

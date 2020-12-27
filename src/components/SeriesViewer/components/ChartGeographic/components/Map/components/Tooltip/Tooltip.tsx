@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { Tooltip as MuiTooltip } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
@@ -10,7 +10,7 @@ const Tooltip = withStyles(() => ({
 }))(MuiTooltip);
 
 interface Props {
-  position: { x: number | undefined, y: number | undefined };
+  position: { x: number | undefined; y: number | undefined };
   title: string;
   open: boolean;
   children: JSX.Element;

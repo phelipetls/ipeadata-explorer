@@ -20,15 +20,22 @@ interface Props<T> {
 }
 
 export function TableCollapsedRows<T extends SeriesMetadata>(props: Props<T>) {
-  const { columns, rows, renderSummary, renderRow, isLoading, skeleton } = props;
+  const {
+    columns,
+    rows,
+    renderSummary,
+    renderRow,
+    isLoading,
+    skeleton,
+  } = props;
 
   const body = isLoading
     ? skeleton
     : rows.map(row => (
-      <CollapsedRow summary={renderSummary(row)} key={row["SERCODIGO"]}>
-        {renderRow(row)}
-      </CollapsedRow>
-    ));
+        <CollapsedRow summary={renderSummary(row)} key={row["SERCODIGO"]}>
+          {renderRow(row)}
+        </CollapsedRow>
+      ));
 
   return (
     <Table>

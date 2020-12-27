@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 
 import { Container } from "@material-ui/core";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
@@ -50,7 +50,7 @@ interface ThemeMetadata {
 export function Themes() {
   const classes = useStyles();
 
-  const [bases, setBases] = useState<BaseType[]>([
+  const [bases, setBases] = React.useState<BaseType[]>([
     "MACRO",
     "REGIONAL",
     "SOCIAL",

@@ -1,12 +1,12 @@
-import React, { useState } from "react";
+import * as React from "react";
 
 import { ChoroplethMap, MapTooltip } from "./components";
 import { IbgeMapDivision } from "api/ibge";
 import { SeriesMetadata, SeriesValues } from "components/types";
 
 interface tooltipPositionType {
-  x: number | undefined,
-  y: number | undefined,
+  x: number | undefined;
+  y: number | undefined;
 }
 
 interface Props {
@@ -17,9 +17,11 @@ interface Props {
 }
 
 export const GeographicMap: React.FC<Props> = props => {
-  const [tooltipText, setTooltipText] = useState("");
-  const [tooltipOpen, setTooltipOpen] = useState(false);
-  const [tooltipPosition, setTooltipPosition] = useState<tooltipPositionType>({
+  const [tooltipText, setTooltipText] = React.useState("");
+  const [tooltipOpen, setTooltipOpen] = React.useState(false);
+  const [tooltipPosition, setTooltipPosition] = React.useState<
+    tooltipPositionType
+  >({
     x: undefined,
     y: undefined,
   });

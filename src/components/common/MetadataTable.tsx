@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import {
   Link,
@@ -11,7 +11,7 @@ import {
 import { Link as RouterLink } from "react-router-dom";
 import { withStyles } from "@material-ui/core/styles";
 
-import { TableColumn, SeriesMetadata } from "components/types"
+import { TableColumn, SeriesMetadata } from "components/types";
 
 function formatDate(date: string): string {
   return new Date(date).toLocaleDateString();
@@ -35,8 +35,16 @@ const metadataFields: TableColumn[] = [
   { key: "PERNOME", label: "Periodicidade" },
   { key: "UNINOME", label: "Unidade de medida" },
   { key: "SERQNT", label: "Qtd. de observações" },
-  { key: "SERMINDATA", label: "Início", render: metadata => formatDate(metadata.SERMINDATA) },
-  { key: "SERMAXDATA", label: "Fim", render: metadata => formatDate(metadata.SERMAXDATA) },
+  {
+    key: "SERMINDATA",
+    label: "Início",
+    render: metadata => formatDate(metadata.SERMINDATA),
+  },
+  {
+    key: "SERMAXDATA",
+    label: "Fim",
+    render: metadata => formatDate(metadata.SERMAXDATA),
+  },
   {
     key: "SERSTATUS",
     label: "Status",
@@ -54,7 +62,9 @@ interface Props<T> {
   metadata: T;
 }
 
-export function MetadataTable<T extends Partial<SeriesMetadata>>(props: Props<T>) {
+export function MetadataTable<T extends Partial<SeriesMetadata>>(
+  props: Props<T>
+) {
   const { metadata } = props;
 
   return (

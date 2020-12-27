@@ -9,7 +9,7 @@ interface Props {
 }
 
 export function SearchButton({ onClick, ...rest }: Props) {
-  const handleClick = () => typeof onClick === 'function' && onClick()
+  const handleClick = () => typeof onClick === "function" && onClick();
 
   return (
     <IconButton

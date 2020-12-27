@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 
@@ -22,9 +22,9 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface Props {
-  macro: number | null,
-  regional: number | null,
-  social: number | null,
+  macro: number | null;
+  regional: number | null;
+  social: number | null;
 }
 
 export function ThemeBases(props: Props) {

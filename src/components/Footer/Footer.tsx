@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 
 import { Paper, IconButton, Link } from "@material-ui/core";
 import { GitHub } from "@material-ui/icons";

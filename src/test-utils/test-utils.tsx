@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import { render, RenderOptions } from "@testing-library/react";
 
 import { theme } from "../styles/Theme";

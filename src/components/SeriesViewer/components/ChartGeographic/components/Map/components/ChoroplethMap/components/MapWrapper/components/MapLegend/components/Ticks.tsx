@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import * as React from "react";
 
 import { select as d3Select } from "d3-selection";
 import { NumberValue } from "d3-scale";
@@ -14,11 +14,18 @@ interface TicksProps {
 }
 
 export function Ticks(props: TicksProps) {
-  const ticksRef = useRef<SVGGElement | null>(null);
+  const ticksRef = React.useRef<SVGGElement | null>(null);
 
-  const { title, tickAxis, height, marginTop, marginBottom, marginLeft } = props;
+  const {
+    title,
+    tickAxis,
+    height,
+    marginTop,
+    marginBottom,
+    marginLeft,
+  } = props;
 
-  useEffect(() => {
+  React.useEffect(() => {
     d3Select(ticksRef.current!)
       .call(tickAxis)
       .call(g =>

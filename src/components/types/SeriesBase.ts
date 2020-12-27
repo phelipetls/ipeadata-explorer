@@ -1,1 +1,1 @@
-export type SeriesBase = "Macroeconômico" | "Regional" | "Social"
+export type SeriesBase = "Macroeconômico" | "Regional" | "Social";

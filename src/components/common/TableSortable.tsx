@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import * as React from "react";
 
 import {
   Table,
@@ -26,7 +26,7 @@ const sortFunctionNumeric: sortFunction = (a, b) => a - b;
 const sortFunctionString: sortFunction = (a, b) => a.localeCompare(b);
 const sortFunctionDate: sortFunction = (a, b) => {
   return new Date(a).getTime() - new Date(b).getTime();
-}
+};
 
 type ColumnType = NonNullable<TableColumn["type"]>;
 
@@ -48,8 +48,12 @@ interface Props<T = SeriesMetadata> {
 export function TableSortable<T = SeriesMetadata>(props: Props<T>) {
   const classes = useStyles();
 
-  const [orderByColumn, setOrderByColumn] = useState<keyof T | null>(null);
-  const [sortDirection, setSortDirection] = useState<"desc" | "asc">("desc");
+  const [orderByColumn, setOrderByColumn] = React.useState<keyof T | null>(
+    null
+  );
+  const [sortDirection, setSortDirection] = React.useState<"desc" | "asc">(
+    "desc"
+  );
 
   const { rows, rowKey, columns, isLoading, skeleton, footer } = props;
 
