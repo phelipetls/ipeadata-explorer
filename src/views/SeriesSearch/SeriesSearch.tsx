@@ -106,7 +106,7 @@ export function SeriesSearch() {
   }
 
   function onSubmit(data: Record<string, any>) {
-    let newSearchUrl = getSearchQueryFromForm(data);
+    const newSearchUrl = getSearchQueryFromForm(data);
 
     setSearchUrl(newSearchUrl);
     setPage(0);

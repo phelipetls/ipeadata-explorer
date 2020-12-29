@@ -45,7 +45,7 @@ export function ChartCategorical({ code, metadata }: Props) {
   );
 
   async function onSubmit(data: ChartDateInputsData) {
-    let { startDate, endDate, lastN } = data;
+    const { startDate, endDate, lastN } = data;
 
     if (startDate) setStartDate(startDate);
     if (endDate) setEndDate(endDate);

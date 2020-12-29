@@ -19,7 +19,7 @@ async function fetchMetadata(_: string, code: string) {
 }
 
 export function SeriesViewer() {
-  let { code }: { code: string } = useParams();
+  const { code }: { code: string } = useParams();
 
   const { isLoading, data } = useQuery(
     ["Fetch series metadata", code],

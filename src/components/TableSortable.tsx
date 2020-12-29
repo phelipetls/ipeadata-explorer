@@ -59,7 +59,7 @@ export function TableSortable<T = SeriesMetadata>(props: Props<T>) {
 
   const handleClick = (targetColumn: keyof T) => {
     if (targetColumn === orderByColumn) {
-      setSortDirection(order => (order == "desc" ? "asc" : "desc"));
+      setSortDirection(order => (order === "desc" ? "asc" : "desc"));
     } else {
       setSortDirection("desc");
       setOrderByColumn(targetColumn);
