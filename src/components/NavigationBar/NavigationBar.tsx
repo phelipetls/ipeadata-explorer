@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Link as RouterLink } from "react-router-dom";
 
 import { NavigationLink } from "./types";
-import { SearchButton } from "components/common";
+import { SearchButton } from "components";
 import {
   NavigationLinksMenu,
   NavigationLinksList,

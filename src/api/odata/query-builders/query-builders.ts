@@ -1,4 +1,4 @@
-import { SeriesMetadata } from "components/types";
+import { SeriesMetadata } from "types";
 import { formatDateToBackend, offsetDate } from "api/odata";
 
 export function joinFilters(...filters: Array<string | null>) {

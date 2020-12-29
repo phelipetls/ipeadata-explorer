@@ -4,15 +4,18 @@ import { Route, Switch } from "react-router-dom";
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { NavigationBar } from "./components/NavigationBar";
-import { Footer } from "./components/Footer";
-import { Loading, ErrorBoundary } from "./components/common";
+import {
+  Footer,
+  Loading,
+  NavigationBar,
+  ErrorBoundary,
+} from "components";
 
-const HomePage = React.lazy(() => import("./components/HomePage"));
-const Themes = React.lazy(() => import("./components/Themes"));
-const Countries = React.lazy(() => import("./components/Countries"));
-const SeriesSearch = React.lazy(() => import("./components/SeriesSearch"));
-const SeriesViewer = React.lazy(() => import("./components/SeriesViewer"));
+const HomePage = React.lazy(() => import("./views/HomePage"));
+const Themes = React.lazy(() => import("./views/Themes"));
+const Countries = React.lazy(() => import("./views/Countries"));
+const SeriesSearch = React.lazy(() => import("./views/SeriesSearch"));
+const SeriesViewer = React.lazy(() => import("./views/SeriesViewer"));
 
 const useStyles = makeStyles(theme => ({
   app: {

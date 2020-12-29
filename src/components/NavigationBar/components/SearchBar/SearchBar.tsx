@@ -3,7 +3,7 @@ import * as React from "react";
 import { TextField } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import { BackButton, SearchButton } from "components/common";
+import { BackButton, SearchButton } from "components";
 
 const useStyles = makeStyles(() => ({
   form: {
