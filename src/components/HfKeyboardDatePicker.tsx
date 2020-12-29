@@ -1,0 +1,44 @@
+import * as React from "react";
+
+import { Controller, ControllerProps } from "react-hook-form";
+import {
+  KeyboardDatePicker,
+  KeyboardDatePickerProps,
+} from "@material-ui/pickers";
+
+type Props = Required<
+  Pick<ControllerProps<typeof KeyboardDatePicker>, "control" | "name">
+> &
+  Pick<ControllerProps<typeof KeyboardDatePicker>, "defaultValue"> &
+  Omit<KeyboardDatePickerProps, "value" | "onChange">;
+
+export const HfKeyboardDatePicker: React.FC<Props> = props => {
+  const [date, setDate] = React.useState<Date | null>(null);
+
+  const { name, defaultValue, control, ...rest } = props;
+
+  return (
+    <Controller
+      control={control}
+      name={name}
+      defaultValue={defaultValue || null}
+      value={date}
+      onChange={setDate}
+      render={({ name, value, onChange }) => {
+        return (
+          <KeyboardDatePicker
+            {...rest}
+            name={name}
+            value={value}
+            onChange={onChange}
+            autoOk
+            inputVariant="outlined"
+            format="dd/MM/yyyy"
+            mask="__/__/____"
+            clearable
+          />
+        );
+      }}
+    />
+  );
+};
