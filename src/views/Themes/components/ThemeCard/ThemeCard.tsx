@@ -15,6 +15,9 @@ const useStyles = makeStyles(theme => ({
       backgroundColor: theme.palette.action.hover,
     },
   },
+  link: {
+    textDecoration: "none",
+  },
   content: {
     padding: "1em 0.5em",
   },
@@ -29,10 +32,10 @@ export function ThemeCard({ themeName, children }: Props) {
   const classes = useStyles();
 
   return (
-    <RouterLink to={`/series?TEMNOME=${themeName}`}>
-      <Paper variant="outlined" className={classes.container}>
+    <Paper variant="outlined" className={classes.container}>
+      <RouterLink to={`/series?TEMNOME=${themeName}`} className={classes.link}>
         <div className={classes.content}>{children}</div>
-      </Paper>
-    </RouterLink>
+      </RouterLink>
+    </Paper>
   );
 }
