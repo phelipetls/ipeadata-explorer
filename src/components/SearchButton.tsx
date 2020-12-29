@@ -17,6 +17,7 @@ export function SearchButton({ onClick, ...rest }: Props) {
       onClick={handleClick}
       style={{ alignSelf: "center" }}
       type="button"
+      data-testid="search-button"
       {...rest}
     >
       <Search />

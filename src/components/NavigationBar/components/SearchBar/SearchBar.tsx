@@ -54,7 +54,12 @@ export function SearchBar({ deactivateSearch }: Props) {
         fullWidth
         InputProps={{
           disableUnderline: true,
-          startAdornment: <BackButton onClick={deactivateSearch} />,
+          startAdornment: (
+            <BackButton
+              onClick={deactivateSearch}
+              data-testid="search-back-button"
+            />
+          ),
           endAdornment: <SearchButton type="submit" />,
         }}
       />

@@ -1,15 +1,15 @@
 import * as React from "react";
 
 import { ArrowBack } from "@material-ui/icons";
-import { IconButton } from "@material-ui/core";
+import { IconButton, IconButtonProps } from "@material-ui/core";
 
 export interface Props {
   onClick: () => void;
 }
 
-export function BackButton(props: Props) {
+export function BackButton({ onClick, ...rest }: Props & IconButtonProps) {
   return (
-    <IconButton color="default" onClick={props.onClick}>
+    <IconButton color="default" onClick={onClick} {...rest}>
       <ArrowBack />
     </IconButton>
   );
