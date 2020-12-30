@@ -46,8 +46,7 @@ function getFilter([name, value]: [string, any]) {
         ` contains(FNTSIGLA,'${value}') or` +
         ` contains(FNTURL,'${value}'))`
       );
-    // FIXME: PAINOME is not in SeriesMetadata, use PAICODIGO instead
-    case "PAINOME":
+    case "PAICODIGO":
       return (
         `(contains(Pais/PAINOME,'${value}') or` +
         ` contains(PAICODIGO,'${value}'))`
@@ -60,7 +59,6 @@ function getFilter([name, value]: [string, any]) {
       return `(${value
         .map((base: string) => `BASNOME eq '${base}'`)
         .join(" or ")})`;
-    case "PAICODIGO":
     case "SERSTATUS":
       return `${name} eq '${value}'`;
     case "SERNUMERICA":
