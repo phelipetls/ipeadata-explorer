@@ -4,12 +4,7 @@ import { Route, Switch } from "react-router-dom";
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import {
-  Footer,
-  Loading,
-  NavigationBar,
-  ErrorBoundary,
-} from "components";
+import { Footer, Loading, NavigationBar, ErrorBoundary } from "components";
 
 const HomePage = React.lazy(() => import("./views/HomePage"));
 const Themes = React.lazy(() => import("./views/Themes"));
