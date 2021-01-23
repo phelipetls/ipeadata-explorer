@@ -42,7 +42,7 @@ export function TableCollapsedRows<T extends SeriesMetadata>(props: Props<T>) {
       <TableHead>
         <TableRow>
           {columns.map(column => (
-            <TableCell>{column}</TableCell>
+            <TableCell key={column}>{column}</TableCell>
           ))}
         </TableRow>
       </TableHead>
