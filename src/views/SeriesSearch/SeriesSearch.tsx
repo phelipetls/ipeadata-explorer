@@ -105,7 +105,7 @@ export function SeriesSearch() {
     });
   }
 
-  function onSubmit(data: Record<string, any>) {
+  function handleSubmit(data: Record<string, any>) {
     const newSearchUrl = getSearchQueryFromForm(data);
 
     setSearchUrl(newSearchUrl);
@@ -160,7 +160,7 @@ export function SeriesSearch() {
         filterActive={filterActive}
         setFilterActive={setFilterActive}
       >
-        <FiltersForm searchParams={searchParams} onSubmit={onSubmit} />
+        <FiltersForm searchParams={searchParams} onSubmit={handleSubmit} />
       </FiltersContainer>
 
       {!isLoading && rows.length === 0 ? (
