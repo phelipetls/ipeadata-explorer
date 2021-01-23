@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link, Paper, TableContainer } from "@material-ui/core";
-import { Link as RouterLink, useLocation } from "react-router-dom";
+import { Link as RouterLink, useLocation, useHistory } from "react-router-dom";
 import { useQuery, useQueryCache } from "react-query";
 import { useBreakpoint } from "utils";
 
@@ -58,22 +58,23 @@ const columns: TableColumn[] = [
   },
 ];
 
-function useSearchParams() {
-  return new URLSearchParams(useLocation().search);
-}
-
 export function SeriesSearch() {
   const isSmallScreen = useBreakpoint("sm");
-
   const queryCache = useQueryCache();
-  const searchParams = useSearchParams();
+  const history = useHistory();
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
 
   const [searchUrl, setSearchUrl] = React.useState(
     () => getSearchQueryFromUrl(searchParams) || DEFAULT_SEARCH_QUERY
   );
-  const [page, setPage] = React.useState(0);
+  const [page, setPage] = React.useState(
+    Number(searchParams.get("page")) || 0
+  );
+  const [rowsPerPage, setRowsPerPage] = React.useState<number>(
+    Number(searchParams.get("rowsPerPage")) || 10
+  );
   const [rowsCount, setRowsCount] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(10);
   const [filterActive, setFilterActive] = React.useState(false);
 
   const { isLoading, isFetching, data } = useQuery(
@@ -91,6 +92,13 @@ export function SeriesSearch() {
   );
 
   const rows: SeriesMetadata[] = (data && data.value) || [];
+
+  React.useEffect(() => {
+    const newSearchParams = new URLSearchParams()
+    newSearchParams.set("page", String(page))
+    newSearchParams.set("rowsPerPage", String(rowsPerPage))
+    history.push({ search: `?${newSearchParams}` })
+  }, [page, rowsPerPage, history])
 
   function handlePageChange(_: any, newPage: number) {
     setPage(newPage);

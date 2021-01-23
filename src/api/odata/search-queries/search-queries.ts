@@ -15,8 +15,30 @@ export function getSearchQueryFromForm(inputs: Record<string, any>): string {
   return getSearchQuery(Object.entries(inputs));
 }
 
+const ipeaFields = [
+  "SERNOME",
+  "UNINOME",
+  "PERNOME",
+  "TEMNOME",
+  "FNTNOME",
+  "PAICODIGO",
+  "SERMINDATA",
+  "SERMAXDATA",
+  "BASNOME",
+  "SERSTATUS",
+  "SERNUMERICA",
+  "TEMCODIGO",
+  "SERTEMAMC",
+  "SERTEMBR",
+  "SERTEMEST",
+  "SERTEMMUN",
+  "SERTEMMET",
+];
+
 export function getSearchQueryFromUrl(searchParams: URLSearchParams): string {
-  if (searchParams.toString() === "") {
+  const searchParamsKeys = Array.from(searchParams.keys());
+
+  if (searchParamsKeys.every(key => !(key in ipeaFields))) {
     return "";
   }
 
