@@ -31,16 +31,15 @@ Chart.register(
   Tooltip
 );
 
-// FIXME: defining defaults not working
-// Chart.defaults.controllers.point.radius = 0;
-// Chart.defaults.controllers.point.hitRadius = 5;
-// Chart.defaults.plugins.legend.position = "bottom";
-// Chart.defaults.plugins.title.font = {
-//   size: 16,
-//   weight: 0,
-//   family: "Roboto, sans-serif",
-//   color: "black",
-// };
+Chart.defaults.elements.point.radius = 0;
+Chart.defaults.elements.point.hitRadius = 5;
+Chart.defaults.plugins.legend.position = "bottom";
+Chart.defaults.plugins.title.font = {
+  size: 16,
+  weight: 0,
+  family: "Roboto, sans-serif",
+  color: "black",
+};
 
 const useStyles = makeStyles({
   root: {
