@@ -66,7 +66,7 @@ export function SeriesSearch() {
   const searchParams = new URLSearchParams(location.search);
 
   const [searchValues, setSearchValues] = React.useState(
-    () => getSearchValuesFromUrl(searchParams) || []
+    () => getSearchValuesFromUrl(searchParams)
   );
   const [page, setPage] = React.useState(Number(searchParams.get("page")) || 0);
   const [rowsPerPage, setRowsPerPage] = React.useState(

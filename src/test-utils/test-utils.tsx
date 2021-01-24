@@ -1,6 +1,5 @@
 import * as React from "react";
 import { render, RenderOptions } from "@testing-library/react";
-
 import { theme } from "../styles/Theme";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";

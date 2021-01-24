@@ -29,15 +29,9 @@ it("should display default search results correctly", async () => {
   });
   userEvent.click(expandFiltersRole);
 
-  // Search for "spread"
+  // Search for "spread" and submit
   const seriesNameInput = await screen.findByLabelText(/nome da série/i);
-  userEvent.type(seriesNameInput, "spread");
-
-  // Submit the form
-  const submitButton = await screen.findByRole("button", {
-    name: /pesquisar/i,
-  });
-  userEvent.click(submitButton);
+  userEvent.type(seriesNameInput, "spread{enter}");
 
   // Expect a corresponding result
   await waitFor(() =>
