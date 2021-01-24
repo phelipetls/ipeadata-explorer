@@ -16,11 +16,11 @@ import {
   NoData,
 } from "components";
 
-import { limitQuery, offsetQuery } from "api/odata";
 import {
-  DEFAULT_SEARCH_QUERY,
-  getSearchQueryFromForm,
-  getSearchQueryFromUrl,
+  buildSearchUrl,
+  getSearchValuesFromUrl,
+  limitQuery,
+  offsetQuery,
 } from "api/odata";
 
 import { SeriesMetadata } from "types";
@@ -65,23 +65,23 @@ export function SeriesSearch() {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
-  const [searchUrl, setSearchUrl] = React.useState(
-    () => getSearchQueryFromUrl(searchParams) || DEFAULT_SEARCH_QUERY
+  const [searchValues, setSearchValues] = React.useState(
+    () => getSearchValuesFromUrl(searchParams) || []
   );
-  const [page, setPage] = React.useState(
-    Number(searchParams.get("page")) || 0
-  );
-  const [rowsPerPage, setRowsPerPage] = React.useState<number>(
+  const [page, setPage] = React.useState(Number(searchParams.get("page")) || 0);
+  const [rowsPerPage, setRowsPerPage] = React.useState(
     Number(searchParams.get("rowsPerPage")) || 10
   );
   const [rowsCount, setRowsCount] = React.useState(0);
   const [filterActive, setFilterActive] = React.useState(false);
 
   const { isLoading, isFetching, data } = useQuery(
-    [searchUrl, { page, rowsPerPage }],
+    [{ searchValues, page, rowsPerPage }],
     async () => {
       const response = await fetch(
-        searchUrl + limitQuery(rowsPerPage) + offsetQuery(page * rowsPerPage)
+        buildSearchUrl(searchValues) +
+          limitQuery(rowsPerPage) +
+          offsetQuery(page * rowsPerPage)
       );
       return await response.json();
     },
@@ -94,11 +94,17 @@ export function SeriesSearch() {
   const rows: SeriesMetadata[] = (data && data.value) || [];
 
   React.useEffect(() => {
-    const newSearchParams = new URLSearchParams()
-    newSearchParams.set("page", String(page))
-    newSearchParams.set("rowsPerPage", String(rowsPerPage))
-    history.push({ search: `?${newSearchParams}` })
-  }, [page, rowsPerPage, history])
+    const newSearchParams = new URLSearchParams();
+
+    newSearchParams.set("page", String(page));
+    newSearchParams.set("rowsPerPage", String(rowsPerPage));
+
+    for (const [key, value] of Object.entries(searchValues)) {
+      newSearchParams.set(key, value)
+    }
+
+    history.push({ search: `?${newSearchParams}` });
+  }, [page, rowsPerPage, history, searchValues]);
 
   function handlePageChange(_: any, newPage: number) {
     setPage(newPage);
@@ -108,19 +114,17 @@ export function SeriesSearch() {
     setPage(0);
     setRowsPerPage(parseInt(e.target.value, 10));
 
-    queryCache.invalidateQueries([searchUrl, { rowsPerPage }], {
+    queryCache.invalidateQueries([{ searchValues, rowsPerPage }], {
       refetchActive: false,
     });
   }
 
   function handleSubmit(data: Record<string, any>) {
-    const newSearchUrl = getSearchQueryFromForm(data);
-
-    setSearchUrl(newSearchUrl);
+    setSearchValues(data);
     setPage(0);
     setFilterActive(false);
 
-    queryCache.invalidateQueries([searchUrl], { refetchActive: false });
+    queryCache.invalidateQueries([{ searchValues }], { refetchActive: false });
   }
 
   const paginationActions = (

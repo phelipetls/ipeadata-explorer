@@ -7,14 +7,6 @@ const INCLUDE_COUNT = "$count=true";
 export const DEFAULT_SEARCH_QUERY =
   BASE_URL + `/Metadados?${INCLUDE_COUNT}&${ORDER_BY_UPDATED_DATE_DESCENDING}`;
 
-export function getSearchQueryFromForm(inputs: Record<string, any>): string {
-  if (isEmpty(inputs)) {
-    return DEFAULT_SEARCH_QUERY;
-  }
-
-  return getSearchQuery(Object.entries(inputs));
-}
-
 const ipeaFields = [
   "SERNOME",
   "UNINOME",
@@ -35,17 +27,23 @@ const ipeaFields = [
   "SERTEMMET",
 ];
 
-export function getSearchQueryFromUrl(searchParams: URLSearchParams): string {
-  const searchParamsKeys = Array.from(searchParams.keys());
+export function getSearchValuesFromUrl(searchParams: URLSearchParams) {
+  const searchValuesEntries = Array.from(searchParams.entries()).filter(
+    ([key]) => ipeaFields.includes(key)
+  );
 
-  if (searchParamsKeys.every(key => !(key in ipeaFields))) {
-    return "";
-  }
-
-  return getSearchQuery(Array.from(searchParams));
+  return Object.fromEntries(searchValuesEntries);
 }
 
-function getSearchQuery(queries: [string, any][]) {
+export function buildSearchUrl(searchValues: Record<string, string>) {
+  if (isEmpty(searchValues)) {
+    return DEFAULT_SEARCH_QUERY
+  }
+
+  return buildSearchQuery(Object.entries(searchValues))
+}
+
+function buildSearchQuery(queries: [string, any][]) {
   const filterQuery = queries.map(query => getFilter(query)).join(" and ");
 
   return (

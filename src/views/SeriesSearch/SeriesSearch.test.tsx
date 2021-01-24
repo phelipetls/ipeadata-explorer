@@ -59,3 +59,38 @@ it("should display default search results correctly", async () => {
   );
   expect(screen.getByText("11-16 de 16")).toBeInTheDocument();
 });
+
+test("if state is in sync with url", async () => {
+  render(<SeriesSearch />, { renderLocation: location => location.search });
+
+  let searchParams = new URLSearchParams(
+    screen.getByTestId("router-location").textContent!
+  );
+
+  // These are expected to be set automatically
+  expect(searchParams.get("page")).toBe("0");
+  expect(searchParams.get("rowsPerPage")).toBe("10");
+
+  // Open filters
+  const expandFiltersRole = await screen.findByRole("button", {
+    name: /expande filtros/i,
+  });
+  userEvent.click(expandFiltersRole);
+
+  // Search for "spread" and submit
+  const seriesNameInput = await screen.findByLabelText(/nome da série/i);
+  userEvent.type(seriesNameInput, "spread{enter}");
+
+  await waitFor(() =>
+    expect(
+      screen.getByText("Operações de crédito - recursos direcionados - spread")
+    ).toBeInTheDocument()
+  );
+
+  searchParams = new URLSearchParams(
+    screen.getByTestId("router-location").textContent!
+  );
+
+  // URL search params should have the new query
+  expect(searchParams.get("SERNOME")).toBe("spread");
+});
