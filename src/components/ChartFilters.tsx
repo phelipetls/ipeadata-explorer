@@ -26,14 +26,15 @@ const useStyles = makeStyles(theme => ({
 interface Props<T extends FieldValues> {
   onSubmit: (data: T) => void;
   children: JSX.Element | JSX.Element[];
+  defaultValues: Record<string, unknown>;
 }
 
-export function ChartFilters<T extends FieldValues>({
-  onSubmit,
-  children,
-}: Props<T>) {
+export function ChartFilters<T extends FieldValues>(props: Props<T>) {
   const classes = useStyles();
-  const methods = useForm();
+
+  const { onSubmit, defaultValues, children } = props;
+
+  const methods = useForm({ defaultValues });
 
   return (
     <FormProvider {...methods}>
