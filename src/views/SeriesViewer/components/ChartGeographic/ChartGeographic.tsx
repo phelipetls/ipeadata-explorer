@@ -1,6 +1,6 @@
 import * as React from "react";
-
 import { useQuery } from "react-query";
+import { useLocation, useHistory } from "react-router-dom";
 
 import {
   GeographicMap,
@@ -26,8 +26,10 @@ import {
   buildGeographicDivisionsUrl,
 } from "api/odata";
 import { SeriesDivision, shouldPlotMap } from "api/ibge";
+import { getDateSafely, getDivisionSafely } from "utils";
 
 const DEFAULT_LIMIT = 5;
+const DEFAULT_BOUNDARY = "BR";
 
 interface GeographicDivisionMetadata {
   value: {
@@ -46,7 +48,7 @@ async function fetchGeographicDivisions(
 }
 
 function getBoundaryFilter(boundaryId: string, division: SeriesDivision) {
-  if (!shouldPlotMap(division) || boundaryId === "BR") return "";
+  if (!shouldPlotMap(division) || boundaryId === DEFAULT_BOUNDARY) return "";
   return `startswith(TERCODIGO,'${String(boundaryId).slice(0, 2)}')`;
 }
 
@@ -56,12 +58,27 @@ interface Props {
 }
 
 export function ChartGeographic({ code, metadata }: Props) {
-  const [startDate, setStartDate] = React.useState<Date | null>(null);
-  const [endDate, setEndDate] = React.useState<Date | null>(null);
-  const [lastN, setLastN] = React.useState(DEFAULT_LIMIT);
+  const location = useLocation();
+  const history = useHistory();
+  const searchParams = new URLSearchParams(location.search);
 
-  const [division, setDivision] = React.useState<SeriesDivision | null>(null);
-  const [boundaryId, setBoundaryId] = React.useState("BR");
+  const [startDate, setStartDate] = React.useState<Date | null>(
+    getDateSafely(searchParams.get("startDate"))
+  );
+
+  const [endDate, setEndDate] = React.useState<Date | null>(
+    getDateSafely(searchParams.get("endDate"))
+  );
+
+  const [lastN, setLastN] = React.useState(
+    Number(searchParams.get("lastN")) || DEFAULT_LIMIT
+  );
+
+  const [division, setDivision] = React.useState<SeriesDivision | null>(
+    getDivisionSafely(searchParams.get("division"))
+  );
+
+  const [boundaryId, setBoundaryId] = React.useState(DEFAULT_BOUNDARY);
 
   const { isLoading: isLoadingDivisions, data: divisions = [] } = useQuery<
     SeriesDivision[]
@@ -100,18 +117,47 @@ export function ChartGeographic({ code, metadata }: Props) {
     if (boundaryId) setBoundaryId(boundaryId);
   }
 
+  React.useEffect(() => {
+    const newSearchParams = new URLSearchParams();
+
+    if (startDate) {
+      newSearchParams.set("startDate", startDate.toLocaleDateString("pt-BR"));
+    }
+
+    if (endDate) {
+      newSearchParams.set("endDate", endDate.toLocaleDateString("pt-BR"));
+    }
+
+    if (lastN !== DEFAULT_LIMIT) {
+      newSearchParams.set("lastN", String(lastN));
+    }
+
+    if (division) {
+      newSearchParams.set("division", division);
+    }
+
+    history.push({ search: `?${newSearchParams}` });
+  }, [startDate, endDate, lastN, division, history]);
+
   const isLoading = isLoadingData || isLoadingDivisions;
 
   const series = (data && data.value) || [];
 
   return (
     <ChartSection>
-      <ChartFilters onSubmit={onSubmit}>
+      <ChartFilters
+        onSubmit={onSubmit}
+        defaultValues={{
+          startDate,
+          endDate,
+          lastN,
+        }}
+      >
         <ChartDateInputs metadata={metadata} />
-        {isLoadingDivisions ? (
+        {isLoadingDivisions || division === null ? (
           <Loading />
         ) : (
-          <GeographyInputs division={division!} divisions={divisions} />
+          <GeographyInputs division={division} divisions={divisions} />
         )}
       </ChartFilters>
 

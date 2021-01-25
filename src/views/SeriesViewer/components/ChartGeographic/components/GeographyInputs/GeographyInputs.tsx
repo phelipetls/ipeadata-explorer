@@ -22,9 +22,10 @@ export interface GeographyInputsData {
 export function GeographyInputs(props: Props) {
   const { register } = useFormContext<GeographyInputsData>();
 
-  const [division, setDivisions] = React.useState<SeriesDivision>(
+  const [division, setDivision] = React.useState<SeriesDivision>(
     props.division
   );
+
   const [boundaryDivision, setBoundaryDivision] = React.useState<
     BoundaryDivision
   >("Brasil");
@@ -36,7 +37,7 @@ export function GeographyInputs(props: Props) {
         name="division"
         division={props.division}
         divisions={props.divisions}
-        handleChange={e => setDivisions(e.target.value as SeriesDivision)}
+        handleChange={e => setDivision(e.target.value as SeriesDivision)}
       />
 
       {shouldPlotMap(division) && (
