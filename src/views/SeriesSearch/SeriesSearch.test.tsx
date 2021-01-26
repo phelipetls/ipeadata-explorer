@@ -1,6 +1,6 @@
 import * as React from "react";
 import userEvent from "@testing-library/user-event";
-import { render, screen, waitFor } from "test-utils";
+import { getSearchParams, render, screen, waitFor } from "test-utils";
 
 import { SeriesSearch } from "./SeriesSearch";
 
@@ -57,13 +57,9 @@ it("should display default search results correctly", async () => {
 test("if state is in sync with url", async () => {
   render(<SeriesSearch />, { renderLocation: location => location.search });
 
-  let searchParams = new URLSearchParams(
-    screen.getByTestId("router-location").textContent!
-  );
-
   // These are expected to be set automatically
-  expect(searchParams.get("page")).toBe("0");
-  expect(searchParams.get("rowsPerPage")).toBe("10");
+  expect(getSearchParams().get("page")).toBe("0");
+  expect(getSearchParams().get("rowsPerPage")).toBe("10");
 
   // Open filters
   const expandFiltersRole = await screen.findByRole("button", {
@@ -81,10 +77,6 @@ test("if state is in sync with url", async () => {
     ).toBeInTheDocument()
   );
 
-  searchParams = new URLSearchParams(
-    screen.getByTestId("router-location").textContent!
-  );
-
   // URL search params should have the new query
-  expect(searchParams.get("SERNOME")).toBe("spread");
+  expect(getSearchParams().get("SERNOME")).toBe("spread");
 });

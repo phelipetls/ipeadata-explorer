@@ -1,5 +1,5 @@
 import * as React from "react";
-import { render, RenderOptions } from "@testing-library/react";
+import { render, screen, RenderOptions } from "@testing-library/react";
 import { theme } from "../styles/Theme";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
@@ -54,6 +54,12 @@ export function readJson(path: string): object {
     encoding: "utf-8",
   });
   return JSON.parse(file);
+}
+
+export function getSearchParams() {
+  return new URLSearchParams(
+    screen.getByTestId("router-location").textContent || undefined
+  );
 }
 
 export * from "@testing-library/react";
