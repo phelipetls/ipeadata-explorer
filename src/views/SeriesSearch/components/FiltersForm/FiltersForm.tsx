@@ -54,6 +54,8 @@ interface FiltersFormData {
   SERTEMMUN: boolean;
   SERTEMEST: boolean;
   SERTEMMET: boolean;
+  SERMINDATA: Date | null;
+  SERMAXDATA: Date | null;
 }
 
 interface Props {
@@ -91,6 +93,8 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
       SERTEMMUN: false,
       SERTEMEST: false,
       SERTEMMET: false,
+      SERMINDATA: null,
+      SERMAXDATA: null,
     },
   });
 

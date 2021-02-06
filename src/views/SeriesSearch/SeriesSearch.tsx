@@ -68,12 +68,13 @@ export function SeriesSearch() {
   const [searchValues, setSearchValues] = React.useState(
     () => getSearchValuesFromUrl(searchParams)
   );
+
   const [page, setPage] = React.useState(Number(searchParams.get("page")) || 0);
   const [rowsPerPage, setRowsPerPage] = React.useState(
     Number(searchParams.get("rowsPerPage")) || 10
   );
-
   const [totalCount, setTotalCount] = React.useState(0);
+
   const [filterActive, setFilterActive] = React.useState(false);
 
   const { isLoading, isFetching, data } = useQuery(
