@@ -72,7 +72,8 @@ export function SeriesSearch() {
   const [rowsPerPage, setRowsPerPage] = React.useState(
     Number(searchParams.get("rowsPerPage")) || 10
   );
-  const [rowsCount, setRowsCount] = React.useState(0);
+
+  const [totalCount, setTotalCount] = React.useState(0);
   const [filterActive, setFilterActive] = React.useState(false);
 
   const { isLoading, isFetching, data } = useQuery(
@@ -87,7 +88,7 @@ export function SeriesSearch() {
     },
     {
       staleTime: Infinity,
-      onSuccess: data => setRowsCount(data["@odata.count"]),
+      onSuccess: data => setTotalCount(data["@odata.count"]),
     }
   );
 
@@ -130,7 +131,7 @@ export function SeriesSearch() {
   const paginationActions = (
     <PaginationFooter
       page={page}
-      count={rowsCount}
+      count={totalCount}
       rowsPerPage={rowsPerPage}
       handleChangePage={handlePageChange}
       handleChangeRowsPerPage={handleRowsPerPageChange}
