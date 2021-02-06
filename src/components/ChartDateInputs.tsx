@@ -38,12 +38,14 @@ interface Props {
   metadata: SeriesMetadata;
 }
 
-export function ChartDateInputs({ metadata }: Props) {
+export function ChartDateInputs(props: Props) {
   const classes = useStyles();
+
+  const { metadata } = props;
 
   const { register, control } = useFormContext<ChartDateInputsData>();
 
-  const resetDate = (date: Date) => {
+  const resetDate = (date: Date | null) => {
     if (!date) return;
 
     if (metadata.PERNOME !== "Diária") {
@@ -68,8 +70,7 @@ export function ChartDateInputs({ metadata }: Props) {
         minDate={minDate}
         maxDate={maxDate}
         initialFocusedDate={maxDate}
-        // FIXME: improve type
-        onAccept={resetDate as any}
+        onAccept={resetDate}
         views={dateViewsByPeriodicity[metadata.PERNOME]}
         keyboardIcon={<Event fontSize="small" />}
         className={classes.datePicker}
@@ -83,8 +84,7 @@ export function ChartDateInputs({ metadata }: Props) {
         minDate={minDate}
         maxDate={maxDate}
         initialFocusedDate={maxDate}
-        // FIXME: improve type
-        onAccept={resetDate as any}
+        onAccept={resetDate}
         views={dateViewsByPeriodicity[metadata.PERNOME]}
         keyboardIcon={<Event fontSize="small" />}
         className={classes.datePicker}
