@@ -36,6 +36,7 @@
     "start": "react-app-rewired start",
     "build": "react-app-rewired build && mv build/index.html build/200.html",
     "test": "react-scripts test",
+    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
     "eject": "react-scripts eject",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
   },
