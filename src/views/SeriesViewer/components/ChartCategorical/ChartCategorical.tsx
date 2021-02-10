@@ -17,8 +17,9 @@ import {
   CategoriesMetadata,
   getDateFilter,
 } from "api/odata";
-import { useHistory, useLocation } from "react-router";
+import { useLocation } from "react-router";
 import { getDateSafely } from "utils";
+import { useSyncSearchParams } from "hooks";
 
 export const DEFAULT_LIMIT = 1;
 
@@ -29,7 +30,6 @@ interface Props {
 
 export function ChartCategorical({ code, metadata }: Props) {
   const location = useLocation();
-  const history = useHistory();
   const searchParams = new URLSearchParams(location.search);
 
   const [startDate, setStartDate] = React.useState<Date | null>(
@@ -43,6 +43,17 @@ export function ChartCategorical({ code, metadata }: Props) {
   const [lastN, setLastN] = React.useState(
     Number(searchParams.get("lastN")) || DEFAULT_LIMIT
   );
+
+  const stateToSync = React.useMemo(
+    () => ({
+      startDate,
+      endDate,
+      lastN: lastN !== DEFAULT_LIMIT ? lastN : null,
+    }),
+    [startDate, endDate, lastN]
+  );
+
+  useSyncSearchParams(stateToSync);
 
   const { isLoading, data } = useQuery(
     [code, startDate, endDate, lastN],
@@ -65,24 +76,6 @@ export function ChartCategorical({ code, metadata }: Props) {
     if (endDate) setEndDate(endDate);
     if (lastN) setLastN(+lastN);
   }
-
-  React.useEffect(() => {
-    const newSearchParams = new URLSearchParams();
-
-    if (startDate) {
-      newSearchParams.set("startDate", startDate.toLocaleDateString("pt-BR"));
-    }
-
-    if (endDate) {
-      newSearchParams.set("endDate", endDate.toLocaleDateString("pt-BR"));
-    }
-
-    if (lastN !== DEFAULT_LIMIT) {
-      newSearchParams.set("lastN", String(lastN));
-    }
-
-    history.push({ search: `?${newSearchParams}` });
-  }, [startDate, endDate, lastN, history]);
 
   const categories: CategoriesMetadata[] = (data && data.value) || [];
 

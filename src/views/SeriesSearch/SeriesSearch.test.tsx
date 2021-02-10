@@ -60,9 +60,6 @@ test("if search filter and pagination works", async () => {
 test("if search state is in sync with url", async () => {
   render(<SeriesSearch />, { renderLocation: location => location.search });
 
-  expect(getSearchParams().get("page")).toBe("0");
-  expect(getSearchParams().get("rowsPerPage")).toBe("10");
-
   const expandFiltersRole = await screen.findByRole("button", {
     name: /expande filtros/i,
   });

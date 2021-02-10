@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useQuery } from "react-query";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import {
   GeographicMap,
@@ -27,6 +27,7 @@ import {
 } from "api/odata";
 import { SeriesDivision, shouldPlotMap } from "api/ibge";
 import { getDateSafely, getDivisionSafely } from "utils";
+import { useSyncSearchParams } from "hooks";
 
 const DEFAULT_LIMIT = 5;
 const DEFAULT_BOUNDARY = "BR";
@@ -59,7 +60,6 @@ interface Props {
 
 export function ChartGeographic({ code, metadata }: Props) {
   const location = useLocation();
-  const history = useHistory();
   const searchParams = new URLSearchParams(location.search);
 
   const [startDate, setStartDate] = React.useState<Date | null>(
@@ -79,6 +79,18 @@ export function ChartGeographic({ code, metadata }: Props) {
   );
 
   const [boundaryId, setBoundaryId] = React.useState(DEFAULT_BOUNDARY);
+
+  const stateToSync = React.useMemo(
+    () => ({
+      startDate,
+      endDate,
+      lastN: lastN !== DEFAULT_LIMIT ? lastN : null,
+      division,
+    }),
+    [startDate, endDate, lastN, division]
+  );
+
+  useSyncSearchParams(stateToSync);
 
   const { isLoading: isLoadingDivisions, data: divisions = [] } = useQuery<
     SeriesDivision[]
@@ -116,28 +128,6 @@ export function ChartGeographic({ code, metadata }: Props) {
     if (division) setDivision(division);
     if (boundaryId) setBoundaryId(boundaryId);
   }
-
-  React.useEffect(() => {
-    const newSearchParams = new URLSearchParams();
-
-    if (startDate) {
-      newSearchParams.set("startDate", startDate.toLocaleDateString("pt-BR"));
-    }
-
-    if (endDate) {
-      newSearchParams.set("endDate", endDate.toLocaleDateString("pt-BR"));
-    }
-
-    if (lastN !== DEFAULT_LIMIT) {
-      newSearchParams.set("lastN", String(lastN));
-    }
-
-    if (division) {
-      newSearchParams.set("division", division);
-    }
-
-    history.push({ search: `?${newSearchParams}` });
-  }, [startDate, endDate, lastN, division, history]);
 
   const isLoading = isLoadingData || isLoadingDivisions;
 

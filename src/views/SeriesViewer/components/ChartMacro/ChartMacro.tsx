@@ -1,6 +1,6 @@
 import * as React from "react";
 import { useQuery } from "react-query";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { getDateSafely } from "utils";
 
 import {
@@ -13,6 +13,7 @@ import {
 } from "components";
 import { SeriesMetadata, SeriesValues } from "types";
 import { buildSeriesValuesUrl, getDateFilter, buildFilter } from "api/odata";
+import { useSyncSearchParams } from "hooks";
 
 const DEFAULT_LIMIT = 50;
 
@@ -23,7 +24,6 @@ interface Props {
 
 export function ChartMacro({ code, metadata }: Props) {
   const location = useLocation();
-  const history = useHistory();
   const searchParams = new URLSearchParams(location.search);
 
   const [startDate, setStartDate] = React.useState<Date | null>(
@@ -35,6 +35,17 @@ export function ChartMacro({ code, metadata }: Props) {
   const [lastN, setLastN] = React.useState<number>(
     Number(searchParams.get("lastN")) || DEFAULT_LIMIT
   );
+
+  const stateToSync = React.useMemo(
+    () => ({
+      startDate,
+      endDate,
+      lastN: lastN !== DEFAULT_LIMIT ? lastN : null,
+    }),
+    [startDate, endDate, lastN]
+  );
+
+  useSyncSearchParams(stateToSync);
 
   const { isLoading, data } = useQuery(
     [code, startDate, endDate, lastN],
@@ -57,24 +68,6 @@ export function ChartMacro({ code, metadata }: Props) {
     if (endDate) setEndDate(endDate);
     if (lastN) setLastN(lastN);
   }
-
-  React.useEffect(() => {
-    const newSearchParams = new URLSearchParams();
-
-    if (startDate) {
-      newSearchParams.set("startDate", startDate.toLocaleDateString("pt-BR"));
-    }
-
-    if (endDate) {
-      newSearchParams.set("endDate", endDate.toLocaleDateString("pt-BR"));
-    }
-
-    if (lastN !== DEFAULT_LIMIT) {
-      newSearchParams.set("lastN", String(lastN));
-    }
-
-    history.push({ search: `?${newSearchParams}` });
-  }, [startDate, endDate, lastN, history]);
 
   const series: SeriesValues[] = (data && data.value) || [];
 

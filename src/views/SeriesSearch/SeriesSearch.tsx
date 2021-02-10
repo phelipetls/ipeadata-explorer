@@ -1,6 +1,6 @@
 import * as React from "react";
 import { Link, Paper, TableContainer } from "@material-ui/core";
-import { Link as RouterLink, useLocation, useHistory } from "react-router-dom";
+import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useQuery, useQueryCache } from "react-query";
 import { useBreakpoint } from "utils";
 
@@ -25,6 +25,7 @@ import {
 
 import { SeriesMetadata } from "types";
 import { TableColumn } from "types";
+import { useSyncSearchParams } from "hooks";
 
 type MetadataDateFields = Pick<SeriesMetadata, "SERMAXDATA" | "SERMINDATA">;
 
@@ -58,21 +59,27 @@ const columns: TableColumn[] = [
   },
 ];
 
+const DEFAULT_PAGE = 0;
+const DEFAULT_ROWS_PER_PAGE = 10;
+
 export function SeriesSearch() {
   const isSmallScreen = useBreakpoint("sm");
   const queryCache = useQueryCache();
-  const history = useHistory();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
-  const [searchValues, setSearchValues] = React.useState(
-    () => getSearchValuesFromUrl(searchParams)
+  const [searchValues, setSearchValues] = React.useState(() =>
+    getSearchValuesFromUrl(searchParams)
   );
 
-  const [page, setPage] = React.useState(Number(searchParams.get("page")) || 0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(
-    Number(searchParams.get("rowsPerPage")) || 10
+  const [page, setPage] = React.useState(
+    Number(searchParams.get("page")) || DEFAULT_PAGE
   );
+
+  const [rowsPerPage, setRowsPerPage] = React.useState(
+    Number(searchParams.get("rowsPerPage")) || DEFAULT_ROWS_PER_PAGE
+  );
+
   const [totalCount, setTotalCount] = React.useState(0);
 
   const [filterActive, setFilterActive] = React.useState(false);
@@ -95,18 +102,16 @@ export function SeriesSearch() {
 
   const rows: SeriesMetadata[] = (data && data.value) || [];
 
-  React.useEffect(() => {
-    const newSearchParams = new URLSearchParams();
+  const stateToSync = React.useMemo(
+    () => ({
+      page: page !== DEFAULT_PAGE ? page : null,
+      rowsPerPage: rowsPerPage !== DEFAULT_ROWS_PER_PAGE ? rowsPerPage : null,
+      ...searchValues,
+    }),
+    [page, rowsPerPage, searchValues]
+  );
 
-    newSearchParams.set("page", String(page));
-    newSearchParams.set("rowsPerPage", String(rowsPerPage));
-
-    for (const [key, value] of Object.entries(searchValues)) {
-      newSearchParams.set(key, value)
-    }
-
-    history.push({ search: `?${newSearchParams}` });
-  }, [page, rowsPerPage, history, searchValues]);
+  useSyncSearchParams(stateToSync);
 
   function handlePageChange(_: any, newPage: number) {
     setPage(newPage);
