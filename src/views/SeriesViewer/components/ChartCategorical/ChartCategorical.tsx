@@ -17,8 +17,10 @@ import {
   CategoriesMetadata,
   getDateFilter,
 } from "api/odata";
+import { useHistory, useLocation } from "react-router";
+import { getDateSafely } from "utils";
 
-const DEFAULT_LIMIT = 1;
+export const DEFAULT_LIMIT = 1;
 
 interface Props {
   code: string;
@@ -26,9 +28,21 @@ interface Props {
 }
 
 export function ChartCategorical({ code, metadata }: Props) {
-  const [startDate, setStartDate] = React.useState<Date | null>(null);
-  const [endDate, setEndDate] = React.useState<Date | null>(null);
-  const [lastN, setLastN] = React.useState(DEFAULT_LIMIT);
+  const location = useLocation();
+  const history = useHistory();
+  const searchParams = new URLSearchParams(location.search);
+
+  const [startDate, setStartDate] = React.useState<Date | null>(
+    getDateSafely(searchParams.get("startDate"))
+  );
+
+  const [endDate, setEndDate] = React.useState<Date | null>(
+    getDateSafely(searchParams.get("endDate"))
+  );
+
+  const [lastN, setLastN] = React.useState(
+    Number(searchParams.get("lastN")) || DEFAULT_LIMIT
+  );
 
   const { isLoading, data } = useQuery(
     [code, startDate, endDate, lastN],
@@ -52,6 +66,24 @@ export function ChartCategorical({ code, metadata }: Props) {
     if (lastN) setLastN(+lastN);
   }
 
+  React.useEffect(() => {
+    const newSearchParams = new URLSearchParams();
+
+    if (startDate) {
+      newSearchParams.set("startDate", startDate.toLocaleDateString("pt-BR"));
+    }
+
+    if (endDate) {
+      newSearchParams.set("endDate", endDate.toLocaleDateString("pt-BR"));
+    }
+
+    if (lastN !== DEFAULT_LIMIT) {
+      newSearchParams.set("lastN", String(lastN));
+    }
+
+    history.push({ search: `?${newSearchParams}` });
+  }, [startDate, endDate, lastN, history]);
+
   const categories: CategoriesMetadata[] = (data && data.value) || [];
 
   const labels = categories.map(category => category.VALVALOR);
@@ -64,7 +96,14 @@ export function ChartCategorical({ code, metadata }: Props) {
 
   return (
     <ChartSection>
-      <ChartFilters onSubmit={onSubmit}>
+      <ChartFilters
+        defaultValues={{
+          startDate,
+          endDate,
+          lastN,
+        }}
+        onSubmit={onSubmit}
+      >
         <ChartDateInputs metadata={metadata} />
       </ChartFilters>
 
