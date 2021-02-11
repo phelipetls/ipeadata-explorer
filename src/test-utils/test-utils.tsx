@@ -10,19 +10,24 @@ import DateFnsUtils from "@date-io/date-fns";
 
 import { readFileSync, existsSync } from "fs";
 
-interface customRenderOptions {
-  routerOptions: MemoryRouterProps;
+type RouterLocationOptions = {
   renderLocation: (location: Location) => string;
-}
+};
 
-export const RouterLocation = ({
-  renderLocation,
-}: {
-  renderLocation: (location: Location) => string;
-}) => {
+export const RouterLocation = ({ renderLocation }: RouterLocationOptions) => {
   const location = useLocation();
 
   return <div data-testid="router-location">{renderLocation(location)}</div>;
+};
+
+export function getSearchParams() {
+  return new URLSearchParams(
+    screen.getByTestId("router-location").textContent || undefined
+  );
+}
+
+type CustomRenderOptions = RouterLocationOptions & {
+  routerOptions: MemoryRouterProps;
 };
 
 const customRender = (
@@ -31,7 +36,7 @@ const customRender = (
     routerOptions,
     renderLocation,
     ...renderOptions
-  }: Partial<customRenderOptions & RenderOptions> = {}
+  }: Partial<CustomRenderOptions & RenderOptions> = {}
 ) => {
   return render(
     <ThemeProvider theme={theme}>
@@ -50,16 +55,8 @@ export function readJson(path: string): object {
   if (!existsSync(path)) {
     throw new Error(`${path} does not exist`);
   }
-  const file = readFileSync(path, {
-    encoding: "utf-8",
-  });
-  return JSON.parse(file);
-}
 
-export function getSearchParams() {
-  return new URLSearchParams(
-    screen.getByTestId("router-location").textContent || undefined
-  );
+  return JSON.parse(readFileSync(path, { encoding: "utf-8" }));
 }
 
 export * from "@testing-library/react";
