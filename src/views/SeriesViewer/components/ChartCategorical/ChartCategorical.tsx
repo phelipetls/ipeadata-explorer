@@ -1,10 +1,12 @@
 import * as React from "react";
 
+import axios from "redaxios";
 import { useQuery } from "react-query";
 
 import {
   ChartLoading,
-  ChartEmpty,
+  ChartError,
+  ChartNoData,
   ChartSection,
   ChartFilters,
   ChartDateInputs,
@@ -55,7 +57,7 @@ export function ChartCategorical({ code, metadata }: Props) {
 
   useSyncSearchParams(stateToSync);
 
-  const { isLoading, data } = useQuery(
+  const { isError, isLoading, data } = useQuery(
     [code, startDate, endDate, lastN],
     async () => {
       const dateFilter = getDateFilter({
@@ -65,7 +67,9 @@ export function ChartCategorical({ code, metadata }: Props) {
         metadata,
       });
       const url = buildCountByCategoryUrl(code, { filter: dateFilter });
-      return await (await fetch(url)).json();
+
+      const response = await axios.get(url);
+      return response.data;
     }
   );
 
@@ -102,8 +106,10 @@ export function ChartCategorical({ code, metadata }: Props) {
 
       {isLoading ? (
         <ChartLoading />
+      ) : isError ? (
+        <ChartError />
       ) : categories.length === 0 ? (
-        <ChartEmpty text="Sem dados" />
+        <ChartNoData />
       ) : (
         <BarChart metadata={metadata} labels={labels} datasets={datasets} />
       )}
