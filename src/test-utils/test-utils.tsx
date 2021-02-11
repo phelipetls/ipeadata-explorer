@@ -6,9 +6,18 @@ import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import { MemoryRouter as Router, useLocation } from "react-router-dom";
 import { MemoryRouterProps } from "react-router";
 import { Location } from "history";
+import { QueryCache, ReactQueryCacheProvider } from "react-query";
 import DateFnsUtils from "@date-io/date-fns";
 
 import { readFileSync, existsSync } from "fs";
+
+export const queryCache = new QueryCache({
+  defaultConfig: {
+    queries: {
+      retry: false,
+    },
+  },
+});
 
 type RouterLocationOptions = {
   renderLocation: (location: Location) => string;
@@ -40,12 +49,16 @@ const customRender = (
 ) => {
   return render(
     <ThemeProvider theme={theme}>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <Router {...routerOptions}>
-          {component}
-          {renderLocation && <RouterLocation renderLocation={renderLocation} />}
-        </Router>
-      </MuiPickersUtilsProvider>
+      <ReactQueryCacheProvider queryCache={queryCache}>
+        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+          <Router {...routerOptions}>
+            {component}
+            {renderLocation && (
+              <RouterLocation renderLocation={renderLocation} />
+            )}
+          </Router>
+        </MuiPickersUtilsProvider>
+      </ReactQueryCacheProvider>
     </ThemeProvider>,
     renderOptions
   );
