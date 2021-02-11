@@ -17,6 +17,8 @@ export * from "./ChartFilters";
 export * from "./ChartJS";
 export * from "./ChartLoading";
 export * from "./ChartEmpty";
+export * from "./ChartNoData";
+export * from "./ChartError";
 export * from "./ChartSection";
 export * from "./LineChart";
 export * from "./BarChart";

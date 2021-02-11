@@ -1,4 +1,6 @@
 import * as React from "react";
+
+import axios from "redaxios";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import { getDateSafely } from "utils";
@@ -9,7 +11,8 @@ import {
   ChartSection,
   LineChart,
   ChartLoading,
-  ChartEmpty,
+  ChartError,
+  ChartNoData,
 } from "components";
 import { SeriesMetadata, SeriesValues } from "types";
 import { buildSeriesValuesUrl, getDateFilter, buildFilter } from "api/odata";
@@ -49,7 +52,7 @@ export function ChartMacro({ code, metadata }: Props) {
 
   useSyncSearchParams(stateToSync);
 
-  const { isError, isLoading, data } = useQuery(
+  const { isLoading, data, isError } = useQuery(
     [code, startDate, endDate, lastN],
     async () => {
       const dateFilter = getDateFilter({
@@ -58,8 +61,11 @@ export function ChartMacro({ code, metadata }: Props) {
         lastN,
         metadata,
       });
+
       const url = buildSeriesValuesUrl(code) + buildFilter(dateFilter);
-      return await (await fetch(url)).json();
+
+      const response = await axios.get(url);
+      return response.data;
     }
   );
 
@@ -92,8 +98,10 @@ export function ChartMacro({ code, metadata }: Props) {
 
       {isLoading ? (
         <ChartLoading />
+      ) : isError ? (
+        <ChartError />
       ) : series.length === 0 ? (
-        <ChartEmpty text="Sem dados" />
+        <ChartNoData />
       ) : (
         <LineChart metadata={metadata} labels={labels} datasets={datasets} />
       )}
