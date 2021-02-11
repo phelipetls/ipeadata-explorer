@@ -27,7 +27,7 @@ interface Props {
   children: JSX.Element;
 }
 
-export function FiltersContainer(props: Props) {
+export function SearchFilterContainer(props: Props) {
   const classes = useStyles();
 
   const { filterActive, setFilterActive, children } = props;

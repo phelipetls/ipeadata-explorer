@@ -4,8 +4,8 @@ import { Link as RouterLink, useLocation } from "react-router-dom";
 import { useQuery, useQueryCache } from "react-query";
 import { useBreakpoint } from "utils";
 
-import { FiltersForm } from "./components/FiltersForm";
-import { FiltersContainer } from "./components/FiltersContainer";
+import { SearchFilterForm } from "./components/SearchFilterForm";
+import { SearchFilterContainer } from "./components/SearchFilterContainer";
 
 import {
   TableSortable,
@@ -175,12 +175,12 @@ export function SeriesSearch() {
 
   return (
     <>
-      <FiltersContainer
+      <SearchFilterContainer
         filterActive={filterActive}
         setFilterActive={setFilterActive}
       >
-        <FiltersForm searchParams={searchParams} onSubmit={handleSubmit} />
-      </FiltersContainer>
+        <SearchFilterForm searchParams={searchParams} onSubmit={handleSubmit} />
+      </SearchFilterContainer>
 
       {!isLoading && rows.length === 0 ? (
         <Paper>

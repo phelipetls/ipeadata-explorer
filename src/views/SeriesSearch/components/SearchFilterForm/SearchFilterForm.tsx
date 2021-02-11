@@ -40,7 +40,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-interface FiltersFormData {
+interface SearchFilterFormData {
   SERNOME: string;
   FNTNOME: string;
   UNINOME: string;
@@ -63,7 +63,7 @@ interface Props {
   onSubmit: (data: Record<string, string>) => void;
 }
 
-export function FiltersForm({ searchParams, onSubmit }: Props) {
+export function SearchFilterForm({ searchParams, onSubmit }: Props) {
   const classes = useStyles();
   const isExtraSmallScreen = useBreakpoint("xs");
 
@@ -77,7 +77,7 @@ export function FiltersForm({ searchParams, onSubmit }: Props) {
   } = Object.fromEntries(searchParams);
 
   const { register, handleSubmit, formState, control } = useForm<
-    FiltersFormData
+    SearchFilterFormData
   >({
     defaultValues: {
       SERNOME,
