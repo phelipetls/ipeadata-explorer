@@ -11,7 +11,7 @@ import {
 import {
   Loading,
   ChartLoading,
-  ChartNoData,
+  ChartEmpty,
   ChartFilters,
   ChartDateInputs,
   ChartDateInputsData,
@@ -154,7 +154,7 @@ export function ChartGeographic({ code, metadata }: Props) {
       {isLoading ? (
         <ChartLoading />
       ) : series.length === 0 ? (
-        <ChartNoData />
+        <ChartEmpty text="Sem dados" />
       ) : division && shouldPlotMap(division) ? (
         <GeographicMap
           series={series}

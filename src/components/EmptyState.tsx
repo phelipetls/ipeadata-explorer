@@ -7,7 +7,7 @@ interface Props {
   text: string;
 }
 
-export function NoData({ text, ...rest }: Props & GridProps) {
+export function EmptyState({ text, ...rest }: Props & GridProps) {
   return (
     <Grid
       container

@@ -13,7 +13,7 @@ import {
   TableSkeleton,
   PaginationFooter,
   MetadataTable,
-  NoData,
+  EmptyState,
 } from "components";
 
 import {
@@ -184,7 +184,7 @@ export function SeriesSearch() {
 
       {!isLoading && rows.length === 0 ? (
         <Paper>
-          <NoData
+          <EmptyState
             text="Nenhum resultado para essa pesquisa"
             style={{ minHeight: "300px" }}
           />

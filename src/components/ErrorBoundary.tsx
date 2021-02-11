@@ -1,6 +1,6 @@
 import * as React from "react";
 
-import { NoData } from "components";
+import { EmptyState } from "components";
 
 interface ErrorBoundaryState {
   hasError: boolean;
@@ -18,7 +18,7 @@ export class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <NoData text="Um erro inesperado ocorreu" style={{ height: "100%" }} />
+        <EmptyState text="Um erro inesperado ocorreu" style={{ height: "100%" }} />
       );
     }
 

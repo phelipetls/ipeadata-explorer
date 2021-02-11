@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 
 import {
   ChartLoading,
-  ChartNoData,
+  ChartEmpty,
   ChartSection,
   ChartFilters,
   ChartDateInputs,
@@ -103,7 +103,7 @@ export function ChartCategorical({ code, metadata }: Props) {
       {isLoading ? (
         <ChartLoading />
       ) : categories.length === 0 ? (
-        <ChartNoData />
+        <ChartEmpty text="Sem dados" />
       ) : (
         <BarChart metadata={metadata} labels={labels} datasets={datasets} />
       )}
