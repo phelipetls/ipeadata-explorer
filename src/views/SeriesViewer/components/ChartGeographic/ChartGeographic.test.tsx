@@ -6,56 +6,119 @@ import { Chart } from "chart.js";
 import { ChartGeographic } from "./ChartGeographic";
 import { SeriesMetadata } from "types";
 
+import { rest } from "msw";
 import { server } from "test-utils/server";
 import { handlers } from "./mocks/handlers";
 
 const MOCKED_METADATA = readJson(__dirname + "/mocks/metadata.json");
 
-beforeEach(() => {
-  server.use(...handlers);
+describe("succesful requests", () => {
+  beforeEach(() => {
+    server.use(...handlers);
+  });
+
+  it("should show a line chart by default", async () => {
+    render(
+      <ChartGeographic
+        code="ACIDT"
+        metadata={MOCKED_METADATA as SeriesMetadata}
+      />,
+      { renderLocation: location => location.search }
+    );
+
+    await waitFor(() =>
+      expect(screen.queryByTestId("chart-id")).toBeInTheDocument()
+    );
+
+    const chart = Chart.getChart("chart-id");
+    expect(chart?.config.type).toBe("line");
+  });
+
+  it("should show a map if geographic division is state", async () => {
+    render(
+      <ChartGeographic
+        code="ACIDT"
+        metadata={MOCKED_METADATA as SeriesMetadata}
+      />,
+      { renderLocation: location => location.search }
+    );
+
+    await waitFor(() =>
+      expect(
+        screen.queryByLabelText(/divis.es geogr.ficas/i)
+      ).toBeInTheDocument()
+    );
+
+    const geographicDivisionSelect = screen.getByLabelText(
+      /divis.es geogr.ficas/i
+    ) as HTMLSelectElement;
+
+    // First geographic division is 'Brasil'
+    expect(geographicDivisionSelect.value).toBe("Brasil");
+
+    // Let's change it to 'Estados' (states)
+    userEvent.selectOptions(geographicDivisionSelect, "Estados");
+    userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
+
+    await waitFor(() =>
+      expect(getSearchParams().get("division")).toBe("Estados")
+    );
+
+    // We expect a map now
+    await waitFor(() =>
+      expect(document.querySelector("svg.rsm-svg")).toBeInTheDocument()
+    );
+  });
 });
 
-beforeEach(() => {
-  render(
-    <ChartGeographic
-      code="ACIDT"
-      metadata={MOCKED_METADATA as SeriesMetadata}
-    />,
-    { renderLocation: location => location.search }
-  );
-});
+describe("error handling/empty state", () => {
+  it("should show an error message", async () => {
+    server.use(
+      rest.get(/Metadados.*\/Valores/, (req, res, ctx) => {
+        // First request is made to fetch geographic divisions and should be
+        // successful
+        if (req.url.searchParams.get("$apply")) {
+          return res(
+            ctx.status(200),
+            ctx.json(readJson(__dirname + "/mocks/geographic-divisions.json"))
+          );
+        }
 
-it("should show a line chart by default", async () => {
-  await waitFor(() =>
-    expect(screen.queryByTestId("chart-id")).toBeInTheDocument()
-  );
+        // Subsequent requests are meant to fetch data for charts
+        return res(ctx.status(500));
+      })
+    );
 
-  const chart = Chart.getChart("chart-id");
-  expect(chart?.config.type).toBe("line");
-});
+    render(
+      <ChartGeographic
+        code="ACIDT"
+        metadata={MOCKED_METADATA as SeriesMetadata}
+      />
+    );
 
-it("should show a map if geographic division is state", async () => {
-  await waitFor(() =>
-    expect(screen.queryByLabelText(/divis.es geogr.ficas/i)).toBeInTheDocument()
-  );
+    await waitFor(() =>
+      expect(
+        screen.getByText("Desculpe, ocorreu um erro inesperado")
+      ).toBeInTheDocument()
+    );
+  });
 
-  const geographicDivisionSelect = screen.getByLabelText(
-    /divis.es geogr.ficas/i
-  ) as HTMLSelectElement;
+  it("should show there is no data", async () => {
+    server.use(
+      rest.get(/Metadados.*Valores/, (_, res, ctx) => {
+        return res(ctx.status(200), ctx.json({ value: [] }));
+      })
+    );
 
-  // First geographic division is 'Brasil'
-  expect(geographicDivisionSelect.value).toBe("Brasil");
+    render(
+      <ChartGeographic
+        code="ACIDT"
+        metadata={MOCKED_METADATA as SeriesMetadata}
+      />
+    );
 
-  // Let's change it to 'Estados' (states)
-  userEvent.selectOptions(geographicDivisionSelect, "Estados");
-  userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
-
-  await waitFor(() =>
-    expect(getSearchParams().get("division")).toBe("Estados")
-  );
-
-  // We expect a map now
-  await waitFor(() =>
-    expect(document.querySelector("svg.rsm-svg")).toBeInTheDocument()
-  );
+    await waitFor(() =>
+      expect(screen.getByText("Sem dados")).toBeInTheDocument()
+    );
+  });
 });

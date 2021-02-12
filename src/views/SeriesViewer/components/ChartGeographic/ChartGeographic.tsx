@@ -1,4 +1,6 @@
 import * as React from "react";
+
+import axios from "redaxios";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 
@@ -11,11 +13,12 @@ import {
 import {
   Loading,
   ChartLoading,
-  ChartEmpty,
   ChartFilters,
   ChartDateInputs,
   ChartDateInputsData,
   ChartSection,
+  ChartNoData,
+  ChartError,
 } from "components";
 import { SeriesMetadata } from "types";
 
@@ -44,8 +47,11 @@ async function fetchGeographicDivisions(
   code: string
 ): Promise<SeriesDivision[]> {
   const url = buildGeographicDivisionsUrl(code);
-  const json: GeographicDivisionMetadata = await (await fetch(url)).json();
-  return json.value.map(division => division.NIVNOME);
+
+  const response = await axios.get(url);
+  const data = response.data as GeographicDivisionMetadata;
+
+  return data.value.map(division => division.NIVNOME);
 }
 
 function getBoundaryFilter(boundaryId: string, division: SeriesDivision) {
@@ -92,13 +98,23 @@ export function ChartGeographic({ code, metadata }: Props) {
 
   useSyncSearchParams(stateToSync);
 
-  const { isLoading: isLoadingDivisions, data: divisions = [] } = useQuery<
-    SeriesDivision[]
-  >(["Fetch available geographic divisions", code], fetchGeographicDivisions, {
-    onSuccess: ([firstDivision]) => setDivision(firstDivision),
-  });
+  const {
+    isError: isErrorDivision,
+    isLoading: isLoadingDivisions,
+    data: divisions = [],
+  } = useQuery<SeriesDivision[]>(
+    ["Fetch available geographic divisions", code],
+    fetchGeographicDivisions,
+    {
+      onSuccess: ([firstDivision]) => setDivision(firstDivision),
+    }
+  );
 
-  const { isLoading: isLoadingData, data = {} } = useQuery(
+  const {
+    isError: isErrorData,
+    isLoading: isLoadingData,
+    data = {},
+  } = useQuery(
     [code, startDate, endDate, lastN, division, boundaryId],
     async () => {
       const dateFilter = getDateFilter({
@@ -114,7 +130,8 @@ export function ChartGeographic({ code, metadata }: Props) {
         buildSeriesValuesUrl(code) +
         buildFilter(dateFilter, divisionFilter, boundaryFilter);
 
-      return await (await fetch(url)).json();
+      const response = await axios.get(url);
+      return response.data;
     },
     { enabled: division }
   );
@@ -151,10 +168,12 @@ export function ChartGeographic({ code, metadata }: Props) {
         )}
       </ChartFilters>
 
-      {isLoading ? (
+      {isErrorData || isErrorDivision ? (
+        <ChartError />
+      ) : isLoading ? (
         <ChartLoading />
       ) : series.length === 0 ? (
-        <ChartEmpty text="Sem dados" />
+        <ChartNoData />
       ) : division && shouldPlotMap(division) ? (
         <GeographicMap
           series={series}
