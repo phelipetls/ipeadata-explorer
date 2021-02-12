@@ -1,13 +1,6 @@
 import * as React from "react";
 import userEvent from "@testing-library/user-event";
-import {
-  render,
-  screen,
-  waitForElementToBeRemoved,
-  getSearchParams,
-  readJson,
-  waitFor,
-} from "test-utils";
+import { render, screen, getSearchParams, readJson, waitFor } from "test-utils";
 
 import { Chart } from "chart.js";
 import { ChartMacro } from "./ChartMacro";
@@ -31,7 +24,9 @@ describe("successful requests", () => {
       { renderLocation: location => location.search }
     );
 
-    await waitForElementToBeRemoved(() => screen.queryByRole("progressbar"));
+    await waitFor(() =>
+      expect(screen.queryByTestId("chart-id")).toBeInTheDocument()
+    );
 
     // Expect a line chart
     const chart = Chart.getChart("chart-id");
@@ -52,8 +47,9 @@ describe("successful requests", () => {
     userEvent.type(screen.getByLabelText("Últimos N"), "5");
     userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("chart-id"));
-    await waitForElementToBeRemoved(() => screen.queryByRole("progressbar"));
+    await waitFor(() =>
+      expect(screen.queryByTestId("chart-id")).toBeInTheDocument()
+    );
 
     const chart = Chart.getChart("chart-id");
     expect(chart?.data.labels.length).toBe(5);
@@ -73,8 +69,9 @@ describe("successful requests", () => {
     userEvent.type(screen.getByLabelText("Data final"), "01/01/2020");
     userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
 
-    await waitForElementToBeRemoved(() => screen.queryByTestId("chart-id"));
-    await waitForElementToBeRemoved(() => screen.queryByRole("progressbar"));
+    await waitFor(() =>
+      expect(screen.queryByTestId("chart-id")).toBeInTheDocument()
+    );
 
     const chart = Chart.getChart("chart-id");
     // FIXME: this is counter-intuitive and probably not needed
