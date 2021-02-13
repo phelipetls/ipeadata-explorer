@@ -28,8 +28,12 @@ import {
   buildFilter,
   buildGeographicDivisionsUrl,
 } from "api/odata";
-import { SeriesDivision, shouldPlotMap } from "api/ibge";
-import { getDateSafely, getDivisionSafely } from "utils";
+import { BoundaryDivision, SeriesDivision, shouldPlotMap } from "api/ibge";
+import {
+  getDateSafely,
+  getDivisionSafely,
+  getBoundaryDivisionSafely,
+} from "utils";
 import { useSyncSearchParams } from "hooks";
 
 const DEFAULT_LIMIT = 5;
@@ -84,7 +88,13 @@ export function ChartGeographic({ code, metadata }: Props) {
     getDivisionSafely(searchParams.get("division"))
   );
 
-  const [boundaryId, setBoundaryId] = React.useState(DEFAULT_BOUNDARY);
+  const [boundaryDivision] = React.useState<BoundaryDivision | null>(
+    getBoundaryDivisionSafely(searchParams.get("boundaryDivision"))
+  );
+
+  const [boundaryId, setBoundaryId] = React.useState<string>(
+    searchParams.get("boundaryId") || DEFAULT_BOUNDARY
+  );
 
   const stateToSync = React.useMemo(
     () => ({
@@ -92,8 +102,10 @@ export function ChartGeographic({ code, metadata }: Props) {
       endDate,
       lastN: lastN !== DEFAULT_LIMIT ? lastN : null,
       division,
+      boundaryDivision,
+      boundaryId: boundaryId !== DEFAULT_BOUNDARY ? boundaryId : null,
     }),
-    [startDate, endDate, lastN, division]
+    [startDate, endDate, lastN, division, boundaryDivision, boundaryId]
   );
 
   useSyncSearchParams(stateToSync);
@@ -106,7 +118,8 @@ export function ChartGeographic({ code, metadata }: Props) {
     ["Fetch available geographic divisions", code],
     fetchGeographicDivisions,
     {
-      onSuccess: ([firstDivision]) => setDivision(firstDivision),
+      onSuccess: ([firstDivision]) =>
+        setDivision(division => division || firstDivision),
     }
   );
 
@@ -164,7 +177,12 @@ export function ChartGeographic({ code, metadata }: Props) {
         {isLoadingDivisions || division === null ? (
           <Loading />
         ) : (
-          <GeographyInputs division={division} divisions={divisions} />
+          <GeographyInputs
+            division={division}
+            boundaryDivision={boundaryDivision}
+            boundaryId={boundaryId}
+            divisions={divisions}
+          />
         )}
       </ChartFilters>
 

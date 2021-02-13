@@ -44,4 +44,9 @@ export const handlers = [
 
     return res(ctx.status(200), ctx.json(json));
   }),
+  rest.get(/malhas\/1/, (_, res, ctx) => {
+    const json = readLocalJson("northern-region-geojson.json");
+
+    return res(ctx.status(200), ctx.json(json));
+  }),
 ];

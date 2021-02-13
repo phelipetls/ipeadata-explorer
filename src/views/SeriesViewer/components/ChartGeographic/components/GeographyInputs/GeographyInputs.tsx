@@ -11,6 +11,8 @@ import {
 interface Props {
   division: SeriesDivision;
   divisions: SeriesDivision[];
+  boundaryDivision: BoundaryDivision | null;
+  boundaryId: string;
 }
 
 export interface GeographyInputsData {
@@ -20,23 +22,30 @@ export interface GeographyInputsData {
 }
 
 export function GeographyInputs(props: Props) {
+  const {
+    division: defaultDivision,
+    divisions,
+    boundaryDivision: defaultBoundaryDivision,
+    boundaryId: defaultBoundaryId,
+  } = props;
+
   const { register } = useFormContext<GeographyInputsData>();
 
   const [division, setDivision] = React.useState<SeriesDivision>(
-    props.division
+    defaultDivision
   );
 
   const [boundaryDivision, setBoundaryDivision] = React.useState<
     BoundaryDivision
-  >("Brasil");
+  >(defaultBoundaryDivision || "Brasil");
 
   return (
     <>
       <SelectGeographicDivision
         ref={register}
         name="division"
-        division={props.division}
-        divisions={props.divisions}
+        division={defaultDivision}
+        divisions={divisions}
         handleChange={e => setDivision(e.target.value as SeriesDivision)}
       />
 
@@ -52,13 +61,14 @@ export function GeographyInputs(props: Props) {
             }
           />
 
-          {boundaryDivision !== "Brasil" ? (
+          {boundaryDivision !== "Brasil" && (
             <SelectGeographicBoundaryId
               ref={register}
               name="boundaryId"
               boundaryDivision={boundaryDivision}
+              defaultBoundaryId={defaultBoundaryId}
             />
-          ) : null}
+          )}
         </>
       )}
     </>

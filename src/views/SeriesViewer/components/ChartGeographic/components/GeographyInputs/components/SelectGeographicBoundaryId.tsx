@@ -19,24 +19,35 @@ import {
 
 type Props = Pick<SelectProps, "name"> & {
   boundaryDivision: BoundaryDivisionToSelect;
+  defaultBoundaryId: string;
 };
 
 export const SelectGeographicBoundaryId = React.forwardRef<Ref, Props>(
   (props, ref) => {
-    const { name, boundaryDivision } = props;
+    const { name, defaultBoundaryId, boundaryDivision } = props;
 
     const { isLoading, data = [] } = useQuery(
       ["Fetch geographic divisions names", boundaryDivision],
       (_: string, boundaryDivision: BoundaryDivisionToSelect) =>
+        // FIXME: better naming
         getDivisionsMetadata(boundaryDivision)
     );
 
-    if (isLoading) return <Loading />;
+    if (isLoading) {
+      return <Loading />;
+    }
 
     const boundaries = data.map(boundary => ({
       id: boundary.id,
       name: boundary.nome,
     }));
+
+    const defaultValue =
+      boundaries.find(
+        boundary =>
+          boundary.name === defaultBoundaryId ||
+          boundary.id === Number(defaultBoundaryId)
+      )?.id || boundaries[0].id;
 
     return (
       <Grow in={true}>
@@ -48,7 +59,7 @@ export const SelectGeographicBoundaryId = React.forwardRef<Ref, Props>(
           <Select
             native
             inputRef={ref}
-            defaultValue={boundaries[0]}
+            defaultValue={defaultValue}
             label={unpluralize(boundaryDivision)}
             inputProps={{
               name,

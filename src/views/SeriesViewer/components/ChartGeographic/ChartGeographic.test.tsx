@@ -69,6 +69,52 @@ describe("succesful requests", () => {
       expect(document.querySelector("svg.rsm-svg")).toBeInTheDocument()
     );
   });
+
+  it("should be able to generate map from url parameters", async () => {
+    const searchParams = new URLSearchParams();
+
+    searchParams.set("division", "Estados");
+    searchParams.set("boundaryDivision", "Regiões");
+    // 1 is the IBGE code for Brazil's northern region
+    searchParams.set("boundaryId", "1");
+
+    render(
+      <ChartGeographic
+        code="ACIDT"
+        metadata={MOCKED_METADATA as SeriesMetadata}
+      />,
+      {
+        routerOptions: {
+          initialEntries: [`/serie/ACIDT?${searchParams}`],
+        },
+        renderLocation: location => location.search,
+      }
+    );
+
+    const selectDivision = (await screen.findByLabelText(
+      /divis.es geogr.ficas/i
+    )) as HTMLSelectElement;
+
+    expect(selectDivision.value).toBe("Estados");
+
+    const selectBoundaryDivision = (await screen.findByLabelText(
+      /limite geogr.fico/i
+    )) as HTMLSelectElement;
+
+    expect(selectBoundaryDivision.value).toBe("Regiões");
+
+    const selectBoundaryIdDivision = (await screen.findByLabelText(
+      /regi.o/i
+    )) as HTMLSelectElement;
+
+    expect(selectBoundaryIdDivision.selectedOptions[0].textContent).toBe(
+      "Norte"
+    );
+
+    await waitFor(() =>
+      expect(document.querySelector("svg.rsm-svg")).toBeInTheDocument()
+    );
+  });
 });
 
 describe("error handling/empty state", () => {

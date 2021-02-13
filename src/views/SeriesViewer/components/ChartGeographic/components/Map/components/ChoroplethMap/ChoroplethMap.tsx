@@ -25,7 +25,8 @@ import groupBy from "lodash/groupBy";
 
 async function getOutlineMap(_: string, boundaryId: string): Promise<Feature> {
   const url = getMapUrl({ boundaryId, format: "application/vnd.geo+json" });
-  return await (await fetch(url)).json();
+  const response = await fetch(url);
+  return await response.json();
 }
 
 interface Props {
