@@ -11,14 +11,11 @@ import {
 } from "@material-ui/core";
 
 import { Loading } from "components";
-import {
-  unpluralize,
-  getDivisionsMetadata,
-  BoundaryDivisionToSelect,
-} from "api/ibge";
+import { fetchDivisionNames, IbgeDivisionEndpoint } from "api/ibge";
+import { unpluralize } from "utils";
 
 type Props = Pick<SelectProps, "name"> & {
-  boundaryDivision: BoundaryDivisionToSelect;
+  boundaryDivision: IbgeDivisionEndpoint;
   defaultBoundaryId: string;
 };
 
@@ -28,9 +25,8 @@ export const SelectGeographicBoundaryId = React.forwardRef<Ref, Props>(
 
     const { isLoading, data = [] } = useQuery(
       ["Fetch geographic divisions names", boundaryDivision],
-      (_: string, boundaryDivision: BoundaryDivisionToSelect) =>
-        // FIXME: better naming
-        getDivisionsMetadata(boundaryDivision)
+      (_: string, boundaryDivision: IbgeDivisionEndpoint) =>
+        fetchDivisionNames(boundaryDivision)
     );
 
     if (isLoading) {

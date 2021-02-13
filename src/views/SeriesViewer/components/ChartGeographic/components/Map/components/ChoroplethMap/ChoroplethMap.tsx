@@ -9,9 +9,9 @@ import { scaleQuantile } from "d3-scale";
 import {
   getMapUrl,
   IbgeMapDivision,
-  divisionMetadataType,
-  getDivisionsMetadata,
-  BoundaryDivisionToSelect,
+  DivisionMetadata,
+  fetchDivisionNames,
+  IbgeDivisionEndpoint,
 } from "api/ibge";
 import { formatDate } from "utils";
 import { SeriesMetadata, SeriesValues } from "types";
@@ -55,13 +55,11 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
 
   const [date, setDate] = React.useState("");
 
-  const {
-    isLoading: isLoadingDivisionsMetadata,
-    data: divisionsMetadata,
-  } = useQuery<divisionMetadataType[]>(
-    ["Fetch geographic divisions metadata", division],
-    (_: string, division: BoundaryDivisionToSelect) =>
-      getDivisionsMetadata(division),
+  const { isLoading: isLoadingDivisionsNames, data: divisionsNames } = useQuery<
+    DivisionMetadata[]
+  >(
+    ["Fetch geographic division names", division],
+    (_: string, division: IbgeDivisionEndpoint) => fetchDivisionNames(division),
     { enabled: division }
   );
 
@@ -70,8 +68,7 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
     getOutlineMap
   );
 
-  const divisionsMetadataById =
-    divisionsMetadata && keyBy(divisionsMetadata, "id");
+  const divisionsNamesById = divisionsNames && keyBy(divisionsNames, "id");
 
   const seriesByDate = groupBy(series, row =>
     formatDate(new Date(row.VALDATA), { periodicity: metadata.PERNOME })
@@ -83,14 +80,16 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
     setDate(dates[0]);
   }
 
-  const rowsInDate = seriesByDate[date] || {};
-  const valuesInDate = Object.values(rowsInDate).map(row => row["VALVALOR"]);
+  const selectedDateRows = seriesByDate[date] || {};
+  const selectedDateValues = Object.values(selectedDateRows).map(
+    row => row["VALVALOR"]
+  );
 
   const scale = scaleQuantile<string>()
-    .domain(valuesInDate)
+    .domain(selectedDateValues)
     .range(palette[4]);
 
-  const isLoading = isLoadingOutlineMap || isLoadingDivisionsMetadata;
+  const isLoading = isLoadingOutlineMap || isLoadingDivisionsNames;
 
   return (
     <>
@@ -101,15 +100,20 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
           <Geographies geography={getMapUrl({ boundaryId, division })}>
             {({ geographies }) =>
               geographies.map(geo => {
-                const id = geo.properties.codarea;
-                const name = divisionsMetadataById![id]["nome"];
-                const divisionValue = rowsInDate.find(
-                  row => row["TERCODIGO"] === id
+                const divisionId = geo.properties.codarea;
+
+                // FIXME: probably a bug
+                const name = divisionsNamesById?.[divisionId]?.["nome"];
+
+                const currentRow = selectedDateRows.find(
+                  row => row["TERCODIGO"] === divisionId
                 );
-                const value = (divisionValue && divisionValue["VALVALOR"]) || 0;
+
+                const value = (currentRow && currentRow["VALVALOR"]) || 0;
+
                 return (
                   <Geography
-                    key={id}
+                    key={divisionId}
                     geography={geo}
                     fill={scale(value)}
                     onMouseEnter={() => {

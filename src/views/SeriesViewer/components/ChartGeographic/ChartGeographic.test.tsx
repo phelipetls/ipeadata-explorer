@@ -34,6 +34,9 @@ describe("succesful requests", () => {
     expect(chart?.config.type).toBe("line");
   });
 
+  // FIXME: this triggers a
+  // 'Warning: Can't perform a React state update on an unmounted component. (...)'
+  // for unknown reason to me
   it("should show a map if geographic division is state", async () => {
     render(
       <ChartGeographic
@@ -61,13 +64,11 @@ describe("succesful requests", () => {
     userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
 
     await waitFor(() =>
-      expect(getSearchParams().get("division")).toBe("Estados")
-    );
-
-    // We expect a map now
-    await waitFor(() =>
       expect(document.querySelector("svg.rsm-svg")).toBeInTheDocument()
     );
+
+    expect(getSearchParams().get("division")).toBe("Estados");
+    expect(document.querySelector("svg.rsm-svg")).toBeInTheDocument();
   });
 
   it("should be able to generate map from url parameters", async () => {
