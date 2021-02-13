@@ -1,21 +1,11 @@
-import { SeriesDivision } from "api/ibge";
-
-const seriesDivisions = [
-  "Brasil",
-  "Área metropolitana",
-  "Regiões",
-  "Estados",
-  "Mesorregiões",
-  "Microrregiões",
-  "Municípios",
-];
+import { seriesDivisions, SeriesDivision } from "api/ibge";
 
 export function getDivisionSafely(
   division: string | null
 ): SeriesDivision | null {
-  if (division === null || !seriesDivisions.includes(division)) {
-    return null;
+  if (seriesDivisions.includes(division as SeriesDivision)) {
+    return division as SeriesDivision;
   }
 
-  return division as SeriesDivision;
+  return null;
 }

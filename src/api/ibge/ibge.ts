@@ -9,6 +9,16 @@ export type SeriesDivision =
   | "Microrregiões"
   | "Municípios";
 
+export const seriesDivisions: SeriesDivision[] = [
+  "Brasil",
+  "Área metropolitana",
+  "Regiões",
+  "Estados",
+  "Mesorregiões",
+  "Microrregiões",
+  "Municípios",
+];
+
 /** Official documentation for IBGE's maps API:
  *  https://servicodados.ibge.gov.br/api/docs/malhas?versao=2
  */
