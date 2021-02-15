@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import axios from "redaxios";
 import { useQuery } from "react-query";
 
 import { Geographies, Geography } from "react-simple-maps";
@@ -25,8 +26,8 @@ import groupBy from "lodash/groupBy";
 
 async function getOutlineMap(_: string, boundaryId: string): Promise<Feature> {
   const url = getMapUrl({ boundaryId, format: "application/vnd.geo+json" });
-  const response = await fetch(url);
-  return await response.json();
+  const response = await axios.get(url);
+  return response.data;
 }
 
 interface Props {

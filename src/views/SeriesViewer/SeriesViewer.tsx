@@ -1,5 +1,6 @@
 import * as React from "react";
 
+import axios from "redaxios";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 
@@ -15,7 +16,8 @@ import { buildMetadataUrl } from "api/odata";
 
 async function fetchMetadata(_: string, code: string) {
   const url = buildMetadataUrl(code);
-  return await (await fetch(url)).json();
+  const response = await axios.get(url);
+  return response.data;
 }
 
 export function SeriesViewer() {

@@ -1,3 +1,5 @@
+import axios from "redaxios";
+
 // Possible values that the field NIVNOME from a series metadata may assume
 export type SeriesDivision =
   | "Brasil"
@@ -141,6 +143,6 @@ export async function fetchDivisionNames(
   division: IbgeDivisionEndpoint
 ): Promise<DivisionMetadata[]> {
   const url = getDivisionListUrl(division);
-  const response = await fetch(url);
-  return await response.json();
+  const response = await axios.get(url);
+  return response.data;
 }

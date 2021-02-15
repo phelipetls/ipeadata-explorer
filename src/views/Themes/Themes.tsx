@@ -3,6 +3,8 @@ import * as React from "react";
 import { Container } from "@material-ui/core";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
+
+import axios from "redaxios";
 import { useQuery } from "react-query";
 
 import { ThemeCard, ThemeName, ThemeParent, ThemeBases } from "./components";
@@ -36,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ENDPOINT = BASE_URL + "Temas";
+const THEME_URL = BASE_URL + "Temas";
 
 interface ThemeMetadata {
   TEMCODIGO: number;
@@ -61,7 +63,8 @@ export function Themes() {
   };
 
   const { isLoading, data } = useQuery("Themes", async () => {
-    return await (await fetch(ENDPOINT)).json();
+    const response = await axios.get(THEME_URL);
+    return response.data;
   });
 
   const themes: ThemeMetadata[] = (data && data.value) || [];

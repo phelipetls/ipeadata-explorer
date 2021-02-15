@@ -1,9 +1,11 @@
 import * as React from "react";
 import { Link, Paper, TableContainer } from "@material-ui/core";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import { useQuery, useQueryCache } from "react-query";
-import { useBreakpoint } from "utils";
 
+import axios from "redaxios";
+import { useQuery, useQueryCache } from "react-query";
+
+import { useBreakpoint } from "utils";
 import { SearchFilterForm } from "./components/SearchFilterForm";
 import { SearchFilterContainer } from "./components/SearchFilterContainer";
 
@@ -87,12 +89,13 @@ export function SeriesSearch() {
   const { isLoading, isFetching, data } = useQuery(
     [{ searchValues, page, rowsPerPage }],
     async () => {
-      const response = await fetch(
+      const url =
         buildSearchUrl(searchValues) +
-          limitQuery(rowsPerPage) +
-          offsetQuery(page * rowsPerPage)
-      );
-      return await response.json();
+        limitQuery(rowsPerPage) +
+        offsetQuery(page * rowsPerPage);
+
+      const response = await axios.get(url);
+      return response.data;
     },
     {
       staleTime: Infinity,

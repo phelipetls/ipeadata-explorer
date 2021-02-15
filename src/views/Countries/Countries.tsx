@@ -2,6 +2,8 @@ import * as React from "react";
 
 import { Link, TableContainer, Paper } from "@material-ui/core";
 import { Link as RouterLink } from "react-router-dom";
+
+import axios from "redaxios";
 import { useQuery } from "react-query";
 
 import { TableSortable, TableSkeleton } from "components";
@@ -37,7 +39,8 @@ const columns: TableColumn<CountryMetadata>[] = [
 
 export function Countries() {
   const { isLoading, data } = useQuery("Countries", async () => {
-    return await (await fetch(COUNTRIES_URL)).json();
+    const response = await axios.get(COUNTRIES_URL);
+    return response.data;
   });
 
   const countries: CountryMetadata[] = (data && data.value) || [];
