@@ -28,7 +28,7 @@ import {
   buildFilter,
   buildGeographicDivisionsUrl,
 } from "api/odata";
-import { BoundaryDivision, SeriesDivision, shouldPlotMap } from "api/ibge";
+import { BoundaryDivision, GeographicDivision, shouldPlotMap } from "api/ibge";
 import {
   getDateSafely,
   getDivisionSafely,
@@ -41,7 +41,7 @@ const DEFAULT_BOUNDARY = "BR";
 
 interface GeographicDivisionMetadata {
   value: {
-    NIVNOME: SeriesDivision;
+    NIVNOME: GeographicDivision;
     Count: number;
   }[];
 }
@@ -49,7 +49,7 @@ interface GeographicDivisionMetadata {
 async function fetchGeographicDivisions(
   _: string,
   code: string
-): Promise<SeriesDivision[]> {
+): Promise<GeographicDivision[]> {
   const url = buildGeographicDivisionsUrl(code);
 
   const response = await axios.get(url);
@@ -58,8 +58,10 @@ async function fetchGeographicDivisions(
   return data.value.map(division => division.NIVNOME);
 }
 
-function getBoundaryFilter(boundaryId: string, division: SeriesDivision) {
-  if (!shouldPlotMap(division) || boundaryId === DEFAULT_BOUNDARY) return "";
+function getBoundaryFilter(boundaryId: string, division: GeographicDivision) {
+  if (!shouldPlotMap(division) || boundaryId === DEFAULT_BOUNDARY) {
+    return "";
+  }
   return `startswith(TERCODIGO,'${String(boundaryId).slice(0, 2)}')`;
 }
 
@@ -84,7 +86,7 @@ export function ChartGeographic({ code, metadata }: Props) {
     Number(searchParams.get("lastN")) || DEFAULT_LIMIT
   );
 
-  const [division, setDivision] = React.useState<SeriesDivision | null>(
+  const [division, setDivision] = React.useState<GeographicDivision | null>(
     getDivisionSafely(searchParams.get("division"))
   );
 
@@ -114,7 +116,7 @@ export function ChartGeographic({ code, metadata }: Props) {
     isError: isErrorDivision,
     isLoading: isLoadingDivisions,
     data: divisions = [],
-  } = useQuery<SeriesDivision[]>(
+  } = useQuery<GeographicDivision[]>(
     ["Fetch available geographic divisions", code],
     fetchGeographicDivisions,
     {

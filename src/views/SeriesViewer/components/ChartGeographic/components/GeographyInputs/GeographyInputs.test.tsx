@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 
 import { FormProvider, useForm } from "react-hook-form";
 import { GeographyInputs } from "./GeographyInputs";
-import { SeriesDivision } from "api/ibge";
+import { GeographicDivision } from "api/ibge";
 
 import { render } from "test-utils";
 import { server } from "test-utils/server";
@@ -12,7 +12,7 @@ import { handlers } from "./mocks/handlers";
 
 beforeEach(() => server.use(...handlers));
 
-const MOCKED_DIVISIONS: SeriesDivision[] = [
+const MOCKED_DIVISIONS: GeographicDivision[] = [
   "Brasil",
   "Área metropolitana",
   "Regiões",

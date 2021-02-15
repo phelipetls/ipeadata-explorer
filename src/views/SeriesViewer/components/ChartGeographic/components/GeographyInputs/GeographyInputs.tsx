@@ -1,7 +1,7 @@
 import * as React from "react";
 import { useFormContext } from "react-hook-form";
 
-import { BoundaryDivision, SeriesDivision, shouldPlotMap } from "api/ibge";
+import { BoundaryDivision, GeographicDivision, shouldPlotMap } from "api/ibge";
 import {
   SelectGeographicDivision,
   SelectGeographicBoundaryDivision,
@@ -9,14 +9,14 @@ import {
 } from "./components";
 
 interface Props {
-  division: SeriesDivision;
-  divisions: SeriesDivision[];
-  boundaryDivision: BoundaryDivision | null;
-  boundaryId: string;
+  division: GeographicDivision;
+  divisions: GeographicDivision[];
+  boundaryDivision?: BoundaryDivision | null;
+  boundaryId?: string;
 }
 
 export interface GeographyInputsData {
-  division: SeriesDivision;
+  division: GeographicDivision;
   boundaryDivision: BoundaryDivision;
   boundaryId: string;
 }
@@ -26,12 +26,12 @@ export function GeographyInputs(props: Props) {
     division: defaultDivision,
     divisions,
     boundaryDivision: defaultBoundaryDivision,
-    boundaryId: defaultBoundaryId,
+    boundaryId: defaultBoundaryId = "BR",
   } = props;
 
   const { register } = useFormContext<GeographyInputsData>();
 
-  const [division, setDivision] = React.useState<SeriesDivision>(
+  const [division, setDivision] = React.useState<GeographicDivision>(
     defaultDivision
   );
 
@@ -46,7 +46,7 @@ export function GeographyInputs(props: Props) {
         name="division"
         division={defaultDivision}
         divisions={divisions}
-        handleChange={e => setDivision(e.target.value as SeriesDivision)}
+        handleChange={e => setDivision(e.target.value as GeographicDivision)}
       />
 
       {shouldPlotMap(division) && (

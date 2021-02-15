@@ -1,10 +1,10 @@
-import { seriesDivisions, SeriesDivision } from "api/ibge";
+import { geographicDivisions, GeographicDivision } from "api/ibge";
 
 export function getDivisionSafely(
   division: string | null
-): SeriesDivision | null {
-  if (seriesDivisions.includes(division as SeriesDivision)) {
-    return division as SeriesDivision;
+): GeographicDivision | null {
+  if (geographicDivisions.includes(division as GeographicDivision)) {
+    return division as GeographicDivision;
   }
 
   return null;

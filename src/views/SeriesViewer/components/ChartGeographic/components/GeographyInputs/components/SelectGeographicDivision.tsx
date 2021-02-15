@@ -7,11 +7,11 @@ import {
   InputLabel,
   FormControl,
 } from "@material-ui/core";
-import { SeriesDivision } from "api/ibge";
+import { GeographicDivision } from "api/ibge";
 
 type Props = Pick<SelectProps, "name"> & {
-  division: SeriesDivision;
-  divisions: SeriesDivision[];
+  division: GeographicDivision;
+  divisions: GeographicDivision[];
   handleChange: (e: React.ChangeEvent<{ value: unknown }>) => void;
 };
 

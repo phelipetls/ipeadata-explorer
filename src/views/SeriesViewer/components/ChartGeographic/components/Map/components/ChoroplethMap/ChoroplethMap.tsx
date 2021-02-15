@@ -12,7 +12,7 @@ import {
   IbgeMapDivision,
   DivisionMetadata,
   fetchDivisionNames,
-  IbgeDivisionEndpoint,
+  IbgeLocationDivision,
 } from "api/ibge";
 import { formatDate } from "utils";
 import { SeriesMetadata, SeriesValues } from "types";
@@ -60,7 +60,7 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
     DivisionMetadata[]
   >(
     ["Fetch geographic division names", division],
-    (_: string, division: IbgeDivisionEndpoint) => fetchDivisionNames(division),
+    (_: string, division: IbgeLocationDivision) => fetchDivisionNames(division),
     { enabled: division }
   );
 

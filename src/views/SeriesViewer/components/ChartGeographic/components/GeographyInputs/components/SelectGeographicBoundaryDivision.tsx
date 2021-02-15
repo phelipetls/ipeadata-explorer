@@ -8,10 +8,14 @@ import {
   FormControl,
   Grow,
 } from "@material-ui/core";
-import { getContainingDivisions, MapDivision, IbgeMapDivision } from "api/ibge";
+import {
+  getContainingDivisions,
+  DivisionToPlotAsMap,
+  IbgeMapDivision,
+} from "api/ibge";
 
 type Props = Pick<SelectProps, "name"> & {
-  division: MapDivision;
+  division: DivisionToPlotAsMap;
   boundaryDivision: IbgeMapDivision;
   handleChange: (e: React.ChangeEvent<{ value: unknown }>) => void;
 };

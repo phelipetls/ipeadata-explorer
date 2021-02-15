@@ -1,16 +1,13 @@
 import axios from "redaxios";
 
-// Possible values that the field NIVNOME from a series metadata may assume
-export type SeriesDivision =
-  | "Brasil"
-  | "Área metropolitana"
-  | "Regiões"
-  | "Estados"
-  | "Mesorregiões"
-  | "Microrregiões"
-  | "Municípios";
+import {
+  GeographicDivision,
+  DivisionToPlotAsMap,
+  IbgeMapDivision,
+  IbgeLocationDivision,
+} from "./types";
 
-export const seriesDivisions: SeriesDivision[] = [
+export const geographicDivisions: GeographicDivision[] = [
   "Brasil",
   "Área metropolitana",
   "Regiões",
@@ -23,10 +20,6 @@ export const seriesDivisions: SeriesDivision[] = [
 // IBGE Maps API documentation:
 // https://servicodados.ibge.gov.br/api/docs/malhas?versao=2
 const BASE_URL_MAPS = "https://servicodados.ibge.gov.br/api/v2/malhas/";
-
-// We can use these to divide a map
-// FIXME: needs better naming
-export type IbgeMapDivision = Exclude<SeriesDivision, "Área metropolitana">;
 
 const mapDivisionsCode: Record<IbgeMapDivision, number> = {
   Brasil: 0,
@@ -59,19 +52,9 @@ export function getMapUrl({
   return url.toString();
 }
 
-// We do not plot a map if user wants to see values for
-// * Brazil
-// * Metropolitan area
-// * Regions
-// We use a line chart instead.
-export type MapDivision = Exclude<
-  SeriesDivision,
-  "Brasil" | "Regiões" | "Área metropolitana"
->;
-
 export function shouldPlotMap(
-  division: SeriesDivision
-): division is MapDivision {
+  division: GeographicDivision
+): division is DivisionToPlotAsMap {
   return !(
     division === "Brasil" ||
     division === "Regiões" ||
@@ -85,7 +68,7 @@ export function shouldPlotMap(
  * contained region.
  */
 export function getContainingDivisions(
-  targetDivision: MapDivision
+  targetDivision: DivisionToPlotAsMap
 ): IbgeMapDivision[] {
   const divisions = [] as IbgeMapDivision[];
   const mapDivisionCode = mapDivisionsCode[targetDivision];
@@ -104,15 +87,7 @@ export function getContainingDivisions(
 const BASE_URL_DIVISIONS =
   "https://servicodados.ibge.gov.br/api/v1/localidades/";
 
-// Municipalities are not interesting as map boundary.
-// They cannot be divided any further etc.
-export type BoundaryDivision = Exclude<IbgeMapDivision, "Municípios">;
-
-// Divisions we need to fetch metadata about.
-// Example: Get every Brazil region or state to fill a select input.
-export type IbgeDivisionEndpoint = Exclude<IbgeMapDivision, "Brasil">;
-
-const divisionsEndpoints: Record<IbgeDivisionEndpoint, string> = {
+const divisionsEndpoints: Record<IbgeLocationDivision, string> = {
   Regiões: "regioes",
   Estados: "estados",
   Mesorregiões: "mesorregioes",
@@ -120,7 +95,7 @@ const divisionsEndpoints: Record<IbgeDivisionEndpoint, string> = {
   Municípios: "municipios",
 };
 
-export function getDivisionListUrl(division: IbgeDivisionEndpoint) {
+export function getDivisionNamesUrl(division: IbgeLocationDivision) {
   const endpoint = divisionsEndpoints[division];
 
   if (endpoint) {
@@ -140,9 +115,9 @@ export interface DivisionMetadata {
 }
 
 export async function fetchDivisionNames(
-  division: IbgeDivisionEndpoint
+  division: IbgeLocationDivision
 ): Promise<DivisionMetadata[]> {
-  const url = getDivisionListUrl(division);
+  const url = getDivisionNamesUrl(division);
   const response = await axios.get(url);
   return response.data;
 }
