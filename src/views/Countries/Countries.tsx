@@ -14,7 +14,6 @@ const COUNTRIES_URL =
   "$expand=Metadados($select=SERCODIGO;$count=true)";
 
 interface CountryMetadata {
-  [index: string]: string | number;
   PAINOME: string;
   "Metadados@odata.count": number;
 }

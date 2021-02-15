@@ -1,4 +1,4 @@
-export interface formatDateToBackendOptions {
+interface formatDateToBackendOptions {
   isEndDate: boolean;
 }
 
