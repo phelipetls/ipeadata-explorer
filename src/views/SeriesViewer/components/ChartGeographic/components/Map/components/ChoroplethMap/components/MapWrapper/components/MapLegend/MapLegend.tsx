@@ -51,11 +51,10 @@ export function MapLegend(props: Props) {
     // xScale domain starts at -1
     (_, i) => i - 1
   );
+
   const tickFormatter = d3Format(">.0f");
-  // i will take the value of xScale's domain. So we must add 1 because it
-  // starts at -1
   const tickFormat = (_: any, index: number) =>
-    tickFormatter(tickLabels[index + 1]);
+    tickFormatter(tickLabels[index]);
 
   const tickAxis = axisBottom(xScale)
     .tickSize(tickSize)

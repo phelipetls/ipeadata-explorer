@@ -69,6 +69,8 @@ describe("succesful requests", () => {
 
     expect(getSearchParams().get("division")).toBe("Estados");
     expect(document.querySelector("svg.rsm-svg")).toBeInTheDocument();
+
+    expect(screen.queryByText("NaN")).not.toBeInTheDocument();
   });
 
   it("should be able to generate map from url parameters", async () => {
