@@ -23,7 +23,7 @@ import { useLocation } from "react-router";
 import { getDateSafely } from "utils";
 import { useSyncSearchParams } from "hooks";
 
-export const DEFAULT_LIMIT = 1;
+export const DEFAULT_LAST_N = 1;
 
 interface Props {
   code: string;
@@ -43,14 +43,14 @@ export function ChartCategorical({ code, metadata }: Props) {
   );
 
   const [lastN, setLastN] = React.useState(
-    Number(searchParams.get("lastN")) || DEFAULT_LIMIT
+    Number(searchParams.get("lastN")) || DEFAULT_LAST_N
   );
 
   const stateToSync = React.useMemo(
     () => ({
       startDate,
       endDate,
-      lastN: lastN !== DEFAULT_LIMIT ? lastN : null,
+      lastN: lastN !== DEFAULT_LAST_N ? lastN : null,
     }),
     [startDate, endDate, lastN]
   );
@@ -78,7 +78,7 @@ export function ChartCategorical({ code, metadata }: Props) {
 
     setStartDate(startDate);
     setEndDate(endDate);
-    setLastN(lastN !== "" ? Number(lastN) : DEFAULT_LIMIT);
+    setLastN(lastN !== "" ? Number(lastN) : DEFAULT_LAST_N);
   }
 
   const categories: CategoriesMetadata[] = (data && data.value) || [];

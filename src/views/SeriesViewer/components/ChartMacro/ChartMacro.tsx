@@ -19,7 +19,7 @@ import { SeriesMetadata, SeriesValues } from "types";
 import { buildSeriesValuesUrl, getDateFilter, buildFilter } from "api/odata";
 import { useSyncSearchParams } from "hooks";
 
-const DEFAULT_LIMIT = 50;
+const DEFAULT_LAST_N = 50;
 
 interface Props {
   code: string;
@@ -39,14 +39,14 @@ export function ChartMacro({ code, metadata }: Props) {
   );
 
   const [lastN, setLastN] = React.useState<number>(
-    Number(searchParams.get("lastN")) || DEFAULT_LIMIT
+    Number(searchParams.get("lastN")) || DEFAULT_LAST_N
   );
 
   const stateToSync = React.useMemo(
     () => ({
       startDate,
       endDate,
-      lastN: lastN !== DEFAULT_LIMIT ? lastN : null,
+      lastN: lastN !== DEFAULT_LAST_N ? lastN : null,
     }),
     [startDate, endDate, lastN]
   );
@@ -75,7 +75,7 @@ export function ChartMacro({ code, metadata }: Props) {
 
     setStartDate(startDate);
     setEndDate(endDate);
-    setLastN(lastN !== "" ? Number(lastN) : DEFAULT_LIMIT);
+    setLastN(lastN !== "" ? Number(lastN) : DEFAULT_LAST_N);
   }
 
   const series: SeriesValues[] = (data && data.value) || [];

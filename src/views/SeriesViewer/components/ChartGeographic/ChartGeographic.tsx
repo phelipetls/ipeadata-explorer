@@ -36,7 +36,7 @@ import {
 } from "utils";
 import { useSyncSearchParams } from "hooks";
 
-const DEFAULT_LIMIT = 5;
+const DEFAULT_LAST_N = 5;
 const DEFAULT_BOUNDARY_ID = "BR";
 
 interface GeographicDivisionMetadata {
@@ -83,7 +83,7 @@ export function ChartGeographic({ code, metadata }: Props) {
   );
 
   const [lastN, setLastN] = React.useState(
-    Number(searchParams.get("lastN")) || DEFAULT_LIMIT
+    Number(searchParams.get("lastN")) || DEFAULT_LAST_N
   );
 
   const [division, setDivision] = React.useState<GeographicDivision | null>(
@@ -105,7 +105,7 @@ export function ChartGeographic({ code, metadata }: Props) {
     () => ({
       startDate,
       endDate,
-      lastN: lastN !== DEFAULT_LIMIT ? lastN : null,
+      lastN: lastN !== DEFAULT_LAST_N ? lastN : null,
       division,
       boundaryDivision,
       boundaryId: boundaryId !== DEFAULT_BOUNDARY_ID ? boundaryId : null,
@@ -166,7 +166,7 @@ export function ChartGeographic({ code, metadata }: Props) {
 
     setStartDate(startDate);
     setEndDate(endDate);
-    setLastN(lastN !== "" ? Number(lastN) : DEFAULT_LIMIT);
+    setLastN(lastN !== "" ? Number(lastN) : DEFAULT_LAST_N);
     setDivision(division);
     setBoundaryDivision(boundaryDivision);
     setBoundaryId(boundaryId);
