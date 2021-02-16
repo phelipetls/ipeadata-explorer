@@ -76,9 +76,9 @@ export function ChartCategorical({ code, metadata }: Props) {
   async function onSubmit(data: ChartDateInputsData) {
     const { startDate, endDate, lastN } = data;
 
-    if (startDate) setStartDate(startDate);
-    if (endDate) setEndDate(endDate);
-    if (lastN) setLastN(+lastN);
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setLastN(lastN !== "" ? Number(lastN) : DEFAULT_LIMIT);
   }
 
   const categories: CategoriesMetadata[] = (data && data.value) || [];

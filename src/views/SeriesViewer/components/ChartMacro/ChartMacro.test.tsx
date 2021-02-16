@@ -106,6 +106,18 @@ describe("successful requests", () => {
 
     // Except search params to change
     await waitFor(() => expect(getSearchParams().get("lastN")).toBe("5"));
+
+    // Change to default again
+    userEvent.clear(screen.getByLabelText("Últimos N"));
+    userEvent.type(screen.getByLabelText("Últimos N"), "50{enter}");
+
+    userEvent.clear(screen.getByLabelText("Data inicial"));
+    userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
+
+    await waitFor(() => expect(getSearchParams().get("startDate")).toBeNull());
+
+    expect(getSearchParams().get("lastN")).toBeNull();
+    expect(getSearchParams().get("endDate")).toBe("01/01/2018");
   });
 });
 

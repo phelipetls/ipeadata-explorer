@@ -39,11 +39,23 @@ describe("successful requests", () => {
 
     expect(lastNInput.value).toBe("5");
 
+    // Change to non default value
     userEvent.clear(lastNInput);
     userEvent.type(lastNInput, "10");
+
+    const startDate = screen.getByLabelText(/data inicial/i);
+    userEvent.type(startDate, "01/01/2021");
+
     userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
 
     await waitFor(() => expect(getSearchParams().get("lastN")).toBe("10"));
+    expect(getSearchParams().get("startDate")).toBe("01/01/2021");
+
+    // A cleared input should assume its default value and do not appear in URL
+    userEvent.clear(lastNInput);
+    userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
+
+    await waitFor(() => expect(getSearchParams().get("lastN")).toBeNull());
   });
 });
 

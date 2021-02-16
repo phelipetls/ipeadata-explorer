@@ -106,17 +106,36 @@ describe("succesful requests", () => {
 
     expect(selectBoundaryDivision.value).toBe("Regiões");
 
-    const selectBoundaryIdDivision = (await screen.findByLabelText(
+    const selectBoundaryId = (await screen.findByLabelText(
       /regi.o/i
     )) as HTMLSelectElement;
 
-    expect(selectBoundaryIdDivision.selectedOptions[0].textContent).toBe(
-      "Norte"
-    );
+    expect(selectBoundaryId.selectedOptions[0].textContent).toBe("Norte");
 
     await waitFor(() =>
       expect(document.querySelector("svg.rsm-svg")).toBeInTheDocument()
     );
+
+    expect(getSearchParams().toString()).toBe(
+      encodeURI("division=Estados&boundaryDivision=Regiões&boundaryId=1")
+    );
+
+    // Change division to be only 'Brasil'
+    userEvent.selectOptions(selectDivision, "Brasil");
+
+    await waitFor(() =>
+      expect(screen.queryByLabelText(/regi.o/i)).not.toBeInTheDocument()
+    );
+
+    userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
+
+    // Except line chart to show up
+    await waitFor(() =>
+      expect(screen.queryByTestId("chart-id")).toBeInTheDocument()
+    );
+
+    // And search parameters to change
+    expect(getSearchParams().toString()).toBe(encodeURI("division=Brasil"));
   });
 });
 

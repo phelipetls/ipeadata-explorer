@@ -13,6 +13,7 @@ import {
   ChartLoading,
   ChartError,
   ChartNoData,
+  ChartDateInputsData,
 } from "components";
 import { SeriesMetadata, SeriesValues } from "types";
 import { buildSeriesValuesUrl, getDateFilter, buildFilter } from "api/odata";
@@ -69,12 +70,12 @@ export function ChartMacro({ code, metadata }: Props) {
     }
   );
 
-  function onSubmit(data: Record<string, any>) {
+  function onSubmit(data: ChartDateInputsData) {
     const { startDate, endDate, lastN } = data;
 
-    if (startDate) setStartDate(startDate);
-    if (endDate) setEndDate(endDate);
-    if (lastN) setLastN(lastN);
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setLastN(lastN !== "" ? Number(lastN) : DEFAULT_LIMIT);
   }
 
   const series: SeriesValues[] = (data && data.value) || [];

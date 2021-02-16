@@ -31,7 +31,7 @@ const dateViewsByPeriodicity: Record<string, DatePickerView[]> = {
 export interface ChartDateInputsData {
   startDate: Date;
   endDate: Date;
-  lastN: number;
+  lastN: string;
 }
 
 interface Props {

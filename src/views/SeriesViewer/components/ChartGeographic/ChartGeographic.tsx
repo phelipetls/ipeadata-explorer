@@ -37,7 +37,7 @@ import {
 import { useSyncSearchParams } from "hooks";
 
 const DEFAULT_LIMIT = 5;
-const DEFAULT_BOUNDARY = "BR";
+const DEFAULT_BOUNDARY_ID = "BR";
 
 interface GeographicDivisionMetadata {
   value: {
@@ -59,7 +59,7 @@ async function fetchGeographicDivisions(
 }
 
 function getBoundaryFilter(boundaryId: string, division: GeographicDivision) {
-  if (!shouldPlotMap(division) || boundaryId === DEFAULT_BOUNDARY) {
+  if (!shouldPlotMap(division) || boundaryId === DEFAULT_BOUNDARY_ID) {
     return "";
   }
   return `startswith(TERCODIGO,'${String(boundaryId).slice(0, 2)}')`;
@@ -90,12 +90,15 @@ export function ChartGeographic({ code, metadata }: Props) {
     getDivisionSafely(searchParams.get("division"))
   );
 
-  const [boundaryDivision] = React.useState<BoundaryDivision | null>(
+  const [
+    boundaryDivision,
+    setBoundaryDivision,
+  ] = React.useState<BoundaryDivision | null>(
     getBoundaryDivisionSafely(searchParams.get("boundaryDivision"))
   );
 
   const [boundaryId, setBoundaryId] = React.useState<string>(
-    searchParams.get("boundaryId") || DEFAULT_BOUNDARY
+    searchParams.get("boundaryId") || DEFAULT_BOUNDARY_ID
   );
 
   const stateToSync = React.useMemo(
@@ -105,7 +108,7 @@ export function ChartGeographic({ code, metadata }: Props) {
       lastN: lastN !== DEFAULT_LIMIT ? lastN : null,
       division,
       boundaryDivision,
-      boundaryId: boundaryId !== DEFAULT_BOUNDARY ? boundaryId : null,
+      boundaryId: boundaryId !== DEFAULT_BOUNDARY_ID ? boundaryId : null,
     }),
     [startDate, endDate, lastN, division, boundaryDivision, boundaryId]
   );
@@ -152,13 +155,21 @@ export function ChartGeographic({ code, metadata }: Props) {
   );
 
   function onSubmit(data: ChartDateInputsData & GeographyInputsData) {
-    const { startDate, endDate, lastN, division, boundaryId } = data;
+    const {
+      startDate,
+      endDate,
+      lastN,
+      division = null,
+      boundaryDivision = null,
+      boundaryId = DEFAULT_BOUNDARY_ID,
+    } = data;
 
-    if (startDate) setStartDate(startDate);
-    if (endDate) setEndDate(endDate);
-    if (lastN) setLastN(lastN);
-    if (division) setDivision(division);
-    if (boundaryId) setBoundaryId(boundaryId);
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setLastN(lastN !== "" ? Number(lastN) : DEFAULT_LIMIT);
+    setDivision(division);
+    setBoundaryDivision(boundaryDivision);
+    setBoundaryId(boundaryId);
   }
 
   const isLoading = isLoadingData || isLoadingDivisions;
