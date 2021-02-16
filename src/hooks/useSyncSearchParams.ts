@@ -14,7 +14,7 @@ export function useSyncSearchParams(state: State) {
         newSearchParams.set(key, value.toLocaleDateString("pt-BR"));
       } else if (typeof value === "number") {
         newSearchParams.set(key, String(value));
-      } else if (typeof value === "string") {
+      } else if (value !== null) {
         newSearchParams.set(key, value);
       }
     }
