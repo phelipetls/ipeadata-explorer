@@ -108,16 +108,12 @@ export function SearchFilterForm({ searchParams, onSubmit }: Props) {
   });
 
   const onSubmitDirtyFields = React.useCallback(
-    data => {
-      const dirtyFieldsData = {} as Record<string, any>;
+    (data: SearchFilterFormData) => {
+      const dirtyFieldsData = Object.entries(data).filter(
+        ([name]) => name in formState.dirtyFields
+      );
 
-      for (const [name, value] of Object.entries(data)) {
-        if (name in formState.dirtyFields) {
-          dirtyFieldsData[name] = value;
-        }
-      }
-
-      return onSubmit(dirtyFieldsData);
+      return onSubmit(Object.fromEntries(dirtyFieldsData));
     },
     [onSubmit, formState.dirtyFields]
   );
