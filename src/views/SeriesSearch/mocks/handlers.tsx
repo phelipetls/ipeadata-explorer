@@ -8,16 +8,17 @@ const readLocalJson = (path: string) => {
 export const handlers = [
   rest.get(/Metadados$/, (req, res, ctx) => {
     const searchParams = req.url.searchParams;
+
     const filter = searchParams.get("$filter");
     const skip = searchParams.get("$skip");
 
-    const isFirstPage = parseInt(skip!) === 0;
+    const isFirstPage = skip && Number(skip) === 0;
 
-    const json = !filter
-      ? readLocalJson("results.json")
+    const json = filter
+      ? readLocalJson("results-filtered.json")
       : isFirstPage
-      ? readLocalJson("results-filtered-first-page.json")
-      : readLocalJson("results-filtered-second-page.json");
+      ? readLocalJson("results-first-page.json")
+      : readLocalJson("results-second-page.json");
 
     return res(ctx.status(200), ctx.json(json));
   }),
