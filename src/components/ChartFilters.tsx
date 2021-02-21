@@ -25,7 +25,7 @@ const useStyles = makeStyles(theme => ({
 
 interface Props<T extends FieldValues> {
   onSubmit: (data: T) => void;
-  children: JSX.Element | JSX.Element[];
+  children: boolean | JSX.Element | (boolean | JSX.Element)[];
   defaultValues: Record<string, unknown>;
 }
 

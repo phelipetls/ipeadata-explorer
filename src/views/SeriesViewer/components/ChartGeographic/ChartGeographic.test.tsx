@@ -1,5 +1,12 @@
 import * as React from "react";
-import { render, readJson, screen, getSearchParams, waitFor } from "test-utils";
+import {
+  render,
+  readJson,
+  screen,
+  getSearchParams,
+  waitFor,
+  waitForElementToBeRemoved,
+} from "test-utils";
 import userEvent from "@testing-library/user-event";
 
 import { Chart } from "chart.js";
@@ -150,11 +157,15 @@ test("error handling", async () => {
     />
   );
 
-  await waitFor(() =>
-    expect(
-      screen.getByText("Desculpe, ocorreu um erro inesperado")
-    ).toBeInTheDocument()
-  );
+  await waitForElementToBeRemoved(() => screen.queryAllByRole("progressbar"));
+
+  expect(
+    screen.getByText("Desculpe, ocorreu um erro inesperado")
+  ).toBeInTheDocument();
+
+  expect(
+    screen.queryByLabelText(/divisões geográficas/i)
+  ).not.toBeInTheDocument();
 });
 
 test("empty state", async () => {

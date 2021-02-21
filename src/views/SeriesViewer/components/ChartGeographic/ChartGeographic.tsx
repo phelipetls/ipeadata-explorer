@@ -116,7 +116,7 @@ export function ChartGeographic({ code, metadata }: Props) {
   useSyncSearchParams(stateToSync);
 
   const {
-    isError: isErrorDivision,
+    isError: isErrorDivisions,
     isLoading: isLoadingDivisions,
     data: divisions = [],
   } = useQuery<GeographicDivision[]>(
@@ -187,19 +187,21 @@ export function ChartGeographic({ code, metadata }: Props) {
         }}
       >
         <ChartDateInputs metadata={metadata} />
-        {isLoadingDivisions || division === null ? (
+        {isLoadingDivisions ? (
           <Loading />
         ) : (
-          <GeographyInputs
-            division={division}
-            boundaryDivision={boundaryDivision}
-            boundaryId={boundaryId}
-            divisions={divisions}
-          />
+          !isErrorDivisions && (
+            <GeographyInputs
+              division={division!}
+              boundaryDivision={boundaryDivision}
+              boundaryId={boundaryId}
+              divisions={divisions}
+            />
+          )
         )}
       </ChartFilters>
 
-      {isErrorData || isErrorDivision ? (
+      {isErrorData || isErrorDivisions ? (
         <ChartError />
       ) : isLoading ? (
         <ChartLoading />
