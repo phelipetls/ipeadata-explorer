@@ -9,7 +9,18 @@ import { handlers } from "./mocks/handlers";
 
 beforeEach(() => server.use(...handlers));
 
-it("should reorder table rows when you click on table headers", async () => {
+it("should show default results", async () => {
+  render(<Countries />);
+
+  await waitForElementToBeRemoved(() =>
+    screen.queryAllByTestId("row-skeleton")
+  );
+
+  expect(screen.getByText(/afeganistão/i)).toBeInTheDocument();
+  expect(screen.getByText(/áfrica do sul/i)).toBeInTheDocument();
+});
+
+it("should sort rows when user clicks on header", async () => {
   render(<Countries />);
 
   await waitForElementToBeRemoved(() =>
@@ -25,9 +36,4 @@ it("should reorder table rows when you click on table headers", async () => {
 
   expect(table.rows[2]).toHaveTextContent(/áfrica do sul/i);
   expect(table.rows[1]).toHaveTextContent(/afeganistão/i);
-
-  userEvent.click(screen.getByRole("columnheader", { name: "Qtd. de séries" }));
-
-  expect(table.rows[1]).toHaveTextContent(/afeganistão/i);
-  expect(table.rows[2]).toHaveTextContent(/áfrica do sul/i);
 });

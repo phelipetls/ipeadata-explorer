@@ -29,64 +29,58 @@ describe("successful requests", () => {
     expect(chart?.config.type).toBe("bar");
   });
 
-  it("should have state in sync with URL", async () => {
+  it("should update URL if state changes", async () => {
     render(<ChartCategorical code="F1PT1" metadata={MOCKED_METADATA} />, {
-      routerOptions: { initialEntries: ["/serie/F1PT1?lastN=5"] },
       renderLocation: location => location.search,
     });
 
-    const lastNInput = screen.getByLabelText(/.ltimos n/i) as HTMLInputElement;
-
-    expect(lastNInput.value).toBe("5");
-
-    // Change to non default value
+    const lastNInput = screen.getByLabelText(/últimos n/i) as HTMLInputElement;
     userEvent.clear(lastNInput);
     userEvent.type(lastNInput, "10");
-
-    const startDate = screen.getByLabelText(/data inicial/i);
-    userEvent.type(startDate, "01/01/2021");
 
     userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
 
     await waitFor(() => expect(getSearchParams().get("lastN")).toBe("10"));
-    expect(getSearchParams().get("startDate")).toBe("01/01/2021");
+  });
 
-    // A cleared input should assume its default value and do not appear in URL
-    userEvent.clear(lastNInput);
-    userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
+  it("should get default value from URL", async () => {
+    render(<ChartCategorical code="F1PT1" metadata={MOCKED_METADATA} />, {
+      routerOptions: { initialEntries: ["?lastN=10"] },
+      renderLocation: location => location.search,
+    });
 
-    await waitFor(() => expect(getSearchParams().get("lastN")).toBeNull());
+    const lastNInput = screen.getByLabelText(/últimos n/i) as HTMLInputElement;
+
+    expect(lastNInput.value).toBe("10");
   });
 });
 
-describe("error handling/empty state", () => {
-  it("should show an error message", async () => {
-    server.use(
-      rest.get(/Metadados.*Valores/, (_, res, ctx) => {
-        return res(ctx.status(500));
-      })
-    );
+test("error handling", async () => {
+  server.use(
+    rest.get(/Metadados.*Valores/, (_, res, ctx) => {
+      return res(ctx.status(500));
+    })
+  );
 
-    render(<ChartCategorical code="F1PT1" metadata={MOCKED_METADATA} />);
+  render(<ChartCategorical code="F1PT1" metadata={MOCKED_METADATA} />);
 
-    await waitFor(() =>
-      expect(
-        screen.getByText("Desculpe, ocorreu um erro inesperado")
-      ).toBeInTheDocument()
-    );
-  });
+  await waitFor(() =>
+    expect(
+      screen.getByText("Desculpe, ocorreu um erro inesperado")
+    ).toBeInTheDocument()
+  );
+});
 
-  it("should show there is no data", async () => {
-    server.use(
-      rest.get(/Metadados.*Valores/, (_, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ value: [] }));
-      })
-    );
+test("empty state", async () => {
+  server.use(
+    rest.get(/Metadados.*Valores/, (_, res, ctx) => {
+      return res(ctx.status(200), ctx.json({ value: [] }));
+    })
+  );
 
-    render(<ChartCategorical code="F1PT1" metadata={MOCKED_METADATA} />);
+  render(<ChartCategorical code="F1PT1" metadata={MOCKED_METADATA} />);
 
-    await waitFor(() =>
-      expect(screen.getByText("Sem dados")).toBeInTheDocument()
-    );
-  });
+  await waitFor(() =>
+    expect(screen.getByText("Sem dados")).toBeInTheDocument()
+  );
 });

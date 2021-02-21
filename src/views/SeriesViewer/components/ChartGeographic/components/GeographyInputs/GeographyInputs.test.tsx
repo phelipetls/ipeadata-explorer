@@ -47,6 +47,6 @@ test("if geography inputs work correctly", async () => {
 
   // A new input should appear to select a specific region
   await waitFor(() =>
-    expect(screen.getByLabelText("Região")).toBeInTheDocument()
+    expect(screen.getByLabelText(/região/i)).toBeInTheDocument()
   );
 });

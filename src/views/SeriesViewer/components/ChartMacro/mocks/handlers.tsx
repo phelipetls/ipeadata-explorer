@@ -14,12 +14,15 @@ export const handlers = [
 
     const lastNFilter = "VALDATA ge 2020-07-01T00:00:00Z";
 
-    const json =
-      filter === dateFilter
-        ? readLocalJson("values-date-interval.json")
-        : filter === lastNFilter
-        ? readLocalJson("values-lastn.json")
-        : readLocalJson("values.json");
+    let json;
+
+    if (filter === dateFilter) {
+      json = readLocalJson("values-date-interval.json");
+    } else if (filter === lastNFilter) {
+      json = readLocalJson("values-lastn.json");
+    } else {
+      json = readLocalJson("values.json");
+    }
 
     return res(ctx.status(200), ctx.json(json));
   }),

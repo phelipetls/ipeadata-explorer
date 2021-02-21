@@ -48,12 +48,12 @@ describe("succesful requests", () => {
 
     await waitFor(() =>
       expect(
-        screen.queryByLabelText(/divis.es geogr.ficas/i)
+        screen.queryByLabelText(/divisões geográficas/i)
       ).toBeInTheDocument()
     );
 
     const geographicDivisionSelect = screen.getByLabelText(
-      /divis.es geogr.ficas/i
+      /divisões geográficas/i
     ) as HTMLSelectElement;
 
     // First geographic division is 'Brasil'
@@ -73,7 +73,7 @@ describe("succesful requests", () => {
     expect(screen.queryByText("NaN")).not.toBeInTheDocument();
   });
 
-  it("should be able to generate map from url parameters", async () => {
+  it("should be able to generate map from URL parameters", async () => {
     const searchParams = new URLSearchParams();
 
     searchParams.set("division", "Estados");
@@ -95,19 +95,19 @@ describe("succesful requests", () => {
     );
 
     const selectDivision = (await screen.findByLabelText(
-      /divis.es geogr.ficas/i
+      /divisões geográficas/i
     )) as HTMLSelectElement;
 
     expect(selectDivision.value).toBe("Estados");
 
     const selectBoundaryDivision = (await screen.findByLabelText(
-      /limite geogr.fico/i
+      /limite geográfico/i
     )) as HTMLSelectElement;
 
     expect(selectBoundaryDivision.value).toBe("Regiões");
 
     const selectBoundaryId = (await screen.findByLabelText(
-      /regi.o/i
+      /região/i
     )) as HTMLSelectElement;
 
     expect(selectBoundaryId.selectedOptions[0].textContent).toBe("Norte");
@@ -120,73 +120,58 @@ describe("succesful requests", () => {
       encodeURI("division=Estados&boundaryDivision=Regiões&boundaryId=1")
     );
 
-    // Change division to be only 'Brasil'
     userEvent.selectOptions(selectDivision, "Brasil");
 
     await waitFor(() =>
-      expect(screen.queryByLabelText(/regi.o/i)).not.toBeInTheDocument()
+      expect(screen.queryByLabelText(/região/i)).not.toBeInTheDocument()
     );
 
     userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
 
-    // Except line chart to show up
     await waitFor(() =>
       expect(screen.queryByTestId("chart-id")).toBeInTheDocument()
     );
 
-    // And search parameters to change
     expect(getSearchParams().toString()).toBe(encodeURI("division=Brasil"));
   });
 });
 
-describe("error handling/empty state", () => {
-  it("should show an error message", async () => {
-    server.use(
-      rest.get(/Metadados.*\/Valores/, (req, res, ctx) => {
-        // First request is made to fetch geographic divisions and should be
-        // successful
-        if (req.url.searchParams.get("$apply")) {
-          return res(
-            ctx.status(200),
-            ctx.json(readJson(__dirname + "/mocks/geographic-divisions.json"))
-          );
-        }
+test("error handling", async () => {
+  server.use(
+    rest.get(/Metadados.*\/Valores/, (_, res, ctx) => {
+      return res(ctx.status(500));
+    })
+  );
 
-        // Subsequent requests are meant to fetch data for charts
-        return res(ctx.status(500));
-      })
-    );
+  render(
+    <ChartGeographic
+      code="ACIDT"
+      metadata={MOCKED_METADATA as SeriesMetadata}
+    />
+  );
 
-    render(
-      <ChartGeographic
-        code="ACIDT"
-        metadata={MOCKED_METADATA as SeriesMetadata}
-      />
-    );
+  await waitFor(() =>
+    expect(
+      screen.getByText("Desculpe, ocorreu um erro inesperado")
+    ).toBeInTheDocument()
+  );
+});
 
-    await waitFor(() =>
-      expect(
-        screen.getByText("Desculpe, ocorreu um erro inesperado")
-      ).toBeInTheDocument()
-    );
-  });
+test("empty state", async () => {
+  server.use(
+    rest.get(/Metadados.*Valores/, (_, res, ctx) => {
+      return res(ctx.status(200), ctx.json({ value: [] }));
+    })
+  );
 
-  it("should show there is no data", async () => {
-    server.use(
-      rest.get(/Metadados.*Valores/, (_, res, ctx) => {
-        return res(ctx.status(200), ctx.json({ value: [] }));
-      })
-    );
+  render(
+    <ChartGeographic
+      code="ACIDT"
+      metadata={MOCKED_METADATA as SeriesMetadata}
+    />
+  );
 
-    render(
-      <ChartGeographic
-        code="ACIDT"
-        metadata={MOCKED_METADATA as SeriesMetadata}
-      />
-    );
-
-    await waitFor(() =>
-      expect(screen.getByText("Sem dados")).toBeInTheDocument()
-    );
-  });
+  await waitFor(() =>
+    expect(screen.getByText("Sem dados")).toBeInTheDocument()
+  );
 });

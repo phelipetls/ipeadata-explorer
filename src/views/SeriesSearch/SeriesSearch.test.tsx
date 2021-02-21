@@ -37,7 +37,7 @@ it("should handle pagination", async () => {
   );
 });
 
-it("should update url if state changes", async () => {
+it("should update URL if state changes", async () => {
   render(<SeriesSearch />, { renderLocation: location => location.search });
 
   const filterButton = await screen.findByRole("button", {
@@ -53,7 +53,7 @@ it("should update url if state changes", async () => {
   );
 });
 
-it("should get initial value from url", async () => {
+it("should get default value from URL", async () => {
   render(<SeriesSearch />, {
     routerOptions: { initialEntries: ["?SERNOME=spread"] },
     renderLocation: location => location.search,
