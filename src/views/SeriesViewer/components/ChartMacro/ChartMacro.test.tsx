@@ -80,6 +80,22 @@ describe("successful requests", () => {
     expect(chartLabels![0]).toMatch(/^2020-01-01/);
   });
 
+  it("should update URL if state changes", async () => {
+    render(
+      <ChartMacro
+        code="BM12_TJOVER12"
+        metadata={MOCKED_METADATA as SeriesMetadata}
+      />,
+      { renderLocation: location => location.search }
+    );
+
+    userEvent.clear(screen.getByLabelText(/últimos n/i));
+    userEvent.type(screen.getByLabelText(/últimos n/i), "5");
+    userEvent.click(screen.getByRole("button", { name: /filtrar/i }));
+
+    await waitFor(() => expect(getSearchParams().toString()).toBe("lastN=5"));
+  });
+
   it("should get default value from URL", async () => {
     render(
       <ChartMacro
