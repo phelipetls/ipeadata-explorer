@@ -6,6 +6,7 @@ import { theme } from "styles";
 import {
   Chart,
   Line,
+  Rectangle,
   Point,
   BarController,
   LineController,
@@ -21,6 +22,7 @@ import "chartjs-adapter-date-fns";
 Chart.register(
   Point,
   Line,
+  Rectangle,
   BarController,
   LineController,
   CategoryScale,
