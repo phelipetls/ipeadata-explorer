@@ -19,6 +19,8 @@ import {
   ChartSection,
   ChartNoData,
   ChartError,
+  ChartDownloadButton,
+  ChartActions,
 } from "components";
 import { SeriesMetadata } from "types";
 
@@ -217,6 +219,10 @@ export function ChartGeographic({ code, metadata }: Props) {
       ) : (
         <GeographicLineChart series={series} metadata={metadata} />
       )}
+
+      <ChartActions>
+        <ChartDownloadButton filename={metadata.SERNOME} />
+      </ChartActions>
     </ChartSection>
   );
 }

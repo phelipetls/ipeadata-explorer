@@ -3,7 +3,7 @@ import * as React from "react";
 import { ArrowBack } from "@material-ui/icons";
 import { IconButton, IconButtonProps } from "@material-ui/core";
 
-export interface Props {
+interface Props {
   onClick: () => void;
 }
 

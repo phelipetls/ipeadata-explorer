@@ -25,3 +25,5 @@ export * from "./BarChart";
 export * from "./SearchButton";
 export * from "./BackButton";
 export * from "./HfKeyboardDatePicker";
+export * from "./ChartDownloadButton";
+export * from "./ChartActions";
