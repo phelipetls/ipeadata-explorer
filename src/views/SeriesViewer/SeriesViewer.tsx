@@ -3,8 +3,9 @@ import * as React from "react";
 import axios from "redaxios";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
+import isEmpty from "lodash/isEmpty";
 
-import { Loading } from "components";
+import { EmptyState, Loading } from "components";
 import {
   ChartMacro,
   ChartGeographic,
@@ -23,7 +24,7 @@ async function fetchMetadata(_: string, code: string) {
 export function SeriesViewer() {
   const { code } = useParams() as { code: string };
 
-  const { isLoading, data } = useQuery(
+  const { isLoading, isError, data } = useQuery(
     ["Fetch series metadata", code],
     fetchMetadata
   );
@@ -32,6 +33,10 @@ export function SeriesViewer() {
 
   return isLoading ? (
     <Loading />
+  ) : isError ? (
+    <EmptyState text="Desculpe, algum erro ocorreu." />
+  ) : isEmpty(metadata) ? (
+    <EmptyState text="Série não existente." />
   ) : (
     <>
       <Metadata metadata={metadata} />
