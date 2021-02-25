@@ -9,10 +9,9 @@ import { scaleQuantile } from "d3-scale";
 
 import {
   getMapUrl,
-  IbgeMapDivision,
   DivisionMetadata,
   fetchDivisionNames,
-  IbgeLocationDivision,
+  DivisionToPlotAsMap,
 } from "api/ibge";
 import { formatDate } from "utils";
 import { SeriesMetadata, SeriesValues } from "types";
@@ -24,7 +23,7 @@ import { MapWrapper, SelectDate } from "./components";
 import keyBy from "lodash/keyBy";
 import groupBy from "lodash/groupBy";
 
-async function getOutlineMap(_: string, boundaryId: string): Promise<Feature> {
+async function getOutlineMap(boundaryId: string): Promise<Feature> {
   const url = getMapUrl({ boundaryId, format: "application/vnd.geo+json" });
   const response = await axios.get(url);
   return response.data;
@@ -33,7 +32,7 @@ async function getOutlineMap(_: string, boundaryId: string): Promise<Feature> {
 interface Props {
   series: SeriesValues[];
   metadata: SeriesMetadata;
-  division: IbgeMapDivision;
+  division: DivisionToPlotAsMap;
   boundaryId: string;
   setTooltipPosition(state: {
     x: number | undefined;
@@ -60,13 +59,13 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
     DivisionMetadata[]
   >(
     ["Fetch geographic division names", division],
-    (_: string, division: IbgeLocationDivision) => fetchDivisionNames(division),
-    { enabled: division }
+    () => fetchDivisionNames(division),
+    { enabled: Boolean(division) }
   );
 
   const { isLoading: isLoadingOutlineMap, data: outline } = useQuery<Feature>(
     ["Fetch outline map given a boundary region id", boundaryId],
-    getOutlineMap
+    () => getOutlineMap(boundaryId)
   );
 
   const divisionsNamesById = divisionsNames && keyBy(divisionsNames, "id");

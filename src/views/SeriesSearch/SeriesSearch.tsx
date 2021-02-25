@@ -3,7 +3,7 @@ import { Link, Paper, TableContainer } from "@material-ui/core";
 import { Link as RouterLink, useLocation } from "react-router-dom";
 
 import axios from "redaxios";
-import { useQuery, useQueryCache } from "react-query";
+import { useQuery, useQueryClient } from "react-query";
 
 import { useBreakpoint } from "utils";
 import { SearchFilterForm } from "./components/SearchFilterForm";
@@ -66,7 +66,7 @@ const DEFAULT_ROWS_PER_PAGE = 10;
 
 export function SeriesSearch() {
   const isSmallScreen = useBreakpoint("sm");
-  const queryCache = useQueryCache();
+  const queryClient = useQueryClient();
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
@@ -124,7 +124,7 @@ export function SeriesSearch() {
     setPage(0);
     setRowsPerPage(parseInt(e.target.value, 10));
 
-    queryCache.invalidateQueries([{ searchValues, rowsPerPage }], {
+    queryClient.invalidateQueries([{ searchValues, rowsPerPage }], {
       refetchActive: false,
     });
   }
@@ -134,7 +134,7 @@ export function SeriesSearch() {
     setPage(0);
     setFilterActive(false);
 
-    queryCache.invalidateQueries([{ searchValues }], { refetchActive: false });
+    queryClient.invalidateQueries([{ searchValues }], { refetchActive: false });
   }
 
   const paginationActions = (

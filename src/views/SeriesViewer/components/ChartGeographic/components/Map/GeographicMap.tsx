@@ -1,7 +1,7 @@
 import * as React from "react";
 
 import { ChoroplethMap, MapTooltip } from "./components";
-import { IbgeMapDivision } from "api/ibge";
+import { DivisionToPlotAsMap } from "api/ibge";
 import { SeriesMetadata, SeriesValues } from "types";
 
 interface tooltipPositionType {
@@ -12,7 +12,7 @@ interface tooltipPositionType {
 interface Props {
   series: SeriesValues[];
   metadata: SeriesMetadata;
-  division: IbgeMapDivision;
+  division: DivisionToPlotAsMap;
   boundaryId: string;
 }
 

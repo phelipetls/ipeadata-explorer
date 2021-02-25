@@ -49,7 +49,6 @@ interface GeographicDivisionMetadata {
 }
 
 async function fetchGeographicDivisions(
-  _: string,
   code: string
 ): Promise<GeographicDivision[]> {
   const url = buildGeographicDivisionsUrl(code);
@@ -123,7 +122,7 @@ export function ChartGeographic({ code, metadata }: Props) {
     data: divisions = [],
   } = useQuery<GeographicDivision[]>(
     ["Fetch available geographic divisions", code],
-    fetchGeographicDivisions,
+    () => fetchGeographicDivisions(code),
     {
       onSuccess: ([firstDivision]) =>
         setDivision(division => division || firstDivision),
@@ -153,7 +152,7 @@ export function ChartGeographic({ code, metadata }: Props) {
       const response = await axios.get(url);
       return response.data;
     },
-    { enabled: division }
+    { enabled: Boolean(division) }
   );
 
   const series = data?.value || [];

@@ -15,7 +15,7 @@ import {
 
 import { buildMetadataUrl } from "api/odata";
 
-async function fetchMetadata(_: string, code: string) {
+async function fetchMetadata(code: string) {
   const url = buildMetadataUrl(code);
   const response = await axios.get(url);
   return response.data;
@@ -26,7 +26,7 @@ export function SeriesViewer() {
 
   const { isLoading, isError, data } = useQuery(
     ["Fetch series metadata", code],
-    fetchMetadata
+    () => fetchMetadata(code)
   );
 
   const metadata = data?.value?.[0] || {};

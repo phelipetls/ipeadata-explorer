@@ -1,6 +1,5 @@
 import "@testing-library/jest-dom/extend-expect";
-import { queryCache } from "./test-utils/index.ts";
-import { server } from "./test-utils/server";
+import { server, queryClient } from "./test-utils";
 
 beforeAll(() =>
   server.listen({
@@ -10,7 +9,7 @@ beforeAll(() =>
 
 afterEach(() => {
   server.resetHandlers();
-  queryCache.clear();
+  queryClient.clear();
 });
 
 afterAll(() => server.close());

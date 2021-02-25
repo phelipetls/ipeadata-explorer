@@ -25,8 +25,7 @@ export const SelectGeographicBoundaryId = React.forwardRef<Ref, Props>(
 
     const { isLoading, data = [] } = useQuery(
       ["Fetch geographic divisions names", boundaryDivision],
-      (_: string, boundaryDivision: IbgeLocationDivision) =>
-        fetchDivisionNames(boundaryDivision)
+      () => fetchDivisionNames(boundaryDivision)
     );
 
     if (isLoading) {
