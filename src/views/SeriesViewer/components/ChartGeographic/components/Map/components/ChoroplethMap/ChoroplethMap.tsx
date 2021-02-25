@@ -53,8 +53,6 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
     setTooltipOpen,
   } = props;
 
-  const [date, setDate] = React.useState("");
-
   const { isLoading: isLoadingDivisionsNames, data: divisionsNames } = useQuery<
     DivisionMetadata[]
   >(
@@ -76,11 +74,9 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
 
   const dates = Object.keys(seriesByDate);
 
-  if (date === "") {
-    setDate(dates[0]);
-  }
+  const [selectedDate, setSelectedDate] = React.useState(() => dates[0]);
 
-  const selectedDateRows = seriesByDate[date] || {};
+  const selectedDateRows = seriesByDate[selectedDate] || {};
   const selectedDateValues = Object.values(selectedDateRows).map(
     row => row["VALVALOR"]
   );
@@ -137,9 +133,11 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
 
       <SelectDate
         isLoading={isLoading}
-        date={date}
+        date={selectedDate}
         dates={dates}
-        handleChange={(e: any) => setDate(e.target.value)}
+        handleChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
+          setSelectedDate(e.target.value)
+        }
       />
     </>
   );
