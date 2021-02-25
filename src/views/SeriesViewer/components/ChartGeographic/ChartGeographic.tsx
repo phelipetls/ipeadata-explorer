@@ -175,6 +175,7 @@ export function ChartGeographic({ code, metadata }: Props) {
   }
 
   const isLoading = isLoadingData || isLoadingDivisions;
+  const isError = isErrorData || isErrorDivisions;
 
   const series = (data && data.value) || [];
 
@@ -203,13 +204,13 @@ export function ChartGeographic({ code, metadata }: Props) {
         )}
       </ChartFilters>
 
-      {isErrorData || isErrorDivisions ? (
+      {isError ? (
         <ChartError />
       ) : isLoading ? (
         <ChartLoading />
       ) : series.length === 0 ? (
         <ChartNoData />
-      ) : division && shouldPlotMap(division) ? (
+      ) : shouldPlotMap(division!) ? (
         <GeographicMap
           series={series}
           metadata={metadata}

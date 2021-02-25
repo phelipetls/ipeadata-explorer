@@ -57,8 +57,6 @@ export function ChartJS(props) {
   const { chartType, labels, datasets, xScale, yScale, ...options } = props;
 
   React.useEffect(() => {
-    if (canvasRef.current === null) return;
-
     const config = {
       type: chartType,
       data: { labels, datasets },
