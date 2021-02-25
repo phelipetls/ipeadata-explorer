@@ -103,7 +103,7 @@ export function SeriesSearch() {
     }
   );
 
-  const rows: SeriesMetadata[] = (data && data.value) || [];
+  const rows: SeriesMetadata[] = data?.value || [];
 
   const stateToSync = React.useMemo(
     () => ({

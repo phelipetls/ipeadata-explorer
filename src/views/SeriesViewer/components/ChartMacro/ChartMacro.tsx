@@ -72,6 +72,8 @@ export function ChartMacro({ code, metadata }: Props) {
     }
   );
 
+  const series: SeriesValues[] = data?.value || [];
+
   function onSubmit(data: ChartDateInputsData) {
     const { startDate, endDate, lastN } = data;
 
@@ -79,8 +81,6 @@ export function ChartMacro({ code, metadata }: Props) {
     setEndDate(endDate);
     setLastN(lastN !== "" ? Number(lastN) : DEFAULT_LAST_N);
   }
-
-  const series: SeriesValues[] = (data && data.value) || [];
 
   const labels = series.map(series => series.VALDATA);
   const datasets = [

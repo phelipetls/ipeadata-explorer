@@ -29,7 +29,7 @@ export function SeriesViewer() {
     fetchMetadata
   );
 
-  const metadata = (data && data.value && data.value[0]) || {};
+  const metadata = data?.value?.[0] || {};
 
   return isLoading ? (
     <Loading />

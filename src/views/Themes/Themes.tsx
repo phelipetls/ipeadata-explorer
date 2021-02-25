@@ -67,7 +67,7 @@ export function Themes() {
     return response.data;
   });
 
-  const themes: ThemeMetadata[] = (data && data.value) || [];
+  const themes: ThemeMetadata[] = data?.value || [];
 
   return isLoading ? (
     <Loading />

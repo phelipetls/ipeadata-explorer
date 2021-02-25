@@ -42,7 +42,7 @@ export function Countries() {
     return response.data;
   });
 
-  const countries: CountryMetadata[] = (data && data.value) || [];
+  const countries: CountryMetadata[] = data?.value || [];
 
   return (
     <TableContainer component={Paper}>

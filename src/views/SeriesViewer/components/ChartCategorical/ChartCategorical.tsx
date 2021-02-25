@@ -83,7 +83,7 @@ export function ChartCategorical({ code, metadata }: Props) {
     setLastN(lastN !== "" ? Number(lastN) : DEFAULT_LAST_N);
   }
 
-  const categories: CategoriesMetadata[] = (data && data.value) || [];
+  const categories: CategoriesMetadata[] = data?.value || [];
 
   const labels = categories.map(category => category.VALVALOR);
   const datasets = [

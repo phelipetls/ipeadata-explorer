@@ -156,6 +156,8 @@ export function ChartGeographic({ code, metadata }: Props) {
     { enabled: division }
   );
 
+  const series = data?.value || [];
+
   function onSubmit(data: ChartDateInputsData & GeographyInputsData) {
     const {
       startDate,
@@ -176,8 +178,6 @@ export function ChartGeographic({ code, metadata }: Props) {
 
   const isLoading = isLoadingData || isLoadingDivisions;
   const isError = isErrorData || isErrorDivisions;
-
-  const series = (data && data.value) || [];
 
   return (
     <ChartSection>
