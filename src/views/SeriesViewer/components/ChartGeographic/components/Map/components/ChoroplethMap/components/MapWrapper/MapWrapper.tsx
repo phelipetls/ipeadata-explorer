@@ -61,8 +61,15 @@ export function MapWrapper(props: MapWrapperProps) {
       width={svgWidth}
       height={svgHeight}
       projection={projection as any}
+      overflow="visible"
     >
-      <text x={svgWidth / 2} textAnchor="middle" dominantBaseline="hanging">
+      <text
+        x={svgWidth / 2}
+        y={5}
+        textAnchor="middle"
+        dominantBaseline="hanging"
+        fontSize="16px"
+      >
         {title}
       </text>
 
@@ -78,7 +85,7 @@ export function MapWrapper(props: MapWrapperProps) {
             ? (svgWidth - LEGEND_WIDTH) / 2
             : svgWidth - LEGEND_WIDTH
         }
-        y={SVG_HEIGHT - LEGEND_HEIGHT - 1}
+        y={SVG_HEIGHT - LEGEND_HEIGHT - 5}
       />
     </ComposableMap>
   );
