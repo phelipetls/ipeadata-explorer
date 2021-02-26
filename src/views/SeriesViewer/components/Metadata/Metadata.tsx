@@ -8,9 +8,14 @@ import { SeriesMetadata } from "types";
 
 const useStyles = makeStyles(theme => ({
   metadata: {
-    padding: theme.spacing(3),
-    "& > *": {
-      padding: theme.spacing(3),
+    paddingTop: theme.spacing(3),
+    paddingBottom: theme.spacing(3),
+    paddingRight: theme.spacing(6),
+    paddingLeft: theme.spacing(6),
+  },
+  description: {
+    [theme.breakpoints.up("md")]: {
+      paddingRight: theme.spacing(3),
     },
   },
 }));
@@ -24,7 +29,7 @@ export function Metadata({ metadata }: Props) {
 
   return (
     <Grid container component={Paper} className={classes.metadata}>
-      <Grid item xs={12} md={6}>
+      <Grid item xs={12} md={6} className={classes.description}>
         <Typography variant="h4" component="h1" gutterBottom>
           {metadata.SERNOME}
         </Typography>

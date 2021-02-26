@@ -14,8 +14,6 @@ import {
   ChartError,
   ChartNoData,
   ChartDateInputsData,
-  ChartDownloadButton,
-  ChartActions,
 } from "components";
 import { SeriesMetadata, SeriesValues } from "types";
 import { buildSeriesValuesUrl, getDateFilter, buildFilter } from "api/odata";
@@ -93,6 +91,7 @@ export function ChartMacro({ code, metadata }: Props) {
   return (
     <ChartSection>
       <ChartFilters
+        metadata={metadata}
         onSubmit={onSubmit}
         defaultValues={{ startDate, endDate, lastN }}
       >
@@ -108,10 +107,6 @@ export function ChartMacro({ code, metadata }: Props) {
       ) : (
         <LineChart metadata={metadata} labels={labels} datasets={datasets} />
       )}
-
-      <ChartActions>
-        <ChartDownloadButton filename={metadata.SERNOME} />
-      </ChartActions>
     </ChartSection>
   );
 }

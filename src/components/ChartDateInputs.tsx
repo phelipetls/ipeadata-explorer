@@ -2,21 +2,12 @@ import * as React from "react";
 
 import { TextField } from "@material-ui/core";
 import { Event } from "@material-ui/icons";
-import { makeStyles } from "@material-ui/core/styles";
 import { DatePickerView } from "@material-ui/pickers";
 
 import { useFormContext } from "react-hook-form";
 
 import { HfKeyboardDatePicker } from "components";
 import { SeriesMetadata } from "types";
-
-const useStyles = makeStyles(theme => ({
-  datePicker: {
-    [theme.breakpoints.up("md")]: {
-      minWidth: "19ch",
-    },
-  },
-}));
 
 const dateViewsByPeriodicity: Record<string, DatePickerView[]> = {
   Mensal: ["year", "month"],
@@ -39,8 +30,6 @@ interface Props {
 }
 
 export function ChartDateInputs(props: Props) {
-  const classes = useStyles();
-
   const { metadata } = props;
 
   const { register, control } = useFormContext<ChartDateInputsData>();
@@ -73,7 +62,6 @@ export function ChartDateInputs(props: Props) {
         onAccept={resetDate}
         views={dateViewsByPeriodicity[metadata.PERNOME]}
         keyboardIcon={<Event fontSize="small" />}
-        className={classes.datePicker}
       />
 
       <HfKeyboardDatePicker
@@ -87,7 +75,6 @@ export function ChartDateInputs(props: Props) {
         onAccept={resetDate}
         views={dateViewsByPeriodicity[metadata.PERNOME]}
         keyboardIcon={<Event fontSize="small" />}
-        className={classes.datePicker}
       />
 
       <TextField

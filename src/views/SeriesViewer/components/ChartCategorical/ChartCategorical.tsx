@@ -12,8 +12,6 @@ import {
   ChartDateInputs,
   ChartDateInputsData,
   BarChart,
-  ChartDownloadButton,
-  ChartActions,
 } from "components";
 import { SeriesMetadata } from "types";
 import {
@@ -96,6 +94,7 @@ export function ChartCategorical({ code, metadata }: Props) {
   return (
     <ChartSection>
       <ChartFilters
+        metadata={metadata}
         defaultValues={{
           startDate,
           endDate,
@@ -115,10 +114,6 @@ export function ChartCategorical({ code, metadata }: Props) {
       ) : (
         <BarChart metadata={metadata} labels={labels} datasets={datasets} />
       )}
-
-      <ChartActions>
-        <ChartDownloadButton filename={metadata.SERNOME} />
-      </ChartActions>
     </ChartSection>
   );
 }

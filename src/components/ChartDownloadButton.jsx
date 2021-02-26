@@ -5,7 +5,7 @@ import { Chart } from "chart.js";
 import { svgToPng } from "utils";
 
 export function ChartDownloadButton(props) {
-  const { filename, ...rest } = props;
+  const { filename, children, ...rest } = props;
 
   const downloadLinkRef = React.useRef(null);
 
@@ -42,7 +42,7 @@ export function ChartDownloadButton(props) {
         disabled={loading}
         {...rest}
       >
-        {loading ? "Carregando..." : "Download"}
+        {children || (loading ? "Carregando..." : "Download")}
       </Button>
     </Link>
   );
