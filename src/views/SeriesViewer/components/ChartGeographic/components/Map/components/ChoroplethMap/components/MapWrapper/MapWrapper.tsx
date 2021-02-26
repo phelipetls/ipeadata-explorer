@@ -39,13 +39,14 @@ interface MapWrapperProps {
   scale: ScaleQuantile<string>;
   metadata: SeriesMetadata;
   outline: Feature;
+  title: string;
   children: JSX.Element;
 }
 
 export function MapWrapper(props: MapWrapperProps) {
   const isExtraSmallScreen = useBreakpoint("xs");
 
-  const { scale, metadata, outline, children: map } = props;
+  const { scale, metadata, outline, title, children: map } = props;
 
   const svgWidth = Math.min(window.innerWidth, SVG_WIDTH);
   const svgHeight = SVG_HEIGHT;
@@ -62,7 +63,7 @@ export function MapWrapper(props: MapWrapperProps) {
       projection={projection as any}
     >
       <text x={svgWidth / 2} textAnchor="middle" dominantBaseline="hanging">
-        {metadata.SERNOME}
+        {title}
       </text>
 
       {map}

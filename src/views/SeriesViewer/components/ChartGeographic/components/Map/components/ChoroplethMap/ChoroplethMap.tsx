@@ -92,7 +92,12 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
       {isLoading ? (
         <ChartLoading />
       ) : (
-        <MapWrapper scale={scale} metadata={metadata} outline={outline!}>
+        <MapWrapper
+          scale={scale}
+          metadata={metadata}
+          outline={outline!}
+          title={`${metadata.SERNOME} - ${selectedDate}`}
+        >
           <Geographies geography={getMapUrl({ boundaryId, division })}>
             {({ geographies }) =>
               geographies.map(geo => {
