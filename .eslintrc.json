@@ -1,7 +1,6 @@
 {
   "extends": ["react-app", "react-app/jest"],
   "rules": {
-    "no-console": "warn",
     "object-shorthand": "warn",
     "prefer-const": "warn",
     "object-curly-spacing": ["warn", "always"]
