@@ -13,7 +13,7 @@ import { SeriesMetadata } from "types";
 interface Props<T> {
   rows: T[];
   columns: string[];
-  renderSummary: (row: T) => string;
+  renderSummary: (row: T) => JSX.Element;
   renderRow: (row: T) => JSX.Element;
   isLoading: boolean;
   skeleton: JSX.Element;

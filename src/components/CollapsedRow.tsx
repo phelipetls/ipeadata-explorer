@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface Props {
-  summary: string;
+  summary: JSX.Element;
   children: JSX.Element;
 }
 
