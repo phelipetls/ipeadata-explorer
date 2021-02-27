@@ -4,7 +4,9 @@ import { Grid, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { MetadataTable } from "components";
+import { MetadataComment } from "./components";
 import { SeriesMetadata } from "types";
+import { removeHtmlTags } from "utils/remove-html-tags";
 
 const useStyles = makeStyles(theme => ({
   metadata: {
@@ -16,6 +18,9 @@ const useStyles = makeStyles(theme => ({
   description: {
     [theme.breakpoints.up("md")]: {
       paddingRight: theme.spacing(3),
+    },
+    [theme.breakpoints.down("xs")]: {
+      marginBottom: theme.spacing(3),
     },
   },
 }));
@@ -33,11 +38,12 @@ export function Metadata({ metadata }: Props) {
         <Typography variant="h4" component="h1" gutterBottom>
           {metadata.SERNOME}
         </Typography>
-        <Typography variant="body1" paragraph>
-          {metadata.SERCOMENTARIO
-            ? metadata.SERCOMENTARIO.replace(/<[^>]+>/g, "")
-            : ""}
-        </Typography>
+
+        <MetadataComment>
+          <Typography variant="body1" paragraph>
+            {removeHtmlTags(metadata.SERCOMENTARIO || "")}
+          </Typography>
+        </MetadataComment>
       </Grid>
 
       <Grid item xs={12} md={6}>
