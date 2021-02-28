@@ -1,11 +1,15 @@
 import { Canvg } from "canvg";
 
-export async function svgToPng(svg: SVGSVGElement) {
+export async function svgToPng(
+  svg: SVGSVGElement,
+  width: number,
+  height: number
+) {
   const canvas = document.createElement("canvas");
   const ctx = canvas.getContext("2d");
 
-  canvas.width = 1200;
-  canvas.height = 1000;
+  canvas.width = width;
+  canvas.height = height;
 
   const canvg = await Canvg.from(ctx!, svg.outerHTML);
 
