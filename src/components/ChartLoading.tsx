@@ -1,6 +1,5 @@
+import { ChartContainer, Loading } from "components";
 import * as React from "react";
-
-import { Loading, ChartContainer } from "components";
 
 export function ChartLoading() {
   return (

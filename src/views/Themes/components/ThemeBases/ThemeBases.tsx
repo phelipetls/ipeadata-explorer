@@ -1,6 +1,5 @@
-import * as React from "react";
-
 import { makeStyles, useTheme } from "@material-ui/core/styles";
+import * as React from "react";
 
 const useStyles = makeStyles(theme => ({
   row: {

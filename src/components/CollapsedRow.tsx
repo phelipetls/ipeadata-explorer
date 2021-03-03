@@ -1,8 +1,7 @@
-import * as React from "react";
-
-import { TableCell, TableRow, Collapse, IconButton } from "@material-ui/core";
-import { KeyboardArrowUp, KeyboardArrowDown } from "@material-ui/icons";
+import { Collapse, IconButton, TableCell, TableRow } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
+import * as React from "react";
 
 const useStyles = makeStyles(theme => ({
   summaryRow: {

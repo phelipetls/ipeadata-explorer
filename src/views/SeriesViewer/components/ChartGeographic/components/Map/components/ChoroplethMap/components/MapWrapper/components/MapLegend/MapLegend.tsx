@@ -1,12 +1,8 @@
-// This module implements what is in https://observablehq.com/@d3/color-legend
-import * as React from "react";
-
 import { makeStyles } from "@material-ui/styles";
-
+import { axisBottom } from "d3-axis";
 import { format as d3Format } from "d3-format";
 import { scaleLinear, ScaleQuantile } from "d3-scale";
-import { axisBottom } from "d3-axis";
-
+import * as React from "react";
 import { QuantileRectangles, Ticks } from "./components";
 
 const useStyles = makeStyles(() => ({

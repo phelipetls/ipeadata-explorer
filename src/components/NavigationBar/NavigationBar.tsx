@@ -1,16 +1,14 @@
-import * as React from "react";
-
-import { AppBar, Toolbar, Link, Typography, Hidden } from "@material-ui/core";
+import { AppBar, Hidden, Link, Toolbar, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { Link as RouterLink } from "react-router-dom";
-
-import { NavigationLink } from "./types";
 import { SearchButton } from "components";
+import * as React from "react";
+import { Link as RouterLink } from "react-router-dom";
 import {
-  NavigationLinksMenu,
   NavigationLinksList,
+  NavigationLinksMenu,
   SearchBar,
 } from "./components";
+import { NavigationLink } from "./types";
 
 const useStyles = makeStyles(() => ({
   appBar: {

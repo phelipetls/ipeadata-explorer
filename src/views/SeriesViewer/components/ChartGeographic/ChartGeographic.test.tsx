@@ -1,20 +1,18 @@
+import userEvent from "@testing-library/user-event";
+import { Chart } from "chart.js";
+import { rest } from "msw";
 import * as React from "react";
 import {
-  render,
-  readJson,
-  screen,
   getSearchParams,
+  readJson,
+  render,
+  screen,
   waitFor,
   waitForElementToBeRemoved,
 } from "test-utils";
-import userEvent from "@testing-library/user-event";
-
-import { Chart } from "chart.js";
-import { ChartGeographic } from "./ChartGeographic";
-import { SeriesMetadata } from "types";
-
-import { rest } from "msw";
 import { server } from "test-utils/server";
+import { SeriesMetadata } from "types";
+import { ChartGeographic } from "./ChartGeographic";
 import { handlers } from "./mocks/handlers";
 
 const MOCKED_METADATA = readJson(__dirname + "/mocks/metadata.json");

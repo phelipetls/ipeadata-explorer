@@ -1,19 +1,16 @@
+import { buildMetadataUrl } from "api/odata";
+import { EmptyState, Loading } from "components";
+import isEmpty from "lodash/isEmpty";
 import * as React from "react";
-
-import axios from "redaxios";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import isEmpty from "lodash/isEmpty";
-
-import { EmptyState, Loading } from "components";
+import axios from "redaxios";
 import {
-  ChartMacro,
-  ChartGeographic,
   ChartCategorical,
+  ChartGeographic,
+  ChartMacro,
   Metadata,
 } from "./components";
-
-import { buildMetadataUrl } from "api/odata";
 
 async function fetchMetadata(code: string) {
   const url = buildMetadataUrl(code);

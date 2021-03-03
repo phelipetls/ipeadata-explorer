@@ -1,13 +1,10 @@
-import * as React from "react";
-import { screen, waitFor } from "test-utils";
 import userEvent from "@testing-library/user-event";
-
-import { FormProvider, useForm } from "react-hook-form";
-import { GeographyInputs } from "./GeographyInputs";
 import { GeographicDivision } from "api/ibge";
-
-import { render } from "test-utils";
+import * as React from "react";
+import { FormProvider, useForm } from "react-hook-form";
+import { render, screen, waitFor } from "test-utils";
 import { server } from "test-utils/server";
+import { GeographyInputs } from "./GeographyInputs";
 import { handlers } from "./mocks/handlers";
 
 beforeEach(() => server.use(...handlers));

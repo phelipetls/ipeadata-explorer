@@ -1,23 +1,21 @@
-import * as React from "react";
-
-import axios from "redaxios";
-import { useQuery } from "react-query";
-import { useLocation } from "react-router-dom";
-import { getDateSafely } from "utils";
-
+import { buildFilter, buildSeriesValuesUrl, getDateFilter } from "api/odata";
 import {
-  ChartFilters,
   ChartDateInputs,
+  ChartDateInputsData,
+  ChartError,
+  ChartFilters,
+  ChartLoading,
+  ChartNoData,
   ChartSection,
   LineChart,
-  ChartLoading,
-  ChartError,
-  ChartNoData,
-  ChartDateInputsData,
 } from "components";
-import { SeriesMetadata, SeriesValues } from "types";
-import { buildSeriesValuesUrl, getDateFilter, buildFilter } from "api/odata";
 import { useSyncSearchParams } from "hooks";
+import * as React from "react";
+import { useQuery } from "react-query";
+import { useLocation } from "react-router-dom";
+import axios from "redaxios";
+import { SeriesMetadata, SeriesValues } from "types";
+import { getDateSafely } from "utils";
 
 const DEFAULT_LAST_N = 50;
 

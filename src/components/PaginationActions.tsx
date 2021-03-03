@@ -1,8 +1,7 @@
-import * as React from "react";
-
 import { IconButton } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { KeyboardArrowRight, KeyboardArrowLeft } from "@material-ui/icons";
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@material-ui/icons";
+import * as React from "react";
 
 const useStyles = makeStyles(theme => ({
   root: {

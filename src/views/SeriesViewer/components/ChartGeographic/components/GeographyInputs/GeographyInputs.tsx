@@ -1,11 +1,10 @@
+import { BoundaryDivision, GeographicDivision, shouldPlotMap } from "api/ibge";
 import * as React from "react";
 import { useFormContext } from "react-hook-form";
-
-import { BoundaryDivision, GeographicDivision, shouldPlotMap } from "api/ibge";
 import {
-  SelectGeographicDivision,
   SelectGeographicBoundaryDivision,
   SelectGeographicBoundaryId,
+  SelectGeographicDivision,
 } from "./components";
 
 interface Props {

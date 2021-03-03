@@ -1,8 +1,7 @@
-import * as React from "react";
-
-import { select as d3Select } from "d3-selection";
-import { NumberValue } from "d3-scale";
 import { Axis } from "d3-axis";
+import { NumberValue } from "d3-scale";
+import { select as d3Select } from "d3-selection";
+import * as React from "react";
 
 interface TicksProps {
   title: string;

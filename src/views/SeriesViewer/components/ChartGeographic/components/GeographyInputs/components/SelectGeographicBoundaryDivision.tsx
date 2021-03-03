@@ -1,18 +1,17 @@
-import * as React from "react";
-import { Ref } from "react-hook-form";
-
 import {
-  Select,
-  SelectProps,
-  InputLabel,
   FormControl,
   Grow,
+  InputLabel,
+  Select,
+  SelectProps,
 } from "@material-ui/core";
 import {
-  getContainingDivisions,
   DivisionToPlotAsMap,
+  getContainingDivisions,
   IbgeMapDivision,
 } from "api/ibge";
+import * as React from "react";
+import { Ref } from "react-hook-form";
 
 type Props = Pick<SelectProps, "name"> & {
   division: DivisionToPlotAsMap;

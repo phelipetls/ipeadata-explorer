@@ -1,7 +1,6 @@
-import * as React from "react";
-
 import { Tooltip as MuiTooltip } from "@material-ui/core";
 import { withStyles } from "@material-ui/styles";
+import * as React from "react";
 
 const Tooltip = withStyles(() => ({
   tooltip: {

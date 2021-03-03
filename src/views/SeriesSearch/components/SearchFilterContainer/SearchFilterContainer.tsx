@@ -1,14 +1,13 @@
-import * as React from "react";
-
 import {
-  Grid,
-  Typography,
-  Paper,
   Collapse,
+  Grid,
   IconButton,
+  Paper,
+  Typography,
 } from "@material-ui/core";
-import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
+import * as React from "react";
 
 const useStyles = makeStyles(theme => ({
   filterContainer: {

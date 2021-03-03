@@ -1,25 +1,24 @@
-import * as React from "react";
-
 import {
   Table,
-  TableHead,
   TableBody,
-  TableRow,
   TableCell,
+  TableHead,
+  TableRow,
 } from "@material-ui/core";
-import { CollapsedRow } from "./CollapsedRow";
+import * as React from "react";
 import { SeriesMetadata } from "types";
+import { CollapsedRow } from "./CollapsedRow";
 
-interface Props<T> {
-  rows: T[];
+interface Props {
+  rows: SeriesMetadata[];
   columns: string[];
-  renderSummary: (row: T) => JSX.Element;
-  renderRow: (row: T) => JSX.Element;
+  renderSummary: (row: SeriesMetadata) => JSX.Element;
+  renderRow: (row: SeriesMetadata) => JSX.Element;
   isLoading: boolean;
   skeleton: JSX.Element;
 }
 
-export function TableCollapsedRows<T extends SeriesMetadata>(props: Props<T>) {
+export function TableCollapsedRows(props: Props) {
   const {
     columns,
     rows,

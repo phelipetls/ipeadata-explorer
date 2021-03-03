@@ -1,9 +1,9 @@
-import * as React from "react";
 import { Button, Link } from "@material-ui/core";
 import { GetApp } from "@material-ui/icons";
 import { Chart } from "chart.js";
-import { svgToPng } from "utils";
 import clone from "lodash/clone";
+import * as React from "react";
+import { svgToPng } from "utils";
 
 const IMAGE_WIDTH = 1280;
 const IMAGE_HEIGHT = 640;

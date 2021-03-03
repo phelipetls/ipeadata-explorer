@@ -1,13 +1,11 @@
-import * as React from "react";
 import userEvent from "@testing-library/user-event";
-import { render, screen, getSearchParams, readJson, waitFor } from "test-utils";
-
 import { Chart } from "chart.js";
-import { ChartMacro } from "./ChartMacro";
-import { SeriesMetadata } from "types";
-
 import { rest } from "msw";
+import * as React from "react";
+import { getSearchParams, readJson, render, screen, waitFor } from "test-utils";
 import { server } from "test-utils/server";
+import { SeriesMetadata } from "types";
+import { ChartMacro } from "./ChartMacro";
 import { handlers } from "./mocks/handlers";
 
 const MOCKED_METADATA = readJson(__dirname + "/mocks/metadata.json");

@@ -1,4 +1,4 @@
-import { geographicDivisions, GeographicDivision } from "api/ibge";
+import { GeographicDivision, geographicDivisions } from "api/ibge";
 
 export function getDivisionSafely(
   division: string | null

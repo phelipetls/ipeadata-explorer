@@ -1,7 +1,6 @@
-import * as React from "react";
-
-import { ArrowBack } from "@material-ui/icons";
 import { IconButton, IconButtonProps } from "@material-ui/core";
+import { ArrowBack } from "@material-ui/icons";
+import * as React from "react";
 
 interface Props {
   onClick: () => void;

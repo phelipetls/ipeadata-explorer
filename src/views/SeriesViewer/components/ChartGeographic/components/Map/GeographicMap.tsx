@@ -1,8 +1,7 @@
-import * as React from "react";
-
-import { ChoroplethMap, MapTooltip } from "./components";
 import { DivisionToPlotAsMap } from "api/ibge";
+import * as React from "react";
 import { SeriesMetadata, SeriesValues } from "types";
+import { ChoroplethMap, MapTooltip } from "./components";
 
 interface tooltipPositionType {
   x: number | undefined;

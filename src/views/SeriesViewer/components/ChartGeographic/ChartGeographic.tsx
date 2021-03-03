@@ -1,40 +1,37 @@
+import { BoundaryDivision, GeographicDivision, shouldPlotMap } from "api/ibge";
+import {
+  buildFilter,
+  buildGeographicDivisionsUrl,
+  buildSeriesValuesUrl,
+  getDateFilter,
+} from "api/odata";
+import {
+  ChartDateInputs,
+  ChartDateInputsData,
+  ChartError,
+  ChartFilters,
+  ChartLoading,
+  ChartNoData,
+  ChartSection,
+  Loading,
+} from "components";
+import { useSyncSearchParams } from "hooks";
 import * as React from "react";
-
-import axios from "redaxios";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
-
+import axios from "redaxios";
+import { SeriesMetadata } from "types";
 import {
+  getBoundaryDivisionSafely,
+  getDateSafely,
+  getDivisionSafely,
+} from "utils";
+import {
+  GeographicLineChart,
   GeographicMap,
   GeographyInputs,
   GeographyInputsData,
-  GeographicLineChart,
 } from "./components";
-import {
-  Loading,
-  ChartLoading,
-  ChartFilters,
-  ChartDateInputs,
-  ChartDateInputsData,
-  ChartSection,
-  ChartNoData,
-  ChartError,
-} from "components";
-import { SeriesMetadata } from "types";
-
-import {
-  buildSeriesValuesUrl,
-  getDateFilter,
-  buildFilter,
-  buildGeographicDivisionsUrl,
-} from "api/odata";
-import { BoundaryDivision, GeographicDivision, shouldPlotMap } from "api/ibge";
-import {
-  getDateSafely,
-  getDivisionSafely,
-  getBoundaryDivisionSafely,
-} from "utils";
-import { useSyncSearchParams } from "hooks";
 
 const DEFAULT_LAST_N = 5;
 const DEFAULT_BOUNDARY_ID = "BR";

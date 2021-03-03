@@ -1,8 +1,6 @@
-import * as React from "react";
-
 import { Paper } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
+import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({

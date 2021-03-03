@@ -28,19 +28,19 @@ const ipeaFields = [
 ];
 
 export function getSearchValuesFromUrl(searchParams: URLSearchParams) {
-  const searchValuesEntries = Array.from(searchParams.entries()).filter(
-    ([key]) => ipeaFields.includes(key)
-  );
+  const searchValuesEntries = Array.from(
+    searchParams.entries()
+  ).filter(([key]) => ipeaFields.includes(key));
 
   return Object.fromEntries(searchValuesEntries);
 }
 
 export function buildSearchUrl(searchValues: Record<string, string>) {
   if (isEmpty(searchValues)) {
-    return DEFAULT_SEARCH_QUERY
+    return DEFAULT_SEARCH_QUERY;
   }
 
-  return buildSearchQuery(Object.entries(searchValues))
+  return buildSearchQuery(Object.entries(searchValues));
 }
 
 function buildSearchQuery(queries: [string, any][]) {

@@ -1,4 +1,4 @@
-import { geographicDivisions, BoundaryDivision } from "api/ibge";
+import { BoundaryDivision, geographicDivisions } from "api/ibge";
 
 const boundaryDivisions = geographicDivisions.filter(
   division => !(division === "Municípios" || division === "Área metropolitana")

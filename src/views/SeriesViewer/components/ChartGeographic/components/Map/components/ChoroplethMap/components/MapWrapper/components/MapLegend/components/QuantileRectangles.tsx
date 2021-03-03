@@ -1,6 +1,5 @@
-import * as React from "react";
-
 import { ScaleLinear, ScaleQuantile } from "d3-scale";
+import * as React from "react";
 
 interface QuantileRectanglesProps {
   scale: ScaleQuantile<string>;

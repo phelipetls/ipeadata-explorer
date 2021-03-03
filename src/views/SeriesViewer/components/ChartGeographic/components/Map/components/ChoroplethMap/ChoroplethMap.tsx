@@ -1,27 +1,22 @@
-import * as React from "react";
-
-import axios from "redaxios";
-import { useQuery } from "react-query";
-
-import { Geographies, Geography } from "react-simple-maps";
-import { schemeBlues as palette } from "d3-scale-chromatic";
-import { scaleQuantile } from "d3-scale";
-
 import {
-  getMapUrl,
   DivisionMetadata,
-  fetchDivisionNames,
   DivisionToPlotAsMap,
+  fetchDivisionNames,
+  getMapUrl,
 } from "api/ibge";
-import { formatDate } from "utils";
-import { SeriesMetadata, SeriesValues } from "types";
-import { Feature } from "geojson";
-
 import { ChartLoading } from "components";
-import { MapWrapper, SelectDate } from "./components";
-
-import keyBy from "lodash/keyBy";
+import { scaleQuantile } from "d3-scale";
+import { schemeBlues as palette } from "d3-scale-chromatic";
+import { Feature } from "geojson";
 import groupBy from "lodash/groupBy";
+import keyBy from "lodash/keyBy";
+import * as React from "react";
+import { useQuery } from "react-query";
+import { Geographies, Geography } from "react-simple-maps";
+import axios from "redaxios";
+import { SeriesMetadata, SeriesValues } from "types";
+import { formatDate } from "utils";
+import { MapWrapper, SelectDate } from "./components";
 
 async function getOutlineMap(boundaryId: string): Promise<Feature> {
   const url = getMapUrl({ boundaryId, format: "application/vnd.geo+json" });

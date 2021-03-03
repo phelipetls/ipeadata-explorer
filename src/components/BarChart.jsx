@@ -1,7 +1,6 @@
-import * as React from "react";
-
 import { ChartJS } from "components";
 import { schemeCategory10 as palette } from "d3-scale-chromatic";
+import * as React from "react";
 
 export function BarChart({ metadata, datasets, ...rest }) {
   const datasetsWithColors = datasets.map((dataset, index) => ({

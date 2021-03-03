@@ -1,11 +1,9 @@
-import * as React from "react";
 import userEvent from "@testing-library/user-event";
+import * as React from "react";
 import { getSearchParams, render, screen, waitFor } from "test-utils";
-
-import { SeriesSearch } from "./SeriesSearch";
-
 import { server } from "test-utils/server";
 import { handlers } from "./mocks/handlers";
+import { SeriesSearch } from "./SeriesSearch";
 
 beforeEach(() => server.use(...handlers));
 

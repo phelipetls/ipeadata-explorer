@@ -1,23 +1,21 @@
-import * as React from "react";
-
 import { makeStyles } from "@material-ui/styles";
-import { theme } from "styles";
-
 import {
-  Chart,
-  Line,
-  Rectangle,
-  Point,
   BarController,
-  LineController,
   CategoryScale,
-  TimeScale,
-  LinearScale,
-  Title,
+  Chart,
   Legend,
+  Line,
+  LinearScale,
+  LineController,
+  Point,
+  Rectangle,
+  TimeScale,
+  Title,
   Tooltip,
 } from "chart.js";
 import "chartjs-adapter-date-fns";
+import * as React from "react";
+import { theme } from "styles";
 
 Chart.register(
   Point,

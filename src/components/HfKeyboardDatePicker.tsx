@@ -1,10 +1,9 @@
-import * as React from "react";
-
-import { Controller, ControllerProps } from "react-hook-form";
 import {
   KeyboardDatePicker,
   KeyboardDatePickerProps,
 } from "@material-ui/pickers";
+import * as React from "react";
+import { Controller, ControllerProps } from "react-hook-form";
 
 type Props = Required<
   Pick<ControllerProps<typeof KeyboardDatePicker>, "control" | "name">

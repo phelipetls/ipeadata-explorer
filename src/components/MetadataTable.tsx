@@ -1,17 +1,15 @@
-import * as React from "react";
-
 import {
   Link,
   Table,
-  TableCell,
-  TableRow,
   TableBody,
+  TableCell,
   TableHead,
+  TableRow,
 } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core/styles";
+import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-import { withStyles } from "@material-ui/core/styles";
-
-import { TableColumn, SeriesMetadata } from "types";
+import { SeriesMetadata, TableColumn } from "types";
 
 function formatDate(date: string): string {
   return new Date(date).toLocaleDateString();
@@ -52,39 +50,44 @@ const metadataFields: TableColumn[] = [
   },
 ];
 
-const BoldTableCell = withStyles(() => ({
-  head: {
+const useStyles = makeStyles({
+  header: {
     fontWeight: "bold",
   },
-}))(TableCell);
+});
 
-interface Props<T> {
-  metadata: T;
+interface Props {
+  metadata: Partial<SeriesMetadata>;
 }
 
-export function MetadataTable<T extends Partial<SeriesMetadata>>(
-  props: Props<T>
-) {
+export function MetadataTable(props: Props) {
+  const classes = useStyles();
+
   const { metadata } = props;
 
   return (
     <Table size="small">
       <TableHead>
         <TableRow>
-          <BoldTableCell component="th">Metadado</BoldTableCell>
-          <BoldTableCell component="th">Valor</BoldTableCell>
+          <TableCell className={classes.header} component="th">
+            Metadado
+          </TableCell>
+
+          <TableCell className={classes.header} component="th">
+            Valor
+          </TableCell>
         </TableRow>
       </TableHead>
 
       <TableBody>
         {metadataFields.map(({ label, key, render }) => (
           <TableRow key={label}>
-            <BoldTableCell component="th" scope="row" key="label">
+            <TableCell component="th" scope="row" key="label">
               {label}
-            </BoldTableCell>
-            <BoldTableCell key="valor">
+            </TableCell>
+            <TableCell key="valor">
               {render ? render(metadata) : key ? metadata[key] : ""}
-            </BoldTableCell>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>

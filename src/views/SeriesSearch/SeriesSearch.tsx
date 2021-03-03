@@ -1,33 +1,26 @@
-import * as React from "react";
 import { Link, Paper, TableContainer } from "@material-ui/core";
-import { Link as RouterLink, useLocation } from "react-router-dom";
-
-import axios from "redaxios";
-import { useQuery, useQueryClient } from "react-query";
-
-import { useBreakpoint } from "utils";
-import { SearchFilterForm } from "./components/SearchFilterForm";
-import { SearchFilterContainer } from "./components/SearchFilterContainer";
-
-import {
-  TableSortable,
-  TableCollapsedRows,
-  TableSkeleton,
-  PaginationFooter,
-  MetadataTable,
-  EmptyState,
-} from "components";
-
 import {
   buildSearchUrl,
   getSearchValuesFromUrl,
   limitQuery,
   offsetQuery,
 } from "api/odata";
-
-import { SeriesMetadata } from "types";
-import { TableColumn } from "types";
+import {
+  EmptyState,
+  MetadataTable,
+  PaginationFooter,
+  TableCollapsedRows,
+  TableSkeleton,
+  TableSortable,
+} from "components";
 import { useSyncSearchParams } from "hooks";
+import * as React from "react";
+import { useQuery, useQueryClient } from "react-query";
+import { Link as RouterLink, useLocation } from "react-router-dom";
+import axios from "redaxios";
+import { SeriesMetadata, TableColumn } from "types";
+import { useBreakpoint } from "utils";
+import { SearchFilterContainer, SearchFilterForm } from "./components";
 
 type MetadataDateFields = Pick<SeriesMetadata, "SERMAXDATA" | "SERMINDATA">;
 

@@ -1,6 +1,5 @@
 import * as React from "react";
-import { render, readJson, screen } from "test-utils";
-
+import { readJson, render, screen } from "test-utils";
 import { SeriesMetadata } from "types";
 import { Metadata } from "./Metadata";
 

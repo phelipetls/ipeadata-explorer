@@ -1,7 +1,6 @@
-import * as React from "react";
-
-import { ChartJS } from "./ChartJS";
 import { schemeCategory10 as palette } from "d3-scale-chromatic";
+import * as React from "react";
+import { ChartJS } from "./ChartJS";
 
 const timeUnits = {
   Trimestral: "quarter",

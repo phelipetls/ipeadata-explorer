@@ -1,6 +1,5 @@
+import { CircularProgress, Grid, GridProps } from "@material-ui/core";
 import * as React from "react";
-
-import { Grid, GridProps, CircularProgress } from "@material-ui/core";
 
 export function Loading(props: GridProps) {
   return (

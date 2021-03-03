@@ -1,15 +1,14 @@
-import * as React from "react";
-import { render, screen, RenderOptions } from "@testing-library/react";
-import { theme } from "../styles/Theme";
+import DateFnsUtils from "@date-io/date-fns";
 import { ThemeProvider } from "@material-ui/core/styles";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
-import { MemoryRouter as Router, useLocation } from "react-router-dom";
-import { MemoryRouterProps } from "react-router";
+import { render, RenderOptions, screen } from "@testing-library/react";
+import { existsSync, readFileSync } from "fs";
 import { Location } from "history";
+import * as React from "react";
 import { QueryClient, QueryClientProvider } from "react-query";
-import DateFnsUtils from "@date-io/date-fns";
-
-import { readFileSync, existsSync } from "fs";
+import { MemoryRouterProps } from "react-router";
+import { MemoryRouter as Router, useLocation } from "react-router-dom";
+import { theme } from "../styles/Theme";
 
 export const queryClient = new QueryClient({
   defaultOptions: {

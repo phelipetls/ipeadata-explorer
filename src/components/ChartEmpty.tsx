@@ -1,6 +1,5 @@
+import { ChartContainer, EmptyState } from "components";
 import * as React from "react";
-
-import { EmptyState, ChartContainer } from "components";
 
 interface Props {
   text: string;

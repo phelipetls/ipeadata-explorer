@@ -1,9 +1,7 @@
-import * as React from "react";
-
+import { IconButton, Link, Menu, MenuItem } from "@material-ui/core";
 import { MoreVert } from "@material-ui/icons";
-import { Menu, MenuItem, IconButton, Link } from "@material-ui/core";
+import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
-
 import { NavigationLink } from "../../types";
 
 interface Props {

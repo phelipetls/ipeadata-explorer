@@ -1,17 +1,15 @@
-import * as React from "react";
-import { Ref } from "react-hook-form";
-
-import { useQuery } from "react-query";
 import {
-  Select,
-  SelectProps,
-  InputLabel,
   FormControl,
   Grow,
+  InputLabel,
+  Select,
+  SelectProps,
 } from "@material-ui/core";
-
-import { Loading } from "components";
 import { fetchDivisionNames, IbgeLocationDivision } from "api/ibge";
+import { Loading } from "components";
+import * as React from "react";
+import { Ref } from "react-hook-form";
+import { useQuery } from "react-query";
 import { unpluralize } from "utils";
 
 type Props = Pick<SelectProps, "name"> & {

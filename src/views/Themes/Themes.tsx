@@ -1,16 +1,12 @@
-import * as React from "react";
-
 import { Container } from "@material-ui/core";
-import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import { makeStyles } from "@material-ui/core/styles";
-
-import axios from "redaxios";
-import { useQuery } from "react-query";
-
-import { ThemeCard, ThemeName, ThemeParent, ThemeBases } from "./components";
-import { Loading } from "components";
-
+import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
 import { BASE_URL } from "api/odata";
+import { Loading } from "components";
+import * as React from "react";
+import { useQuery } from "react-query";
+import axios from "redaxios";
+import { ThemeBases, ThemeCard, ThemeName, ThemeParent } from "./components";
 import { BaseType } from "./types";
 
 const useStyles = makeStyles(theme => ({

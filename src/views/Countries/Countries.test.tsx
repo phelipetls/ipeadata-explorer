@@ -1,10 +1,8 @@
+import userEvent from "@testing-library/user-event";
 import * as React from "react";
 import { render, screen, waitForElementToBeRemoved } from "test-utils";
-import userEvent from "@testing-library/user-event";
-
-import { Countries } from "./Countries";
-
 import { server } from "test-utils/server";
+import { Countries } from "./Countries";
 import { handlers } from "./mocks/handlers";
 
 beforeEach(() => server.use(...handlers));

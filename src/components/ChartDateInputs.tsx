@@ -1,12 +1,9 @@
-import * as React from "react";
-
 import { TextField } from "@material-ui/core";
 import { Event } from "@material-ui/icons";
 import { DatePickerView } from "@material-ui/pickers";
-
-import { useFormContext } from "react-hook-form";
-
 import { HfKeyboardDatePicker } from "components";
+import * as React from "react";
+import { useFormContext } from "react-hook-form";
 import { SeriesMetadata } from "types";
 
 const dateViewsByPeriodicity: Record<string, DatePickerView[]> = {

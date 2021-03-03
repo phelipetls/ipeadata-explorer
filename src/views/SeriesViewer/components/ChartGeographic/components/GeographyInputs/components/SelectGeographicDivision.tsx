@@ -1,13 +1,12 @@
-import * as React from "react";
-import { Ref } from "react-hook-form";
-
 import {
+  FormControl,
+  InputLabel,
   Select,
   SelectProps,
-  InputLabel,
-  FormControl,
 } from "@material-ui/core";
 import { GeographicDivision } from "api/ibge";
+import * as React from "react";
+import { Ref } from "react-hook-form";
 
 type Props = Pick<SelectProps, "name"> & {
   division: GeographicDivision;

@@ -1,16 +1,14 @@
-import * as React from "react";
-
 import {
   Table,
-  TableHead,
   TableBody,
-  TableRow,
   TableCell,
+  TableHead,
+  TableRow,
   TableSortLabel,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
-import { TableColumn, SeriesMetadata } from "types";
+import * as React from "react";
+import { SeriesMetadata, TableColumn } from "types";
 
 const useStyles = makeStyles(() => ({
   root: {

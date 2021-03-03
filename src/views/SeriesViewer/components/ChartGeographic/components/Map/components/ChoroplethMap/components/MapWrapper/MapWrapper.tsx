@@ -1,10 +1,8 @@
-import * as React from "react";
-
-import { ComposableMap } from "react-simple-maps";
 import { ExtendedFeature, geoMercator } from "d3-geo";
-import { Feature } from "geojson";
 import { ScaleQuantile } from "d3-scale";
-
+import { Feature } from "geojson";
+import * as React from "react";
+import { ComposableMap } from "react-simple-maps";
 import { SeriesMetadata } from "types";
 import { useBreakpoint } from "utils";
 import { MapLegend } from "./components";

@@ -1,7 +1,6 @@
-import * as React from "react";
-
-import { Typography, Paper, Collapse, IconButton } from "@material-ui/core";
+import { Collapse, IconButton, Paper, Typography } from "@material-ui/core";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
+import * as React from "react";
 
 interface Props {
   label: string;

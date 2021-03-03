@@ -1,12 +1,10 @@
-import * as React from "react";
-
 import { Grid, Paper, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-
 import { MetadataTable } from "components";
-import { MetadataComment } from "./components";
+import * as React from "react";
 import { SeriesMetadata } from "types";
 import { removeHtmlTags } from "utils/remove-html-tags";
+import { MetadataComment } from "./components";
 
 const useStyles = makeStyles(theme => ({
   metadata: {

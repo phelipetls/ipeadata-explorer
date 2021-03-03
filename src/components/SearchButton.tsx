@@ -1,7 +1,6 @@
-import * as React from "react";
-
 import { IconButton } from "@material-ui/core";
 import { Search } from "@material-ui/icons";
+import * as React from "react";
 
 interface Props {
   onClick?: () => void;

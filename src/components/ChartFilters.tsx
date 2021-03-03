@@ -1,10 +1,9 @@
-import * as React from "react";
-
 import { Button, Grid, Typography } from "@material-ui/core";
-import { FilterList, GetApp } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/core/styles";
-import { useForm, FormProvider, FieldValues } from "react-hook-form";
+import { FilterList, GetApp } from "@material-ui/icons";
 import { ChartDownloadButton } from "components";
+import * as React from "react";
+import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import { SeriesMetadata } from "types";
 import { useBreakpoint } from "utils";
 
@@ -48,9 +47,7 @@ export function ChartFilters<T extends FieldValues>(props: Props<T>) {
         className={classes.header}
       >
         <Grid item>
-          <Typography variant="h5">
-            Gráfico
-          </Typography>
+          <Typography variant="h5">Gráfico</Typography>
         </Grid>
 
         <Grid container item spacing={1} style={{ width: "unset" }}>

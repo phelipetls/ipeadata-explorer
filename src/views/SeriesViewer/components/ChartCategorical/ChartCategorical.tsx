@@ -1,27 +1,25 @@
-import * as React from "react";
-
-import axios from "redaxios";
-import { useQuery } from "react-query";
-
-import {
-  ChartLoading,
-  ChartError,
-  ChartNoData,
-  ChartSection,
-  ChartFilters,
-  ChartDateInputs,
-  ChartDateInputsData,
-  BarChart,
-} from "components";
-import { SeriesMetadata } from "types";
 import {
   buildCountByCategoryUrl,
   CategoriesMetadata,
   getDateFilter,
 } from "api/odata";
-import { useLocation } from "react-router";
-import { getDateSafely } from "utils";
+import {
+  BarChart,
+  ChartDateInputs,
+  ChartDateInputsData,
+  ChartError,
+  ChartFilters,
+  ChartLoading,
+  ChartNoData,
+  ChartSection,
+} from "components";
 import { useSyncSearchParams } from "hooks";
+import * as React from "react";
+import { useQuery } from "react-query";
+import { useLocation } from "react-router";
+import axios from "redaxios";
+import { SeriesMetadata } from "types";
+import { getDateSafely } from "utils";
 
 export const DEFAULT_LAST_N = 1;
 

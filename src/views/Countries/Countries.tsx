@@ -1,12 +1,9 @@
+import { Link, Paper, TableContainer } from "@material-ui/core";
+import { TableSkeleton, TableSortable } from "components";
 import * as React from "react";
-
-import { Link, TableContainer, Paper } from "@material-ui/core";
-import { Link as RouterLink } from "react-router-dom";
-
-import axios from "redaxios";
 import { useQuery } from "react-query";
-
-import { TableSortable, TableSkeleton } from "components";
+import { Link as RouterLink } from "react-router-dom";
+import axios from "redaxios";
 import { TableColumn } from "types";
 
 const COUNTRIES_URL =

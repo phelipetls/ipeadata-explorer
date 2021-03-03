@@ -1,6 +1,6 @@
-import { createMuiTheme } from "@material-ui/core/styles";
 import { blue, green, red } from "@material-ui/core/colors";
 import { ptBR } from "@material-ui/core/locale";
+import { createMuiTheme } from "@material-ui/core/styles";
 
 declare module "@material-ui/core/styles/createMuiTheme" {
   interface ThemeOptions {
