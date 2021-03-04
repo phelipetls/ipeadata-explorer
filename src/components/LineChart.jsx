@@ -1,31 +1,28 @@
-import { schemeCategory10 as palette } from "d3-scale-chromatic";
 import * as React from "react";
 import { ChartJS } from "./ChartJS";
 
-const timeUnits = {
-  Trimestral: "quarter",
-  Diária: "day",
-  Mensal: "month",
+const getXAxisTimeScale = periodicity => {
+  switch (periodicity) {
+    case "Trimestral":
+      return "quarter";
+    case "Diária":
+      return "day";
+    case "Mensal":
+      return "month";
+    default:
+      return "year";
+  }
 };
 
-export function LineChart({ metadata, datasets, ...rest }) {
-  const coloredDatasets = datasets.map((dataset, index) => ({
-    ...dataset,
-    backgroundColor: palette[index % palette.length],
-    borderColor: palette[index % palette.length],
-  }));
-
-  const periodicity = metadata.PERNOME;
-
+export function LineChart({ metadata, ...rest }) {
   return (
     <ChartJS
       {...rest}
       chartType="line"
-      datasets={coloredDatasets}
       title={{ display: true, text: metadata.SERNOME }}
       xScale={{
         type: "time",
-        time: { unit: timeUnits[periodicity] || "year" },
+        time: { unit: getXAxisTimeScale(metadata.PERNOME) },
       }}
       yScale={{
         type: "linear",

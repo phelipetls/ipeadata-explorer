@@ -4,7 +4,6 @@ import {
   getDateFilter,
 } from "api/odata";
 import {
-  BarChart,
   ChartDateInputs,
   ChartDateInputsData,
   ChartError,
@@ -20,6 +19,7 @@ import { useLocation } from "react-router";
 import axios from "redaxios";
 import { SeriesMetadata } from "types";
 import { getDateSafely } from "utils";
+import { CategoricalBarChart } from "./components";
 
 export const DEFAULT_LAST_N = 1;
 
@@ -81,14 +81,6 @@ export function ChartCategorical({ code, metadata }: Props) {
 
   const categories: CategoriesMetadata[] = data?.value || [];
 
-  const labels = categories.map(category => category.VALVALOR);
-  const datasets = [
-    {
-      label: metadata.UNINOME,
-      data: categories.map(category => category.count),
-    },
-  ];
-
   return (
     <ChartSection>
       <ChartFilters
@@ -110,7 +102,7 @@ export function ChartCategorical({ code, metadata }: Props) {
       ) : categories.length === 0 ? (
         <ChartNoData />
       ) : (
-        <BarChart metadata={metadata} labels={labels} datasets={datasets} />
+        <CategoricalBarChart categories={categories} metadata={metadata} />
       )}
     </ChartSection>
   );

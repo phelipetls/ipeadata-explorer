@@ -7,7 +7,6 @@ import {
   ChartLoading,
   ChartNoData,
   ChartSection,
-  LineChart,
 } from "components";
 import { useSyncSearchParams } from "hooks";
 import * as React from "react";
@@ -16,6 +15,7 @@ import { useLocation } from "react-router-dom";
 import axios from "redaxios";
 import { SeriesMetadata, SeriesValues } from "types";
 import { getDateSafely } from "utils";
+import { MacroLineChart } from "./components";
 
 const DEFAULT_LAST_N = 50;
 
@@ -78,14 +78,6 @@ export function ChartMacro({ code, metadata }: Props) {
     setLastN(lastN !== "" ? Number(lastN) : DEFAULT_LAST_N);
   }
 
-  const labels = series.map(series => series.VALDATA);
-  const datasets = [
-    {
-      label: code,
-      data: series.map(series => series.VALVALOR),
-    },
-  ];
-
   return (
     <ChartSection>
       <ChartFilters
@@ -103,7 +95,7 @@ export function ChartMacro({ code, metadata }: Props) {
       ) : series.length === 0 ? (
         <ChartNoData />
       ) : (
-        <LineChart metadata={metadata} labels={labels} datasets={datasets} />
+        <MacroLineChart metadata={metadata} series={series} />
       )}
     </ChartSection>
   );

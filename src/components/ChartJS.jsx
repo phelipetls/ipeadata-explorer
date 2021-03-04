@@ -16,6 +16,7 @@ import {
 import "chartjs-adapter-date-fns";
 import * as React from "react";
 import { theme } from "styles";
+import { coloredDatasetsPlugin } from "utils";
 
 Chart.register(
   Point,
@@ -28,7 +29,8 @@ Chart.register(
   LinearScale,
   Title,
   Legend,
-  Tooltip
+  Tooltip,
+  coloredDatasetsPlugin
 );
 
 Chart.defaults.elements.point.radius = 0;

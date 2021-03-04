@@ -6,3 +6,4 @@ export * from "./remove-html-tags";
 export * from "./responsive";
 export * from "./svg-to-png";
 export * from "./unpluralize";
+export * from "./colored-datasets-plugin";

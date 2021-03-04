@@ -1,18 +1,11 @@
 import { ChartJS } from "components";
-import { schemeCategory10 as palette } from "d3-scale-chromatic";
 import * as React from "react";
 
-export function BarChart({ metadata, datasets, ...rest }) {
-  const datasetsWithColors = datasets.map((dataset, index) => ({
-    ...dataset,
-    backgroundColor: palette[index % palette.length],
-  }));
-
+export function BarChart({ metadata, ...rest }) {
   return (
     <ChartJS
       {...rest}
       chartType="bar"
-      datasets={datasetsWithColors}
       title={{ display: true, text: metadata.SERNOME }}
       yScale={{
         type: "linear",
