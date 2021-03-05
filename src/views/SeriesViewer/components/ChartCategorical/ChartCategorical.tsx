@@ -44,17 +44,6 @@ export function ChartCategorical({ code, metadata }: Props) {
     Number(searchParams.get("lastN")) || DEFAULT_LAST_N
   );
 
-  const stateToSync = React.useMemo(
-    () => ({
-      startDate,
-      endDate,
-      lastN: lastN !== DEFAULT_LAST_N ? lastN : null,
-    }),
-    [startDate, endDate, lastN]
-  );
-
-  useSyncSearchParams(stateToSync);
-
   const { isError, isLoading, data } = useQuery(
     [code, startDate, endDate, lastN],
     async () => {
@@ -71,15 +60,26 @@ export function ChartCategorical({ code, metadata }: Props) {
     }
   );
 
-  async function onSubmit(data: ChartDateInputsData) {
+  const categories: CategoriesMetadata[] = data?.value || [];
+
+  const onSubmit = (data: ChartDateInputsData) => {
     const { startDate, endDate, lastN } = data;
 
     setStartDate(startDate);
     setEndDate(endDate);
     setLastN(lastN !== "" ? Number(lastN) : DEFAULT_LAST_N);
-  }
+  };
 
-  const categories: CategoriesMetadata[] = data?.value || [];
+  const stateToSync = React.useMemo(
+    () => ({
+      startDate,
+      endDate,
+      lastN: lastN !== DEFAULT_LAST_N ? lastN : null,
+    }),
+    [startDate, endDate, lastN]
+  );
+
+  useSyncSearchParams(stateToSync);
 
   return (
     <ChartSection>

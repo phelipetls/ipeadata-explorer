@@ -97,20 +97,6 @@ export function ChartGeographic({ code, metadata }: Props) {
     searchParams.get("boundaryId") || DEFAULT_BOUNDARY_ID
   );
 
-  const stateToSync = React.useMemo(
-    () => ({
-      startDate,
-      endDate,
-      lastN: lastN !== DEFAULT_LAST_N ? lastN : null,
-      division,
-      boundaryDivision,
-      boundaryId: boundaryId !== DEFAULT_BOUNDARY_ID ? boundaryId : null,
-    }),
-    [startDate, endDate, lastN, division, boundaryDivision, boundaryId]
-  );
-
-  useSyncSearchParams(stateToSync);
-
   const {
     isError: isErrorDivisions,
     isLoading: isLoadingDivisions,
@@ -152,7 +138,10 @@ export function ChartGeographic({ code, metadata }: Props) {
 
   const series = data?.value || [];
 
-  function onSubmit(data: ChartDateInputsData & GeographyInputsData) {
+  const isLoading = isLoadingData || isLoadingDivisions;
+  const isError = isErrorData || isErrorDivisions;
+
+  const onSubmit = (data: ChartDateInputsData & GeographyInputsData) => {
     const {
       startDate,
       endDate,
@@ -168,10 +157,21 @@ export function ChartGeographic({ code, metadata }: Props) {
     setDivision(division);
     setBoundaryDivision(boundaryDivision);
     setBoundaryId(boundaryId);
-  }
+  };
 
-  const isLoading = isLoadingData || isLoadingDivisions;
-  const isError = isErrorData || isErrorDivisions;
+  const stateToSync = React.useMemo(
+    () => ({
+      startDate,
+      endDate,
+      lastN: lastN !== DEFAULT_LAST_N ? lastN : null,
+      division,
+      boundaryDivision,
+      boundaryId: boundaryId !== DEFAULT_BOUNDARY_ID ? boundaryId : null,
+    }),
+    [startDate, endDate, lastN, division, boundaryDivision, boundaryId]
+  );
+
+  useSyncSearchParams(stateToSync);
 
   return (
     <ChartSection>
