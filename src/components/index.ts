@@ -10,7 +10,7 @@ export * from "./ChartFilters";
 export * from "./ChartJS";
 export * from "./ChartLoading";
 export * from "./ChartNoData";
-export * from "./ChartSection";
+export * from "./SeriesSection";
 export * from "./Collapsed";
 export * from "./CollapsedRow";
 export * from "./EmptyState";

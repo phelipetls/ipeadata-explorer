@@ -6,7 +6,6 @@ import {
   ChartFilters,
   ChartLoading,
   ChartNoData,
-  ChartSection,
 } from "components";
 import { useSyncSearchParams } from "hooks";
 import * as React from "react";
@@ -79,7 +78,7 @@ export function ChartMacro({ code, metadata }: Props) {
   useSyncSearchParams(stateToSync);
 
   return (
-    <ChartSection>
+    <>
       <ChartFilters
         metadata={metadata}
         onSubmit={onSubmit}
@@ -97,6 +96,6 @@ export function ChartMacro({ code, metadata }: Props) {
       ) : (
         <MacroLineChart metadata={metadata} series={series} />
       )}
-    </ChartSection>
+    </>
   );
 }

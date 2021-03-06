@@ -10,7 +10,6 @@ import {
   ChartFilters,
   ChartLoading,
   ChartNoData,
-  ChartSection,
 } from "components";
 import { useSyncSearchParams } from "hooks";
 import * as React from "react";
@@ -82,7 +81,7 @@ export function ChartCategorical({ code, metadata }: Props) {
   useSyncSearchParams(stateToSync);
 
   return (
-    <ChartSection>
+    <>
       <ChartFilters
         metadata={metadata}
         defaultValues={{
@@ -104,6 +103,6 @@ export function ChartCategorical({ code, metadata }: Props) {
       ) : (
         <CategoricalBarChart categories={categories} metadata={metadata} />
       )}
-    </ChartSection>
+    </>
   );
 }

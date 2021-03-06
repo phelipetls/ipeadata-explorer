@@ -13,10 +13,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 interface Props {
-  children: JSX.Element[];
+  children: JSX.Element | JSX.Element[];
 }
 
-export function ChartSection({ children }: Props) {
+export function SeriesSection({ children }: Props) {
   const classes = useStyles();
 
   return <Paper className={classes.root}>{children}</Paper>;

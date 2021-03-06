@@ -1,5 +1,5 @@
 import { buildMetadataUrl } from "api/odata";
-import { EmptyState, Loading } from "components";
+import { EmptyState, Loading, SeriesSection } from "components";
 import isEmpty from "lodash/isEmpty";
 import * as React from "react";
 import { useQuery } from "react-query";
@@ -38,13 +38,15 @@ export function SeriesViewer() {
     <>
       <Metadata metadata={metadata} />
 
-      {!metadata.SERNUMERICA ? (
-        <ChartCategorical code={code} metadata={metadata} />
-      ) : metadata.BASNOME === "Macroeconômico" ? (
-        <ChartMacro code={code} metadata={metadata} />
-      ) : (
-        <ChartGeographic code={code} metadata={metadata} />
-      )}
+      <SeriesSection>
+        {!metadata.SERNUMERICA ? (
+          <ChartCategorical code={code} metadata={metadata} />
+        ) : metadata.BASNOME === "Macroeconômico" ? (
+          <ChartMacro code={code} metadata={metadata} />
+        ) : (
+          <ChartGeographic code={code} metadata={metadata} />
+        )}
+      </SeriesSection>
     </>
   );
 }

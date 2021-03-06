@@ -12,7 +12,6 @@ import {
   ChartFilters,
   ChartLoading,
   ChartNoData,
-  ChartSection,
   Loading,
 } from "components";
 import { useSyncSearchParams } from "hooks";
@@ -174,7 +173,7 @@ export function ChartGeographic({ code, metadata }: Props) {
   useSyncSearchParams(stateToSync);
 
   return (
-    <ChartSection>
+    <>
       <ChartFilters
         metadata={metadata}
         onSubmit={onSubmit}
@@ -215,6 +214,6 @@ export function ChartGeographic({ code, metadata }: Props) {
       ) : (
         <GeographicLineChart series={series} metadata={metadata} />
       )}
-    </ChartSection>
+    </>
   );
 }
