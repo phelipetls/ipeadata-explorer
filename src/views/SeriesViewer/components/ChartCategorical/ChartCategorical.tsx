@@ -6,10 +6,8 @@ import {
 import {
   ChartDateInputs,
   ChartDateInputsData,
-  ChartError,
   ChartFilters,
-  ChartLoading,
-  ChartNoData,
+  SeriesChart,
 } from "components";
 import { useSyncSearchParams } from "hooks";
 import * as React from "react";
@@ -94,15 +92,13 @@ export function ChartCategorical({ code, metadata }: Props) {
         <ChartDateInputs metadata={metadata} />
       </ChartFilters>
 
-      {isLoading ? (
-        <ChartLoading />
-      ) : isError ? (
-        <ChartError />
-      ) : categories.length === 0 ? (
-        <ChartNoData />
-      ) : (
+      <SeriesChart
+        isLoading={isLoading}
+        isError={isError}
+        isEmpty={categories.length === 0}
+      >
         <CategoricalBarChart categories={categories} metadata={metadata} />
-      )}
+      </SeriesChart>
     </>
   );
 }

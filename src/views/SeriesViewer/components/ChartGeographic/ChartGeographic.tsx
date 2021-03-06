@@ -8,11 +8,9 @@ import {
 import {
   ChartDateInputs,
   ChartDateInputsData,
-  ChartError,
   ChartFilters,
-  ChartLoading,
-  ChartNoData,
   Loading,
+  SeriesChart,
 } from "components";
 import { useSyncSearchParams } from "hooks";
 import * as React from "react";
@@ -198,22 +196,22 @@ export function ChartGeographic({ code, metadata }: Props) {
         )}
       </ChartFilters>
 
-      {isError ? (
-        <ChartError />
-      ) : isLoading ? (
-        <ChartLoading />
-      ) : series.length === 0 ? (
-        <ChartNoData />
-      ) : shouldPlotMap(division!) ? (
-        <GeographicMap
-          series={series}
-          metadata={metadata}
-          division={division}
-          boundaryId={boundaryId}
-        />
-      ) : (
-        <GeographicLineChart series={series} metadata={metadata} />
-      )}
+      <SeriesChart
+        isLoading={isLoading}
+        isError={isError}
+        isEmpty={series.length === 0}
+      >
+        {shouldPlotMap(division!) ? (
+          <GeographicMap
+            series={series}
+            metadata={metadata}
+            division={division}
+            boundaryId={boundaryId}
+          />
+        ) : (
+          <GeographicLineChart series={series} metadata={metadata} />
+        )}
+      </SeriesChart>
     </>
   );
 }

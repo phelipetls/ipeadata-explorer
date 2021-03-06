@@ -2,10 +2,8 @@ import { buildFilter, buildSeriesValuesUrl, getDateFilter } from "api/odata";
 import {
   ChartDateInputs,
   ChartDateInputsData,
-  ChartError,
   ChartFilters,
-  ChartLoading,
-  ChartNoData,
+  SeriesChart,
 } from "components";
 import { useSyncSearchParams } from "hooks";
 import * as React from "react";
@@ -87,15 +85,13 @@ export function ChartMacro({ code, metadata }: Props) {
         <ChartDateInputs metadata={metadata} />
       </ChartFilters>
 
-      {isLoading ? (
-        <ChartLoading />
-      ) : isError ? (
-        <ChartError />
-      ) : series.length === 0 ? (
-        <ChartNoData />
-      ) : (
+      <SeriesChart
+        isLoading={isLoading}
+        isError={isError}
+        isEmpty={series.length === 0}
+      >
         <MacroLineChart metadata={metadata} series={series} />
-      )}
+      </SeriesChart>
     </>
   );
 }

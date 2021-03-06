@@ -27,3 +27,4 @@ export * from "./SearchButton";
 export * from "./TableCollapsedRows";
 export * from "./TableSkeleton";
 export * from "./TableSortable";
+export * from "./SeriesChart";
