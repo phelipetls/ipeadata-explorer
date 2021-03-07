@@ -16,7 +16,7 @@ const dateViewsByPeriodicity: Record<string, DatePickerView[]> = {
   Quinquenal: ["year"],
 };
 
-export interface ChartDateInputsData {
+export interface SeriesDateInputsData {
   startDate: Date;
   endDate: Date;
   lastN: string;
@@ -26,10 +26,10 @@ interface Props {
   metadata: SeriesMetadata;
 }
 
-export function ChartDateInputs(props: Props) {
+export function SeriesDateInputs(props: Props) {
   const { metadata } = props;
 
-  const { register, control } = useFormContext<ChartDateInputsData>();
+  const { register, control } = useFormContext<SeriesDateInputsData>();
 
   const resetDate = (date: Date | null) => {
     if (!date) return;

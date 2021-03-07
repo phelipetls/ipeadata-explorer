@@ -5,7 +5,7 @@ import * as React from "react";
 import { getSearchParams, readJson, render, screen, waitFor } from "test-utils";
 import { server } from "test-utils/server";
 import { SeriesMetadata } from "types";
-import { ChartCategorical } from "./ChartCategorical";
+import { CategoricalSeries } from "./CategoricalSeries";
 import { handlers } from "./mocks/handlers";
 
 const MOCKED_METADATA = readJson(
@@ -16,7 +16,7 @@ beforeEach(() => server.use(...handlers));
 
 describe("successful requests", () => {
   it("should show a bar chart by default", async () => {
-    render(<ChartCategorical code="F1PT1" metadata={MOCKED_METADATA} />);
+    render(<CategoricalSeries code="F1PT1" metadata={MOCKED_METADATA} />);
 
     await waitFor(() =>
       expect(screen.queryByTestId("chart-id")).toBeInTheDocument()
@@ -28,7 +28,7 @@ describe("successful requests", () => {
   });
 
   it("should update URL if state changes", async () => {
-    render(<ChartCategorical code="F1PT1" metadata={MOCKED_METADATA} />, {
+    render(<CategoricalSeries code="F1PT1" metadata={MOCKED_METADATA} />, {
       renderLocation: location => location.search,
     });
 
@@ -42,7 +42,7 @@ describe("successful requests", () => {
   });
 
   it("should get default value from URL", async () => {
-    render(<ChartCategorical code="F1PT1" metadata={MOCKED_METADATA} />, {
+    render(<CategoricalSeries code="F1PT1" metadata={MOCKED_METADATA} />, {
       routerOptions: { initialEntries: ["?lastN=10"] },
       renderLocation: location => location.search,
     });
@@ -60,7 +60,7 @@ test("error handling", async () => {
     })
   );
 
-  render(<ChartCategorical code="F1PT1" metadata={MOCKED_METADATA} />);
+  render(<CategoricalSeries code="F1PT1" metadata={MOCKED_METADATA} />);
 
   await waitFor(() =>
     expect(
@@ -76,7 +76,7 @@ test("empty state", async () => {
     })
   );
 
-  render(<ChartCategorical code="F1PT1" metadata={MOCKED_METADATA} />);
+  render(<CategoricalSeries code="F1PT1" metadata={MOCKED_METADATA} />);
 
   await waitFor(() =>
     expect(screen.getByText("Sem dados")).toBeInTheDocument()

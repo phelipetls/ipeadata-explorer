@@ -12,7 +12,7 @@ import {
 } from "test-utils";
 import { server } from "test-utils/server";
 import { SeriesMetadata } from "types";
-import { ChartGeographic } from "./ChartGeographic";
+import { GeographicSeries } from "./GeographicSeries";
 import { handlers } from "./mocks/handlers";
 
 const MOCKED_METADATA = readJson(__dirname + "/mocks/metadata.json");
@@ -24,7 +24,7 @@ describe("succesful requests", () => {
 
   it("should show a line chart by default", async () => {
     render(
-      <ChartGeographic
+      <GeographicSeries
         code="ACIDT"
         metadata={MOCKED_METADATA as SeriesMetadata}
       />,
@@ -44,7 +44,7 @@ describe("succesful requests", () => {
   // for unknown reason to me
   it("should show a map if geographic division is state", async () => {
     render(
-      <ChartGeographic
+      <GeographicSeries
         code="ACIDT"
         metadata={MOCKED_METADATA as SeriesMetadata}
       />,
@@ -87,7 +87,7 @@ describe("succesful requests", () => {
     searchParams.set("boundaryId", "1");
 
     render(
-      <ChartGeographic
+      <GeographicSeries
         code="ACIDT"
         metadata={MOCKED_METADATA as SeriesMetadata}
       />,
@@ -149,7 +149,7 @@ test("error handling", async () => {
   );
 
   render(
-    <ChartGeographic
+    <GeographicSeries
       code="ACIDT"
       metadata={MOCKED_METADATA as SeriesMetadata}
     />
@@ -174,7 +174,7 @@ test("empty state", async () => {
   );
 
   render(
-    <ChartGeographic
+    <GeographicSeries
       code="ACIDT"
       metadata={MOCKED_METADATA as SeriesMetadata}
     />

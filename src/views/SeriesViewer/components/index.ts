@@ -1,4 +1,4 @@
-export * from "./ChartCategorical";
-export * from "./ChartGeographic";
-export * from "./ChartMacro";
+export * from "./CategoricalSeries";
+export * from "./GeographicSeries";
+export * from "./MacroSeries";
 export * from "./Metadata";

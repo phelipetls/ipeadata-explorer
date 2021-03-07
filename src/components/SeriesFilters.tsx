@@ -29,7 +29,7 @@ interface Props<T extends FieldValues> {
   defaultValues: Record<string, unknown>;
 }
 
-export function ChartFilters<T extends FieldValues>(props: Props<T>) {
+export function SeriesFilters<T extends FieldValues>(props: Props<T>) {
   const classes = useStyles();
   const isSmallScreen = useBreakpoint("sm");
 

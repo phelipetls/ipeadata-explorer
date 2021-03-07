@@ -6,9 +6,9 @@ import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import axios from "redaxios";
 import {
-  ChartCategorical,
-  ChartGeographic,
-  ChartMacro,
+  CategoricalSeries,
+  GeographicSeries,
+  MacroSeries,
   Metadata,
 } from "./components";
 
@@ -40,11 +40,11 @@ export function SeriesViewer() {
 
       <SeriesSection>
         {!metadata.SERNUMERICA ? (
-          <ChartCategorical code={code} metadata={metadata} />
+          <CategoricalSeries code={code} metadata={metadata} />
         ) : metadata.BASNOME === "Macroeconômico" ? (
-          <ChartMacro code={code} metadata={metadata} />
+          <MacroSeries code={code} metadata={metadata} />
         ) : (
-          <ChartGeographic code={code} metadata={metadata} />
+          <GeographicSeries code={code} metadata={metadata} />
         )}
       </SeriesSection>
     </>

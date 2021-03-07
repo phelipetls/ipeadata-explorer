@@ -5,7 +5,7 @@ import * as React from "react";
 import { getSearchParams, readJson, render, screen, waitFor } from "test-utils";
 import { server } from "test-utils/server";
 import { SeriesMetadata } from "types";
-import { ChartMacro } from "./ChartMacro";
+import { MacroSeries } from "./MacroSeries";
 import { handlers } from "./mocks/handlers";
 
 const MOCKED_METADATA = readJson(__dirname + "/mocks/metadata.json");
@@ -15,7 +15,7 @@ describe("successful requests", () => {
 
   it("should show a line chart by default", async () => {
     render(
-      <ChartMacro
+      <MacroSeries
         code="BM12_TJOVER12"
         metadata={MOCKED_METADATA as SeriesMetadata}
       />,
@@ -33,7 +33,7 @@ describe("successful requests", () => {
 
   it("should correctly filter by last n values", async () => {
     render(
-      <ChartMacro
+      <MacroSeries
         code="BM12_TJOVER12"
         metadata={MOCKED_METADATA as SeriesMetadata}
       />,
@@ -55,7 +55,7 @@ describe("successful requests", () => {
 
   it("should correctly filter with date interval", async () => {
     render(
-      <ChartMacro
+      <MacroSeries
         code="BM12_TJOVER12"
         metadata={MOCKED_METADATA as SeriesMetadata}
       />,
@@ -80,7 +80,7 @@ describe("successful requests", () => {
 
   it("should update URL if state changes", async () => {
     render(
-      <ChartMacro
+      <MacroSeries
         code="BM12_TJOVER12"
         metadata={MOCKED_METADATA as SeriesMetadata}
       />,
@@ -96,7 +96,7 @@ describe("successful requests", () => {
 
   it("should get default value from URL", async () => {
     render(
-      <ChartMacro
+      <MacroSeries
         code="BM12_TJOVER12"
         metadata={MOCKED_METADATA as SeriesMetadata}
       />,
@@ -124,7 +124,7 @@ test("error handling", async () => {
   );
 
   render(
-    <ChartMacro
+    <MacroSeries
       code="BM12_TJOVER12"
       metadata={MOCKED_METADATA as SeriesMetadata}
     />
@@ -145,7 +145,7 @@ test("empty state", async () => {
   );
 
   render(
-    <ChartMacro
+    <MacroSeries
       code="BM12_TJOVER12"
       metadata={MOCKED_METADATA as SeriesMetadata}
     />

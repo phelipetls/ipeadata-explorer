@@ -1,31 +1,27 @@
+import { buildFilter, buildSeriesValuesUrl, getDateFilter } from "api/odata";
 import {
-  buildCountByCategoryUrl,
-  CategoriesMetadata,
-  getDateFilter,
-} from "api/odata";
-import {
-  ChartDateInputs,
-  ChartDateInputsData,
-  ChartFilters,
+  SeriesDateInputs,
+  SeriesDateInputsData,
+  SeriesFilters,
   SeriesChart,
 } from "components";
 import { useSyncSearchParams } from "hooks";
 import * as React from "react";
 import { useQuery } from "react-query";
-import { useLocation } from "react-router";
+import { useLocation } from "react-router-dom";
 import axios from "redaxios";
-import { SeriesMetadata } from "types";
+import { SeriesMetadata, SeriesValues } from "types";
 import { getDateSafely } from "utils";
-import { CategoricalBarChart } from "./components";
+import { MacroLineChart } from "./components";
 
-export const DEFAULT_LAST_N = 1;
+const DEFAULT_LAST_N = 50;
 
 interface Props {
   code: string;
   metadata: SeriesMetadata;
 }
 
-export function ChartCategorical({ code, metadata }: Props) {
+export function MacroSeries({ code, metadata }: Props) {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
@@ -37,11 +33,11 @@ export function ChartCategorical({ code, metadata }: Props) {
     getDateSafely(searchParams.get("endDate"))
   );
 
-  const [lastN, setLastN] = React.useState(
+  const [lastN, setLastN] = React.useState<number>(
     Number(searchParams.get("lastN")) || DEFAULT_LAST_N
   );
 
-  const { isError, isLoading, data } = useQuery(
+  const { isLoading, data, isError } = useQuery(
     [code, startDate, endDate, lastN],
     async () => {
       const dateFilter = getDateFilter({
@@ -50,16 +46,17 @@ export function ChartCategorical({ code, metadata }: Props) {
         lastN,
         metadata,
       });
-      const url = buildCountByCategoryUrl(code, { filter: dateFilter });
+
+      const url = buildSeriesValuesUrl(code) + buildFilter(dateFilter);
 
       const response = await axios.get(url);
       return response.data;
     }
   );
 
-  const categories: CategoriesMetadata[] = data?.value || [];
+  const series: SeriesValues[] = data?.value || [];
 
-  const onSubmit = (data: ChartDateInputsData) => {
+  const onSubmit = (data: SeriesDateInputsData) => {
     const { startDate, endDate, lastN } = data;
 
     setStartDate(startDate);
@@ -80,24 +77,20 @@ export function ChartCategorical({ code, metadata }: Props) {
 
   return (
     <>
-      <ChartFilters
+      <SeriesFilters
         metadata={metadata}
-        defaultValues={{
-          startDate,
-          endDate,
-          lastN,
-        }}
         onSubmit={onSubmit}
+        defaultValues={{ startDate, endDate, lastN }}
       >
-        <ChartDateInputs metadata={metadata} />
-      </ChartFilters>
+        <SeriesDateInputs metadata={metadata} />
+      </SeriesFilters>
 
       <SeriesChart
         isLoading={isLoading}
         isError={isError}
-        isEmpty={categories.length === 0}
+        isEmpty={series.length === 0}
       >
-        <CategoricalBarChart categories={categories} metadata={metadata} />
+        <MacroLineChart metadata={metadata} series={series} />
       </SeriesChart>
     </>
   );

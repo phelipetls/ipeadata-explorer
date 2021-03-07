@@ -6,9 +6,9 @@ import {
   getDateFilter,
 } from "api/odata";
 import {
-  ChartDateInputs,
-  ChartDateInputsData,
-  ChartFilters,
+  SeriesDateInputs,
+  SeriesDateInputsData,
+  SeriesFilters,
   Loading,
   SeriesChart,
 } from "components";
@@ -63,7 +63,7 @@ interface Props {
   metadata: SeriesMetadata;
 }
 
-export function ChartGeographic({ code, metadata }: Props) {
+export function GeographicSeries({ code, metadata }: Props) {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
 
@@ -138,7 +138,7 @@ export function ChartGeographic({ code, metadata }: Props) {
   const isLoading = isLoadingData || isLoadingDivisions;
   const isError = isErrorData || isErrorDivisions;
 
-  const onSubmit = (data: ChartDateInputsData & GeographyInputsData) => {
+  const onSubmit = (data: SeriesDateInputsData & GeographyInputsData) => {
     const {
       startDate,
       endDate,
@@ -172,7 +172,7 @@ export function ChartGeographic({ code, metadata }: Props) {
 
   return (
     <>
-      <ChartFilters
+      <SeriesFilters
         metadata={metadata}
         onSubmit={onSubmit}
         defaultValues={{
@@ -181,7 +181,7 @@ export function ChartGeographic({ code, metadata }: Props) {
           lastN,
         }}
       >
-        <ChartDateInputs metadata={metadata} />
+        <SeriesDateInputs metadata={metadata} />
         {isLoadingDivisions ? (
           <Loading />
         ) : (
@@ -194,7 +194,7 @@ export function ChartGeographic({ code, metadata }: Props) {
             />
           )
         )}
-      </ChartFilters>
+      </SeriesFilters>
 
       <SeriesChart
         isLoading={isLoading}
