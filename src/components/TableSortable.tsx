@@ -20,7 +20,7 @@ const useStyles = makeStyles(() => ({
 
 type sortFunction = (a: any, b: any) => number;
 
-const sortFunctionNumeric: sortFunction = (a, b) => a - b;
+const sortFunctionNumber: sortFunction = (a, b) => a - b;
 const sortFunctionString: sortFunction = (a, b) => a.localeCompare(b);
 const sortFunctionDate: sortFunction = (a, b) => {
   return new Date(a).getTime() - new Date(b).getTime();
@@ -30,7 +30,7 @@ type ColumnType = NonNullable<TableColumn["type"]>;
 
 const sortFunctions: Record<ColumnType, sortFunction> = {
   string: sortFunctionString,
-  numeric: sortFunctionNumeric,
+  number: sortFunctionNumber,
   date: sortFunctionDate,
 };
 

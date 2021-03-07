@@ -29,7 +29,7 @@ const columns: TableColumn<CountryMetadata>[] = [
   {
     key: "Metadados@odata.count",
     label: "Qtd. de séries",
-    type: "numeric",
+    type: "number",
   },
 ];
 
