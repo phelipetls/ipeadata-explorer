@@ -7,7 +7,7 @@ import {
   IbgeLocationDivision,
 } from "./types";
 
-export const geographicDivisions: GeographicDivision[] = [
+export const geographicDivisions = [
   "Brasil",
   "Área metropolitana",
   "Regiões",
@@ -15,7 +15,7 @@ export const geographicDivisions: GeographicDivision[] = [
   "Mesorregiões",
   "Microrregiões",
   "Municípios",
-];
+] as const;
 
 // IBGE Maps API documentation:
 // https://servicodados.ibge.gov.br/api/docs/malhas?versao=2
