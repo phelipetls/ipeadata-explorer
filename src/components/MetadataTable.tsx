@@ -11,8 +11,8 @@ import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { SeriesMetadata, TableColumn } from "types";
 
-function formatDate(date: string): string {
-  return new Date(date).toLocaleDateString();
+function formatDate(date: string | null): string {
+  return new Date(date || Date.now()).toLocaleDateString();
 }
 
 const metadataFields: TableColumn<SeriesMetadata>[] = [
@@ -57,7 +57,7 @@ const useStyles = makeStyles({
 });
 
 interface Props {
-  metadata: Partial<SeriesMetadata>;
+  metadata: SeriesMetadata;
 }
 
 export function MetadataTable(props: Props) {
