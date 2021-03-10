@@ -66,7 +66,7 @@ export function TableSortable<T>(props: Props<T>) {
 
   const sortedColumn = columns.find(column => column.key === orderByColumn);
 
-  if (sortedColumn && sortedColumn.type && orderByColumn !== null) {
+  if (sortedColumn?.type != null && orderByColumn !== null) {
     const sortFunction = sortFunctions[sortedColumn.type];
 
     rows.sort((a, b) => {
