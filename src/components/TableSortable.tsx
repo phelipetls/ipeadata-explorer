@@ -26,7 +26,7 @@ const sortFunctionDate: sortFunction = (a, b) => {
   return new Date(a).getTime() - new Date(b).getTime();
 };
 
-type ColumnType = NonNullable<TableColumn["type"]>;
+type ColumnType = NonNullable<TableColumn<SeriesMetadata>["type"]>;
 
 const sortFunctions: Record<ColumnType, sortFunction> = {
   string: sortFunctionString,
@@ -34,7 +34,7 @@ const sortFunctions: Record<ColumnType, sortFunction> = {
   date: sortFunctionDate,
 };
 
-interface Props<T = SeriesMetadata> {
+interface Props<T> {
   rows: T[];
   rowKey: keyof T;
   columns: TableColumn<T>[];
@@ -43,7 +43,7 @@ interface Props<T = SeriesMetadata> {
   footer?: JSX.Element;
 }
 
-export function TableSortable<T = SeriesMetadata>(props: Props<T>) {
+export function TableSortable<T>(props: Props<T>) {
   const classes = useStyles();
 
   const [orderByColumn, setOrderByColumn] = React.useState<keyof T | null>(

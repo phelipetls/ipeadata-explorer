@@ -15,7 +15,7 @@ function formatDate(date: string): string {
   return new Date(date).toLocaleDateString();
 }
 
-const metadataFields: TableColumn[] = [
+const metadataFields: TableColumn<SeriesMetadata>[] = [
   {
     key: "FNTNOME",
     label: "Fonte",

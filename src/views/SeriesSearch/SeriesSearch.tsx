@@ -27,7 +27,7 @@ type MetadataDateFields = Pick<SeriesMetadata, "SERMAXDATA" | "SERMINDATA">;
 const getYear = (row: SeriesMetadata, column: keyof MetadataDateFields) =>
   new Date(row[column] as string).getFullYear();
 
-const columns: TableColumn[] = [
+const columns: TableColumn<SeriesMetadata>[] = [
   {
     key: "SERNOME",
     label: "Nome",

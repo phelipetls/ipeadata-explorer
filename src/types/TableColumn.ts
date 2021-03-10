@@ -1,6 +1,4 @@
-import { SeriesMetadata } from "./SeriesMetadata";
-
-export interface TableColumn<T = SeriesMetadata> {
+export interface TableColumn<T> {
   key: keyof T;
   label: string;
   type?: "date" | "string" | "number";
