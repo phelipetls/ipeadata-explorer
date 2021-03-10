@@ -1,13 +1,32 @@
-import userEvent from "@testing-library/user-event";
 import * as React from "react";
 import { render, screen, waitForElementToBeRemoved } from "test-utils";
 import { server } from "test-utils/server";
 import { Countries } from "./Countries";
-import { handlers } from "./mocks/handlers";
+import { rest } from "msw";
 
-beforeEach(() => server.use(...handlers));
+it("should show results correctly", async () => {
+  server.use(
+    rest.get(/Paises/, (_, res, ctx) => {
+      return res(
+        ctx.status(200),
+        ctx.json({
+          value: [
+            {
+              PAICODIGO: "AFG",
+              PAINOME: "Afeganistão",
+              "Metadados@odata.count": 1,
+            },
+            {
+              PAICODIGO: "ZAF",
+              PAINOME: "África do Sul",
+              "Metadados@odata.count": 5,
+            },
+          ],
+        })
+      );
+    })
+  );
 
-it("should show default results", async () => {
   render(<Countries />);
 
   await waitForElementToBeRemoved(() =>
@@ -16,22 +35,4 @@ it("should show default results", async () => {
 
   expect(screen.getByText(/afeganistão/i)).toBeInTheDocument();
   expect(screen.getByText(/áfrica do sul/i)).toBeInTheDocument();
-});
-
-it("should sort rows when user clicks on header", async () => {
-  render(<Countries />);
-
-  await waitForElementToBeRemoved(() =>
-    screen.queryAllByTestId("row-skeleton")
-  );
-
-  const table = screen.getByRole("table") as HTMLTableElement;
-
-  expect(table.rows[1]).toHaveTextContent(/afeganistão/i);
-  expect(table.rows[2]).toHaveTextContent(/áfrica do sul/i);
-
-  userEvent.click(screen.getByRole("columnheader", { name: "País" }));
-
-  expect(table.rows[2]).toHaveTextContent(/áfrica do sul/i);
-  expect(table.rows[1]).toHaveTextContent(/afeganistão/i);
 });
