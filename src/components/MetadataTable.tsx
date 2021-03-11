@@ -17,7 +17,7 @@ function formatDate(date: string | null): string {
 
 const metadataFields: TableColumn<SeriesMetadata>[] = [
   {
-    key: "FNTNOME",
+    accessor: "FNTNOME",
     label: "Fonte",
     render: ({ FNTNOME, FNTURL, FNTSIGLA }) => (
       <Link
@@ -28,23 +28,23 @@ const metadataFields: TableColumn<SeriesMetadata>[] = [
       </Link>
     ),
   },
-  { key: "BASNOME", label: "Base" },
-  { key: "TEMNOME", label: "Tema" },
-  { key: "PERNOME", label: "Periodicidade" },
-  { key: "UNINOME", label: "Unidade de medida" },
-  { key: "SERQNT", label: "Qtd. de observações" },
+  { accessor: "BASNOME", label: "Base" },
+  { accessor: "TEMNOME", label: "Tema" },
+  { accessor: "PERNOME", label: "Periodicidade" },
+  { accessor: "UNINOME", label: "Unidade de medida" },
+  { accessor: "SERQNT", label: "Qtd. de observações" },
   {
-    key: "SERMINDATA",
+    accessor: "SERMINDATA",
     label: "Início",
     render: metadata => formatDate(metadata.SERMINDATA),
   },
   {
-    key: "SERMAXDATA",
+    accessor: "SERMAXDATA",
     label: "Fim",
     render: metadata => formatDate(metadata.SERMAXDATA),
   },
   {
-    key: "SERSTATUS",
+    accessor: "SERSTATUS",
     label: "Status",
     render: metadata => (metadata.SERSTATUS === "A" ? "Ativa" : "Inativa"),
   },
@@ -80,13 +80,13 @@ export function MetadataTable(props: Props) {
       </TableHead>
 
       <TableBody>
-        {metadataFields.map(({ label, key, render }) => (
+        {metadataFields.map(({ label, accessor, render }) => (
           <TableRow key={label}>
             <TableCell component="th" scope="row" key="label">
               {label}
             </TableCell>
             <TableCell key="valor">
-              {render ? render(metadata) : key ? metadata[key] : ""}
+              {render ? render(metadata) : accessor ? metadata[accessor] : ""}
             </TableCell>
           </TableRow>
         ))}

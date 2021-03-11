@@ -29,7 +29,7 @@ const getYear = (row: SeriesMetadata, column: keyof MetadataDateFields) =>
 
 const columns: TableColumn<SeriesMetadata>[] = [
   {
-    key: "SERNOME",
+    accessor: "SERNOME",
     label: "Nome",
     type: "string",
     render: (row: SeriesMetadata) => (
@@ -38,16 +38,16 @@ const columns: TableColumn<SeriesMetadata>[] = [
       </Link>
     ),
   },
-  { key: "PERNOME", label: "Frequência", type: "string" },
-  { key: "UNINOME", label: "Unidade", type: "string" },
+  { accessor: "PERNOME", label: "Frequência", type: "string" },
+  { accessor: "UNINOME", label: "Unidade", type: "string" },
   {
-    key: "SERMINDATA",
+    accessor: "SERMINDATA",
     label: "Início",
     type: "date",
     render: (row: SeriesMetadata) => getYear(row, "SERMINDATA"),
   },
   {
-    key: "SERMAXDATA",
+    accessor: "SERMAXDATA",
     label: "Fim",
     type: "date",
     render: (row: SeriesMetadata) => getYear(row, "SERMAXDATA"),

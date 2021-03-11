@@ -64,7 +64,9 @@ export function TableSortable<T>(props: Props<T>) {
     }
   };
 
-  const sortedColumn = columns.find(column => column.key === orderByColumn);
+  const sortedColumn = columns.find(
+    column => column.accessor === orderByColumn
+  );
 
   if (sortedColumn?.type != null && orderByColumn !== null) {
     const sortFunction = sortFunctions[sortedColumn.type];
@@ -86,14 +88,14 @@ export function TableSortable<T>(props: Props<T>) {
   const headers = columns.map(column => (
     <TableCell
       component="th"
-      key={String(column.key)}
+      key={String(column.accessor)}
       align="left"
-      sortDirection={column.key === orderByColumn ? sortDirection : false}
+      sortDirection={column.accessor === orderByColumn ? sortDirection : false}
     >
       <TableSortLabel
-        active={orderByColumn === column.key}
-        direction={orderByColumn === column.key ? sortDirection : "asc"}
-        onClick={() => handleClick(column.key)}
+        active={orderByColumn === column.accessor}
+        direction={orderByColumn === column.accessor ? sortDirection : "asc"}
+        onClick={() => handleClick(column.accessor)}
       >
         {column.label}
       </TableSortLabel>
@@ -105,8 +107,8 @@ export function TableSortable<T>(props: Props<T>) {
     : rows.map(row => (
         <TableRow key={String(row[rowKey])}>
           {columns.map(column => (
-            <TableCell key={String(column.key)} align="left">
-              {column.render ? column.render(row) : row[column.key]}
+            <TableCell key={String(column.accessor)} align="left">
+              {column.render ? column.render(row) : row[column.accessor]}
             </TableCell>
           ))}
         </TableRow>

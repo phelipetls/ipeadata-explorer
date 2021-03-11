@@ -17,7 +17,7 @@ interface CountryMetadata {
 
 const columns: TableColumn<CountryMetadata>[] = [
   {
-    key: "PAINOME",
+    accessor: "PAINOME",
     label: "País",
     type: "string",
     render: (row: CountryMetadata) => (
@@ -27,7 +27,7 @@ const columns: TableColumn<CountryMetadata>[] = [
     ),
   },
   {
-    key: "Metadados@odata.count",
+    accessor: "Metadados@odata.count",
     label: "Qtd. de séries",
     type: "number",
   },
