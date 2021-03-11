@@ -109,11 +109,11 @@ export function SeriesSearch() {
 
   useSyncSearchParams(stateToSync);
 
-  function handlePageChange(_: any, newPage: number) {
+  function handleChangePage(_: any, newPage: number) {
     setPage(newPage);
   }
 
-  function handleRowsPerPageChange(e: React.ChangeEvent<HTMLInputElement>) {
+  function handleChangeRowsPerPage(e: React.ChangeEvent<HTMLInputElement>) {
     setPage(0);
     setRowsPerPage(parseInt(e.target.value, 10));
 
@@ -135,8 +135,8 @@ export function SeriesSearch() {
       page={page}
       count={totalCount}
       rowsPerPage={rowsPerPage}
-      handleChangePage={handlePageChange}
-      handleChangeRowsPerPage={handleRowsPerPageChange}
+      handleChangePage={handleChangePage}
+      handleChangeRowsPerPage={handleChangeRowsPerPage}
     />
   );
 
