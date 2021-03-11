@@ -38,8 +38,8 @@ interface Props<T> {
   rows: T[];
   rowKey: keyof T;
   columns: TableColumn<T>[];
-  isLoading: boolean;
-  skeleton: JSX.Element;
+  isLoading?: boolean;
+  skeleton?: JSX.Element;
   footer?: JSX.Element;
 }
 
@@ -53,7 +53,7 @@ export function TableSortable<T>(props: Props<T>) {
     "desc"
   );
 
-  const { rows, rowKey, columns, isLoading, skeleton, footer } = props;
+  const { rows, rowKey, columns, footer, isLoading = false, skeleton } = props;
 
   const handleClick = (targetColumn: keyof T) => {
     if (targetColumn === orderByColumn) {
@@ -75,11 +75,11 @@ export function TableSortable<T>(props: Props<T>) {
       const valueA = a[orderByColumn];
       const valueB = b[orderByColumn];
 
-      const direction = sortDirection === "asc" ? 1 : -1;
-
       if (valueA === null || valueB === null) {
         return -1;
       }
+
+      const direction = sortDirection === "asc" ? 1 : -1;
 
       return direction * sortFunction(valueA, valueB);
     });
