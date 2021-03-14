@@ -5,7 +5,7 @@ const ORDER_BY_UPDATED_DATE_DESCENDING = "$orderby=SERATUALIZACAO desc";
 const INCLUDE_COUNT = "$count=true";
 
 export const DEFAULT_SEARCH_QUERY =
-  BASE_URL + `/Metadados?${INCLUDE_COUNT}&${ORDER_BY_UPDATED_DATE_DESCENDING}`;
+  BASE_URL + `Metadados?${INCLUDE_COUNT}&${ORDER_BY_UPDATED_DATE_DESCENDING}`;
 
 const ipeaFields = [
   "SERNOME",
