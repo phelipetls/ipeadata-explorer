@@ -14,11 +14,7 @@ export function Collapsed({ label, children }: Props) {
     <Paper>
       <Typography variant="h5">
         {label}
-        <IconButton
-          aria-label="Expande filtros"
-          size="small"
-          onClick={() => setOpen(!open)}
-        >
+        <IconButton size="small" onClick={() => setOpen(!open)}>
           {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
         </IconButton>
       </Typography>
