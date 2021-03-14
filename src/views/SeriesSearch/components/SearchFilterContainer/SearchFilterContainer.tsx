@@ -38,6 +38,7 @@ export function SearchFilterContainer(props: Props) {
 
         <IconButton
           aria-label="Expande filtros"
+          data-testid="show-filters"
           size="small"
           onClick={() => setFilterActive(!filterActive)}
           className={classes.arrow}
