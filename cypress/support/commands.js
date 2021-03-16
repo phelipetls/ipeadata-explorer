@@ -23,3 +23,12 @@
 //
 // -- This will overwrite an existing command --
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
+import "cypress-wait-until";
+
+Cypress.Commands.add("getChartJs", () => {
+  cy.window().then(win => {
+    cy.waitUntil(() => win.Chart).then(c =>
+      cy.waitUntil(() => c.getChart("chart-id"))
+    );
+  });
+});

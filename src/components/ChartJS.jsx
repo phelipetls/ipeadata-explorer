@@ -33,6 +33,22 @@ Chart.register(
   coloredDatasetsPlugin
 );
 
+if (process.env.NODE_ENV !== "production") {
+  // Hack to use the ChartJS instance in Cypress
+  // So we can get the charts we create with it
+  const globalChartJsPlugin = {
+    id: "globalChartJs",
+    beforeInit: () => {
+      if (window.Chart) {
+        return;
+      }
+      window.Chart = Chart;
+    },
+  };
+
+  Chart.register(globalChartJsPlugin);
+}
+
 Chart.defaults.elements.point.radius = 0;
 Chart.defaults.elements.point.hitRadius = 5;
 Chart.defaults.plugins.legend.position = "bottom";
