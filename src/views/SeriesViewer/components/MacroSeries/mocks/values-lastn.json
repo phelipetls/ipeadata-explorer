@@ -3,33 +3,23 @@
   "value": [
     {
       "VALDATA": "2020-11-01T00:00:00-03:00",
-      "VALVALOR": 0.13,
-      "TERCODIGO": "",
-      "TERNOME": ""
+      "VALVALOR": 0.13
     },
     {
       "VALDATA": "2020-10-01T00:00:00-03:00",
-      "VALVALOR": 0.16,
-      "TERCODIGO": "",
-      "TERNOME": ""
+      "VALVALOR": 0.16
     },
     {
       "VALDATA": "2020-09-01T00:00:00-03:00",
-      "VALVALOR": 0.16,
-      "TERCODIGO": "",
-      "TERNOME": ""
+      "VALVALOR": 0.16
     },
     {
       "VALDATA": "2020-08-01T00:00:00-03:00",
-      "VALVALOR": 0.16,
-      "TERCODIGO": "",
-      "TERNOME": ""
+      "VALVALOR": 0.16
     },
     {
       "VALDATA": "2020-07-01T00:00:00-03:00",
-      "VALVALOR": 0.19,
-      "TERCODIGO": "",
-      "TERNOME": ""
+      "VALVALOR": 0.19
     }
   ]
 }

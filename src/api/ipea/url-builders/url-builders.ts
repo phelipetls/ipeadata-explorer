@@ -1,3 +1,5 @@
+import { SeriesBase } from "types";
+
 export const BASE_URL = "http://ipeadata2-homologa.ipea.gov.br/api/v1/";
 
 export function buildMetadataUrl(code: string) {
@@ -5,12 +7,19 @@ export function buildMetadataUrl(code: string) {
 }
 
 const ORDER_BY_DATE_DESCENCING = "$orderby=VALDATA desc";
-const DEFAULT_FIELDS_TO_SELECT = "$select=VALDATA,VALVALOR,TERCODIGO,TERNOME";
+const DEFAULT_FIELDS_TO_SELECT = "$select=VALDATA,VALVALOR";
+const DEFAULT_FIELDS_TO_SELECT_GEOGRAPHY =
+  "$select=VALDATA,VALVALOR,TERCODIGO,TERNOME";
 
-export function buildSeriesValuesUrl(code: string) {
+export function buildSeriesValuesUrl(code: string, base: SeriesBase) {
+  const fieldsToSelect =
+    base === "Regional"
+      ? DEFAULT_FIELDS_TO_SELECT_GEOGRAPHY
+      : DEFAULT_FIELDS_TO_SELECT;
+
   return (
     buildMetadataUrl(code) +
-    `/Valores?${DEFAULT_FIELDS_TO_SELECT}&${ORDER_BY_DATE_DESCENCING}`
+    `/Valores?${fieldsToSelect}&${ORDER_BY_DATE_DESCENCING}`
   );
 }
 

@@ -47,7 +47,8 @@ export function MacroSeries({ code, metadata }: Props) {
         metadata,
       });
 
-      const url = buildSeriesValuesUrl(code) + buildFilter(dateFilter);
+      const url =
+        buildSeriesValuesUrl(code, metadata.BASNOME) + buildFilter(dateFilter);
 
       const response = await axios.get(url);
       return response.data;

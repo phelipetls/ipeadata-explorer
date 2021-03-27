@@ -124,7 +124,7 @@ export function GeographicSeries({ code, metadata }: Props) {
       const divisionFilter = `NIVNOME eq '${division}'`;
 
       const url =
-        buildSeriesValuesUrl(code) +
+        buildSeriesValuesUrl(code, metadata.BASNOME) +
         buildFilter(dateFilter, divisionFilter, boundaryFilter);
 
       const response = await axios.get(url);

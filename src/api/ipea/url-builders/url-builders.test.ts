@@ -11,7 +11,17 @@ test("if buildMetadataUrl works", () => {
 });
 
 test("if buildSeriesUrl works", () => {
-  expect(buildSeriesValuesUrl("CODE")).toBe(
+  expect(buildSeriesValuesUrl("CODE", "Macroeconômico")).toBe(
+    "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados('CODE')/Valores?" +
+      "$select=VALDATA,VALVALOR&$orderby=VALDATA desc"
+  );
+
+  expect(buildSeriesValuesUrl("CODE", "Social")).toBe(
+    "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados('CODE')/Valores?" +
+      "$select=VALDATA,VALVALOR&$orderby=VALDATA desc"
+  );
+
+  expect(buildSeriesValuesUrl("CODE", "Regional")).toBe(
     "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados('CODE')/Valores?" +
       "$select=VALDATA,VALVALOR,TERCODIGO,TERNOME&$orderby=VALDATA desc"
   );
