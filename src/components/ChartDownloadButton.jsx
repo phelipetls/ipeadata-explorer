@@ -71,7 +71,12 @@ export function ChartDownloadButton(props) {
   };
 
   return (
-    <Link ref={downloadLinkRef} download={filename} title="Download do gráfico">
+    <Link
+      ref={downloadLinkRef}
+      download={filename}
+      title="Download do gráfico"
+      underline="none"
+    >
       <Button
         onClick={e => handleClick(e)}
         variant="contained"
