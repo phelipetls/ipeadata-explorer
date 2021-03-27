@@ -1,6 +1,6 @@
 import { DivisionToPlotAsMap } from "api/ibge";
 import * as React from "react";
-import { SeriesMetadata, SeriesValues } from "types";
+import { SeriesMetadata, SeriesValuesGeographic } from "types";
 import { ChoroplethMap, MapTooltip } from "./components";
 
 interface tooltipPositionType {
@@ -9,7 +9,7 @@ interface tooltipPositionType {
 }
 
 interface Props {
-  series: SeriesValues[];
+  series: SeriesValuesGeographic[];
   metadata: SeriesMetadata;
   division: DivisionToPlotAsMap;
   boundaryId: string;

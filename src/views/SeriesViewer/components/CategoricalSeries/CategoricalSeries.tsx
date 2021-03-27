@@ -1,8 +1,4 @@
-import {
-  buildCountByCategoryUrl,
-  CategoriesMetadata,
-  getDateFilter,
-} from "api/ipea";
+import { buildCountByCategoryUrl, getDateFilter } from "api/ipea";
 import {
   SeriesDateInputs,
   SeriesDateInputsData,
@@ -14,7 +10,7 @@ import * as React from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router";
 import axios from "redaxios";
-import { SeriesMetadata } from "types";
+import { IpeaResponse, SeriesMetadata, SeriesValuesCategorical } from "types";
 import { getDateSafely } from "utils";
 import { CategoricalBarChart } from "./components";
 
@@ -41,23 +37,22 @@ export function CategoricalSeries({ code, metadata }: Props) {
     Number(searchParams.get("lastN")) || DEFAULT_LAST_N
   );
 
-  const { isError, isLoading, data } = useQuery(
-    [code, startDate, endDate, lastN],
-    async () => {
-      const dateFilter = getDateFilter({
-        start: startDate,
-        end: endDate,
-        lastN,
-        metadata,
-      });
-      const url = buildCountByCategoryUrl(code, { filter: dateFilter });
+  const { isError, isLoading, data } = useQuery<
+    IpeaResponse<SeriesValuesCategorical[]>
+  >([code, startDate, endDate, lastN], async () => {
+    const dateFilter = getDateFilter({
+      start: startDate,
+      end: endDate,
+      lastN,
+      metadata,
+    });
+    const url = buildCountByCategoryUrl(code, { filter: dateFilter });
 
-      const response = await axios.get(url);
-      return response.data;
-    }
-  );
+    const response = await axios.get(url);
+    return response.data;
+  });
 
-  const categories: CategoriesMetadata[] = data?.value || [];
+  const categories = data?.value || [];
 
   const onSubmit = (data: SeriesDateInputsData) => {
     const { startDate, endDate, lastN } = data;

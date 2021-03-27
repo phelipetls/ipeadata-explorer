@@ -10,7 +10,7 @@ import * as React from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import axios from "redaxios";
-import { SeriesMetadata, SeriesValues } from "types";
+import { IpeaResponse, SeriesMetadata, SeriesValuesMacro } from "types";
 import { getDateSafely } from "utils";
 import { MacroLineChart } from "./components";
 
@@ -37,25 +37,24 @@ export function MacroSeries({ code, metadata }: Props) {
     Number(searchParams.get("lastN")) || DEFAULT_LAST_N
   );
 
-  const { isLoading, data, isError } = useQuery(
-    [code, startDate, endDate, lastN],
-    async () => {
-      const dateFilter = getDateFilter({
-        start: startDate,
-        end: endDate,
-        lastN,
-        metadata,
-      });
+  const { isLoading, data, isError } = useQuery<
+    IpeaResponse<SeriesValuesMacro[]>
+  >([code, startDate, endDate, lastN], async () => {
+    const dateFilter = getDateFilter({
+      start: startDate,
+      end: endDate,
+      lastN,
+      metadata,
+    });
 
-      const url =
-        buildSeriesValuesUrl(code, metadata.BASNOME) + buildFilter(dateFilter);
+    const url =
+      buildSeriesValuesUrl(code, metadata.BASNOME) + buildFilter(dateFilter);
 
-      const response = await axios.get(url);
-      return response.data;
-    }
-  );
+    const response = await axios.get(url);
+    return response.data;
+  });
 
-  const series: SeriesValues[] = data?.value || [];
+  const series = data?.value || [];
 
   const onSubmit = (data: SeriesDateInputsData) => {
     const { startDate, endDate, lastN } = data;

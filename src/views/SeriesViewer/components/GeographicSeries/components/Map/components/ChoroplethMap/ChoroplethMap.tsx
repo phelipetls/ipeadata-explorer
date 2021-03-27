@@ -14,7 +14,7 @@ import * as React from "react";
 import { useQuery } from "react-query";
 import { Geographies, Geography } from "react-simple-maps";
 import axios from "redaxios";
-import { SeriesMetadata, SeriesValues } from "types";
+import { SeriesMetadata, SeriesValuesGeographic } from "types";
 import { formatDate } from "utils";
 import { MapWrapper, SelectDate } from "./components";
 
@@ -25,7 +25,7 @@ async function getOutlineMap(boundaryId: string): Promise<Feature> {
 }
 
 interface Props {
-  series: SeriesValues[];
+  series: SeriesValuesGeographic[];
   metadata: SeriesMetadata;
   division: DivisionToPlotAsMap;
   boundaryId: string;

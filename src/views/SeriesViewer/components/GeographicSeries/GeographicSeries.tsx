@@ -17,7 +17,7 @@ import * as React from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import axios from "redaxios";
-import { SeriesMetadata } from "types";
+import { IpeaResponse, SeriesMetadata, SeriesValuesGeographic } from "types";
 import {
   getBoundaryDivisionSafely,
   getDateSafely,
@@ -107,11 +107,9 @@ export function GeographicSeries({ code, metadata }: Props) {
     }
   );
 
-  const {
-    isError: isErrorData,
-    isLoading: isLoadingData,
-    data = {},
-  } = useQuery(
+  const { isError: isErrorData, isLoading: isLoadingData, data } = useQuery<
+    IpeaResponse<SeriesValuesGeographic[]>
+  >(
     [code, startDate, endDate, lastN, division, boundaryId],
     async () => {
       const dateFilter = getDateFilter({
