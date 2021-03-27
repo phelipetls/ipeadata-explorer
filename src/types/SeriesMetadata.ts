@@ -1,4 +1,4 @@
-import { SeriesBase } from "./SeriesBase";
+export type SeriesBase = "Macroeconômico" | "Regional" | "Social";
 
 export interface SeriesMetadata {
   SERCODIGO: string;
