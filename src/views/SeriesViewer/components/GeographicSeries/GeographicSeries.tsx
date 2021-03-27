@@ -4,7 +4,7 @@ import {
   buildGeographicDivisionsUrl,
   buildSeriesValuesUrl,
   getDateFilter,
-} from "api/odata";
+} from "api/ipea";
 import {
   SeriesDateInputs,
   SeriesDateInputsData,

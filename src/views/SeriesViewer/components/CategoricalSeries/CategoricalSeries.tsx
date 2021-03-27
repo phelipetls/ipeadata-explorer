@@ -2,7 +2,7 @@ import {
   buildCountByCategoryUrl,
   CategoriesMetadata,
   getDateFilter,
-} from "api/odata";
+} from "api/ipea";
 import {
   SeriesDateInputs,
   SeriesDateInputsData,

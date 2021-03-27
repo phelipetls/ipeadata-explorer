@@ -1,4 +1,4 @@
-import { BASE_URL, formatDateToBackend } from "api/odata";
+import { BASE_URL, formatDateToBackend } from "api/ipea";
 import isEmpty from "lodash/isEmpty";
 
 const ORDER_BY_UPDATED_DATE_DESCENDING = "$orderby=SERATUALIZACAO desc";

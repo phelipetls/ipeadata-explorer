@@ -4,7 +4,7 @@ import {
   getSearchValuesFromUrl,
   limitQuery,
   offsetQuery,
-} from "api/odata";
+} from "api/ipea";
 import {
   EmptyState,
   MetadataTable,

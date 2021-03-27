@@ -1,4 +1,4 @@
-import { buildFilter, buildSeriesValuesUrl, getDateFilter } from "api/odata";
+import { buildFilter, buildSeriesValuesUrl, getDateFilter } from "api/ipea";
 import {
   SeriesDateInputs,
   SeriesDateInputsData,

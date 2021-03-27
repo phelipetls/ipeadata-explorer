@@ -1,7 +1,7 @@
 import { Container } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { ToggleButton, ToggleButtonGroup } from "@material-ui/lab";
-import { BASE_URL } from "api/odata";
+import { BASE_URL } from "api/ipea";
 import { Loading } from "components";
 import * as React from "react";
 import { useQuery } from "react-query";

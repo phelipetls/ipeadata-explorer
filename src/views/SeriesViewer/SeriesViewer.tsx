@@ -1,4 +1,4 @@
-import { buildMetadataUrl } from "api/odata";
+import { buildMetadataUrl } from "api/ipea";
 import { EmptyState, Loading, SeriesSection } from "components";
 import isEmpty from "lodash/isEmpty";
 import * as React from "react";
