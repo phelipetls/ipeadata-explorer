@@ -1,7 +1,7 @@
 import { getMapUrl, shouldPlotMap, getContainingDivisions } from "./ibge";
 
 it("should return a correct url given id and resolution", () => {
-  expect(getMapUrl({ boundaryId: 1, division: "Estados" })).toBe(
+  expect(getMapUrl({ id: "1", division: "Estados" })).toBe(
     "https://servicodados.ibge.gov.br/api/v2/malhas/" +
       "1?formato=application%2Fjson&resolucao=2"
   );
@@ -18,7 +18,9 @@ it("should plot map for every division except brazil, regions and metropolitan a
 });
 
 test("if get containig division works", () => {
+  // @ts-ignore
   expect(getContainingDivisions("Brasil")).toStrictEqual([]);
+  // @ts-ignore
   expect(getContainingDivisions("Regiões")).toStrictEqual(["Brasil"]);
   expect(getContainingDivisions("Estados")).toStrictEqual([
     "Brasil",

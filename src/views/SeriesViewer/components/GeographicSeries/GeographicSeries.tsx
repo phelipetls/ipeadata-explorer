@@ -1,23 +1,17 @@
 import { BoundaryDivision, GeographicDivision, shouldPlotMap } from "api/ibge";
+import { fetchGeographicDivisions, fetchGeographicValues } from "api/ipea";
 import {
-  buildFilter,
-  buildGeographicDivisionsUrl,
-  buildSeriesValuesUrl,
-  getDateFilter,
-} from "api/ipea";
-import {
+  Loading,
+  SeriesChart,
   SeriesDateInputs,
   SeriesDateInputsData,
   SeriesFilters,
-  Loading,
-  SeriesChart,
 } from "components";
 import { useSyncSearchParams } from "hooks";
 import * as React from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
-import axios from "redaxios";
-import { IpeaResponse, SeriesMetadata, SeriesValuesGeographic } from "types";
+import { SeriesMetadata } from "types";
 import {
   getBoundaryDivisionSafely,
   getDateSafely,
@@ -32,31 +26,6 @@ import {
 
 const DEFAULT_LAST_N = 5;
 const DEFAULT_BOUNDARY_ID = "BR";
-
-interface GeographicDivisionMetadata {
-  value: {
-    NIVNOME: GeographicDivision;
-    Count: number;
-  }[];
-}
-
-async function fetchGeographicDivisions(
-  code: string
-): Promise<GeographicDivision[]> {
-  const url = buildGeographicDivisionsUrl(code);
-
-  const response = await axios.get(url);
-  const data = response.data as GeographicDivisionMetadata;
-
-  return data.value.map(division => division.NIVNOME);
-}
-
-function getBoundaryFilter(boundaryId: string, division: GeographicDivision) {
-  if (!shouldPlotMap(division) || boundaryId === DEFAULT_BOUNDARY_ID) {
-    return "";
-  }
-  return `startswith(TERCODIGO,'${String(boundaryId).slice(0, 2)}')`;
-}
 
 interface Props {
   code: string;
@@ -107,27 +76,18 @@ export function GeographicSeries({ code, metadata }: Props) {
     }
   );
 
-  const { isError: isErrorData, isLoading: isLoadingData, data } = useQuery<
-    IpeaResponse<SeriesValuesGeographic[]>
-  >(
+  const { isError: isErrorData, isLoading: isLoadingData, data } = useQuery(
     [code, startDate, endDate, lastN, division, boundaryId],
-    async () => {
-      const dateFilter = getDateFilter({
-        start: startDate,
-        end: endDate,
+    () =>
+      fetchGeographicValues({
+        code,
+        startDate,
+        endDate,
         lastN,
+        division: division!,
+        boundaryId,
         metadata,
-      });
-      const boundaryFilter = getBoundaryFilter(boundaryId, division!);
-      const divisionFilter = `NIVNOME eq '${division}'`;
-
-      const url =
-        buildSeriesValuesUrl(code, metadata.BASNOME) +
-        buildFilter(dateFilter, divisionFilter, boundaryFilter);
-
-      const response = await axios.get(url);
-      return response.data;
-    },
+      }),
     { enabled: Boolean(division) }
   );
 

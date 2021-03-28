@@ -1,5 +1,3 @@
-import axios from "redaxios";
-
 import {
   GeographicDivision,
   DivisionToPlotAsMap,
@@ -31,17 +29,13 @@ const mapDivisionsCode: Record<IbgeMapDivision, number> = {
 };
 
 interface getMapUrlOptions {
-  boundaryId: string;
+  id: string;
   division?: IbgeMapDivision;
   format?: string;
 }
 
-export function getMapUrl({
-  boundaryId,
-  division,
-  format,
-}: getMapUrlOptions): string {
-  const url = new URL(boundaryId, BASE_URL_MAPS);
+export function getMapUrl({ id, division, format }: getMapUrlOptions): string {
+  const url = new URL(id, BASE_URL_MAPS);
 
   url.searchParams.set("formato", format || "application/json");
 
@@ -63,23 +57,18 @@ export function shouldPlotMap(
 }
 
 /**
- * Following the way regions are encoded by the IBGE API, the regions which
- * "contain" a given region are associated with a smaller number than the
- * contained region.
+ * A containing division have smaller code than the divisions it contains.
  */
 export function getContainingDivisions(
   targetDivision: DivisionToPlotAsMap
 ): IbgeMapDivision[] {
-  const divisions = [] as IbgeMapDivision[];
-  const mapDivisionCode = mapDivisionsCode[targetDivision];
+  const targetDivisionCode = mapDivisionsCode[targetDivision];
 
-  for (const [division, code] of Object.entries(mapDivisionsCode)) {
-    if (code < mapDivisionCode) {
-      divisions.push(division as IbgeMapDivision);
-    }
-  }
+  const containingDivisions = Object.entries(mapDivisionsCode)
+    .filter(([_, code]) => code < targetDivisionCode)
+    .map(([name]) => name as IbgeMapDivision);
 
-  return divisions;
+  return containingDivisions;
 }
 
 // IBGE Locations API documentation:
@@ -96,28 +85,5 @@ const divisionsEndpoints: Record<IbgeLocationDivision, string> = {
 };
 
 export function getDivisionNamesUrl(division: IbgeLocationDivision) {
-  const endpoint = divisionsEndpoints[division];
-
-  if (endpoint) {
-    return BASE_URL_DIVISIONS + divisionsEndpoints[division];
-  }
-
-  throw new Error(
-    `Invalid division: got ${division}, expected one of: ${Object.keys(
-      divisionsEndpoints
-    ).join(", ")}`
-  );
-}
-
-export interface DivisionMetadata {
-  id: number;
-  nome: string;
-}
-
-export async function fetchDivisionNames(
-  division: IbgeLocationDivision
-): Promise<DivisionMetadata[]> {
-  const url = getDivisionNamesUrl(division);
-  const response = await axios.get(url);
-  return response.data;
+  return BASE_URL_DIVISIONS + divisionsEndpoints[division];
 }

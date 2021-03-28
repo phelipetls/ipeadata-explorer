@@ -1,28 +1,16 @@
-import {
-  DivisionMetadata,
-  DivisionToPlotAsMap,
-  fetchDivisionNames,
-  getMapUrl,
-} from "api/ibge";
+import { DivisionToPlotAsMap, fetchDivisionNames, getMapUrl } from "api/ibge";
+import { fetchMap } from "api/ibge/requests";
 import { ChartLoading } from "components";
 import { scaleQuantile } from "d3-scale";
 import { schemeBlues as palette } from "d3-scale-chromatic";
-import { Feature } from "geojson";
 import groupBy from "lodash/groupBy";
 import keyBy from "lodash/keyBy";
 import * as React from "react";
 import { useQuery } from "react-query";
 import { Geographies, Geography } from "react-simple-maps";
-import axios from "redaxios";
 import { SeriesMetadata, SeriesValuesGeographic } from "types";
 import { formatDate } from "utils";
 import { MapWrapper, SelectDate } from "./components";
-
-async function getOutlineMap(boundaryId: string): Promise<Feature> {
-  const url = getMapUrl({ boundaryId, format: "application/vnd.geo+json" });
-  const response = await axios.get(url);
-  return response.data;
-}
 
 interface Props {
   series: SeriesValuesGeographic[];
@@ -48,17 +36,18 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
     setTooltipOpen,
   } = props;
 
-  const { isLoading: isLoadingDivisionsNames, data: divisionsNames } = useQuery<
-    DivisionMetadata[]
-  >(
+  const {
+    isLoading: isLoadingDivisionsNames,
+    data: divisionsNames,
+  } = useQuery(
     ["Fetch geographic division names", division],
     () => fetchDivisionNames(division),
     { enabled: Boolean(division) }
   );
 
-  const { isLoading: isLoadingOutlineMap, data: outline } = useQuery<Feature>(
+  const { isLoading: isLoadingOutlineMap, data: outline } = useQuery(
     ["Fetch outline map given a boundary region id", boundaryId],
-    () => getOutlineMap(boundaryId)
+    () => fetchMap(boundaryId)
   );
 
   const divisionsNamesById = divisionsNames && keyBy(divisionsNames, "id");
@@ -93,7 +82,7 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
           outline={outline!}
           title={`${metadata.SERNOME} - ${selectedDate}`}
         >
-          <Geographies geography={getMapUrl({ boundaryId, division })}>
+          <Geographies geography={getMapUrl({ id: boundaryId, division })}>
             {({ geographies }) =>
               geographies.map(geo => {
                 const divisionId = geo.properties.codarea;

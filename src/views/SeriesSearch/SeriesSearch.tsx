@@ -1,10 +1,5 @@
 import { Link, Paper, TableContainer } from "@material-ui/core";
-import {
-  buildSearchUrl,
-  getSearchValuesFromUrl,
-  limitQuery,
-  offsetQuery,
-} from "api/ipea";
+import { fetchSeriesSearch, getSearchValuesFromUrl } from "api/ipea";
 import {
   EmptyState,
   MetadataTable,
@@ -17,7 +12,6 @@ import { useSyncSearchParams } from "hooks";
 import * as React from "react";
 import { useQuery, useQueryClient } from "react-query";
 import { Link as RouterLink, useLocation } from "react-router-dom";
-import axios from "redaxios";
 import { SeriesMetadata, TableColumn } from "types";
 import { useBreakpoint } from "utils";
 import { SearchFilterContainer, SearchFilterForm } from "./components";
@@ -81,15 +75,7 @@ export function SeriesSearch() {
 
   const { isLoading, isFetching, data } = useQuery(
     [{ searchValues, page, rowsPerPage }],
-    async () => {
-      const url =
-        buildSearchUrl(searchValues) +
-        limitQuery(rowsPerPage) +
-        offsetQuery(page * rowsPerPage);
-
-      const response = await axios.get(url);
-      return response.data;
-    },
+    () => fetchSeriesSearch({ searchValues, page, rowsPerPage }),
     {
       staleTime: Infinity,
       onSuccess: data => setTotalCount(data["@odata.count"]),

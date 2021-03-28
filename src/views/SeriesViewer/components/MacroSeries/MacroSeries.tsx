@@ -1,4 +1,4 @@
-import { buildFilter, buildSeriesValuesUrl, getDateFilter } from "api/ipea";
+import { fetchMacroValues } from "api/ipea";
 import {
   SeriesDateInputs,
   SeriesDateInputsData,
@@ -9,8 +9,7 @@ import { useSyncSearchParams } from "hooks";
 import * as React from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
-import axios from "redaxios";
-import { IpeaResponse, SeriesMetadata, SeriesValuesMacro } from "types";
+import { SeriesMetadata } from "types";
 import { getDateSafely } from "utils";
 import { MacroLineChart } from "./components";
 
@@ -37,22 +36,10 @@ export function MacroSeries({ code, metadata }: Props) {
     Number(searchParams.get("lastN")) || DEFAULT_LAST_N
   );
 
-  const { isLoading, data, isError } = useQuery<
-    IpeaResponse<SeriesValuesMacro[]>
-  >([code, startDate, endDate, lastN], async () => {
-    const dateFilter = getDateFilter({
-      start: startDate,
-      end: endDate,
-      lastN,
-      metadata,
-    });
-
-    const url =
-      buildSeriesValuesUrl(code, metadata.BASNOME) + buildFilter(dateFilter);
-
-    const response = await axios.get(url);
-    return response.data;
-  });
+  const { isLoading, data, isError } = useQuery(
+    [code, startDate, endDate, lastN],
+    () => fetchMacroValues({ code, startDate, endDate, lastN, metadata })
+  );
 
   const series = data?.value || [];
 

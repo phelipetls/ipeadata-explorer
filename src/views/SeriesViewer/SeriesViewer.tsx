@@ -1,22 +1,15 @@
-import { buildMetadataUrl } from "api/ipea";
+import { fetchMetadata } from "api/ipea";
 import { EmptyState, Loading, SeriesSection } from "components";
 import isEmpty from "lodash/isEmpty";
 import * as React from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
-import axios from "redaxios";
 import {
   CategoricalSeries,
   GeographicSeries,
   MacroSeries,
   Metadata,
 } from "./components";
-
-async function fetchMetadata(code: string) {
-  const url = buildMetadataUrl(code);
-  const response = await axios.get(url);
-  return response.data;
-}
 
 export function SeriesViewer() {
   const { code } = useParams() as { code: string };

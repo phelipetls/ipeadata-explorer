@@ -1,5 +1,6 @@
 import { SeriesMetadata } from "types";
 import { formatDateToBackend, offsetDate } from "api/ipea";
+import { GeographicDivision, shouldPlotMap } from "api/ibge";
 
 export function joinFilters(...filters: Array<string | null>) {
   return filters.filter(value => Boolean(value)).join(" and ");
@@ -58,4 +59,14 @@ export function getDateFilter({ start, end, lastN, metadata }: dateFilters) {
       offset: lastN - 1,
     }),
   });
+}
+
+export function getBoundaryFilter(
+  boundaryId: string,
+  division: GeographicDivision
+) {
+  if (!shouldPlotMap(division) || boundaryId === "BR") {
+    return "";
+  }
+  return `startswith(TERCODIGO,'${String(boundaryId).slice(0, 2)}')`;
 }
