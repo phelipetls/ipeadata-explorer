@@ -1,5 +1,4 @@
 {
-  "@odata.context": "http://ipeadata2-homologa.ipea.gov.br/api/v1/$metadata#Paises(Metadados(SERCODIGO))",
   "value": [
     {
       "PAICODIGO": "AFG",
