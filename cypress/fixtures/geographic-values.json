@@ -1,4 +1,5 @@
 {
+  "@odata.context": "http://ipeadata2-homologa.ipea.gov.br/api/v1/$metadata#Valores(VALDATA,VALVALOR,TERCODIGO,TERNOME)",
   "value": [
     {
       "VALDATA": "2018-01-01T00:00:00-02:00",

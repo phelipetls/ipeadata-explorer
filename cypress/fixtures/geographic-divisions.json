@@ -1,4 +1,5 @@
 {
+  "@odata.context": "http://ipeadata2-homologa.ipea.gov.br/api/v1/$metadata#Valores(NIVNOME,Count)",
   "value": [
     {
       "@odata.id": null,
