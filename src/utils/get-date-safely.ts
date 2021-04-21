@@ -1,3 +1,5 @@
+import { parse } from 'date-fns'
+
 const isValidDate = (date: Date) => {
   return !isNaN(date.getTime());
 };
@@ -7,7 +9,7 @@ export const getDateSafely = (dateStr: string | null): Date | null => {
     return null;
   }
 
-  const date = new Date(dateStr);
+  const date = parse(dateStr, 'dd/MM/yyyy', new Date());
 
   return isValidDate(date) ? date : null;
 };

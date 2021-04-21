@@ -1,3 +1,4 @@
+import { format } from "date-fns";
 import * as React from "react";
 import { useHistory } from "react-router";
 
@@ -11,7 +12,7 @@ export function useSyncSearchParams(state: State) {
 
     for (const [key, value] of Object.entries(state)) {
       if (value instanceof Date) {
-        newSearchParams.set(key, value.toLocaleDateString("pt-BR"));
+        newSearchParams.set(key, format(value, "dd/MM/yyyy"));
       } else if (typeof value === "number") {
         newSearchParams.set(key, String(value));
       } else if (value !== null) {
