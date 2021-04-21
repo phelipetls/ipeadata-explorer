@@ -1,4 +1,8 @@
-import { DivisionToPlotAsMap, fetchDivisionNames, getMapUrl } from "api/ibge";
+import {
+  DivisionToPlotAsMap,
+  fetchDivisionTerritories,
+  getMapUrl,
+} from "api/ibge";
 import { fetchMap } from "api/ibge/requests";
 import { ChartLoading } from "components";
 import { scaleQuantile } from "d3-scale";
@@ -36,21 +40,18 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
     setTooltipOpen,
   } = props;
 
-  const {
-    isLoading: isLoadingDivisionsNames,
-    data: divisionsNames,
-  } = useQuery(
-    ["Fetch geographic division names", division],
-    () => fetchDivisionNames(division),
+  const { isLoading: isLoadingTerritories, data: territories } = useQuery(
+    ["Fetch division territories", division],
+    () => fetchDivisionTerritories(division),
     { enabled: Boolean(division) }
   );
+
+  const territoriesByDivisionId = territories && keyBy(territories, "id");
 
   const { isLoading: isLoadingOutlineMap, data: outline } = useQuery(
     ["Fetch outline map given a boundary region id", boundaryId],
     () => fetchMap(boundaryId)
   );
-
-  const divisionsNamesById = divisionsNames && keyBy(divisionsNames, "id");
 
   const seriesByDate = groupBy(series, row =>
     formatDate(new Date(row.VALDATA), { periodicity: metadata.PERNOME })
@@ -69,7 +70,7 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
     .domain(selectedDateValues)
     .range(palette[4]);
 
-  const isLoading = isLoadingOutlineMap || isLoadingDivisionsNames;
+  const isLoading = isLoadingOutlineMap || isLoadingTerritories;
 
   return (
     <>
@@ -88,7 +89,7 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
                 const divisionId = geo.properties.codarea;
 
                 // FIXME: probably a bug
-                const name = divisionsNamesById?.[divisionId]?.["nome"];
+                const name = territoriesByDivisionId?.[divisionId]?.["nome"];
 
                 const currentRow = selectedDateRows.find(
                   row => row["TERCODIGO"] === divisionId

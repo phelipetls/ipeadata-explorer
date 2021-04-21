@@ -1,2 +1,2 @@
 export * from "./fetch-map";
-export * from "./fetch-divisions-names";
+export * from "./fetch-division-territories";

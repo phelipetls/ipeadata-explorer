@@ -5,7 +5,7 @@ import {
   Select,
   SelectProps,
 } from "@material-ui/core";
-import { fetchDivisionNames, IbgeLocationDivision } from "api/ibge";
+import { fetchDivisionTerritories, IbgeLocationDivision } from "api/ibge";
 import { Loading } from "components";
 import * as React from "react";
 import { Ref } from "react-hook-form";
@@ -22,8 +22,8 @@ export const SelectGeographicBoundaryId = React.forwardRef<Ref, Props>(
     const { name, defaultBoundaryId, boundaryDivision } = props;
 
     const { isLoading, data = [] } = useQuery(
-      ["Fetch geographic divisions names", boundaryDivision],
-      () => fetchDivisionNames(boundaryDivision)
+      ["Fetch boundary division territories", boundaryDivision],
+      () => fetchDivisionTerritories(boundaryDivision)
     );
 
     if (isLoading) {
