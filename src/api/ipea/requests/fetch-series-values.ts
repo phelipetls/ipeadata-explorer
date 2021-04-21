@@ -1,7 +1,7 @@
 import { GeographicDivision } from "api/ibge";
 import axios from "redaxios";
 import {
-  IpeaResponse,
+  IpeaApiResponse,
   SeriesMetadata,
   SeriesValuesCategorical,
   SeriesValuesMacro,
@@ -25,7 +25,7 @@ type Options = {
 
 type FetchValues<TParams, TResponse> = (
   options: TParams
-) => Promise<IpeaResponse<TResponse[]>>;
+) => Promise<IpeaApiResponse<TResponse[]>>;
 
 export const fetchMacroValues: FetchValues<
   Options,

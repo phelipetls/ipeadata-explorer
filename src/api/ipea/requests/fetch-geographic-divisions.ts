@@ -1,6 +1,6 @@
 import { GeographicDivision } from "api/ibge";
 import axios from "redaxios";
-import { IpeaResponse } from "types";
+import { IpeaApiResponse } from "types";
 import { buildGeographicDivisionsUrl } from "..";
 
 export async function fetchGeographicDivisions(
@@ -9,7 +9,7 @@ export async function fetchGeographicDivisions(
   const url = buildGeographicDivisionsUrl(code);
 
   const response = await axios.get(url);
-  const data = response.data as IpeaResponse<{ NIVNOME: GeographicDivision }[]>;
+  const data = response.data as IpeaApiResponse<{ NIVNOME: GeographicDivision }[]>;
 
   return data.value.map(division => division.NIVNOME);
 }
