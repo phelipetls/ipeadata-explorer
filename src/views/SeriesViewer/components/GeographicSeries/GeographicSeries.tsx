@@ -72,7 +72,7 @@ export function GeographicSeries({ code, metadata }: Props) {
     () => fetchGeographicDivisions(code),
     {
       onSuccess: ([firstDivision]) =>
-        setDivision(division => division || firstDivision),
+        setDivision(division => division || firstDivision || null),
     }
   );
 
@@ -140,12 +140,14 @@ export function GeographicSeries({ code, metadata }: Props) {
         }}
       >
         <SeriesDateInputs metadata={metadata} />
+
         {isLoadingDivisions ? (
           <Loading />
         ) : (
-          !isErrorDivisions && (
+          !isErrorDivisions &&
+          division !== null && (
             <GeographyInputs
-              division={division!}
+              division={division}
               boundaryDivision={boundaryDivision}
               boundaryId={boundaryId}
               divisions={divisions}
