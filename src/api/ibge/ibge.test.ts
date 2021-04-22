@@ -18,10 +18,6 @@ it("should plot map for every division except brazil, regions and metropolitan a
 });
 
 test("if get containig division works", () => {
-  // @ts-ignore
-  expect(getContainingDivisions("Brasil")).toStrictEqual([]);
-  // @ts-ignore
-  expect(getContainingDivisions("Regiões")).toStrictEqual(["Brasil"]);
   expect(getContainingDivisions("Estados")).toStrictEqual([
     "Brasil",
     "Regiões",

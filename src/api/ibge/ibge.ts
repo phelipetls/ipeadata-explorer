@@ -57,7 +57,9 @@ export function shouldPlotMap(
 }
 
 /**
- * A containing division have smaller code than the divisions it contains.
+ * Given a division, get those divisions that contains it.
+ * For example, a state is contained inside a region and a country.
+ * A containing division has a smaller code than the divisions it contains.
  */
 export function getContainingDivisions(
   targetDivision: DivisionToPlotAsMap
