@@ -22,7 +22,10 @@ jobs:
       - name: Run integration tests
         uses: cypress-io/github-action@v2
         with:
+          install: false
           start: npm start
+          wait-on: 'http://localhost:3000'
+          wait-on-timeout: 120
           browser: chrome
         env:
           CYPRESS_video: false
