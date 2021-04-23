@@ -22,8 +22,12 @@ jobs:
       - name: Run integration tests
         uses: cypress-io/github-action@v2
         with:
-          build: npm run build
           start: npm start
+          browser: chrome
+        env:
+          CYPRESS_video: false
+          CYPRESS_watchForFileChange: false
+          CYPRESS_screenshotOnRunFailure: false
 
       - name: Build website
         run: npm run build
