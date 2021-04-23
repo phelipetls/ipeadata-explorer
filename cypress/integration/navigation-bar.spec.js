@@ -5,7 +5,7 @@ beforeEach(() => {
 });
 
 describe("search input", () => {
-  it.only("should search for the series name after submission", () => {
+  it("should search for the series name after submission", () => {
     cy.get("@searchButton").type("Spread");
 
     cy.get("@searchButton")
