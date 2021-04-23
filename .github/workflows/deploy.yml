@@ -33,7 +33,10 @@ jobs:
           CYPRESS_screenshotOnRunFailure: false
 
       - name: Build website
-        run: npm run build
+        run: |
+          npm run build
+          cd build
+          mv index.html 200.html
 
       - name: Deploy website
         uses: dswistowski/surge-sh-action@v1
