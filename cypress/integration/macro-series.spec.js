@@ -106,7 +106,7 @@ describe("filtering last N values", () => {
 
     cy.wait(["@getMetadata", "@getLastNValues"]);
 
-    cy.get("[name='lastN']").should("have.value", "3")
+    cy.get("[name='lastN']").should("have.value", "3");
 
     cy.getChartJs().then(chart => {
       expect(chart.config.type).to.equal("line");
