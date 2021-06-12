@@ -49,7 +49,7 @@ if (process.env.NODE_ENV !== "production") {
   Chart.register(globalChartJsPlugin);
 }
 
-Chart.defaults.elements.point.hitRadius = 5;
+Chart.defaults.elements.point.hitRadius = 15;
 Chart.defaults.plugins.legend.position = "bottom";
 Chart.defaults.plugins.title.font = {
   size: 16,
