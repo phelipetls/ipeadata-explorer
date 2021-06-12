@@ -40,7 +40,7 @@ export function getDateFilter({ start, end, lastN, metadata }: dateFilters) {
   if (start && end) {
     return limitByDate({
       start: formatDateToBackend(start),
-      end: formatDateToBackend(end, { isEndDate: true }),
+      end: formatDateToBackend(end),
     });
   }
 
@@ -49,7 +49,7 @@ export function getDateFilter({ start, end, lastN, metadata }: dateFilters) {
   }
 
   if (end) {
-    return limitByDate({ end: formatDateToBackend(end, { isEndDate: true }) });
+    return limitByDate({ end: formatDateToBackend(end) });
   }
 
   return limitByDate({
