@@ -25,7 +25,6 @@
     "react-query": "^3.12.0",
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.0",
     "react-simple-maps": "^2.3.0",
     "react-truncate-markup": "^5.1.0",
     "redaxios": "^0.4.1",
@@ -37,7 +36,6 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "jest",
-    "eject": "react-scripts eject",
     "cy:run": "cypress run",
     "cy:open": "cypress open"
   },
