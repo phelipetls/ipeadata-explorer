@@ -43,7 +43,7 @@
     "extends": "react-app"
   },
   "simple-git-hooks": {
-    "pre-push": "./scripts/eslint-pre-push.sh"
+    "pre-push": "./scripts/pre-push.sh"
   },
   "browserslist": {
     "production": [
