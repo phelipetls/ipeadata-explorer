@@ -32,7 +32,7 @@ export const SelectGeographicDivision = React.forwardRef<Ref, Props>(
           onChange={handleChange}
           inputProps={{ name, id: "division" }}
         >
-          {divisions.map(division => (
+          {divisions.map((division) => (
             <option key={division} value={division}>
               {division}
             </option>

@@ -4,7 +4,7 @@ import * as React from "react";
 import { Link as RouterLink } from "react-router-dom";
 import { NavigationLink } from "../../types";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   list: {
     display: "flex",
     flexDirection: "row",

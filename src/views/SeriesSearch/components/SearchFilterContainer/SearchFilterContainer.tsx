@@ -9,7 +9,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 import * as React from "react";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   filterContainer: {
     padding: theme.spacing(1),
     paddingLeft: theme.spacing(2),

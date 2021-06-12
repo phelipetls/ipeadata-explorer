@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 import * as React from "react";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     height: theme.chart.height,
   },

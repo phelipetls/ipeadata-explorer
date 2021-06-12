@@ -7,7 +7,7 @@ import { FieldValues, FormProvider, useForm } from "react-hook-form";
 import { SeriesMetadata } from "types";
 import { useBreakpoint } from "utils";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   header: {
     marginBottom: theme.spacing(3),
   },

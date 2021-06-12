@@ -37,7 +37,7 @@ it("should plot a line chart by default", () => {
 
   cy.wait(["@getMetadata", "@getValues"]);
 
-  cy.getChartJs().then(chart => {
+  cy.getChartJs().then((chart) => {
     expect(chart.config.type).to.equal("line");
     expect(chart.config.data.labels.length).to.equal(1);
   });
@@ -81,21 +81,18 @@ describe("filtering last N values", () => {
 
     cy.get("form")
       .within(() => {
-        cy.get("[name='lastN']")
-          .clear()
-          .type("3")
-          .blur();
+        cy.get("[name='lastN']").clear().type("3").blur();
       })
       .submit();
 
     cy.wait("@getLastNValues");
 
-    cy.getChartJs().then(chart => {
+    cy.getChartJs().then((chart) => {
       expect(chart.config.type).to.equal("line");
       expect(chart.data.labels.length).to.equal(3);
     });
 
-    cy.location().should(loc => {
+    cy.location().should((loc) => {
       const searchParams = new URLSearchParams(loc.search);
       expect(+searchParams.get("lastN")).to.eq(3);
     });
@@ -108,7 +105,7 @@ describe("filtering last N values", () => {
 
     cy.get("[name='lastN']").should("have.value", "3");
 
-    cy.getChartJs().then(chart => {
+    cy.getChartJs().then((chart) => {
       expect(chart.config.type).to.equal("line");
       expect(chart.data.labels.length).to.equal(3);
     });
@@ -148,25 +145,19 @@ describe("filtering by date range", () => {
       .within(() => {
         cy.get("[name='lastN']").clear();
 
-        cy.get("[name='startDate']")
-          .clear()
-          .type("01/01/2019")
-          .blur();
+        cy.get("[name='startDate']").clear().type("01/01/2019").blur();
 
-        cy.get("[name='endDate']")
-          .clear()
-          .type("01/02/2019")
-          .blur();
+        cy.get("[name='endDate']").clear().type("01/02/2019").blur();
       })
       .submit();
 
     cy.wait("@getDateValues");
 
-    cy.getChartJs().then(chart => {
+    cy.getChartJs().then((chart) => {
       expect(chart.data.labels.length).to.equal(2);
     });
 
-    cy.location().should(loc => {
+    cy.location().should((loc) => {
       const searchParams = new URLSearchParams(loc.search);
       expect(searchParams.get("startDate")).to.eq("01/01/2019");
       expect(searchParams.get("endDate")).to.eq("01/02/2019");
@@ -181,7 +172,7 @@ describe("filtering by date range", () => {
     cy.get("[name='startDate']").should("have.value", "01/01/2019");
     cy.get("[name='endDate']").should("have.value", "01/02/2019");
 
-    cy.getChartJs().then(chart => {
+    cy.getChartJs().then((chart) => {
       expect(chart.config.type).to.equal("line");
       expect(chart.data.labels.length).to.equal(2);
     });

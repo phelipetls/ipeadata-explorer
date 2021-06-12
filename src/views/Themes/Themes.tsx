@@ -9,7 +9,7 @@ import axios from "redaxios";
 import { ThemeBases, ThemeCard, ThemeName, ThemeParent } from "./components";
 import { BaseType } from "./types";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   grid: {
     margin: "2em auto",
     display: "grid",
@@ -88,8 +88,8 @@ export function Themes() {
 
       <Container maxWidth="sm" className={classes.grid}>
         {themes
-          .filter(theme => bases.some(base => theme[base] !== null))
-          .map(theme => {
+          .filter((theme) => bases.some((base) => theme[base] !== null))
+          .map((theme) => {
             const {
               TEMNOME,
               TEMCODIGO,
@@ -100,7 +100,7 @@ export function Themes() {
             } = theme;
 
             const parentTheme = themes.find(
-              theme => theme.TEMCODIGO === TEMCODIGO_PAI
+              (theme) => theme.TEMCODIGO === TEMCODIGO_PAI
             );
 
             return (

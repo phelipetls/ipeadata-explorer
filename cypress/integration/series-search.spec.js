@@ -19,25 +19,15 @@ it("should show most recently updated series by default", () => {
   cy.wait("@getSearchResults");
 
   cy.contains("table tbody tr", "Spread").within(() => {
-    cy.get("td")
-      .eq(0)
-      .contains("Spread");
+    cy.get("td").eq(0).contains("Spread");
 
-    cy.get("td")
-      .eq(1)
-      .contains("Mensal");
+    cy.get("td").eq(1).contains("Mensal");
 
-    cy.get("td")
-      .eq(2)
-      .contains("(% a.m.)");
+    cy.get("td").eq(2).contains("(% a.m.)");
 
-    cy.get("td")
-      .eq(3)
-      .contains("2020");
+    cy.get("td").eq(3).contains("2020");
 
-    cy.get("td")
-      .eq(4)
-      .contains("2021");
+    cy.get("td").eq(4).contains("2021");
   });
 });
 

@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
 import * as React from "react";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   summaryRow: {
     "& > *": {
       borderBottom: "unset",

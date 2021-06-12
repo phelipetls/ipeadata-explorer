@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { BarChart, Search } from "@material-ui/icons";
 import * as React from "react";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   featuresSection: {
     marginTop: theme.spacing(4),
     marginBottom: theme.spacing(4),

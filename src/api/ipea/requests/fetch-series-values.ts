@@ -27,23 +27,21 @@ type FetchValues<TParams, TResponse> = (
   options: TParams
 ) => Promise<IpeaApiResponse<TResponse[]>>;
 
-export const fetchMacroValues: FetchValues<
-  Options,
-  SeriesValuesMacro
-> = async ({ code, startDate, endDate, lastN, metadata }) => {
-  const dateFilter = getDateFilter({
-    start: startDate,
-    end: endDate,
-    lastN,
-    metadata,
-  });
+export const fetchMacroValues: FetchValues<Options, SeriesValuesMacro> =
+  async ({ code, startDate, endDate, lastN, metadata }) => {
+    const dateFilter = getDateFilter({
+      start: startDate,
+      end: endDate,
+      lastN,
+      metadata,
+    });
 
-  const url =
-    buildSeriesValuesUrl(code, metadata.BASNOME) + buildFilter(dateFilter);
+    const url =
+      buildSeriesValuesUrl(code, metadata.BASNOME) + buildFilter(dateFilter);
 
-  const response = await axios.get(url);
-  return response.data;
-};
+    const response = await axios.get(url);
+    return response.data;
+  };
 
 export const fetchCategoricalValues: FetchValues<
   Options,

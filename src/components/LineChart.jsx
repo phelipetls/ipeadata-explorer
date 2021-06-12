@@ -1,7 +1,7 @@
 import * as React from "react";
 import { ChartJS } from "./ChartJS";
 
-const getXAxisTimeScale = periodicity => {
+const getXAxisTimeScale = (periodicity) => {
   switch (periodicity) {
     case "Trimestral":
       return "quarter";

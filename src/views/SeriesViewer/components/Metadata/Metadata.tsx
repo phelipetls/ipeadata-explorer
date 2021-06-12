@@ -6,7 +6,7 @@ import { SeriesMetadata } from "types";
 import { removeHtmlTags } from "utils/remove-html-tags";
 import { MetadataComment } from "./components";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   metadata: {
     paddingTop: theme.spacing(3),
     paddingBottom: theme.spacing(3),

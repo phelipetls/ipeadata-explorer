@@ -52,12 +52,10 @@ export function GeographicSeries({ code, metadata }: Props) {
     getDivisionSafely(searchParams.get("division"))
   );
 
-  const [
-    boundaryDivision,
-    setBoundaryDivision,
-  ] = React.useState<BoundaryDivision | null>(
-    getBoundaryDivisionSafely(searchParams.get("boundaryDivision"))
-  );
+  const [boundaryDivision, setBoundaryDivision] =
+    React.useState<BoundaryDivision | null>(
+      getBoundaryDivisionSafely(searchParams.get("boundaryDivision"))
+    );
 
   const [boundaryId, setBoundaryId] = React.useState<string>(
     searchParams.get("boundaryId") || DEFAULT_BOUNDARY_ID
@@ -72,11 +70,15 @@ export function GeographicSeries({ code, metadata }: Props) {
     () => fetchGeographicDivisions(code),
     {
       onSuccess: ([firstDivision]) =>
-        setDivision(division => division || firstDivision || null),
+        setDivision((division) => division || firstDivision || null),
     }
   );
 
-  const { isError: isErrorData, isLoading: isLoadingData, data } = useQuery(
+  const {
+    isError: isErrorData,
+    isLoading: isLoadingData,
+    data,
+  } = useQuery(
     [code, startDate, endDate, lastN, division, boundaryId],
     () =>
       fetchGeographicValues({

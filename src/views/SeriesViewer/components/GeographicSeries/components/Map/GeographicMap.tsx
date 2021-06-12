@@ -15,15 +15,14 @@ interface Props {
   boundaryId: string;
 }
 
-export const GeographicMap: React.FC<Props> = props => {
+export const GeographicMap: React.FC<Props> = (props) => {
   const [tooltipText, setTooltipText] = React.useState("");
   const [tooltipOpen, setTooltipOpen] = React.useState(false);
-  const [tooltipPosition, setTooltipPosition] = React.useState<
-    tooltipPositionType
-  >({
-    x: undefined,
-    y: undefined,
-  });
+  const [tooltipPosition, setTooltipPosition] =
+    React.useState<tooltipPositionType>({
+      x: undefined,
+      y: undefined,
+    });
 
   return (
     <>

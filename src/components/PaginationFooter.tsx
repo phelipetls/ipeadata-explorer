@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import * as React from "react";
 import { PaginationActions } from "./PaginationActions";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   toolbar: {
     [theme.breakpoints.down("xs")]: {
       flexWrap: "wrap",

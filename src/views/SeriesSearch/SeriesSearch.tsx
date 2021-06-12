@@ -78,7 +78,7 @@ export function SeriesSearch() {
     () => fetchSeriesSearch({ searchValues, page, rowsPerPage }),
     {
       staleTime: Infinity,
-      onSuccess: data => setTotalCount(data["@odata.count"]),
+      onSuccess: (data) => setTotalCount(data["@odata.count"]),
     }
   );
 
@@ -134,12 +134,12 @@ export function SeriesSearch() {
       <TableCollapsedRows
         rows={rows}
         columns={["Nome", ""]}
-        renderSummary={row => (
+        renderSummary={(row) => (
           <Link component={RouterLink} to={`/serie/${row.SERCODIGO}`}>
             {row.SERNOME}
           </Link>
         )}
-        renderRow={row => <MetadataTable metadata={row} />}
+        renderRow={(row) => <MetadataTable metadata={row} />}
         isLoading={isLoadingRows}
         skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={2} />}
       />

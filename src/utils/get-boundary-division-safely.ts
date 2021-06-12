@@ -1,7 +1,8 @@
 import { BoundaryDivision, geographicDivisions } from "api/ibge";
 
 const boundaryDivisions = geographicDivisions.filter(
-  division => !(division === "Municípios" || division === "Área metropolitana")
+  (division) =>
+    !(division === "Municípios" || division === "Área metropolitana")
 );
 
 export function getBoundaryDivisionSafely(

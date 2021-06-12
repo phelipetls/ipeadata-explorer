@@ -15,7 +15,7 @@ export function ChartDownloadButton(props) {
 
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleClick = async e => {
+  const handleClick = async (e) => {
     e.preventDefault();
 
     const chartJs = Chart.getChart("chart-id");
@@ -37,7 +37,7 @@ export function ChartDownloadButton(props) {
 
       config.plugins = [
         {
-          afterRender: chart => {
+          afterRender: (chart) => {
             const imageDataUrl = canvas.toDataURL("image/png");
 
             downloadLinkRef.current.setAttribute("href", imageDataUrl);
@@ -78,7 +78,7 @@ export function ChartDownloadButton(props) {
       underline="none"
     >
       <Button
-        onClick={e => handleClick(e)}
+        onClick={(e) => handleClick(e)}
         variant="contained"
         startIcon={<GetApp />}
         disabled={isLoading}

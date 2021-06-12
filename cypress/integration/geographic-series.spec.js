@@ -52,7 +52,7 @@ describe("line chart visualization", () => {
 
     cy.wait(["@getMetadata", "@getGeographicDivisions", "@getBrazilValues"]);
 
-    cy.getChartJs().then(chart => {
+    cy.getChartJs().then((chart) => {
       expect(chart.config.type).to.equal("line");
       expect(chart.config.data.labels.length).to.equal(5);
     });
@@ -102,10 +102,7 @@ describe("choropleth map visualizations", () => {
 
       cy.wait(["@getMetadata", "@getGeographicDivisions", "@getBrazilValues"]);
 
-      cy.get("[name='division']")
-        .select("Estados")
-        .closest("form")
-        .submit();
+      cy.get("[name='division']").select("Estados").closest("form").submit();
 
       cy.wait([
         "@getStatesValues",
@@ -114,7 +111,7 @@ describe("choropleth map visualizations", () => {
         "@getBrazilDividedByStateMap",
       ]);
 
-      cy.location().should(loc => {
+      cy.location().should((loc) => {
         const searchParams = new URLSearchParams(loc.search);
         expect(searchParams.get("division")).to.eq("Estados");
         expect(searchParams.get("boundaryDivision")).to.eq("Brasil");
@@ -186,7 +183,7 @@ describe("choropleth map visualizations", () => {
         "@getNorthernRegionDividedByStateMap",
       ]);
 
-      cy.location().should(loc => {
+      cy.location().should((loc) => {
         const searchParams = new URLSearchParams(loc.search);
         expect(searchParams.get("division")).to.eq("Estados");
         expect(searchParams.get("boundaryDivision")).to.eq("Regiões");

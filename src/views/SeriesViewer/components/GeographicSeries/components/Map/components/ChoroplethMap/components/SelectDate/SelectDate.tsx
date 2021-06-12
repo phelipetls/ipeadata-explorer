@@ -2,7 +2,7 @@ import { Select } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import * as React from "react";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     alignItems: "center",
@@ -32,7 +32,7 @@ export function SelectDate({ isLoading, date, dates, handleChange }: Props) {
         value={date}
         onChange={handleChange}
       >
-        {dates.map(date => (
+        {dates.map((date) => (
           <option key={date}>{date}</option>
         ))}
       </Select>

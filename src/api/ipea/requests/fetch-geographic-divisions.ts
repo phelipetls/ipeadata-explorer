@@ -13,5 +13,5 @@ export async function fetchGeographicDivisions(
   );
   const data = response.data;
 
-  return data.value.map(row => row.NIVNOME);
+  return data.value.map((row) => row.NIVNOME);
 }

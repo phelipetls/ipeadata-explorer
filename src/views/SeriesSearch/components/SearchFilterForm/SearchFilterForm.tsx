@@ -16,7 +16,7 @@ import * as React from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useBreakpoint } from "utils";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   title: {
     marginBottom: theme.spacing(2),
   },
@@ -84,27 +84,26 @@ export function SearchFilterForm({ searchParams, onSubmit }: Props) {
     SERMAXDATA = null,
   } = Object.fromEntries(searchParams);
 
-  const { register, handleSubmit, formState, control } = useForm<
-    SearchFilterFormData
-  >({
-    defaultValues: {
-      SERNOME,
-      FNTNOME,
-      UNINOME,
-      PERNOME,
-      TEMNOME,
-      PAICODIGO,
-      BASNOME: BASNOME ? BASNOME.split(",") : [],
-      SERSTATUS,
-      SERNUMERICA,
-      SERTEMBR: Boolean(SERTEMBR),
-      SERTEMMUN: Boolean(SERTEMMUN),
-      SERTEMEST: Boolean(SERTEMEST),
-      SERTEMMET: Boolean(SERTEMMET),
-      SERMINDATA,
-      SERMAXDATA,
-    },
-  });
+  const { register, handleSubmit, formState, control } =
+    useForm<SearchFilterFormData>({
+      defaultValues: {
+        SERNOME,
+        FNTNOME,
+        UNINOME,
+        PERNOME,
+        TEMNOME,
+        PAICODIGO,
+        BASNOME: BASNOME ? BASNOME.split(",") : [],
+        SERSTATUS,
+        SERNUMERICA,
+        SERTEMBR: Boolean(SERTEMBR),
+        SERTEMMUN: Boolean(SERTEMMUN),
+        SERTEMEST: Boolean(SERTEMEST),
+        SERTEMMET: Boolean(SERTEMMET),
+        SERMINDATA,
+        SERMAXDATA,
+      },
+    });
 
   const onSubmitDirtyFields = React.useCallback(
     (data: SearchFilterFormData) => {

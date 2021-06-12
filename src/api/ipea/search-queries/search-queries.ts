@@ -28,9 +28,9 @@ const ipeaFields = [
 ];
 
 export function getSearchValuesFromUrl(searchParams: URLSearchParams) {
-  const searchValuesEntries = Array.from(
-    searchParams.entries()
-  ).filter(([key]) => ipeaFields.includes(key));
+  const searchValuesEntries = Array.from(searchParams.entries()).filter(
+    ([key]) => ipeaFields.includes(key)
+  );
 
   return Object.fromEntries(searchValuesEntries);
 }
@@ -44,7 +44,7 @@ export function buildSearchUrl(searchValues: Record<string, string>) {
 }
 
 function buildSearchQuery(queries: [string, any][]) {
-  const filterQuery = queries.map(query => getFilter(query)).join(" and ");
+  const filterQuery = queries.map((query) => getFilter(query)).join(" and ");
 
   return (
     DEFAULT_SEARCH_QUERY +

@@ -30,14 +30,14 @@ export const SelectGeographicBoundaryId = React.forwardRef<Ref, Props>(
       return <Loading />;
     }
 
-    const boundaries = data.map(boundary => ({
+    const boundaries = data.map((boundary) => ({
       id: boundary.id,
       name: boundary.nome,
     }));
 
     const defaultValue =
       boundaries.find(
-        boundary =>
+        (boundary) =>
           boundary.name === defaultBoundaryId ||
           boundary.id === Number(defaultBoundaryId)
       )?.id || boundaries[0].id;
@@ -59,7 +59,7 @@ export const SelectGeographicBoundaryId = React.forwardRef<Ref, Props>(
               id: "boundary-id",
             }}
           >
-            {boundaries.map(boundary => (
+            {boundaries.map((boundary) => (
               <option key={boundary.name} value={boundary.id}>
                 {boundary.name}
               </option>

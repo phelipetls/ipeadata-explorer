@@ -15,22 +15,16 @@ interface TicksProps {
 export function Ticks(props: TicksProps) {
   const ticksRef = React.useRef<SVGGElement | null>(null);
 
-  const {
-    title,
-    tickAxis,
-    height,
-    marginTop,
-    marginBottom,
-    marginLeft,
-  } = props;
+  const { title, tickAxis, height, marginTop, marginBottom, marginLeft } =
+    props;
 
   React.useEffect(() => {
     d3Select(ticksRef.current!)
       .call(tickAxis)
-      .call(g =>
+      .call((g) =>
         g.selectAll(".tick line").attr("y1", marginTop + marginBottom - height)
       )
-      .call(g => g.select(".domain").remove());
+      .call((g) => g.select(".domain").remove());
   }, [tickAxis, marginTop, marginBottom, title, height]);
 
   return (

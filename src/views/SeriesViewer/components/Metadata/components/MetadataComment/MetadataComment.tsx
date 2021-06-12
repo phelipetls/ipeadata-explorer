@@ -9,7 +9,7 @@ interface Props {
 export function MetadataComment({ children }: Props) {
   const [isTruncated, setIsTruncated] = React.useState(true);
 
-  const toggleTruncated = () => setIsTruncated(truncated => !truncated);
+  const toggleTruncated = () => setIsTruncated((truncated) => !truncated);
 
   return isTruncated ? (
     <TruncateMarkup

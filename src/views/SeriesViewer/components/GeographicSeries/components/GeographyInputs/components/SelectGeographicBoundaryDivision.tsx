@@ -40,7 +40,7 @@ export const SelectGeographicBoundaryDivision = React.forwardRef<Ref, Props>(
             onChange={handleChange}
             inputProps={{ name, id: "boundary-division" }}
           >
-            {boundaries.map(boundary => (
+            {boundaries.map((boundary) => (
               <option key={boundary} value={boundary}>
                 {boundary}
               </option>

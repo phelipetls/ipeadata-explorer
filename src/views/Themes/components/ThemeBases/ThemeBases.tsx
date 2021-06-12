@@ -1,7 +1,7 @@
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import * as React from "react";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   row: {
     padding: "1em",
     display: "flex",

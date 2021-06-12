@@ -3,7 +3,7 @@ import { formatDateToBackend, offsetDate } from "api/ipea";
 import { GeographicDivision, shouldPlotMap } from "api/ibge";
 
 export function joinFilters(...filters: Array<string | null>) {
-  return filters.filter(value => Boolean(value)).join(" and ");
+  return filters.filter((value) => Boolean(value)).join(" and ");
 }
 
 export function buildFilter(...filters: Array<string | null>) {

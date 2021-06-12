@@ -10,7 +10,7 @@ const Countries = React.lazy(() => import("./views/Countries"));
 const SeriesSearch = React.lazy(() => import("./views/SeriesSearch"));
 const SeriesViewer = React.lazy(() => import("./views/SeriesViewer"));
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   app: {
     display: "flex",
     flexFlow: "column",

@@ -29,7 +29,7 @@ interface Props {
   setTooltipOpen(state: boolean): void;
 }
 
-export const ChoroplethMap: React.FC<Props> = React.memo(props => {
+export const ChoroplethMap: React.FC<Props> = React.memo((props) => {
   const {
     series,
     metadata,
@@ -53,7 +53,7 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
     () => fetchMap(boundaryId)
   );
 
-  const seriesByDate = groupBy(series, row =>
+  const seriesByDate = groupBy(series, (row) =>
     formatDate(new Date(row.VALDATA), { periodicity: metadata.PERNOME })
   );
 
@@ -63,7 +63,7 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
 
   const selectedDateRows = seriesByDate[selectedDate] || {};
   const selectedDateValues = Object.values(selectedDateRows).map(
-    row => row["VALVALOR"]
+    (row) => row["VALVALOR"]
   );
 
   const scale = scaleQuantile<string>()
@@ -85,14 +85,14 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
         >
           <Geographies geography={getMapUrl({ id: boundaryId, division })}>
             {({ geographies }) =>
-              geographies.map(geo => {
+              geographies.map((geo) => {
                 const divisionId = geo.properties.codarea;
 
                 // FIXME: probably a bug
                 const name = territoriesByDivisionId?.[divisionId]?.["nome"];
 
                 const currentRow = selectedDateRows.find(
-                  row => row["TERCODIGO"] === divisionId
+                  (row) => row["TERCODIGO"] === divisionId
                 );
 
                 const value = (currentRow && currentRow["VALVALOR"]) || 0;
@@ -110,7 +110,7 @@ export const ChoroplethMap: React.FC<Props> = React.memo(props => {
                       setTooltipOpen(false);
                       setTooltipText("");
                     }}
-                    onMouseMove={e => {
+                    onMouseMove={(e) => {
                       setTooltipPosition({ x: e.clientX, y: e.clientY });
                     }}
                   />

@@ -8,9 +8,7 @@ describe("search input", () => {
   it("should search for the series name after submission", () => {
     cy.get("@searchButton").type("Spread");
 
-    cy.get("@searchButton")
-      .closest("form")
-      .submit();
+    cy.get("@searchButton").closest("form").submit();
 
     cy.location("pathname").should("equal", "/series");
     cy.location("search").should("equal", "?SERNOME=Spread");

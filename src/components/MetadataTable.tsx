@@ -36,17 +36,17 @@ const metadataFields: TableColumn<SeriesMetadata>[] = [
   {
     accessor: "SERMINDATA",
     label: "Início",
-    render: metadata => formatDate(metadata.SERMINDATA),
+    render: (metadata) => formatDate(metadata.SERMINDATA),
   },
   {
     accessor: "SERMAXDATA",
     label: "Fim",
-    render: metadata => formatDate(metadata.SERMAXDATA),
+    render: (metadata) => formatDate(metadata.SERMAXDATA),
   },
   {
     accessor: "SERSTATUS",
     label: "Status",
-    render: metadata => (metadata.SERSTATUS === "A" ? "Ativa" : "Inativa"),
+    render: (metadata) => (metadata.SERSTATUS === "A" ? "Ativa" : "Inativa"),
   },
 ];
 

@@ -57,7 +57,7 @@ export function TableSortable<T>(props: Props<T>) {
 
   const handleClick = (targetColumn: keyof T) => {
     if (targetColumn === orderByColumn) {
-      setSortDirection(order => (order === "desc" ? "asc" : "desc"));
+      setSortDirection((order) => (order === "desc" ? "asc" : "desc"));
     } else {
       setSortDirection("desc");
       setOrderByColumn(targetColumn);
@@ -65,7 +65,7 @@ export function TableSortable<T>(props: Props<T>) {
   };
 
   const sortedColumn = columns.find(
-    column => column.accessor === orderByColumn
+    (column) => column.accessor === orderByColumn
   );
 
   if (sortedColumn?.type != null && orderByColumn !== null) {
@@ -85,7 +85,7 @@ export function TableSortable<T>(props: Props<T>) {
     });
   }
 
-  const headers = columns.map(column => (
+  const headers = columns.map((column) => (
     <TableCell
       component="th"
       key={String(column.accessor)}
@@ -104,9 +104,9 @@ export function TableSortable<T>(props: Props<T>) {
 
   const body = isLoading
     ? skeleton
-    : rows.map(row => (
+    : rows.map((row) => (
         <TableRow key={String(row[rowKey])}>
-          {columns.map(column => (
+          {columns.map((column) => (
             <TableCell key={String(column.accessor)} align="left">
               {column.render ? column.render(row) : row[column.accessor]}
             </TableCell>

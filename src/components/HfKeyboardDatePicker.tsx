@@ -10,7 +10,7 @@ type Props = Required<
 > &
   Omit<KeyboardDatePickerProps, "value" | "onChange">;
 
-export const HfKeyboardDatePicker: React.FC<Props> = props => {
+export const HfKeyboardDatePicker: React.FC<Props> = (props) => {
   const [date, setDate] = React.useState<Date | null>(null);
 
   const { name, control, ...rest } = props;
