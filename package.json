@@ -37,7 +37,6 @@
     "build": "react-app-rewired build",
     "test": "react-scripts test",
     "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
-    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "eject": "react-scripts eject",
     "cy:run": "cypress run",
     "cy:open": "cypress open"
@@ -95,7 +94,6 @@
     "babel-plugin-import": "^1.13.0",
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.1.6",
-    "react-query-devtools": "^2.6.3",
-    "source-map-explorer": "^2.5.0"
+    "react-query-devtools": "^2.6.3"
   }
 }
