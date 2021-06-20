@@ -21,6 +21,7 @@ export function Footer() {
         component={Link}
         href="https://github.com/phelipetls/ipeadata-explorer"
         className={classes.icon}
+        title="Página do projeto no GitHub"
       >
         <GitHub />
       </IconButton>
