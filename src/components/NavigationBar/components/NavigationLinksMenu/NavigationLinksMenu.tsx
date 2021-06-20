@@ -21,7 +21,11 @@ export function NavigationLinksMenu({ links }: Props) {
 
   return (
     <>
-      <IconButton style={{ alignSelf: "center" }} onClick={handleIconClick}>
+      <IconButton
+        style={{ alignSelf: "center" }}
+        onClick={handleIconClick}
+        aria-label="Mais opções de navegação"
+      >
         <MoreVert />
       </IconButton>
 

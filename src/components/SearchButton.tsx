@@ -17,6 +17,7 @@ export function SearchButton({ onClick, ...rest }: Props) {
       style={{ alignSelf: "center" }}
       type="button"
       data-testid="search-button"
+      aria-label="Pesquisar"
       {...rest}
     >
       <Search />
