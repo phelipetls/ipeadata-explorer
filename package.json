@@ -41,9 +41,6 @@
     "cy:run": "cypress run",
     "cy:open": "cypress open"
   },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
   "simple-git-hooks": {
     "pre-push": "./scripts/pre-push.sh"
   },
