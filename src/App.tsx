@@ -29,21 +29,23 @@ export function App() {
 
   return (
     <div className={classes.app}>
-      <NavigationBar />
-      <Container component="main" className={classes.mainSection}>
-        <React.Suspense fallback={<Loading />}>
-          <Switch>
-            <ErrorBoundary>
+      <ErrorBoundary>
+        <NavigationBar />
+
+        <Container component="main" className={classes.mainSection}>
+          <React.Suspense fallback={<Loading />}>
+            <Switch>
               <Route exact path="/" component={HomePage} />
               <Route path="/temas" component={Themes} />
               <Route path="/paises" component={Countries} />
               <Route path="/series" component={SeriesSearch} />
               <Route path="/serie/:code" component={SeriesViewer} />
-            </ErrorBoundary>
-          </Switch>
-        </React.Suspense>
-      </Container>
-      <Footer />
+            </Switch>
+          </React.Suspense>
+        </Container>
+
+        <Footer />
+      </ErrorBoundary>
     </div>
   );
 }
