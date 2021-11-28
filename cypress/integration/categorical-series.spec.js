@@ -38,7 +38,7 @@ it("should plot a bar chart by default", () => {
   });
 
   cy.location("pathname").should("equal", "/serie/F1PT1");
-  cy.location("search").should("equal", "");
+  cy.location("search").should("be.empty");
 });
 
 describe("filtering by N values", () => {

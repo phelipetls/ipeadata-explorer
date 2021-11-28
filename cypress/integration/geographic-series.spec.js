@@ -32,13 +32,13 @@ beforeEach(() => {
     { fixture: "geographic-values.json" }
   ).as("getBrazilValues");
 
-  // Request to group values by geographic division and sorted by by count (in
-  // increasing order).
   cy.intercept(
     {
       url: /.*\/api\/v1\/Metadados\(.*ACIDT.*\)\/Valores/,
       query: {
+        // group by geographic division
         $apply: /groupby\(\(NIVNOME\),aggregate\(\$count as count\)\)/,
+        // and sort by count in ascending order
         $orderby: "count asc",
       },
     },
