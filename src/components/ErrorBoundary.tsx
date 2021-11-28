@@ -5,8 +5,8 @@ interface ErrorBoundaryState {
   hasError: boolean;
 }
 
-export class ErrorBoundary extends React.Component {
-  state: ErrorBoundaryState = {
+export class ErrorBoundary extends React.Component<{}, ErrorBoundaryState> {
+  state = {
     hasError: false,
   };
 
