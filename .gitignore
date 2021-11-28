@@ -21,3 +21,8 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+
+coverage
+jest-coverage
+cypress-coverage
+.nyc_output

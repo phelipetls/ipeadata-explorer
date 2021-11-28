@@ -1,4 +1,6 @@
 {
-  "pluginsFile": false,
-  "baseUrl": "http://localhost:3000"
+  "baseUrl": "http://localhost:3000",
+  "env": {
+    "coverage": false
+  }
 }
