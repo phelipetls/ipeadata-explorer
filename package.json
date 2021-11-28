@@ -55,6 +55,8 @@
     ]
   },
   "devDependencies": {
+    "@swc/core": "^1.2.113",
+    "@swc/jest": "^0.2.10",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
@@ -88,7 +90,6 @@
     "eslint-plugin-testing-library": "^4.6.0",
     "jest": "^27.0.4",
     "react-query-devtools": "^2.6.3",
-    "ts-jest": "^27.0.3",
     "vite": "^2.2.1",
     "vite-tsconfig-paths": "^3.3.8"
   }
