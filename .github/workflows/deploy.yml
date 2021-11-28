@@ -16,21 +16,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Run unit tests
-        run: CI=true npm test
-
-      - name: Run integration tests
-        uses: cypress-io/github-action@v2
-        with:
-          install: false
-          start: npm start
-          wait-on: 'http://localhost:3000'
-          wait-on-timeout: 120
-          browser: chrome
-        env:
-          CYPRESS_video: false
-          CYPRESS_watchForFileChange: false
-          CYPRESS_screenshotOnRunFailure: false
+      - name: Run tests with code coverage report
+        run: npm run test:cov
 
       - name: Build website
         run: |
