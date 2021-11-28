@@ -36,6 +36,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "test": "jest",
+    "test:cy": "start-server-and-test start 3000 cy:run",
     "cy:run": "cypress run",
     "cy:open": "cypress open"
   },
@@ -90,6 +91,7 @@
     "eslint-plugin-testing-library": "^4.6.0",
     "jest": "^27.0.4",
     "react-query-devtools": "^2.6.3",
+    "start-server-and-test": "^1.14.0",
     "vite": "^2.2.1",
     "vite-tsconfig-paths": "^3.3.8"
   }
