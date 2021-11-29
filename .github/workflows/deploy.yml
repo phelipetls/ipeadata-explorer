@@ -19,6 +19,15 @@ jobs:
       - name: Run tests with code coverage report
         run: npm run test:cov
 
+      - name: Generate code coverage XML report
+        run: npm run test:cov:report -- --reporter=lcov
+
+      - name: Upload report to codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          directory: ./coverage
+
       - name: Build website
         run: |
           npm run build
