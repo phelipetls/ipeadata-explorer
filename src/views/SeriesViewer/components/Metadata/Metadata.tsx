@@ -8,10 +8,11 @@ import { MetadataComment } from './components'
 
 const useStyles = makeStyles((theme) => ({
   metadata: {
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
-    paddingRight: theme.spacing(6),
-    paddingLeft: theme.spacing(6),
+    padding: theme.spacing(3),
+    [theme.breakpoints.up('md')]: {
+      paddingRight: theme.spacing(6),
+      paddingLeft: theme.spacing(6),
+    },
   },
   description: {
     [theme.breakpoints.up('md')]: {

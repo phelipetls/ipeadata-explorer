@@ -5,10 +5,11 @@ import * as React from 'react'
 const useStyles = makeStyles((theme) => ({
   root: {
     marginTop: theme.spacing(3),
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
-    paddingRight: theme.spacing(6),
-    paddingLeft: theme.spacing(6),
+    padding: theme.spacing(3),
+    [theme.breakpoints.up('md')]: {
+      paddingRight: theme.spacing(6),
+      paddingLeft: theme.spacing(6),
+    }
   },
 }))
 
