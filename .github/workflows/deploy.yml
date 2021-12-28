@@ -4,6 +4,9 @@ on:
   push:
     branches:
       master
+  paths:
+    - index.html
+    - '**.{js,ts,jsx,tsx}'
 
 jobs:
   build:
