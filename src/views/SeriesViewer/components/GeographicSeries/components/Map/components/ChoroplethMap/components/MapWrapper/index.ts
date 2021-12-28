@@ -1,1 +1,1 @@
-export * from "./MapWrapper";
+export * from './MapWrapper'

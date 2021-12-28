@@ -1,1 +1,1 @@
-export type BaseType = "MACRO" | "REGIONAL" | "SOCIAL";
+export type BaseType = 'MACRO' | 'REGIONAL' | 'SOCIAL'

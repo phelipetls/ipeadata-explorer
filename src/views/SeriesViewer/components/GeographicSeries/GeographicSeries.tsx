@@ -1,78 +1,78 @@
-import { BoundaryDivision, GeographicDivision, shouldPlotMap } from "api/ibge";
-import { fetchGeographicDivisions, fetchGeographicValues } from "api/ipea";
+import { BoundaryDivision, GeographicDivision, shouldPlotMap } from 'api/ibge'
+import { fetchGeographicDivisions, fetchGeographicValues } from 'api/ipea'
 import {
   Loading,
   SeriesChart,
   SeriesDateInputs,
   SeriesDateInputsData,
   SeriesFilters,
-} from "components";
-import { useSyncSearchParams } from "hooks";
-import * as React from "react";
-import { useQuery } from "react-query";
-import { useLocation } from "react-router-dom";
-import { SeriesMetadata } from "types";
+} from 'components'
+import { useSyncSearchParams } from 'hooks'
+import * as React from 'react'
+import { useQuery } from 'react-query'
+import { useLocation } from 'react-router-dom'
+import { SeriesMetadata } from 'types'
 import {
   getBoundaryDivisionSafely,
   getDateSafely,
   getDivisionSafely,
-} from "utils";
+} from 'utils'
 import {
   GeographicLineChart,
   GeographicMap,
   GeographyInputs,
   GeographyInputsData,
-} from "./components";
+} from './components'
 
-const DEFAULT_LAST_N = 5;
-const DEFAULT_BOUNDARY_ID = "BR";
+const DEFAULT_LAST_N = 5
+const DEFAULT_BOUNDARY_ID = 'BR'
 
 interface Props {
-  code: string;
-  metadata: SeriesMetadata;
+  code: string
+  metadata: SeriesMetadata
 }
 
 export function GeographicSeries({ code, metadata }: Props) {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
 
   const [startDate, setStartDate] = React.useState<Date | null>(
-    getDateSafely(searchParams.get("startDate"))
-  );
+    getDateSafely(searchParams.get('startDate'))
+  )
 
   const [endDate, setEndDate] = React.useState<Date | null>(
-    getDateSafely(searchParams.get("endDate"))
-  );
+    getDateSafely(searchParams.get('endDate'))
+  )
 
   const [lastN, setLastN] = React.useState(
-    Number(searchParams.get("lastN")) || DEFAULT_LAST_N
-  );
+    Number(searchParams.get('lastN')) || DEFAULT_LAST_N
+  )
 
   const [division, setDivision] = React.useState<GeographicDivision | null>(
-    getDivisionSafely(searchParams.get("division"))
-  );
+    getDivisionSafely(searchParams.get('division'))
+  )
 
   const [boundaryDivision, setBoundaryDivision] =
     React.useState<BoundaryDivision | null>(
-      getBoundaryDivisionSafely(searchParams.get("boundaryDivision"))
-    );
+      getBoundaryDivisionSafely(searchParams.get('boundaryDivision'))
+    )
 
   const [boundaryId, setBoundaryId] = React.useState<string>(
-    searchParams.get("boundaryId") || DEFAULT_BOUNDARY_ID
-  );
+    searchParams.get('boundaryId') || DEFAULT_BOUNDARY_ID
+  )
 
   const {
     isError: isErrorDivisions,
     isLoading: isLoadingDivisions,
     data: divisions = [],
   } = useQuery<GeographicDivision[]>(
-    ["Fetch available geographic divisions", code],
+    ['Fetch available geographic divisions', code],
     () => fetchGeographicDivisions(code),
     {
       onSuccess: ([firstDivision]) =>
         setDivision((division) => division || firstDivision || null),
     }
-  );
+  )
 
   const {
     isError: isErrorData,
@@ -91,12 +91,12 @@ export function GeographicSeries({ code, metadata }: Props) {
         metadata,
       }),
     { enabled: Boolean(division) }
-  );
+  )
 
-  const series = data?.value || [];
+  const series = data?.value || []
 
-  const isLoading = isLoadingData || isLoadingDivisions;
-  const isError = isErrorData || isErrorDivisions;
+  const isLoading = isLoadingData || isLoadingDivisions
+  const isError = isErrorData || isErrorDivisions
 
   const onSubmit = (data: SeriesDateInputsData & GeographyInputsData) => {
     const {
@@ -106,15 +106,15 @@ export function GeographicSeries({ code, metadata }: Props) {
       division = null,
       boundaryDivision = null,
       boundaryId = DEFAULT_BOUNDARY_ID,
-    } = data;
+    } = data
 
-    setStartDate(startDate);
-    setEndDate(endDate);
-    setLastN(lastN !== "" ? Number(lastN) : DEFAULT_LAST_N);
-    setDivision(division);
-    setBoundaryDivision(boundaryDivision);
-    setBoundaryId(boundaryId);
-  };
+    setStartDate(startDate)
+    setEndDate(endDate)
+    setLastN(lastN !== '' ? Number(lastN) : DEFAULT_LAST_N)
+    setDivision(division)
+    setBoundaryDivision(boundaryDivision)
+    setBoundaryId(boundaryId)
+  }
 
   const stateToSync = React.useMemo(
     () => ({
@@ -126,9 +126,9 @@ export function GeographicSeries({ code, metadata }: Props) {
       boundaryId: boundaryId !== DEFAULT_BOUNDARY_ID ? boundaryId : null,
     }),
     [startDate, endDate, lastN, division, boundaryDivision, boundaryId]
-  );
+  )
 
-  useSyncSearchParams(stateToSync);
+  useSyncSearchParams(stateToSync)
 
   return (
     <>
@@ -175,5 +175,5 @@ export function GeographicSeries({ code, metadata }: Props) {
         )}
       </SeriesChart>
     </>
-  );
+  )
 }

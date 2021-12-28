@@ -1,1 +1,1 @@
-export * from "./MapLegend";
+export * from './MapLegend'

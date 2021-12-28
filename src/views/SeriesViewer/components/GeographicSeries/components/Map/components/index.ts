@@ -1,2 +1,2 @@
-export * from "./ChoroplethMap";
-export * from "./Tooltip";
+export * from './ChoroplethMap'
+export * from './Tooltip'

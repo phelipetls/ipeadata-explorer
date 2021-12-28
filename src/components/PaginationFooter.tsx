@@ -1,29 +1,29 @@
-import { TableFooter, TablePagination, TableRow } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import * as React from "react";
-import { PaginationActions } from "./PaginationActions";
+import { TableFooter, TablePagination, TableRow } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import * as React from 'react'
+import { PaginationActions } from './PaginationActions'
 
 const useStyles = makeStyles((theme) => ({
   toolbar: {
-    [theme.breakpoints.down("xs")]: {
-      flexWrap: "wrap",
-      justifyContent: "center",
+    [theme.breakpoints.down('xs')]: {
+      flexWrap: 'wrap',
+      justifyContent: 'center',
       paddingLeft: theme.spacing(2),
       paddingTop: theme.spacing(1.5),
     },
   },
-}));
+}))
 
 interface Props {
-  page: number;
-  count: number;
-  rowsPerPage: number;
-  handleChangePage: (e: any, newPage: number) => void;
-  handleChangeRowsPerPage: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  page: number
+  count: number
+  rowsPerPage: number
+  handleChangePage: (e: any, newPage: number) => void
+  handleChangeRowsPerPage: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export function PaginationFooter(props: Props) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   const {
     page,
@@ -31,7 +31,7 @@ export function PaginationFooter(props: Props) {
     rowsPerPage,
     handleChangePage,
     handleChangeRowsPerPage,
-  } = props;
+  } = props
 
   return (
     <TableFooter>
@@ -51,5 +51,5 @@ export function PaginationFooter(props: Props) {
         />
       </TableRow>
     </TableFooter>
-  );
+  )
 }

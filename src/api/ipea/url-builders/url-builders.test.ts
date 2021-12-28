@@ -2,35 +2,35 @@ import {
   buildMetadataUrl,
   buildSeriesValuesUrl,
   buildCountByCategoryUrl,
-} from "./url-builders";
+} from './url-builders'
 
-test("if buildMetadataUrl works", () => {
-  expect(buildMetadataUrl("CODE")).toBe(
+test('if buildMetadataUrl works', () => {
+  expect(buildMetadataUrl('CODE')).toBe(
     "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados('CODE')"
-  );
-});
+  )
+})
 
-test("if buildSeriesUrl works", () => {
-  expect(buildSeriesValuesUrl("CODE", "Macroeconômico")).toBe(
+test('if buildSeriesUrl works', () => {
+  expect(buildSeriesValuesUrl('CODE', 'Macroeconômico')).toBe(
     "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados('CODE')/Valores?" +
-      "$select=VALDATA,VALVALOR&$orderby=VALDATA desc"
-  );
+      '$select=VALDATA,VALVALOR&$orderby=VALDATA desc'
+  )
 
-  expect(buildSeriesValuesUrl("CODE", "Social")).toBe(
+  expect(buildSeriesValuesUrl('CODE', 'Social')).toBe(
     "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados('CODE')/Valores?" +
-      "$select=VALDATA,VALVALOR&$orderby=VALDATA desc"
-  );
+      '$select=VALDATA,VALVALOR&$orderby=VALDATA desc'
+  )
 
-  expect(buildSeriesValuesUrl("CODE", "Regional")).toBe(
+  expect(buildSeriesValuesUrl('CODE', 'Regional')).toBe(
     "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados('CODE')/Valores?" +
-      "$select=VALDATA,VALVALOR,TERCODIGO,TERNOME&$orderby=VALDATA desc"
-  );
-});
+      '$select=VALDATA,VALVALOR,TERCODIGO,TERNOME&$orderby=VALDATA desc'
+  )
+})
 
-test("if buildCountByCategoryUrl works", () => {
-  expect(buildCountByCategoryUrl("CODE", { filter: "filter" })).toBe(
+test('if buildCountByCategoryUrl works', () => {
+  expect(buildCountByCategoryUrl('CODE', { filter: 'filter' })).toBe(
     "http://ipeadata2-homologa.ipea.gov.br/api/v1/Metadados('CODE')/ValoresStr?" +
-      "$apply=filter(filter)/groupby((VALVALOR),aggregate($count as count))" +
-      "&$orderby=count desc"
-  );
-});
+      '$apply=filter(filter)/groupby((VALVALOR),aggregate($count as count))' +
+      '&$orderby=count desc'
+  )
+})

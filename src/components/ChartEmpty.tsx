@@ -1,8 +1,8 @@
-import { ChartContainer, EmptyState } from "components";
-import * as React from "react";
+import { ChartContainer, EmptyState } from 'components'
+import * as React from 'react'
 
 interface Props {
-  text: string;
+  text: string
 }
 
 export function ChartEmpty({ text }: Props) {
@@ -10,5 +10,5 @@ export function ChartEmpty({ text }: Props) {
     <ChartContainer>
       <EmptyState text={text} />
     </ChartContainer>
-  );
+  )
 }

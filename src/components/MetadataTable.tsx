@@ -5,20 +5,20 @@ import {
   TableCell,
   TableHead,
   TableRow,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import * as React from "react";
-import { Link as RouterLink } from "react-router-dom";
-import { SeriesMetadata, TableColumn } from "types";
+} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import * as React from 'react'
+import { Link as RouterLink } from 'react-router-dom'
+import { SeriesMetadata, TableColumn } from 'types'
 
 function formatDate(date: string | null): string {
-  return new Date(date || Date.now()).toLocaleDateString();
+  return new Date(date || Date.now()).toLocaleDateString()
 }
 
 const metadataFields: TableColumn<SeriesMetadata>[] = [
   {
-    accessor: "FNTNOME",
-    label: "Fonte",
+    accessor: 'FNTNOME',
+    label: 'Fonte',
     render: ({ FNTNOME, FNTURL, FNTSIGLA }) => (
       <Link
         component={RouterLink}
@@ -28,52 +28,52 @@ const metadataFields: TableColumn<SeriesMetadata>[] = [
       </Link>
     ),
   },
-  { accessor: "BASNOME", label: "Base" },
-  { accessor: "TEMNOME", label: "Tema" },
-  { accessor: "PERNOME", label: "Periodicidade" },
-  { accessor: "UNINOME", label: "Unidade de medida" },
-  { accessor: "SERQNT", label: "Qtd. de observações" },
+  { accessor: 'BASNOME', label: 'Base' },
+  { accessor: 'TEMNOME', label: 'Tema' },
+  { accessor: 'PERNOME', label: 'Periodicidade' },
+  { accessor: 'UNINOME', label: 'Unidade de medida' },
+  { accessor: 'SERQNT', label: 'Qtd. de observações' },
   {
-    accessor: "SERMINDATA",
-    label: "Início",
+    accessor: 'SERMINDATA',
+    label: 'Início',
     render: (metadata) => formatDate(metadata.SERMINDATA),
   },
   {
-    accessor: "SERMAXDATA",
-    label: "Fim",
+    accessor: 'SERMAXDATA',
+    label: 'Fim',
     render: (metadata) => formatDate(metadata.SERMAXDATA),
   },
   {
-    accessor: "SERSTATUS",
-    label: "Status",
-    render: (metadata) => (metadata.SERSTATUS === "A" ? "Ativa" : "Inativa"),
+    accessor: 'SERSTATUS',
+    label: 'Status',
+    render: (metadata) => (metadata.SERSTATUS === 'A' ? 'Ativa' : 'Inativa'),
   },
-];
+]
 
 const useStyles = makeStyles({
   header: {
-    fontWeight: "bold",
+    fontWeight: 'bold',
   },
-});
+})
 
 interface Props {
-  metadata: SeriesMetadata;
+  metadata: SeriesMetadata
 }
 
 export function MetadataTable(props: Props) {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const { metadata } = props;
+  const { metadata } = props
 
   return (
-    <Table size="small">
+    <Table size='small'>
       <TableHead>
         <TableRow>
-          <TableCell className={classes.header} component="th">
+          <TableCell className={classes.header} component='th'>
             Metadado
           </TableCell>
 
-          <TableCell className={classes.header} component="th">
+          <TableCell className={classes.header} component='th'>
             Valor
           </TableCell>
         </TableRow>
@@ -82,15 +82,15 @@ export function MetadataTable(props: Props) {
       <TableBody>
         {metadataFields.map(({ label, accessor, render }) => (
           <TableRow key={label}>
-            <TableCell component="th" scope="row" key="label">
+            <TableCell component='th' scope='row' key='label'>
               {label}
             </TableCell>
-            <TableCell key="valor">
-              {render ? render(metadata) : accessor ? metadata[accessor] : ""}
+            <TableCell key='valor'>
+              {render ? render(metadata) : accessor ? metadata[accessor] : ''}
             </TableCell>
           </TableRow>
         ))}
       </TableBody>
     </Table>
-  );
+  )
 }

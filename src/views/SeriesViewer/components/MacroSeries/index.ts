@@ -1,1 +1,1 @@
-export * from "./MacroSeries";
+export * from './MacroSeries'

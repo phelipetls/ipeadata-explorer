@@ -1,16 +1,16 @@
-import { ScaleLinear, ScaleQuantile } from "d3-scale";
-import * as React from "react";
+import { ScaleLinear, ScaleQuantile } from 'd3-scale'
+import * as React from 'react'
 
 interface QuantileRectanglesProps {
-  scale: ScaleQuantile<string>;
-  xScale: ScaleLinear<number, number>;
-  height: number;
-  marginTop: number;
-  marginBottom: number;
+  scale: ScaleQuantile<string>
+  xScale: ScaleLinear<number, number>
+  height: number
+  marginTop: number
+  marginBottom: number
 }
 
 export function QuantileRectangles(props: QuantileRectanglesProps) {
-  const { scale, xScale, height, marginTop, marginBottom } = props;
+  const { scale, xScale, height, marginTop, marginBottom } = props
 
   return (
     <g>
@@ -25,5 +25,5 @@ export function QuantileRectangles(props: QuantileRectanglesProps) {
         />
       ))}
     </g>
-  );
+  )
 }

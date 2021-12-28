@@ -1,36 +1,36 @@
-import { makeStyles, useTheme } from "@material-ui/core/styles";
-import * as React from "react";
+import { makeStyles, useTheme } from '@material-ui/core/styles'
+import * as React from 'react'
 
 const useStyles = makeStyles((theme) => ({
   row: {
-    padding: "1em",
-    display: "flex",
-    "& > *:first-child": {
+    padding: '1em',
+    display: 'flex',
+    '& > *:first-child': {
       borderTopLeftRadius: theme.shape.borderRadius,
       borderBottomLeftRadius: theme.shape.borderRadius,
     },
-    "& > *:last-child": {
+    '& > *:last-child': {
       borderTopRightRadius: theme.shape.borderRadius,
       borderBottomRightRadius: theme.shape.borderRadius,
     },
   },
   column: {
-    flex: "1 0",
-    height: "1vh",
+    flex: '1 0',
+    height: '1vh',
   },
-}));
+}))
 
 interface Props {
-  macro: number | null;
-  regional: number | null;
-  social: number | null;
+  macro: number | null
+  regional: number | null
+  social: number | null
 }
 
 export function ThemeBases(props: Props) {
-  const { macro, regional, social } = props;
+  const { macro, regional, social } = props
 
-  const theme = useTheme();
-  const classes = useStyles();
+  const theme = useTheme()
+  const classes = useStyles()
 
   return (
     <div className={classes.row}>
@@ -53,5 +53,5 @@ export function ThemeBases(props: Props) {
         />
       )}
     </div>
-  );
+  )
 }

@@ -1,1 +1,1 @@
-export * from "./GeographyInputs";
+export * from './GeographyInputs'

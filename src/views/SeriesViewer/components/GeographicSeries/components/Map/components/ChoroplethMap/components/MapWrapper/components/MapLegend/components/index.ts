@@ -1,2 +1,2 @@
-export * from "./QuantileRectangles";
-export * from "./Ticks";
+export * from './QuantileRectangles'
+export * from './Ticks'

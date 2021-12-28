@@ -1,11 +1,11 @@
-import { defineConfig } from "vite";
-import tsconfigPaths from "vite-tsconfig-paths";
-import istanbulPlugin from 'vite-plugin-istanbul';
+import { defineConfig } from 'vite'
+import tsconfigPaths from 'vite-tsconfig-paths'
+import istanbulPlugin from 'vite-plugin-istanbul'
 import reactRefresh from '@vitejs/plugin-react-refresh'
 
 export default defineConfig({
   build: {
-    outDir: "build",
+    outDir: 'build',
     sourcemap: true,
   },
   plugins: [
@@ -14,7 +14,7 @@ export default defineConfig({
     istanbulPlugin({
       requireEnv: true,
       cypress: true,
-      checkProd: false
-    })
+      checkProd: false,
+    }),
   ],
-});
+})

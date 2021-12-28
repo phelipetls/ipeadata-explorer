@@ -1,15 +1,15 @@
-import * as React from "react";
-import TruncateMarkup from "react-truncate-markup";
-import { ReadMore } from "./components";
+import * as React from 'react'
+import TruncateMarkup from 'react-truncate-markup'
+import { ReadMore } from './components'
 
 interface Props {
-  children: JSX.Element;
+  children: JSX.Element
 }
 
 export function MetadataComment({ children }: Props) {
-  const [isTruncated, setIsTruncated] = React.useState(true);
+  const [isTruncated, setIsTruncated] = React.useState(true)
 
-  const toggleTruncated = () => setIsTruncated((truncated) => !truncated);
+  const toggleTruncated = () => setIsTruncated((truncated) => !truncated)
 
   return isTruncated ? (
     <TruncateMarkup
@@ -25,5 +25,5 @@ export function MetadataComment({ children }: Props) {
       {children}
       <ReadMore isTruncated={isTruncated} onClick={toggleTruncated} />
     </>
-  );
+  )
 }

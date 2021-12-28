@@ -1,32 +1,32 @@
-import { fetchMetadata } from "api/ipea";
-import { EmptyState, Loading, SeriesSection } from "components";
-import isEmpty from "lodash/isEmpty";
-import * as React from "react";
-import { useQuery } from "react-query";
-import { useParams } from "react-router-dom";
+import { fetchMetadata } from 'api/ipea'
+import { EmptyState, Loading, SeriesSection } from 'components'
+import isEmpty from 'lodash/isEmpty'
+import * as React from 'react'
+import { useQuery } from 'react-query'
+import { useParams } from 'react-router-dom'
 import {
   CategoricalSeries,
   GeographicSeries,
   MacroSeries,
   Metadata,
-} from "./components";
+} from './components'
 
 export function SeriesViewer() {
-  const { code } = useParams() as { code: string };
+  const { code } = useParams() as { code: string }
 
   const { isLoading, isError, data } = useQuery(
-    ["Fetch series metadata", code],
+    ['Fetch series metadata', code],
     () => fetchMetadata(code)
-  );
+  )
 
-  const metadata = data?.value?.[0] || {};
+  const metadata = data?.value?.[0] || {}
 
   return isLoading ? (
     <Loading />
   ) : isError ? (
-    <EmptyState text="Desculpe, algum erro ocorreu." />
+    <EmptyState text='Desculpe, algum erro ocorreu.' />
   ) : isEmpty(metadata) ? (
-    <EmptyState text="Série não existente." />
+    <EmptyState text='Série não existente.' />
   ) : (
     <>
       <Metadata metadata={metadata} />
@@ -34,14 +34,14 @@ export function SeriesViewer() {
       <SeriesSection>
         {!metadata.SERNUMERICA ? (
           <CategoricalSeries code={code} metadata={metadata} />
-        ) : metadata.BASNOME === "Macroeconômico" ? (
+        ) : metadata.BASNOME === 'Macroeconômico' ? (
           <MacroSeries code={code} metadata={metadata} />
         ) : (
           <GeographicSeries code={code} metadata={metadata} />
         )}
       </SeriesSection>
     </>
-  );
+  )
 }
 
-export default SeriesViewer;
+export default SeriesViewer

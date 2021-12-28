@@ -3,21 +3,21 @@ import {
   DivisionToPlotAsMap,
   IbgeMapDivision,
   IbgeLocationDivision,
-} from "./types";
+} from './types'
 
 export const geographicDivisions = [
-  "Brasil",
-  "Área metropolitana",
-  "Regiões",
-  "Estados",
-  "Mesorregiões",
-  "Microrregiões",
-  "Municípios",
-] as const;
+  'Brasil',
+  'Área metropolitana',
+  'Regiões',
+  'Estados',
+  'Mesorregiões',
+  'Microrregiões',
+  'Municípios',
+] as const
 
 // IBGE Maps API documentation:
 // https://servicodados.ibge.gov.br/api/docs/malhas?versao=2
-const BASE_URL_MAPS = "https://servicodados.ibge.gov.br/api/v2/malhas/";
+const BASE_URL_MAPS = 'https://servicodados.ibge.gov.br/api/v2/malhas/'
 
 const mapDivisionsCode: Record<IbgeMapDivision, number> = {
   Brasil: 0,
@@ -26,34 +26,34 @@ const mapDivisionsCode: Record<IbgeMapDivision, number> = {
   Mesorregiões: 3,
   Microrregiões: 4,
   Municípios: 5,
-};
+}
 
 interface getMapUrlOptions {
-  id: string;
-  division?: IbgeMapDivision;
-  format?: string;
+  id: string
+  division?: IbgeMapDivision
+  format?: string
 }
 
 export function getMapUrl({ id, division, format }: getMapUrlOptions): string {
-  const url = new URL(id, BASE_URL_MAPS);
+  const url = new URL(id, BASE_URL_MAPS)
 
-  url.searchParams.set("formato", format || "application/json");
+  url.searchParams.set('formato', format || 'application/json')
 
   if (division) {
-    url.searchParams.set("resolucao", String(mapDivisionsCode[division]));
+    url.searchParams.set('resolucao', String(mapDivisionsCode[division]))
   }
 
-  return url.toString();
+  return url.toString()
 }
 
 export function shouldPlotMap(
   division: GeographicDivision
 ): division is DivisionToPlotAsMap {
   return !(
-    division === "Brasil" ||
-    division === "Regiões" ||
-    division === "Área metropolitana"
-  );
+    division === 'Brasil' ||
+    division === 'Regiões' ||
+    division === 'Área metropolitana'
+  )
 }
 
 /**
@@ -64,28 +64,28 @@ export function shouldPlotMap(
 export function getContainingDivisions(
   targetDivision: DivisionToPlotAsMap
 ): IbgeMapDivision[] {
-  const targetDivisionCode = mapDivisionsCode[targetDivision];
+  const targetDivisionCode = mapDivisionsCode[targetDivision]
 
   const containingDivisions = Object.entries(mapDivisionsCode)
     .filter(([_, code]) => code < targetDivisionCode)
-    .map(([name]) => name as IbgeMapDivision);
+    .map(([name]) => name as IbgeMapDivision)
 
-  return containingDivisions;
+  return containingDivisions
 }
 
 // IBGE Locations API documentation:
 // https://servicodados.ibge.gov.br/api/docs/localidades?versao=1
 const BASE_URL_DIVISIONS =
-  "https://servicodados.ibge.gov.br/api/v1/localidades/";
+  'https://servicodados.ibge.gov.br/api/v1/localidades/'
 
 const divisionsEndpoints: Record<IbgeLocationDivision, string> = {
-  Regiões: "regioes",
-  Estados: "estados",
-  Mesorregiões: "mesorregioes",
-  Microrregiões: "microrregioes",
-  Municípios: "municipios",
-};
+  Regiões: 'regioes',
+  Estados: 'estados',
+  Mesorregiões: 'mesorregioes',
+  Microrregiões: 'microrregioes',
+  Municípios: 'municipios',
+}
 
 export function getDivisionNamesUrl(division: IbgeLocationDivision) {
-  return BASE_URL_DIVISIONS + divisionsEndpoints[division];
+  return BASE_URL_DIVISIONS + divisionsEndpoints[division]
 }

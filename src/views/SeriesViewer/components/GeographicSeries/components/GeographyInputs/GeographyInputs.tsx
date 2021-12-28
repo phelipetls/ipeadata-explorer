@@ -1,23 +1,23 @@
-import { BoundaryDivision, GeographicDivision, shouldPlotMap } from "api/ibge";
-import * as React from "react";
-import { useFormContext } from "react-hook-form";
+import { BoundaryDivision, GeographicDivision, shouldPlotMap } from 'api/ibge'
+import * as React from 'react'
+import { useFormContext } from 'react-hook-form'
 import {
   SelectGeographicBoundaryDivision,
   SelectGeographicBoundaryId,
   SelectGeographicDivision,
-} from "./components";
+} from './components'
 
 interface Props {
-  division: GeographicDivision;
-  divisions: GeographicDivision[];
-  boundaryDivision?: BoundaryDivision | null;
-  boundaryId?: string;
+  division: GeographicDivision
+  divisions: GeographicDivision[]
+  boundaryDivision?: BoundaryDivision | null
+  boundaryId?: string
 }
 
 export interface GeographyInputsData {
-  division: GeographicDivision;
-  boundaryDivision: BoundaryDivision;
-  boundaryId: string;
+  division: GeographicDivision
+  boundaryDivision: BoundaryDivision
+  boundaryId: string
 }
 
 export function GeographyInputs(props: Props) {
@@ -25,22 +25,22 @@ export function GeographyInputs(props: Props) {
     division: defaultDivision,
     divisions,
     boundaryDivision: defaultBoundaryDivision,
-    boundaryId: defaultBoundaryId = "BR",
-  } = props;
+    boundaryId: defaultBoundaryId = 'BR',
+  } = props
 
-  const { register } = useFormContext<GeographyInputsData>();
+  const { register } = useFormContext<GeographyInputsData>()
 
   const [division, setDivision] =
-    React.useState<GeographicDivision>(defaultDivision);
+    React.useState<GeographicDivision>(defaultDivision)
 
   const [boundaryDivision, setBoundaryDivision] =
-    React.useState<BoundaryDivision>(defaultBoundaryDivision || "Brasil");
+    React.useState<BoundaryDivision>(defaultBoundaryDivision || 'Brasil')
 
   return (
     <>
       <SelectGeographicDivision
         ref={register}
-        name="division"
+        name='division'
         division={defaultDivision}
         divisions={divisions}
         handleChange={(e) => setDivision(e.target.value as GeographicDivision)}
@@ -50,7 +50,7 @@ export function GeographyInputs(props: Props) {
         <>
           <SelectGeographicBoundaryDivision
             ref={register}
-            name="boundaryDivision"
+            name='boundaryDivision'
             division={division}
             boundaryDivision={boundaryDivision}
             handleChange={(e) =>
@@ -58,10 +58,10 @@ export function GeographyInputs(props: Props) {
             }
           />
 
-          {boundaryDivision !== "Brasil" && (
+          {boundaryDivision !== 'Brasil' && (
             <SelectGeographicBoundaryId
               ref={register}
-              name="boundaryId"
+              name='boundaryId'
               boundaryDivision={boundaryDivision}
               defaultBoundaryId={defaultBoundaryId}
             />
@@ -69,5 +69,5 @@ export function GeographyInputs(props: Props) {
         </>
       )}
     </>
-  );
+  )
 }

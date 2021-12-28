@@ -1,38 +1,38 @@
-import { GeographicDivision } from "api/ibge/types";
+import { GeographicDivision } from 'api/ibge/types'
 
 export interface SeriesValuesMacro {
   /**
    * Date (ISO 8601)
    */
-  VALDATA: string;
+  VALDATA: string
   /**
    * Value
    */
-  VALVALOR: number;
+  VALVALOR: number
   /**
    * Geographic division
    */
-  NIVNOME: GeographicDivision;
+  NIVNOME: GeographicDivision
 }
 
 export interface SeriesValuesGeographic extends SeriesValuesMacro {
   /**
    * Territory name within a geographic division
    */
-  TERCODIGO: string;
+  TERCODIGO: string
   /**
    * Territory identifier code within a geographic division
    */
-  TERNOME: string;
+  TERNOME: string
 }
 
 export interface SeriesValuesCategorical {
   /**
    * Category value
    */
-  VALVALOR: string;
+  VALVALOR: string
   /**
    * Total number of observations
    */
-  count: number;
+  count: number
 }

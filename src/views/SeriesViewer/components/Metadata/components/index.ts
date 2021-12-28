@@ -1,1 +1,1 @@
-export * from "./MetadataComment";
+export * from './MetadataComment'

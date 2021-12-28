@@ -1,1 +1,1 @@
-export * from "./GeographicSeries";
+export * from './GeographicSeries'

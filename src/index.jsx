@@ -1,18 +1,18 @@
-import * as React from "react";
-import ReactDOM from "react-dom";
-import "./index.css";
-import "fontsource-roboto";
-import App from "./App";
+import * as React from 'react'
+import ReactDOM from 'react-dom'
+import './index.css'
+import 'fontsource-roboto'
+import App from './App'
 
-import { theme } from "./styles/Theme";
-import { ThemeProvider } from "@material-ui/core/styles";
+import { theme } from './styles/Theme'
+import { ThemeProvider } from '@material-ui/core/styles'
 
-import DateFnsUtils from "@date-io/date-fns";
-import { MuiPickersUtilsProvider } from "@material-ui/pickers";
+import DateFnsUtils from '@date-io/date-fns'
+import { MuiPickersUtilsProvider } from '@material-ui/pickers'
 
-import { QueryClient, QueryClientProvider } from "react-query";
+import { QueryClient, QueryClientProvider } from 'react-query'
 
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router } from 'react-router-dom'
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,7 +21,7 @@ const queryClient = new QueryClient({
       retry: 0,
     },
   },
-});
+})
 
 ReactDOM.render(
   <React.StrictMode>
@@ -35,5 +35,5 @@ ReactDOM.render(
       </MuiPickersUtilsProvider>
     </ThemeProvider>
   </React.StrictMode>,
-  document.getElementById("root")
-);
+  document.getElementById('root')
+)

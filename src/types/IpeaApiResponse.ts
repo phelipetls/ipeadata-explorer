@@ -1,3 +1,3 @@
 export type IpeaApiResponse<T> = {
-  value: T;
-};
+  value: T
+}

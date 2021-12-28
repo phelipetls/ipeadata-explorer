@@ -1,1 +1,1 @@
-export * from "./useSyncSearchParams";
+export * from './useSyncSearchParams'

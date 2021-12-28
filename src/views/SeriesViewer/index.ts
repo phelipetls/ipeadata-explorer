@@ -1,1 +1,1 @@
-export { default } from "./SeriesViewer";
+export { default } from './SeriesViewer'

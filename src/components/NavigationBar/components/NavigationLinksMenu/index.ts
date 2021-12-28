@@ -1,1 +1,1 @@
-export * from "./NavigationLinksMenu";
+export * from './NavigationLinksMenu'

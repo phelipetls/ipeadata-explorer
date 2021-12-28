@@ -1,1 +1,1 @@
-export * from "./CategoricalBarChart";
+export * from './CategoricalBarChart'

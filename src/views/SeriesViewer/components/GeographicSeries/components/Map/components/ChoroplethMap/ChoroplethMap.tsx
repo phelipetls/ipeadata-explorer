@@ -2,31 +2,31 @@ import {
   DivisionToPlotAsMap,
   fetchDivisionTerritories,
   getMapUrl,
-} from "api/ibge";
-import { fetchMap } from "api/ibge/requests";
-import { ChartLoading } from "components";
-import { scaleQuantile } from "d3-scale";
-import { schemeBlues as palette } from "d3-scale-chromatic";
-import groupBy from "lodash/groupBy";
-import keyBy from "lodash/keyBy";
-import * as React from "react";
-import { useQuery } from "react-query";
-import { Geographies, Geography } from "react-simple-maps";
-import { SeriesMetadata, SeriesValuesGeographic } from "types";
-import { formatDate } from "utils";
-import { MapWrapper, SelectDate } from "./components";
+} from 'api/ibge'
+import { fetchMap } from 'api/ibge/requests'
+import { ChartLoading } from 'components'
+import { scaleQuantile } from 'd3-scale'
+import { schemeBlues as palette } from 'd3-scale-chromatic'
+import groupBy from 'lodash/groupBy'
+import keyBy from 'lodash/keyBy'
+import * as React from 'react'
+import { useQuery } from 'react-query'
+import { Geographies, Geography } from 'react-simple-maps'
+import { SeriesMetadata, SeriesValuesGeographic } from 'types'
+import { formatDate } from 'utils'
+import { MapWrapper, SelectDate } from './components'
 
 interface Props {
-  series: SeriesValuesGeographic[];
-  metadata: SeriesMetadata;
-  division: DivisionToPlotAsMap;
-  boundaryId: string;
+  series: SeriesValuesGeographic[]
+  metadata: SeriesMetadata
+  division: DivisionToPlotAsMap
+  boundaryId: string
   setTooltipPosition(state: {
-    x: number | undefined;
-    y: number | undefined;
-  }): void;
-  setTooltipText(state: string): void;
-  setTooltipOpen(state: boolean): void;
+    x: number | undefined
+    y: number | undefined
+  }): void
+  setTooltipText(state: string): void
+  setTooltipOpen(state: boolean): void
 }
 
 export const ChoroplethMap: React.FC<Props> = React.memo((props) => {
@@ -38,39 +38,39 @@ export const ChoroplethMap: React.FC<Props> = React.memo((props) => {
     setTooltipPosition,
     setTooltipText,
     setTooltipOpen,
-  } = props;
+  } = props
 
   const { isLoading: isLoadingTerritories, data: territories } = useQuery(
-    ["Fetch division territories", division],
+    ['Fetch division territories', division],
     () => fetchDivisionTerritories(division),
     { enabled: Boolean(division) }
-  );
+  )
 
-  const territoriesByDivisionId = territories && keyBy(territories, "id");
+  const territoriesByDivisionId = territories && keyBy(territories, 'id')
 
   const { isLoading: isLoadingOutlineMap, data: outline } = useQuery(
-    ["Fetch outline map given a boundary region id", boundaryId],
+    ['Fetch outline map given a boundary region id', boundaryId],
     () => fetchMap(boundaryId)
-  );
+  )
 
   const seriesByDate = groupBy(series, (row) =>
     formatDate(new Date(row.VALDATA), { periodicity: metadata.PERNOME })
-  );
+  )
 
-  const dates = Object.keys(seriesByDate);
+  const dates = Object.keys(seriesByDate)
 
-  const [selectedDate, setSelectedDate] = React.useState(() => dates[0]);
+  const [selectedDate, setSelectedDate] = React.useState(() => dates[0])
 
-  const selectedDateRows = seriesByDate[selectedDate] || {};
+  const selectedDateRows = seriesByDate[selectedDate] || {}
   const selectedDateValues = Object.values(selectedDateRows).map(
-    (row) => row["VALVALOR"]
-  );
+    (row) => row['VALVALOR']
+  )
 
   const scale = scaleQuantile<string>()
     .domain(selectedDateValues)
-    .range(palette[4]);
+    .range(palette[4])
 
-  const isLoading = isLoadingOutlineMap || isLoadingTerritories;
+  const isLoading = isLoadingOutlineMap || isLoadingTerritories
 
   return (
     <>
@@ -86,16 +86,16 @@ export const ChoroplethMap: React.FC<Props> = React.memo((props) => {
           <Geographies geography={getMapUrl({ id: boundaryId, division })}>
             {({ geographies }) =>
               geographies.map((geo) => {
-                const divisionId = geo.properties.codarea;
+                const divisionId = geo.properties.codarea
 
                 // FIXME: probably a bug
-                const name = territoriesByDivisionId?.[divisionId]?.["nome"];
+                const name = territoriesByDivisionId?.[divisionId]?.['nome']
 
                 const currentRow = selectedDateRows.find(
-                  (row) => row["TERCODIGO"] === divisionId
-                );
+                  (row) => row['TERCODIGO'] === divisionId
+                )
 
-                const value = (currentRow && currentRow["VALVALOR"]) || 0;
+                const value = (currentRow && currentRow['VALVALOR']) || 0
 
                 return (
                   <Geography
@@ -103,18 +103,18 @@ export const ChoroplethMap: React.FC<Props> = React.memo((props) => {
                     geography={geo}
                     fill={scale(value)}
                     onMouseEnter={() => {
-                      setTooltipOpen(true);
-                      setTooltipText(`${name} ― ${value}`);
+                      setTooltipOpen(true)
+                      setTooltipText(`${name} ― ${value}`)
                     }}
                     onMouseLeave={() => {
-                      setTooltipOpen(false);
-                      setTooltipText("");
+                      setTooltipOpen(false)
+                      setTooltipText('')
                     }}
                     onMouseMove={(e) => {
-                      setTooltipPosition({ x: e.clientX, y: e.clientY });
+                      setTooltipPosition({ x: e.clientX, y: e.clientY })
                     }}
                   />
-                );
+                )
               })
             }
           </Geographies>
@@ -130,5 +130,5 @@ export const ChoroplethMap: React.FC<Props> = React.memo((props) => {
         }
       />
     </>
-  );
-});
+  )
+})

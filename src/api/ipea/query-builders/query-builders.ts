@@ -1,39 +1,39 @@
-import { SeriesMetadata } from "types";
-import { formatDateToBackend, offsetDate } from "api/ipea";
-import { GeographicDivision, shouldPlotMap } from "api/ibge";
+import { SeriesMetadata } from 'types'
+import { formatDateToBackend, offsetDate } from 'api/ipea'
+import { GeographicDivision, shouldPlotMap } from 'api/ibge'
 
 export function joinFilters(...filters: Array<string | null>) {
-  return filters.filter((value) => Boolean(value)).join(" and ");
+  return filters.filter((value) => Boolean(value)).join(' and ')
 }
 
 export function buildFilter(...filters: Array<string | null>) {
-  return `&$filter=${joinFilters(...filters)}`;
+  return `&$filter=${joinFilters(...filters)}`
 }
 
 export function limitQuery(limit: number) {
-  return `&$top=${limit}`;
+  return `&$top=${limit}`
 }
 
 export function offsetQuery(offset: number) {
-  return `&$skip=${offset}`;
+  return `&$skip=${offset}`
 }
 
 interface dateLimits {
-  start?: string;
-  end?: string;
+  start?: string
+  end?: string
 }
 
 export function limitByDate({ start, end }: dateLimits) {
-  const intervalStart = start ? `VALDATA ge ${start}` : "";
-  const intervalEnd = end ? `VALDATA le ${end}` : "";
-  return joinFilters(intervalStart, intervalEnd);
+  const intervalStart = start ? `VALDATA ge ${start}` : ''
+  const intervalEnd = end ? `VALDATA le ${end}` : ''
+  return joinFilters(intervalStart, intervalEnd)
 }
 
 interface dateFilters {
-  start: Date | null;
-  end: Date | null;
-  lastN: number;
-  metadata: SeriesMetadata;
+  start: Date | null
+  end: Date | null
+  lastN: number
+  metadata: SeriesMetadata
 }
 
 export function getDateFilter({ start, end, lastN, metadata }: dateFilters) {
@@ -41,15 +41,15 @@ export function getDateFilter({ start, end, lastN, metadata }: dateFilters) {
     return limitByDate({
       start: formatDateToBackend(start),
       end: formatDateToBackend(end),
-    });
+    })
   }
 
   if (start) {
-    return limitByDate({ start: formatDateToBackend(start) });
+    return limitByDate({ start: formatDateToBackend(start) })
   }
 
   if (end) {
-    return limitByDate({ end: formatDateToBackend(end) });
+    return limitByDate({ end: formatDateToBackend(end) })
   }
 
   return limitByDate({
@@ -58,15 +58,15 @@ export function getDateFilter({ start, end, lastN, metadata }: dateFilters) {
       period: metadata.PERNOME,
       offset: lastN - 1,
     }),
-  });
+  })
 }
 
 export function getBoundaryFilter(
   boundaryId: string,
   division: GeographicDivision
 ) {
-  if (!shouldPlotMap(division) || boundaryId === "BR") {
-    return "";
+  if (!shouldPlotMap(division) || boundaryId === 'BR') {
+    return ''
   }
-  return `startswith(TERCODIGO,'${String(boundaryId).slice(0, 2)}')`;
+  return `startswith(TERCODIGO,'${String(boundaryId).slice(0, 2)}')`
 }

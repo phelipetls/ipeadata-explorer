@@ -1,5 +1,5 @@
-import { Link, Paper, TableContainer } from "@material-ui/core";
-import { fetchSeriesSearch, getSearchValuesFromUrl } from "api/ipea";
+import { Link, Paper, TableContainer } from '@material-ui/core'
+import { fetchSeriesSearch, getSearchValuesFromUrl } from 'api/ipea'
 import {
   EmptyState,
   MetadataTable,
@@ -7,82 +7,82 @@ import {
   TableCollapsedRows,
   TableSkeleton,
   TableSortable,
-} from "components";
-import { useSyncSearchParams } from "hooks";
-import * as React from "react";
-import { useQuery, useQueryClient } from "react-query";
-import { Link as RouterLink, useLocation } from "react-router-dom";
-import { SeriesMetadata, TableColumn } from "types";
-import { useBreakpoint } from "utils";
-import { SearchFilterContainer, SearchFilterForm } from "./components";
+} from 'components'
+import { useSyncSearchParams } from 'hooks'
+import * as React from 'react'
+import { useQuery, useQueryClient } from 'react-query'
+import { Link as RouterLink, useLocation } from 'react-router-dom'
+import { SeriesMetadata, TableColumn } from 'types'
+import { useBreakpoint } from 'utils'
+import { SearchFilterContainer, SearchFilterForm } from './components'
 
-type MetadataDateFields = Pick<SeriesMetadata, "SERMAXDATA" | "SERMINDATA">;
+type MetadataDateFields = Pick<SeriesMetadata, 'SERMAXDATA' | 'SERMINDATA'>
 
 const getYear = (row: SeriesMetadata, column: keyof MetadataDateFields) =>
-  new Date(row[column] as string).getFullYear();
+  new Date(row[column] as string).getFullYear()
 
 const columns: TableColumn<SeriesMetadata>[] = [
   {
-    accessor: "SERNOME",
-    label: "Nome",
-    type: "string",
+    accessor: 'SERNOME',
+    label: 'Nome',
+    type: 'string',
     render: (row: SeriesMetadata) => (
       <Link component={RouterLink} to={`/serie/${row.SERCODIGO}`}>
         {row.SERNOME}
       </Link>
     ),
   },
-  { accessor: "PERNOME", label: "Frequência", type: "string" },
-  { accessor: "UNINOME", label: "Unidade", type: "string" },
+  { accessor: 'PERNOME', label: 'Frequência', type: 'string' },
+  { accessor: 'UNINOME', label: 'Unidade', type: 'string' },
   {
-    accessor: "SERMINDATA",
-    label: "Início",
-    type: "date",
-    render: (row: SeriesMetadata) => getYear(row, "SERMINDATA"),
+    accessor: 'SERMINDATA',
+    label: 'Início',
+    type: 'date',
+    render: (row: SeriesMetadata) => getYear(row, 'SERMINDATA'),
   },
   {
-    accessor: "SERMAXDATA",
-    label: "Fim",
-    type: "date",
-    render: (row: SeriesMetadata) => getYear(row, "SERMAXDATA"),
+    accessor: 'SERMAXDATA',
+    label: 'Fim',
+    type: 'date',
+    render: (row: SeriesMetadata) => getYear(row, 'SERMAXDATA'),
   },
-];
+]
 
-const DEFAULT_PAGE = 0;
-const DEFAULT_ROWS_PER_PAGE = 10;
+const DEFAULT_PAGE = 0
+const DEFAULT_ROWS_PER_PAGE = 10
 
 export function SeriesSearch() {
-  const isSmallScreen = useBreakpoint("sm");
-  const queryClient = useQueryClient();
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
+  const isSmallScreen = useBreakpoint('sm')
+  const queryClient = useQueryClient()
+  const location = useLocation()
+  const searchParams = new URLSearchParams(location.search)
 
   const [searchValues, setSearchValues] = React.useState(() =>
     getSearchValuesFromUrl(searchParams)
-  );
+  )
 
   const [page, setPage] = React.useState(
-    Number(searchParams.get("page")) || DEFAULT_PAGE
-  );
+    Number(searchParams.get('page')) || DEFAULT_PAGE
+  )
 
   const [rowsPerPage, setRowsPerPage] = React.useState(
-    Number(searchParams.get("rowsPerPage")) || DEFAULT_ROWS_PER_PAGE
-  );
+    Number(searchParams.get('rowsPerPage')) || DEFAULT_ROWS_PER_PAGE
+  )
 
-  const [totalCount, setTotalCount] = React.useState(0);
+  const [totalCount, setTotalCount] = React.useState(0)
 
-  const [filterActive, setFilterActive] = React.useState(false);
+  const [filterActive, setFilterActive] = React.useState(false)
 
   const { isLoading, isFetching, data } = useQuery(
     [{ searchValues, page, rowsPerPage }],
     () => fetchSeriesSearch({ searchValues, page, rowsPerPage }),
     {
       staleTime: Infinity,
-      onSuccess: (data) => setTotalCount(data["@odata.count"]),
+      onSuccess: (data) => setTotalCount(data['@odata.count']),
     }
-  );
+  )
 
-  const rows: SeriesMetadata[] = data?.value || [];
+  const rows: SeriesMetadata[] = data?.value || []
 
   const stateToSync = React.useMemo(
     () => ({
@@ -91,29 +91,29 @@ export function SeriesSearch() {
       ...searchValues,
     }),
     [page, rowsPerPage, searchValues]
-  );
+  )
 
-  useSyncSearchParams(stateToSync);
+  useSyncSearchParams(stateToSync)
 
   function handleChangePage(_: any, newPage: number) {
-    setPage(newPage);
+    setPage(newPage)
   }
 
   function handleChangeRowsPerPage(e: React.ChangeEvent<HTMLInputElement>) {
-    setPage(0);
-    setRowsPerPage(parseInt(e.target.value, 10));
+    setPage(0)
+    setRowsPerPage(parseInt(e.target.value, 10))
 
     queryClient.invalidateQueries([{ searchValues, rowsPerPage }], {
       refetchActive: false,
-    });
+    })
   }
 
   function handleSubmit(data: Record<string, any>) {
-    setSearchValues(data);
-    setPage(0);
-    setFilterActive(false);
+    setSearchValues(data)
+    setPage(0)
+    setFilterActive(false)
 
-    queryClient.invalidateQueries([{ searchValues }], { refetchActive: false });
+    queryClient.invalidateQueries([{ searchValues }], { refetchActive: false })
   }
 
   const paginationActions = (
@@ -124,16 +124,16 @@ export function SeriesSearch() {
       handleChangePage={handleChangePage}
       handleChangeRowsPerPage={handleChangeRowsPerPage}
     />
-  );
+  )
 
-  let table: JSX.Element;
-  const isLoadingRows = isLoading || isFetching || rows.length === 0;
+  let table: JSX.Element
+  const isLoadingRows = isLoading || isFetching || rows.length === 0
 
   if (isSmallScreen) {
     table = (
       <TableCollapsedRows
         rows={rows}
-        columns={["Nome", ""]}
+        columns={['Nome', '']}
         renderSummary={(row) => (
           <Link component={RouterLink} to={`/serie/${row.SERCODIGO}`}>
             {row.SERNOME}
@@ -144,12 +144,12 @@ export function SeriesSearch() {
         skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={2} />}
         footer={paginationActions}
       />
-    );
+    )
   } else {
     table = (
       <TableSortable
         rows={rows}
-        rowKey="SERCODIGO"
+        rowKey='SERCODIGO'
         columns={columns}
         isLoading={isLoadingRows}
         skeleton={
@@ -157,7 +157,7 @@ export function SeriesSearch() {
         }
         footer={paginationActions}
       />
-    );
+    )
   }
 
   return (
@@ -172,15 +172,15 @@ export function SeriesSearch() {
       {!isLoading && rows.length === 0 ? (
         <Paper>
           <EmptyState
-            text="Nenhum resultado para essa pesquisa"
-            style={{ minHeight: "300px" }}
+            text='Nenhum resultado para essa pesquisa'
+            style={{ minHeight: '300px' }}
           />
         </Paper>
       ) : (
         <TableContainer component={Paper}>{table}</TableContainer>
       )}
     </>
-  );
+  )
 }
 
-export default SeriesSearch;
+export default SeriesSearch

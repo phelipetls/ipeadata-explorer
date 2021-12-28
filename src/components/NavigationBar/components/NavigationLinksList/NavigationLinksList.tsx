@@ -1,29 +1,29 @@
-import { Link, List, ListItem } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import * as React from "react";
-import { Link as RouterLink } from "react-router-dom";
-import { NavigationLink } from "../../types";
+import { Link, List, ListItem } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import * as React from 'react'
+import { Link as RouterLink } from 'react-router-dom'
+import { NavigationLink } from '../../types'
 
 const useStyles = makeStyles((theme) => ({
   list: {
-    display: "flex",
-    flexDirection: "row",
+    display: 'flex',
+    flexDirection: 'row',
   },
   item: {
-    cursor: "pointer",
-    textAlign: "center",
-    "&:hover": {
+    cursor: 'pointer',
+    textAlign: 'center',
+    '&:hover': {
       backgroundColor: theme.palette.action.hover,
     },
   },
-}));
+}))
 
 interface Props {
-  links: NavigationLink[];
+  links: NavigationLink[]
 }
 
 export function NavigationLinksList({ links }: Props) {
-  const classes = useStyles();
+  const classes = useStyles()
 
   return (
     <List className={classes.list}>
@@ -34,11 +34,11 @@ export function NavigationLinksList({ links }: Props) {
           key={index}
           className={classes.item}
         >
-          <Link component="div" underline="none">
+          <Link component='div' underline='none'>
             {link.text}
           </Link>
         </ListItem>
       ))}
     </List>
-  );
+  )
 }

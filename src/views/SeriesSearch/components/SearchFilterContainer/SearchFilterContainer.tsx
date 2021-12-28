@@ -4,10 +4,10 @@ import {
   IconButton,
   Paper,
   Typography,
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
-import * as React from "react";
+} from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons'
+import * as React from 'react'
 
 const useStyles = makeStyles((theme) => ({
   filterContainer: {
@@ -18,28 +18,28 @@ const useStyles = makeStyles((theme) => ({
   arrow: {
     marginLeft: theme.spacing(1),
   },
-}));
+}))
 
 interface Props {
-  filterActive: boolean;
-  setFilterActive: (state: boolean) => void;
-  children: JSX.Element;
+  filterActive: boolean
+  setFilterActive: (state: boolean) => void
+  children: JSX.Element
 }
 
 export function SearchFilterContainer(props: Props) {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const { filterActive, setFilterActive, children } = props;
+  const { filterActive, setFilterActive, children } = props
 
   return (
     <Paper className={classes.filterContainer}>
       <Grid container>
-        <Typography variant="h6">Filtros</Typography>
+        <Typography variant='h6'>Filtros</Typography>
 
         <IconButton
-          aria-label="Expande filtros"
-          data-testid="show-filters"
-          size="small"
+          aria-label='Expande filtros'
+          data-testid='show-filters'
+          size='small'
           onClick={() => setFilterActive(!filterActive)}
           className={classes.arrow}
         >
@@ -49,5 +49,5 @@ export function SearchFilterContainer(props: Props) {
 
       <Collapse in={filterActive}>{children}</Collapse>
     </Paper>
-  );
+  )
 }

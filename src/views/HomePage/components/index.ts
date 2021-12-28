@@ -1,1 +1,1 @@
-export * from "./HomePageFeatures";
+export * from './HomePageFeatures'

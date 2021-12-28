@@ -1,6 +1,6 @@
-import { Paper } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import * as React from "react";
+import { Paper } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import * as React from 'react'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -10,14 +10,14 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: theme.spacing(6),
     paddingLeft: theme.spacing(6),
   },
-}));
+}))
 
 interface Props {
-  children: JSX.Element | JSX.Element[];
+  children: JSX.Element | JSX.Element[]
 }
 
 export function SeriesSection({ children }: Props) {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  return <Paper className={classes.root}>{children}</Paper>;
+  return <Paper className={classes.root}>{children}</Paper>
 }

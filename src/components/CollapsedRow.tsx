@@ -1,12 +1,12 @@
-import { Collapse, IconButton, TableCell, TableRow } from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import { KeyboardArrowDown, KeyboardArrowUp } from "@material-ui/icons";
-import * as React from "react";
+import { Collapse, IconButton, TableCell, TableRow } from '@material-ui/core'
+import { makeStyles } from '@material-ui/core/styles'
+import { KeyboardArrowDown, KeyboardArrowUp } from '@material-ui/icons'
+import * as React from 'react'
 
 const useStyles = makeStyles((theme) => ({
   summaryRow: {
-    "& > *": {
-      borderBottom: "unset",
+    '& > *': {
+      borderBottom: 'unset',
     },
   },
   collapsedCell: {
@@ -16,26 +16,26 @@ const useStyles = makeStyles((theme) => ({
   collapsed: {
     paddingBottom: theme.spacing(1),
   },
-}));
+}))
 
 interface Props {
-  summary: JSX.Element;
-  children: JSX.Element;
+  summary: JSX.Element
+  children: JSX.Element
 }
 
 export function CollapsedRow({ summary, children }: Props) {
-  const classes = useStyles();
+  const classes = useStyles()
 
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
 
   return (
     <>
       <TableRow className={classes.summaryRow}>
         <TableCell>{summary}</TableCell>
-        <TableCell align="right">
+        <TableCell align='right'>
           <IconButton
-            aria-label="Expandir linha"
-            size="small"
+            aria-label='Expandir linha'
+            size='small'
             onClick={() => setOpen(!open)}
           >
             {open ? <KeyboardArrowUp /> : <KeyboardArrowDown />}
@@ -51,5 +51,5 @@ export function CollapsedRow({ summary, children }: Props) {
         </TableCell>
       </TableRow>
     </>
-  );
+  )
 }

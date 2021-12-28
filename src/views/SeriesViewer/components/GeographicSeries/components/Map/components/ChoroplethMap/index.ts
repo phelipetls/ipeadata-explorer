@@ -1,1 +1,1 @@
-export * from "./ChoroplethMap";
+export * from './ChoroplethMap'
