@@ -16,10 +16,11 @@ interface Props {
   renderRow: (row: SeriesMetadata) => JSX.Element;
   isLoading: boolean;
   skeleton: JSX.Element;
+  footer: JSX.Element;
 }
 
 export function TableCollapsedRows(props: Props) {
-  const { columns, rows, renderSummary, renderRow, isLoading, skeleton } =
+  const { columns, rows, renderSummary, renderRow, isLoading, skeleton, footer } =
     props;
 
   const body = isLoading
@@ -40,6 +41,7 @@ export function TableCollapsedRows(props: Props) {
         </TableRow>
       </TableHead>
       <TableBody>{body}</TableBody>
+      {footer}
     </Table>
   );
 }

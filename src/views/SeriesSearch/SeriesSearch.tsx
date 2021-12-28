@@ -142,6 +142,7 @@ export function SeriesSearch() {
         renderRow={(row) => <MetadataTable metadata={row} />}
         isLoading={isLoadingRows}
         skeleton={<TableSkeleton nRows={rowsPerPage} nColumns={2} />}
+        footer={paginationActions}
       />
     );
   } else {
