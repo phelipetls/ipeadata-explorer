@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 import istanbulPlugin from 'vite-plugin-istanbul';
+import reactRefresh from '@vitejs/plugin-react-refresh'
 
 export default defineConfig({
   build: {
@@ -9,6 +10,7 @@ export default defineConfig({
   },
   plugins: [
     tsconfigPaths(),
+    reactRefresh(),
     istanbulPlugin({
       requireEnv: true,
       cypress: true,
