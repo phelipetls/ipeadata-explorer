@@ -14,6 +14,7 @@ import {
   Tooltip,
 } from 'chart.js'
 import 'chartjs-adapter-date-fns'
+import { ptBR } from 'date-fns/locale'
 import * as React from 'react'
 import { theme } from 'styles'
 import { coloredDatasetsPlugin } from 'utils'
@@ -54,6 +55,12 @@ Chart.defaults.plugins.title.font = {
   weight: 0,
   family: 'Roboto, sans-serif',
   color: 'black',
+}
+console.log(Object.keys(Chart.defaults.scales.time.adapters))
+Chart.defaults.scales.time.adapters = {
+  date: {
+    locale: ptBR
+  }
 }
 
 const useStyles = makeStyles({
