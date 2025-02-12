@@ -7,7 +7,7 @@ import axios from 'redaxios'
 import { TableColumn } from 'types'
 
 const COUNTRIES_URL =
-  'http://ipeadata2-homologa.ipea.gov.br/api/v1/Paises?' +
+  'http://ipeadata.gov.br/api/v1/Paises?' +
   '$expand=Metadados($select=SERCODIGO;$count=true)'
 
 interface CountryMetadata {
