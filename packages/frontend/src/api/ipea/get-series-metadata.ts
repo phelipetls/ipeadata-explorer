@@ -78,7 +78,7 @@ export async function getSeriesMetadata(
   regionalLevels: RegionalLevel[]
   possibleDates: Date[]
 }> {
-  const url = new URL(`https://ipeadata.gov.br/api/v1/Metadados('${code}')`)
+  const url = new URL(`${import.meta.env.VITE_API_URL}/Metadados('${code}')`)
   const [response, countries] = await Promise.all([
     fetch(url, { signal }),
     getCountries({ signal }),

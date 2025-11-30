@@ -50,7 +50,7 @@ export async function getSeriesValues(
   { signal, startDate, endDate, regions = [], regionalLevel }: Options,
 ): Promise<Value[]> {
   const url = new URL(
-    `https://ipeadata.gov.br/api/v1/Metadados('${code}')/Valores`,
+    `${import.meta.env.VITE_API_URL}/Metadados('${code}')/Valores`,
   )
 
   url.searchParams.set('$select', 'VALVALOR,ANO,MES,DIA,TERNOME,TERCODIGO')

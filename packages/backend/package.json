@@ -1,0 +1,19 @@
+{
+  "name": "backend",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "tsx watch src/dev.ts",
+    "build": "esbuild src/lambda.ts --bundle --minify --platform=node --target=node22 --format=esm --outfile=dist/index.mjs"
+  },
+  "dependencies": {
+    "@hono/node-server": "^1.0.0",
+    "hono": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "esbuild": "^0.20.0",
+    "tsx": "^4.0.0"
+  }
+}

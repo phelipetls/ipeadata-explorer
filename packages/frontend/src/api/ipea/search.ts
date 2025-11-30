@@ -19,7 +19,7 @@ export async function search(
   name: string,
   { signal }: { signal: AbortSignal },
 ): Promise<SearchItem[]> {
-  const url = new URL('https://ipeadata.gov.br/api/v1/Metadados')
+  const url = new URL(`${import.meta.env.VITE_API_URL}/Metadados`)
   url.searchParams.set('$select', 'SERCODIGO,SERNOME,SERNUMERICA')
 
   const filters = []

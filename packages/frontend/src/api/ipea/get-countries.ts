@@ -14,7 +14,7 @@ export async function getCountries({
 }: {
   signal: AbortSignal
 }): Promise<Record<string, string>> {
-  const url = new URL(`https://ipeadata.gov.br/api/v1/Paises`)
+  const url = new URL(`${import.meta.env.VITE_API_URL}/Paises`)
 
   const response = await fetch(url, { signal })
   if (!response.ok) {
