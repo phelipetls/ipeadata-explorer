@@ -1,20 +1,17 @@
 import { defineConfig } from 'vite'
-import tsconfigPaths from 'vite-tsconfig-paths'
-import istanbulPlugin from 'vite-plugin-istanbul'
-import reactRefresh from '@vitejs/plugin-react-refresh'
+import react from '@vitejs/plugin-react'
+import tailwindcss from '@tailwindcss/vite'
 
 export default defineConfig({
+  plugins: [
+    react({
+      babel: {
+        plugins: ['babel-plugin-react-compiler'],
+      },
+    }),
+    tailwindcss(),
+  ],
   build: {
     outDir: 'build',
-    sourcemap: true,
   },
-  plugins: [
-    tsconfigPaths(),
-    reactRefresh(),
-    istanbulPlugin({
-      requireEnv: true,
-      cypress: true,
-      checkProd: false,
-    }),
-  ],
 })

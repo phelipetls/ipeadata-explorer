@@ -1,0 +1,173 @@
+#!/usr/bin/env node
+
+import { writeFile, mkdir } from 'fs/promises'
+import { existsSync } from 'fs'
+import { join, dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+const MAPS = [
+  {
+    url: 'https://servicodados.ibge.gov.br/api/v4/malhas/paises/BR?formato=application/vnd.geo+json&qualidade=minima',
+    filename: join(__dirname, '..', 'src', 'assets', 'brazil.json'),
+    locationUrl: null,
+  },
+  {
+    url: 'https://servicodados.ibge.gov.br/api/v4/malhas/paises/BR?intrarregiao=regiao&formato=application/vnd.geo+json&qualidade=minima',
+    filename: join(__dirname, '..', 'public', 'maps', 'brazil-regions.json'),
+    locationUrl: 'https://servicodados.ibge.gov.br/api/v1/localidades/regioes',
+  },
+  {
+    url: 'https://servicodados.ibge.gov.br/api/v4/malhas/paises/BR?intrarregiao=municipio&formato=application/vnd.geo+json&qualidade=minima',
+    filename: join(
+      __dirname,
+      '..',
+      'public',
+      'maps',
+      'brazil-municipalities.json',
+    ),
+    locationUrl:
+      'https://servicodados.ibge.gov.br/api/v1/localidades/municipios',
+  },
+  {
+    url: 'https://servicodados.ibge.gov.br/api/v4/malhas/paises/BR?intrarregiao=uf&formato=application/vnd.geo+json&qualidade=minima',
+    filename: join(__dirname, '..', 'public', 'maps', 'brazil-states.json'),
+    locationUrl: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+  },
+]
+
+for (const map of MAPS) {
+  await fetchMap(map.url, map.filename, map.locationUrl)
+}
+
+console.log('✓ All maps fetched successfully!')
+
+async function fetchMap(url, filename, locationUrl) {
+  try {
+    const [geojson, locationData] = await Promise.all([
+      fetchJSON(url),
+      locationUrl ? fetchJSON(locationUrl) : Promise.resolve([]),
+    ])
+    console.log(`✓ Fetched GeoJSON and region names for ${filename}`)
+
+    const isMunicipality = filename.endsWith('brazil-municipalities.json')
+    const isState = filename.endsWith('brazil-states.json')
+    const isBrazil = filename.endsWith('brazil.json')
+
+    const locationNameMap = new Map([])
+    const locationStateMap = new Map([])
+    const locationRegionMap = new Map([])
+
+    for (const location of locationData) {
+      locationNameMap.set(location.id, location.nome)
+
+      if (isMunicipality) {
+        const state = location['regiao-imediata']['regiao-intermediaria']['UF']
+        locationStateMap.set(location.id, {
+          code: state.id,
+          name: state.nome,
+        })
+
+        const region =
+          location['regiao-imediata']['regiao-intermediaria']['UF']['regiao']
+        locationRegionMap.set(location.id, {
+          code: region.id,
+          name: region.nome,
+        })
+      }
+
+      if (isState) {
+        const region = location['regiao']
+        locationRegionMap.set(location.id, {
+          code: region.id,
+          name: region.nome,
+        })
+      }
+    }
+
+    for (const feature of geojson.features) {
+      if (isBrazil) {
+        feature.properties = {
+          code: 'BR',
+          name: 'Brasil',
+          stateCode: null,
+          stateName: null,
+          regionCode: null,
+          regionName: null,
+        }
+        continue
+      }
+
+      const locationCode = Number(feature.properties.codarea)
+
+      const locationName = locationNameMap.get(locationCode)
+
+      if (locationName) {
+        feature.properties = {
+          code: locationCode,
+          name: locationName,
+          stateCode: locationStateMap.get(locationCode)?.code ?? null,
+          stateName: locationStateMap.get(locationCode)?.name ?? null,
+          regionCode: locationRegionMap.get(locationCode)?.code ?? null,
+          regionName: locationRegionMap.get(locationCode)?.name ?? null,
+        }
+      } else {
+        feature.properties = {
+          code: locationCode,
+        }
+        console.warn(`⚠ Location not found: ${locationCode}`)
+      }
+    }
+
+    console.log(`✓ Added properties for ${filename}`)
+
+    // Use 'd3' winding order for D3.js compatibility
+    const geojsonFixed = fixIBGEWinding(geojson, 'd3')
+    console.log(`✓ Fixed winding order for ${filename}`)
+
+    const dir = dirname(filename)
+
+    if (!existsSync(dir)) {
+      console.log('creating...', dir)
+      await mkdir(dir, { recursive: true })
+    }
+
+    await writeFile(filename, JSON.stringify(geojsonFixed, null, 2))
+    console.log(`✓ Saved to ${filename}\n`)
+  } catch (err) {
+    console.error(`✗ Error processing ${filename}: ${err.message}\n`)
+    throw err
+  }
+}
+
+// Fix the IBGE GeoJSON winding order
+function fixIBGEWinding(geojson) {
+  const fixed = structuredClone(geojson)
+
+  fixed.features.forEach((feature) => {
+    if (feature.geometry.type === 'MultiPolygon') {
+      feature.geometry.coordinates = feature.geometry.coordinates.map(
+        (polygon) => polygon.map((ring) => ring.reverse()),
+      )
+    } else if (feature.geometry.type === 'Polygon') {
+      feature.geometry.coordinates = feature.geometry.coordinates.map((ring) =>
+        ring.reverse(),
+      )
+    }
+  })
+
+  return fixed
+}
+
+async function fetchJSON(url) {
+  console.log(`Fetching: ${url}`)
+  const response = await fetch(url)
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+  }
+
+  return response.json()
+}

@@ -1,43 +1,33 @@
-name: Deploy website to Surge on push
+name: Deploy to GitHub Pages
 
 on:
   push:
     branches:
-      master
+      - master
 
 jobs:
-  build:
-    name: Deploy
+  build-and-deploy:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout master
-        uses: actions/checkout@v2
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install dependencies
         run: npm install
 
-      - name: Run tests with code coverage report
-        run: npm run test:cov
+      - name: Build
+        run: npm run build
 
-      - name: Generate code coverage XML report
-        run: npm run test:cov:report -- --reporter=lcov
-
-      - name: Upload report to codecov
-        uses: codecov/codecov-action@v2
+      - name: Deploy to GitHub Pages
+        uses: crazy-max/ghaction-github-pages@v2
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          directory: ./coverage
-
-      - name: Build website
-        run: |
-          npm run build
-          cd build
-          mv index.html 200.html
-
-      - name: Deploy website
-        uses: dswistowski/surge-sh-action@v1
-        with:
-          domain: http://ipeadata-explorer.surge.sh
-          project: "./build"
-          login: ${{ secrets.SURGE_LOGIN }}
-          token: ${{ secrets.SURGE_TOKEN }}
+          build_dir: build
+          jekyll: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

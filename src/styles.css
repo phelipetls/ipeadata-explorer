@@ -1,0 +1,134 @@
+@import 'tailwindcss';
+
+html {
+  background-color: var(--color-surface-primary);
+}
+
+#root {
+  isolation: isolate;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+@utility grid-app {
+  display: grid;
+  grid-template-columns:
+    [full-start] 1fr [content-start] calc(
+      min(100%, var(--container-7xl)) - var(--spacing) * 8
+    )
+    [content-end] 1fr [full-end];
+  > * {
+    grid-column: content;
+  }
+}
+
+@utility full-bleed {
+  grid-column: full;
+}
+
+@utility view-transition-* {
+  view-transition-name: --value([*]);
+}
+
+@theme {
+  --color-accent: var(--color-sky-600);
+  --color-outline: var(--color-neutral-200);
+
+  --color-text-disabled: var(--color-zinc-700);
+  --color-text-on-tooltip: var(--color-neutral-50);
+  --color-text-primary: var(--color-zinc-950);
+  --color-text-secondary: var(--color-zinc-600);
+  --color-text-link: var(--color-blue-800);
+  --color-text-error: var(--color-red-500);
+  --color-text-on-tooltip: var(--color-neutral-50);
+
+  --color-surface-primary: var(--color-neutral-50);
+  --color-surface-secondary: var(--color-neutral-100);
+  --color-surface-tertiary: var(--color-neutral-50);
+  --color-surface-quartiary: var(--color-neutral-100);
+  --color-surface-tooltip: --alpha(var(--color-zinc-800) / 85%);
+  --color-surface-popup: var(--color-neutral-50);
+  --color-surface-input: var(--color-neutral-50);
+  --color-input-placeholder: var(--color-gray-500);
+}
+
+@theme inline {
+  --color-chart-grid-line: --alpha(var(--color-neutral-300) / 85%);
+  --color-chart-crosshair-line: var(--color-neutral-400);
+  --color-chart-data-line: var(--color-accent);
+  --color-chart-map-outline: var(--color-neutral-500);
+
+  --color-border-outline: var(--color-outline);
+
+  --color-button-solid: var(--color-accent);
+  --color-button-solid-hover: var(--color-sky-700);
+  --color-button-solid-active: var(--color-sky-800);
+  --color-button-solid-disabled: var(--color-neutral-300);
+
+  --color-text-on-solid-button: var(--color-neutral-50);
+  --color-text-on-solid-button-disabled: var(--color-neutral-400);
+
+  --color-button-subtle: var(--color-surface-secondary);
+  --color-button-subtle-hover: --alpha(var(--color-sky-100) / 65%);
+  --color-button-subtle-active: --alpha(var(--color-sky-200) / 70%);
+  --color-button-subtle-disabled: var(--color-neutral-50);
+
+  --color-button-text: transparent;
+  --color-button-text-hover: var(--color-surface-secondary);
+  --color-button-text-active: --alpha(var(--color-sky-100) / 65%);
+  --color-button-text-disabled: transparent;
+  --color-text-on-text-button: var(--color-accent);
+  --color-text-on-text-button-hover: var(--color-sky-700);
+  --color-text-on-text-button-disabled: var(--color-text-disabled);
+
+  --color-button-outline: var(--color-surface-primary);
+  --color-button-outline-hover: var(--color-surface-secondary);
+  --color-button-outline-active: var(--color-neutral-200);
+  --color-button-outline-disabled: transparent;
+
+  --color-text-on-outline-button: var(--color-text-primary);
+  --color-text-on-outline-button-hover: var(--color-text-primary);
+  --color-text-on-outline-button-disabled: var(--color-text-disabled);
+
+  --color-text-on-subtle-button: var(--color-text-primary);
+  --color-text-on-subtle-button-disabled: var(--color-text-disabled);
+
+  --color-tab: var(--color-neutral-50);
+  --color-tab-hover: var(--color-neutral-100);
+  --color-tab-active: var(--color-neutral-200);
+  --color-tab-selected: var(--color-neutral-50);
+  --color-tab-selected-hover: var(--color-neutral-100);
+  --color-tab-selected-active: var(--color-neutral-200);
+
+  --color-filter: var(--color-neutral-50);
+  --color-filter-hover: var(--color-neutral-100);
+  --color-filter-active: var(--color-neutral-200);
+  --color-filter-selected: var(--color-neutral-100);
+  --color-filter-selected-hover: var(--color-neutral-200);
+  --color-filter-selected-active: var(--color-neutral-300);
+
+  --color-option: var(--color-neutral-50);
+  --color-option-highlighted: var(--color-sky-100);
+
+  --color-table-border: var(--color-outline);
+  --color-table-head: var(--color-neutral-100);
+  --color-table-row: --alpha(var(--color-sky-50) / 20%);
+  --color-table-row-odd: --alpha(var(--color-sky-100) / 25%);
+
+  --color-chip: var(--color-neutral-50);
+  --color-chip-hover: var(--color-neutral-100);
+  --color-chip-active: var(--color-neutral-200);
+  --color-chip-disabled: var(--color-surface-secondary);
+  --color-chip-selected: var(--color-filter-selected);
+  --color-chip-selected-hover: var(--color-filter-selected-hover);
+  --color-chip-selected-active: var(--color-filter-selected-active);
+
+  --color-button-github-link: var(--color-neutral-950);
+  --color-button-github-link-hover: var(--color-neutral-800);
+  --color-button-github-link-active: var(--color-neutral-900);
+  --color-text-on-github-link-button: var(--color-neutral-50);
+}
