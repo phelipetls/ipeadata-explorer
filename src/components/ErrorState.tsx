@@ -1,10 +1,10 @@
-import { TriangleAlert } from 'lucide-react'
 import clsx from 'clsx'
-import { twMerge } from 'tailwind-merge'
+import { TriangleAlert } from 'lucide-react'
 
 interface ErrorStateProps extends React.ComponentPropsWithoutRef<'div'> {
   title: string
   description: string
+  isCentered?: boolean
   retry?: () => void
 }
 
@@ -13,24 +13,27 @@ export function ErrorState({
   description,
   retry,
   className,
+  isCentered,
   ...props
 }: ErrorStateProps) {
   return (
     <div
-      className={twMerge(
-        clsx(
-          'flex flex-col items-start justify-center h-full w-full',
-          className,
-        ),
-      )}
+      className={clsx({ 'flex flex-col items-center': isCentered }, className)}
       {...props}
     >
-      <div className='p-3 rounded-full bg-red-50 mb-4'>
+      <div className='inline-block p-3 rounded-full bg-red-50 mb-4'>
         <TriangleAlert className='w-8 h-8 text-red-500' />
       </div>
 
-      <span className='text-lg font-bold mb-1'>{title}</span>
-      <p className='text-sm text-text-secondary max-w-sm mb-6'>{description}</p>
+      <div className='text-lg font-bold mb-1'>{title}</div>
+      <p
+        className={clsx(
+          'text-sm text-text-secondary max-w-sm mb-6',
+          isCentered && 'text-center',
+        )}
+      >
+        {description}
+      </p>
 
       {retry && (
         <button

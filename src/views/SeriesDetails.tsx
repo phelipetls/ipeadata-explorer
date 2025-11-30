@@ -32,12 +32,13 @@ export function SeriesDetails() {
   const error = seriesMetadataQuery.error || null
   if (error) {
     return (
-      <ErrorState
-        title='Ocorreu um erro'
-        description='Não foi possível obter os metadados da série. Por favor, tente novamente mais tarde.'
-        retry={() => seriesMetadataQuery.refetch()}
-        className='h-[50vh]'
-      />
+      <div className='grid items-center'>
+        <ErrorState
+          title='Ocorreu um erro'
+          description='Não foi possível obter os metadados da série. Por favor, tente novamente mais tarde.'
+          retry={() => seriesMetadataQuery.refetch()}
+        />
+      </div>
     )
   }
 
