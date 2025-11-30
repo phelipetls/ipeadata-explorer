@@ -51,6 +51,8 @@ export function HomeSeriesChartSection({
       <div ref={containerRef} className='w-full'>
         {seriesMetadataQuery.isError ? (
           <ErrorState
+            title='Ocorreu um erro'
+            description='Não foi possível obter os metadados da série. Por favor, tente novamente mais tarde.'
             retry={() => seriesMetadataQuery.refetch()}
             className='h-full'
             style={{

@@ -1,32 +1,37 @@
 import { TriangleAlert } from 'lucide-react'
 import clsx from 'clsx'
+import { twMerge } from 'tailwind-merge'
 
 interface ErrorStateProps extends React.ComponentPropsWithoutRef<'div'> {
-  title?: string
-  description?: string
+  title: string
+  description: string
   retry?: () => void
 }
 
 export function ErrorState({
-  title = 'Ocorreu um erro',
-  description = 'Não foi possível carregar os dados. Por favor, tente novamente.',
+  title,
+  description,
   retry,
   className,
   ...props
 }: ErrorStateProps) {
   return (
     <div
-      className={clsx(
-        'flex flex-col items-center justify-center text-center p-6 h-full w-full',
-        className,
+      className={twMerge(
+        clsx(
+          'flex flex-col items-start justify-center h-full w-full',
+          className,
+        ),
       )}
       {...props}
     >
       <div className='p-3 rounded-full bg-red-50 mb-4'>
         <TriangleAlert className='w-8 h-8 text-red-500' />
       </div>
-      <h3 className='text-lg font-bold text-gray-900 mb-2'>{title}</h3>
-      <p className='text-sm text-gray-600 max-w-sm mb-6'>{description}</p>
+
+      <span className='text-lg font-bold mb-1'>{title}</span>
+      <p className='text-sm text-text-secondary max-w-sm mb-6'>{description}</p>
+
       {retry && (
         <button
           onClick={retry}

@@ -110,8 +110,19 @@ export function SeriesChart({
   const isError = dataQuery.isError || brazilMapQuery.isError
 
   if (isError) {
+    const description =
+      dataQuery.isError && brazilMapQuery.isError
+        ? 'Não foi possível obter o mapa e os valores da série'
+        : dataQuery.isError
+          ? 'Não foi possível obter os valores da série'
+          : brazilMapQuery.isError
+            ? 'Não foi possível obter o mapa da série'
+            : 'Não foi possível obter os dados'
+
     return (
       <ErrorState
+        title='Ocorreu um erro'
+        description={`${description}. Por favor, tente novamente mais tarde.`}
         retry={() => {
           if (dataQuery.isError) dataQuery.refetch()
           if (brazilMapQuery.isError) brazilMapQuery.refetch()
