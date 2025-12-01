@@ -13,7 +13,6 @@ export type MapRendererMessage =
           region?: { name: string; code: number }
         }[]
         canvas: OffscreenCanvas
-        dpr: number
         width: number
         height: number
         marginBottom: number
@@ -92,7 +91,6 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
     selectedRegionCode,
     colorScheme,
     legendLabel,
-    dpr,
     outlineColor,
     fontFamily,
   } = message.payload
@@ -101,9 +99,8 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
   const context = offscreenCanvas.getContext('2d')
   if (!context) return
 
-  offscreenCanvas.width = width * dpr
-  offscreenCanvas.height = height * dpr
-  context.scale(dpr, dpr)
+  offscreenCanvas.width = width
+  offscreenCanvas.height = height
 
   const filteredGeoJson: FeatureCollection = {
     ...geojson,
