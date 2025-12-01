@@ -16,7 +16,7 @@ interface Props {
 }
 
 export function RegionSelect({ regionalDivision, value, onChange }: Props) {
-  const { data: geojson } = useQuery({
+  const { data: geojson, isError } = useQuery({
     queryKey: ['brazilMap', regionalDivision],
     queryFn: ({ signal }) =>
       getBrazilMap({
@@ -29,8 +29,15 @@ export function RegionSelect({ regionalDivision, value, onChange }: Props) {
     refetchOnWindowFocus: false,
   })
 
-  if (!geojson) {
-    return null
+  if (!geojson || isError) {
+    return (
+      <Select
+        value={value}
+        onChange={onChange}
+        options={[{ group: '', value: 'brazil', label: 'Brasil' }]}
+        isMultiple={false}
+      />
+    )
   }
 
   const seenStates = new Set<string>()
