@@ -120,16 +120,17 @@ export function SeriesChart({
             : 'Não foi possível obter os dados'
 
     return (
-      <ErrorState
-        title='Ocorreu um erro'
-        description={`${description}. Por favor, tente novamente mais tarde.`}
-        retry={() => {
-          if (dataQuery.isError) dataQuery.refetch()
-          if (brazilMapQuery.isError) brazilMapQuery.refetch()
-        }}
-        className={clsx('h-full', className)}
-        style={{ width: chartContext.width, height: chartContext.height }}
-      />
+      <div className='w-full my-8'>
+        <ErrorState
+          isCentered
+          title='Ocorreu um erro'
+          description={`${description}. Por favor, tente novamente mais tarde.`}
+          retry={() => {
+            if (dataQuery.isError) dataQuery.refetch()
+            if (brazilMapQuery.isError) brazilMapQuery.refetch()
+          }}
+        />
+      </div>
     )
   }
 
