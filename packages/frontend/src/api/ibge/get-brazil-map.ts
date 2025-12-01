@@ -7,9 +7,9 @@ type IntraRegionalLevel = Extract<
 >
 
 const intraRegionToMapUrl: Record<IntraRegionalLevel, string> = {
-  regions: '/maps/brazil-regions.json',
-  states: '/maps/brazil-states.json',
-  municipalities: '/maps/brazil-municipalities.json',
+  regions: 'maps/brazil-regions.json',
+  states: 'maps/brazil-states.json',
+  municipalities: 'maps/brazil-municipalities.json',
 }
 
 type Data = FeatureCollection<
@@ -31,10 +31,13 @@ export async function getBrazilMap(options: {
 }): Promise<Data> {
   const url =
     options.intraRegion === null
-      ? '/maps/brazil.json'
+      ? 'maps/brazil.json'
       : intraRegionToMapUrl[options.intraRegion]
 
-  const response = await fetch(url, { signal: options?.signal })
+  const response = await fetch(`${import.meta.env.VITE_APP_BASENAME}${url}`, {
+    signal: options?.signal,
+  })
+
   if (!response.ok) {
     throw new Error('Failed to fetch map')
   }
