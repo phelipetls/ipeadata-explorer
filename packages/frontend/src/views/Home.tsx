@@ -10,19 +10,15 @@ import { ChevronRight } from 'lucide-react'
 import { format, subYears } from 'date-fns'
 import { useQuery } from '@tanstack/react-query'
 import { getSeriesMetadata } from '../api/ipea/get-series-metadata'
+import useMediaQuery from '../hooks/useMediaQuery'
+import { getCssVariable } from '../utils/get-css-variable'
 
 export type SeriesItem = {
   label: string
   code: string
   regionalDivision: 'brazil' | 'regions' | 'states' | 'municipalities'
   getDateRange: (maxDate: Date) => { startDate: Date; endDate: Date }
-  dimensions: {
-    height: number
-    marginTop: number
-    marginRight: number
-    marginLeft: number
-    marginBottom: number
-  }
+  chartType: 'line' | 'map'
 }
 
 const getLast10YearsRange = (maxDate: Date) => ({
@@ -35,64 +31,48 @@ const getSingleDateRange = (maxDate: Date) => ({
   endDate: maxDate,
 })
 
-const lineChartDimensions = {
-  height: 400,
-  marginTop: 30,
-  marginRight: 0,
-  marginLeft: 0,
-  marginBottom: 0,
-}
-
-const mapChartDimensions = {
-  height: 500,
-  marginTop: 0,
-  marginRight: 0,
-  marginLeft: 0,
-  marginBottom: 60,
-}
-
 const macroeconomicSeries: SeriesItem[] = [
   {
     label: 'Taxa de juros - CDI / Over',
     code: 'BM12_TJCDI12',
     regionalDivision: 'brazil',
     getDateRange: getLast10YearsRange,
-    dimensions: lineChartDimensions,
+    chartType: 'line',
   },
   {
     label: 'IPCA',
     code: 'PRECOS12_IPCA12',
     regionalDivision: 'brazil',
     getDateRange: getLast10YearsRange,
-    dimensions: lineChartDimensions,
+    chartType: 'line',
   },
   {
     label: 'IGP',
     code: 'IGP12_IGPDI12',
     regionalDivision: 'brazil',
     getDateRange: getLast10YearsRange,
-    dimensions: lineChartDimensions,
+    chartType: 'line',
   },
   {
     label: 'Selic',
     code: 'BM366_TJOVER366',
     regionalDivision: 'brazil',
     getDateRange: getLast10YearsRange,
-    dimensions: lineChartDimensions,
+    chartType: 'line',
   },
   {
     label: 'Salário mínimo real',
     code: 'GAC12_SALMINRE12',
     regionalDivision: 'brazil',
     getDateRange: getLast10YearsRange,
-    dimensions: lineChartDimensions,
+    chartType: 'line',
   },
   {
     label: 'Taxa de câmbio',
     code: 'BM12_ERC12',
     regionalDivision: 'brazil',
     getDateRange: getLast10YearsRange,
-    dimensions: lineChartDimensions,
+    chartType: 'line',
   },
 ]
 
@@ -102,35 +82,35 @@ const regionalSeries: SeriesItem[] = [
     code: 'PNADCT_TXDSCUPUF',
     regionalDivision: 'states',
     getDateRange: getSingleDateRange,
-    dimensions: mapChartDimensions,
+    chartType: 'map',
   },
   {
     label: 'Renda per capita',
     code: 'ADH_RDPC',
     regionalDivision: 'municipalities',
     getDateRange: getSingleDateRange,
-    dimensions: mapChartDimensions,
+    chartType: 'map',
   },
   {
     label: 'PIB Estadual',
     code: 'PIBE',
     regionalDivision: 'states',
     getDateRange: getSingleDateRange,
-    dimensions: mapChartDimensions,
+    chartType: 'map',
   },
   {
     label: 'Receita Estadual',
     code: 'RECORRE',
     regionalDivision: 'states',
     getDateRange: getSingleDateRange,
-    dimensions: mapChartDimensions,
+    chartType: 'map',
   },
   {
     label: 'População',
     code: 'POPTOT',
     regionalDivision: 'municipalities',
     getDateRange: getSingleDateRange,
-    dimensions: mapChartDimensions,
+    chartType: 'map',
   },
 ]
 
@@ -140,42 +120,42 @@ const socialSeries: SeriesItem[] = [
     code: 'ADH_IDHM',
     regionalDivision: 'municipalities',
     getDateRange: getSingleDateRange,
-    dimensions: mapChartDimensions,
+    chartType: 'map',
   },
   {
     label: 'Mortalidade Infantil',
     code: 'ADH_MORT1',
     regionalDivision: 'municipalities',
     getDateRange: getSingleDateRange,
-    dimensions: mapChartDimensions,
+    chartType: 'map',
   },
   {
     label: 'Desemprego',
     code: 'PNADCT_TXDSCUPUF',
     regionalDivision: 'states',
     getDateRange: getSingleDateRange,
-    dimensions: mapChartDimensions,
+    chartType: 'map',
   },
   {
     label: 'Índice de Gini',
     code: 'ADH_GINI',
     regionalDivision: 'municipalities',
     getDateRange: getSingleDateRange,
-    dimensions: mapChartDimensions,
+    chartType: 'map',
   },
   {
     label: 'IDH Educação',
     code: 'ADH_IDHM_E',
     regionalDivision: 'municipalities',
     getDateRange: getSingleDateRange,
-    dimensions: mapChartDimensions,
+    chartType: 'map',
   },
   {
     label: 'Esperança de Vida',
     code: 'ADH_ESPVIDA',
     regionalDivision: 'municipalities',
     getDateRange: getSingleDateRange,
-    dimensions: mapChartDimensions,
+    chartType: 'map',
   },
 ]
 
@@ -264,6 +244,27 @@ export function Home() {
     })
     seriesDetailsUrl += `?${params.toString()}`
   }
+
+  const isLargeScreen = useMediaQuery(
+    `(min-width: ${getCssVariable('--breakpoint-lg')})`,
+  )
+
+  const chartDimensions =
+    deferredSelectedSeries?.chartType === 'line'
+      ? {
+          height: 400,
+          marginTop: 30,
+          marginRight: 0,
+          marginLeft: 0,
+          marginBottom: 0,
+        }
+      : {
+          height: isLargeScreen ? 640 : 360,
+          marginTop: 0,
+          marginRight: 0,
+          marginLeft: 0,
+          marginBottom: 60,
+        }
 
   return (
     <HomeTabs.Root
@@ -367,7 +368,7 @@ export function Home() {
                     'border-1 border-(--current-section-outline)',
                     isPending && 'opacity-75',
                   )}
-                  dimensions={deferredSelectedSeries.dimensions}
+                  dimensions={chartDimensions}
                 />
               </div>
             </div>
