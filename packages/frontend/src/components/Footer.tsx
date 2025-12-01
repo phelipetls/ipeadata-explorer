@@ -1,4 +1,5 @@
 import clsx from 'clsx'
+import githubMark from '../assets/github-mark-white.svg'
 
 type Props = React.ComponentPropsWithoutRef<'footer'>
 
@@ -50,7 +51,7 @@ export function Footer({ className, ...rest }: Props) {
             )}
           >
             <img
-              src='/github-mark-white.svg'
+              src={githubMark}
               alt=''
               width={18}
               height={18}
