@@ -3,7 +3,14 @@ import { useChartContext } from '../context/ChartContext'
 
 type ChartCanvasProps = ComponentPropsWithRef<'canvas'>
 
-export function ChartCanvas({ ...props }: ChartCanvasProps) {
+export function ChartCanvas({ style, ...props }: ChartCanvasProps) {
   const { width, height } = useChartContext()
-  return <canvas width={width} height={height} {...props} />
+  return (
+    <canvas
+      width={width}
+      height={height}
+      style={{ width, height, ...style }}
+      {...props}
+    />
+  )
 }
