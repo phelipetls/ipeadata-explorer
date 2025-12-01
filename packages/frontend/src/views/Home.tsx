@@ -38,7 +38,7 @@ const getSingleDateRange = (maxDate: Date) => ({
 const lineChartDimensions = {
   height: 400,
   marginTop: 30,
-  marginRight: 30,
+  marginRight: 0,
   marginLeft: 0,
   marginBottom: 0,
 }
