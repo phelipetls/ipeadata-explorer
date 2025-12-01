@@ -366,6 +366,9 @@ export function Home() {
                   selectedSeries={deferredSelectedSeries}
                   className={clsx(
                     'border-1 border-(--current-section-outline)',
+                    deferredSelectedSeries.chartType === 'line'
+                      ? 'pl-1 pr-4 py-4'
+                      : 'p-4',
                     isPending && 'opacity-75',
                   )}
                   dimensions={chartDimensions}

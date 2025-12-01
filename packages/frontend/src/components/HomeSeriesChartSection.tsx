@@ -55,7 +55,7 @@ export function HomeSeriesChartSection({
   return (
     <div
       style={{ backgroundColor: chartBackgroundColor }}
-      className={clsx('p-6 rounded-xl', className)}
+      className={clsx('rounded-xl', className)}
     >
       <div ref={containerRef} className='w-full'>
         {seriesMetadataQuery.isError ? (
