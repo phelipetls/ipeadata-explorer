@@ -31,6 +31,8 @@ export function HomeSeriesChartSection({
   const seriesMetadataQuery = useQuery({
     queryKey: ['seriesMetadata', selectedSeries.code],
     queryFn: ({ signal }) => getSeriesMetadata(selectedSeries.code, { signal }),
+    staleTime: Infinity,
+    refetchOnWindowFocus: false,
   })
 
   const metadata = seriesMetadataQuery.data
