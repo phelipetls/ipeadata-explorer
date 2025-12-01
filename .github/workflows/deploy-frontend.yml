@@ -32,3 +32,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           VITE_API_URL: https://h4t158c3zf.execute-api.us-east-2.amazonaws.com/v1
+          VITE_APP_BASENAME: /ipeadata-explorer
