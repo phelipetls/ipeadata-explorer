@@ -98,7 +98,7 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
   } = message.payload
 
   const offscreenCanvas = new OffscreenCanvas(width, height)
-  const context = offscreenCanvas.getContext('2d')
+  const context = offscreenCanvas.getContext('2d', { alpha: true })
   if (!context) return
 
   offscreenCanvas.width = width * dpr
