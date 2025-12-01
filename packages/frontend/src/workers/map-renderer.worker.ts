@@ -104,7 +104,6 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
   offscreenCanvas.width = width * dpr
   offscreenCanvas.height = height * dpr
   context.scale(dpr, dpr)
-  context.clearRect(0, 0, width, height)
 
   const filteredGeoJson: FeatureCollection = {
     ...geojson,
