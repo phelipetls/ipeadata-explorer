@@ -61,6 +61,7 @@ export function ChoroplethMap({
         data,
         geojson,
         title,
+        dpr: window.devicePixelRatio,
         width: chartContext.width,
         height: chartContext.height,
         marginBottom: chartContext.marginBottom,
