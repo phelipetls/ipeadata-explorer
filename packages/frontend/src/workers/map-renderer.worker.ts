@@ -154,10 +154,11 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
   const path = d3.geoPath(projection, context)
 
   const bounds = path.bounds(filteredGeoJson)
-  const [[x0], [y0]] = bounds
+  const [[x0], [x1]] = bounds
+  const mapWidth = x1 - x0
   const legendMarginInline = 20
-  const legendWidth = y0 - x0 - legendMarginInline
-  const legendX = x0
+  const legendWidth = Math.min(mapWidth - legendMarginInline, 400)
+  const legendX = x0 + (mapWidth - legendWidth) / 2
   const legendY = height - marginBottom
 
   if (title) {
