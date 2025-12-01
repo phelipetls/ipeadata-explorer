@@ -22,6 +22,7 @@ export type MapRendererMessage =
         legendLabel: string
         outlineColor: string
         fontFamily: string
+        backgroundColor: string
       }
     }
   | {
@@ -95,15 +96,20 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
     dpr,
     outlineColor,
     fontFamily,
+    backgroundColor,
   } = message.payload
 
   const offscreenCanvas = new OffscreenCanvas(width, height)
-  const context = offscreenCanvas.getContext('2d', { alpha: true })
+  const context = offscreenCanvas.getContext('2d', { alpha: false })
   if (!context) return
 
   offscreenCanvas.width = width * dpr
   offscreenCanvas.height = height * dpr
   context.scale(dpr, dpr)
+
+  context.beginPath()
+  context.fillStyle = backgroundColor
+  context.fillRect(0, 0, width, height)
 
   const filteredGeoJson: FeatureCollection = {
     ...geojson,

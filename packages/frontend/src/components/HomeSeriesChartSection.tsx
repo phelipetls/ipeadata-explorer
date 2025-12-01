@@ -8,6 +8,7 @@ import { useContainerWidth } from '../hooks/useContainerWidth'
 import { getSeriesMetadata } from '../api/ipea/get-series-metadata'
 import type { SeriesItem } from '../views/Home'
 import clsx from 'clsx'
+import { getCssVariable } from '../utils/get-css-variable'
 
 interface Props {
   selectedSeries: SeriesItem
@@ -43,20 +44,26 @@ export function HomeSeriesChartSection({
       ? selectedSeries.getDateRange(metadata.maxDate)
       : null
 
-  const chartDimensions = {
+  const chartBackgroundColor = getCssVariable('--color-surface-tertiary')
+
+  const chartContext = {
     width,
+    backgroundColor: chartBackgroundColor,
     ...dimensions,
   }
 
   return (
-    <div className={clsx('bg-surface-tertiary p-6 rounded-xl', className)}>
+    <div
+      style={{ backgroundColor: chartBackgroundColor }}
+      className={clsx('p-6 rounded-xl', className)}
+    >
       <div ref={containerRef} className='w-full'>
         {seriesMetadataQuery.isError ? (
           <div
             className='grid place-items-center'
             style={{
-              width: chartDimensions.width,
-              height: chartDimensions.height,
+              width: chartContext.width,
+              height: chartContext.height,
             }}
           >
             <ErrorState
@@ -70,15 +77,15 @@ export function HomeSeriesChartSection({
           <div
             className='grid place-items-center'
             style={{
-              width: chartDimensions.width,
-              height: chartDimensions.height,
+              width: chartContext.width,
+              height: chartContext.height,
             }}
           >
             <LoadingIndicator />
           </div>
         ) : (
           <SeriesMetadataProvider metadata={metadata}>
-            <ChartContext.Provider value={chartDimensions}>
+            <ChartContext.Provider value={chartContext}>
               <SeriesChart
                 code={selectedSeries.code}
                 startDate={dateRange?.startDate ?? metadata.minDate}

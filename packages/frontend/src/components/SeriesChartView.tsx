@@ -21,6 +21,7 @@ import { ChartContext } from '../context/ChartContext'
 import { useContainerWidth } from '../hooks/useContainerWidth'
 import { SeriesChart } from './SeriesChart'
 import { findClosestDate } from '../utils/find-closest-date'
+import { getCssVariable } from '../utils/get-css-variable'
 
 interface Props {
   code: string
@@ -90,9 +91,10 @@ export function SeriesChartView({ code }: Props) {
   const shouldShowRegionalLevelFilter = metadata.regionalLevels.length > 1
 
   const { containerRef, width } = useContainerWidth()
-  const chartDimensions =
+  const chartContext =
     chartType === 'map'
       ? {
+          backgroundColor: getCssVariable('--color-surface-primary'),
           width,
           height: 720,
           marginTop: 0,
@@ -101,6 +103,7 @@ export function SeriesChartView({ code }: Props) {
           marginRight: 0,
         }
       : {
+          backgroundColor: getCssVariable('--color-surface-primary'),
           width,
           height: 400,
           marginTop: 30,
@@ -201,7 +204,7 @@ export function SeriesChartView({ code }: Props) {
         </SeriesDataFilterItem>
       </SeriesDataFilterGroup>
 
-      <ChartContext.Provider value={chartDimensions}>
+      <ChartContext.Provider value={chartContext}>
         <div ref={containerRef}>
           <SeriesChart
             code={code}

@@ -1,6 +1,7 @@
 import { createContext, useContext } from 'react'
 
-type Dimensions = {
+type ChartContextValue = {
+  backgroundColor: string
   width: number
   height: number
   marginTop: number
@@ -10,6 +11,7 @@ type Dimensions = {
 }
 
 const DEFAULT_CHART_DIMENSIONS = {
+  backgroundColor: '#ffffff',
   width: 600,
   height: 400,
   marginTop: 30,
@@ -18,8 +20,8 @@ const DEFAULT_CHART_DIMENSIONS = {
   marginLeft: 40,
 }
 
-const dimensions: Dimensions = DEFAULT_CHART_DIMENSIONS
+const value: ChartContextValue = DEFAULT_CHART_DIMENSIONS
 
-export const ChartContext = createContext<Dimensions>(dimensions)
+export const ChartContext = createContext<ChartContextValue>(value)
 
 export const useChartContext = () => useContext(ChartContext)

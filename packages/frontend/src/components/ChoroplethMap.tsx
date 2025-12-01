@@ -70,6 +70,7 @@ export function ChoroplethMap({
         selectedRegionCode,
         outlineColor: getCssVariable('--color-chart-map-outline'),
         fontFamily: getCssVariable('--font-sans'),
+        backgroundColor: chartContext.backgroundColor,
       },
     })
 
@@ -103,6 +104,7 @@ export function ChoroplethMap({
     chartContext.width,
     chartContext.height,
     chartContext.marginBottom,
+    chartContext.backgroundColor,
     legendLabel,
     colorScheme,
     selectedRegionCode,
