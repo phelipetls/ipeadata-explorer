@@ -142,7 +142,7 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
 
   const titleHeight = title ? 30 : 0
 
-  const legendLabelSpacing = 8
+  const legendLabelSpacing = 4
   const legendBinHeight = 8
   const legendTickHeight = legendBinHeight + 6
   const legendTickLabelSpacing = 6
@@ -162,7 +162,7 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
   const bounds = path.bounds(filteredGeoJson)
   const [[x0], [x1]] = bounds
   const mapWidth = x1 - x0
-  const legendMarginInline = 20
+  const legendMarginInline = 30
   const legendWidth = Math.min(mapWidth - legendMarginInline, 400)
   const legendX = x0 + (mapWidth - legendWidth) / 2
   const legendY = height - marginBottom
