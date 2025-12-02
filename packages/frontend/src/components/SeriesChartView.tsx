@@ -22,6 +22,7 @@ import { useContainerWidth } from '../hooks/useContainerWidth'
 import { SeriesChart } from './SeriesChart'
 import { findClosestDate } from '../utils/find-closest-date'
 import { getCssVariable } from '../utils/get-css-variable'
+import useMediaQuery from '../hooks/useMediaQuery'
 
 interface Props {
   code: string
@@ -90,13 +91,17 @@ export function SeriesChartView({ code }: Props) {
 
   const shouldShowRegionalLevelFilter = metadata.regionalLevels.length > 1
 
+  const isLargeScreen = useMediaQuery(
+    `(min-width: ${getCssVariable('--breakpoint-lg')})`,
+  )
+
   const { containerRef, width } = useContainerWidth()
   const chartContext =
     chartType === 'map'
       ? {
           backgroundColor: getCssVariable('--color-surface-primary'),
           width,
-          height: 720,
+          height: isLargeScreen ? 720 : 460,
           marginTop: 0,
           marginBottom: 60,
           marginLeft: 0,
