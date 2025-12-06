@@ -46,7 +46,7 @@ export function SeriesDetails() {
   return (
     <>
       <div className='mb-2'>
-        <h3 className='inline text-3xl font-bold view-transition-[series-title]'>
+        <h3 className='inline text-3xl font-bold'>
           {metadata ? (
             metadata.name
           ) : (

@@ -30,10 +30,6 @@ body,
   grid-column: full;
 }
 
-@utility view-transition-* {
-  view-transition-name: --value([*]);
-}
-
 @theme {
   --color-accent: var(--color-sky-600);
   --color-outline: var(--color-neutral-200);

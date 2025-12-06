@@ -105,7 +105,6 @@ export function HomeSeriesChartSection({
                 endDate={dateRange?.endDate ?? metadata.maxDate}
                 regionalDivision={regionalDivision}
                 region='brazil'
-                className='view-transition-[series-chart]'
               />
             </ChartContext.Provider>
           </SeriesMetadataProvider>

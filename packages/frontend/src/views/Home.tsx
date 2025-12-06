@@ -343,12 +343,8 @@ export function Home() {
 
           {deferredSelectedSeries && (
             <div className={'full-bleed grid-app mt-4'}>
-              <Link
-                to={seriesDetailsUrl}
-                className='inline-block mb-2'
-                viewTransition
-              >
-                <h2 className='font-bold text-2xl flex flex-row gap-2 items-center view-transition-[series-title]'>
+              <Link to={seriesDetailsUrl} className='inline-block mb-2'>
+                <h2 className='font-bold text-2xl flex flex-row gap-2 items-center'>
                   {selectedSeries?.label}
                   <ChevronRight size='24px' className='text-text-secondary' />
                 </h2>

@@ -218,7 +218,6 @@ export function SeriesChartView({ code }: Props) {
             regionalDivision={selectedRegionalDivision}
             title={metadata.name}
             region={selectedRegion}
-            className='view-transition-[series-chart]'
           />
         </div>
       </ChartContext.Provider>
