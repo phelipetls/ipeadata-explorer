@@ -9,7 +9,6 @@ import locale_ptBR from 'd3-time-format/locale/pt-BR' with { type: 'json' }
 import { useFloatingChartTooltip } from '../hooks/useFloatingChartTooltip'
 import { ChartGridLine } from './ChartGridLine'
 import { ChartYAxis } from './ChartYAxis'
-
 import { ChartSVG } from './ChartSVG'
 import { ChartLine } from './ChartLine'
 import { createDateTicks } from '../utils/d3-ticks'
