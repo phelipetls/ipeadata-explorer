@@ -16,6 +16,7 @@ import { ErrorState } from '../components/ErrorState'
 
 import { SeriesMetadataProvider } from '../context/SeriesMetadataContext'
 import clsx from 'clsx'
+import { displayCountry } from '../utils/display-country'
 
 export function SeriesDetails() {
   const { code: codeParam } = useParams()
@@ -74,7 +75,7 @@ export function SeriesDetails() {
         )}
 
         {metadata ? (
-          <Tag>País: {metadata.countryName}</Tag>
+          <Tag>País: {displayCountry(metadata.countryCode)}</Tag>
         ) : (
           <Skeleton className='w-[10ch]' />
         )}

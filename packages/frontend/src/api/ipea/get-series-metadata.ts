@@ -6,7 +6,6 @@ import type {
 } from '../../types'
 import { parse } from 'date-fns'
 import { getSeriesDates } from './get-series-dates'
-import { getCountries } from './get-countries'
 
 const dataSchema = z.object({
   value: z.array(
@@ -71,18 +70,14 @@ export async function getSeriesMetadata(
   maxDate: Date
   isActive: boolean
   lastUpdatedAt: Date
-  country: string
-  countryName: string
+  countryCode: string
   database: SeriesDatabase
   decimalPlaces: number
   regionalLevels: RegionalLevel[]
   possibleDates: Date[]
 }> {
   const url = new URL(`${import.meta.env.VITE_API_URL}/Metadados('${code}')`)
-  const [response, countries] = await Promise.all([
-    fetch(url, { signal }),
-    getCountries({ signal }),
-  ])
+  const response = await fetch(url, { signal })
   if (!response.ok) {
     throw new Error('Failed to fetch series metadata')
   }
@@ -112,7 +107,6 @@ export async function getSeriesMetadata(
 
   const countryCode =
     database === 'macroeconomic' ? (value.PAICODIGO ?? 'BRA') : 'BRA'
-  const countryName = countries[countryCode] ?? countryCode
 
   return {
     name: value.SERNOME,
@@ -125,8 +119,7 @@ export async function getSeriesMetadata(
     maxDate: parse(removeTime(value.SERMAXDATA), 'yyyy-MM-dd', new Date()),
     isActive: value.SERSTATUS === null || value.SERSTATUS === 'A',
     lastUpdatedAt: new Date(value.SERATUALIZACAO),
-    country: countryCode,
-    countryName,
+    countryCode,
     database,
     decimalPlaces: value.SERDECIMAIS,
     regionalLevels,

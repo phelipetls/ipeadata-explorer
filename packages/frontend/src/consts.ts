@@ -11,6 +11,11 @@ export const FILTER_LABELS = {
   date: 'Período',
 }
 
+export const COUNTRIES = {
+  BRA: 'Brasil',
+  EUA: 'Estados Unidos',
+}
+
 export const NEGATIVE_SERIES = new Set([
   'DESLIGNC', // Empregados - demissões - Novo Caged sem ajuste
   'ACIDT', // Número de vítimas a óbito em acidente de trânsito

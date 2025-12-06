@@ -4,6 +4,7 @@ import locale_ptBR from 'd3-time-format/locale/pt-BR' with { type: 'json' }
 import { useSeriesMetadataContext } from '../context/SeriesMetadataContext'
 import { groupBy } from '../utils/group-by'
 import { MultiTimeSeriesLineChart } from './MultiTimeSeriesLineChart'
+import { displayCountry } from '../utils/display-country'
 
 // @ts-expect-error it works
 d3.timeFormatDefaultLocale(locale_ptBR)
@@ -61,7 +62,7 @@ export function SeriesLineChartView({ data, title }: SeriesLineChartViewProps) {
       legend={[
         {
           color: 'var(--color-chart-data-line)',
-          label: metadata.countryName,
+          label: displayCountry(metadata.countryCode),
         },
       ]}
     />
