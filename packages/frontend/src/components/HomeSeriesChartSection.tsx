@@ -9,6 +9,8 @@ import { getSeriesMetadata } from '../api/ipea/get-series-metadata'
 import type { SeriesItem } from '../views/Home'
 import clsx from 'clsx'
 import { getCssVariable } from '../utils/get-css-variable'
+import { formatDateByPeriodicity } from '../utils/format-date-by-periodicity'
+import { formatDateRange } from '../utils/format-date-range'
 
 interface Props {
   selectedSeries: SeriesItem
@@ -43,6 +45,16 @@ export function HomeSeriesChartSection({
     metadata && selectedSeries.getDateRange
       ? selectedSeries.getDateRange(metadata.maxDate)
       : null
+
+  const formattedDateRange = metadata
+    ? formatDateRange(
+        dateRange?.startDate ?? metadata.minDate,
+        dateRange?.endDate ?? metadata.maxDate,
+        (date) => formatDateByPeriodicity(date, metadata.periodicity),
+      )
+    : ''
+
+  const chartTitle = metadata ? `${metadata.name} (${formattedDateRange})` : ''
 
   const chartBackgroundColor = getCssVariable('--color-surface-tertiary')
 
@@ -88,6 +100,7 @@ export function HomeSeriesChartSection({
             <ChartContext.Provider value={chartContext}>
               <SeriesChart
                 code={selectedSeries.code}
+                title={chartTitle}
                 startDate={dateRange?.startDate ?? metadata.minDate}
                 endDate={dateRange?.endDate ?? metadata.maxDate}
                 regionalDivision={regionalDivision}
