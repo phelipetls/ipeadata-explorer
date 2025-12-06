@@ -80,12 +80,11 @@ export function useAdjustedChartDimensions() {
     legendRef,
     titleRef,
     dimensions: {
-      width: chartContext.width,
+      ...chartContext,
       height,
       marginTop,
       marginLeft,
       marginBottom,
-      marginRight: chartContext.marginRight,
     },
   }
 }

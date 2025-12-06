@@ -63,11 +63,11 @@ export function MultiTimeSeriesLineChart({
     }[]
   >([])
 
-  const { dimensions, titleRef, legendRef, yAxisLabelRef, yAxisTicksRef } =
+  const { chartContext, titleRef, legendRef, yAxisLabelRef, yAxisTicksRef } =
     useAdjustedChartDimensions()
 
   const flattenedData = Object.values(data).flat()
-  const [x, y] = getTimeSeriesScales(flattenedData, dimensions, {
+  const [x, y] = getTimeSeriesScales(flattenedData, chartContext, {
     yAxisStartsAtZero,
   })
 
@@ -82,7 +82,7 @@ export function MultiTimeSeriesLineChart({
   ).map((timestamp) => new Date(timestamp))
 
   const chartWidth =
-    dimensions.width - dimensions.marginLeft - dimensions.marginRight
+    chartContext.width - chartContext.marginLeft - chartContext.marginRight
   const xTicks = createDateTicks(x, dates, chartWidth)
   const yTicks = y.ticks()
 
@@ -90,7 +90,7 @@ export function MultiTimeSeriesLineChart({
   const yTickFormatter = yAxisTickFormatter
 
   return (
-    <ChartContext.Provider value={dimensions}>
+    <ChartContext.Provider value={chartContext}>
       <ChartSVG
         ref={chartRef}
         onMouseMove={(e) => {
