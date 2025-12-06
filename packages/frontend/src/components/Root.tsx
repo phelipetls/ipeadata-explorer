@@ -15,7 +15,7 @@ export function Root() {
       className={clsx(
         'min-h-full',
         'grid-app',
-        'grid-rows-[var(--app-bar-height)_1fr_auto]',
+        'grid-rows-[var(--app-bar-height)_auto_1fr_auto]',
       )}
     >
       <div
@@ -34,6 +34,8 @@ export function Root() {
       <div className='full-bleed grid-app mt-6'>
         <Outlet />
       </div>
+
+      <div />
 
       <Footer />
     </div>
