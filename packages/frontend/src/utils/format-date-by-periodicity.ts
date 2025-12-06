@@ -2,7 +2,7 @@ import { ptBR as locale_ptBR } from 'date-fns/locale/pt-BR'
 import { format } from 'date-fns'
 import type { SeriesPeriodicity } from '../types'
 
-export function formatByPeriodicity(
+export function formatDateByPeriodicity(
   date: Date,
   periodicity: SeriesPeriodicity,
 ): string {

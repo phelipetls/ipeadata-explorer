@@ -4,7 +4,7 @@ import { useSelectedRegion } from '../hooks/useSelectedRegion'
 import { useTransition } from 'react'
 import { useDateFilters } from '../hooks/useDateFilters'
 import { getDateRangePresets } from '../utils/get-date-ranges-presets'
-import { formatByPeriodicity } from '../utils/format-date-by-periodicity'
+import { formatDateByPeriodicity } from '../utils/format-date-by-periodicity'
 import { RegionSelect } from './RegionSelect'
 import { SeriesDataFilterGroup } from './SeriesDataFilterGroup'
 import { SeriesDataFilterItem } from './SeriesDataFilterItem'
@@ -192,7 +192,7 @@ export function SeriesChartView({ code }: Props) {
               isMultiple={false}
               options={metadata.possibleDates.map((date) => ({
                 value: String(date.getTime()),
-                label: formatByPeriodicity(date, metadata.periodicity),
+                label: formatDateByPeriodicity(date, metadata.periodicity),
               }))}
               value={String(dateFilter.startDate.getTime())}
               onChange={(value) => {
