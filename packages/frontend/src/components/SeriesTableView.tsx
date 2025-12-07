@@ -3,7 +3,7 @@ import { format, compareDesc } from 'date-fns'
 import { ptBR } from 'date-fns/locale'
 import type { SeriesPeriodicity } from '../types'
 import { useSeriesMetadataContext } from '../context/SeriesMetadataContext'
-import { useTransition } from 'react'
+import { useDeferredValue, useTransition } from 'react'
 import { displayRegionalLevel } from '../utils/display-regional-level'
 import { SegmentGroup } from './SegmentGroup'
 import { SegmentGroupItem } from './SegmentGroupItem'
@@ -69,47 +69,54 @@ export function SeriesTableView({ code }: Props) {
   })
 
   const data = dataQuery.data ?? []
+  const deferredData = useDeferredValue(data)
 
   let tableRows: (string | Date | number | null)[][] = []
 
-  const isRegionalData = data.some((v) => v.region != null)
+  const regionNames = deferredData.flatMap((item) =>
+    item.region ? [item.region.name] : [],
+  )
 
-  if (isRegionalData) {
-    const dataMap = new Map<number, Map<string, number | null>>()
-    const regionSet = new Set<string>()
+  if (regionNames.length > 1) {
+    const dataMap = new Map<`${number}:${string}`, number | null>()
 
-    for (const item of data) {
-      const regionKey = item.region?.name ?? 'default'
-      regionSet.add(regionKey)
-
-      const dateKey = item.date.getTime()
-      if (!dataMap.has(dateKey)) dataMap.set(dateKey, new Map())
-      dataMap.get(dateKey)!.set(regionKey, item.value)
+    for (const item of deferredData) {
+      dataMap.set(
+        `${item.date.getTime()}:${item.region?.name ?? 'default'}`,
+        item.value,
+      )
     }
 
-    const regionNames = Array.from(regionSet).sort()
-    const allDates = Array.from(dataMap.keys())
-      .sort((a, b) => b - a)
-      .map((timestamp) => new Date(timestamp))
+    const timestamps = [
+      ...new Set(deferredData.map((item) => item.date.getTime())),
+    ].sort((a, b) => a - b)
 
     tableRows = [
       [
         displayRegionalLevel(selectedRegionalDivision, { plural: false }),
-        ...allDates.map((date) => formatHtmlCell(date, metadata)),
+        ...timestamps.map((timestamp) =>
+          formatHtmlCell(new Date(timestamp), metadata),
+        ),
       ],
       ...regionNames.map((regionName) => [
-        regionName,
-        ...allDates.map(
-          (date) => dataMap.get(date.getTime())?.get(regionName) ?? null,
+        formatHtmlCell(regionName, metadata),
+        ...timestamps.map((timestamp) =>
+          formatHtmlCell(
+            dataMap.get(`${timestamp}:${regionName}`) ?? null,
+            metadata,
+          ),
         ),
       ]),
     ]
   } else {
     tableRows = [
       ['Data', `${metadata.name} ${metadata.unit}`],
-      ...[...data]
+      ...deferredData
         .sort((a, b) => compareDesc(a.date, b.date))
-        .map(({ date, value }) => [date, value]),
+        .map((item) => [
+          formatHtmlCell(item.date, metadata),
+          formatHtmlCell(item.value, metadata),
+        ]),
     ]
   }
 
@@ -167,7 +174,7 @@ export function SeriesTableView({ code }: Props) {
         </div>
       ) : (
         <SeriesTable
-          className={clsx(isPending && 'opacity-75')}
+          className={clsx((isPending || data !== deferredData) && 'opacity-75')}
           rows={tableRows.map((row) =>
             row.map((v) => formatHtmlCell(v, metadata)),
           )}
