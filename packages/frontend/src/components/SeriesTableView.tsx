@@ -93,7 +93,10 @@ export function SeriesTableView({ code }: Props) {
       .map((timestamp) => new Date(timestamp))
 
     tableRows = [
-      ['Região', ...allDates.map((date) => formatHtmlCell(date, metadata))],
+      [
+        displayRegionalLevel(selectedRegionalDivision, { plural: false }),
+        ...allDates.map((date) => formatHtmlCell(date, metadata)),
+      ],
       ...regionNames.map((regionName) => [
         regionName,
         ...allDates.map(
