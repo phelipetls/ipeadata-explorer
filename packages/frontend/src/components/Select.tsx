@@ -6,7 +6,9 @@ import { SelectButton } from './SelectButton'
 import { twMerge } from 'tailwind-merge'
 import { Popup } from './Popup'
 
-type BaseProps<TValue extends string = string> = {
+type SelectValue = string | number
+
+type BaseProps<TValue extends SelectValue = string> = {
   placeholder?: string
   options: { value: TValue; label: string; group?: string }[]
 } & (
@@ -22,16 +24,25 @@ type BaseProps<TValue extends string = string> = {
     }
 )
 
-type Props<TValue extends string = string> = BaseProps<TValue> &
-  Omit<ButtonProps, keyof BaseProps>
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type DistributiveOmit<T, U> = T extends any
+  ? Pick<T, Exclude<keyof T, U>>
+  : never
 
-const omitOwnProps = <TValue extends string = string>(props: Props<TValue>) => {
+type Props<TValue extends SelectValue = string> = BaseProps<TValue> &
+  DistributiveOmit<ButtonProps, keyof BaseProps>
+
+const omitOwnProps = <TValue extends SelectValue = string>(
+  props: Props<TValue>,
+) => {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { isMultiple, value, onChange, options, placeholder, ...rest } = props
   return rest
 }
 
-export function Select<TValue extends string = string>(props: Props<TValue>) {
+export function Select<TValue extends SelectValue = string>(
+  props: Props<TValue>,
+) {
   let label = props.placeholder
 
   const getSelectedOption = () =>
@@ -76,9 +87,12 @@ export function Select<TValue extends string = string>(props: Props<TValue>) {
       >
         <select
           multiple={props.isMultiple}
-          value={props.value}
+          value={String(props.value)}
           onChange={(e) => {
-            const newValue = e.target.value
+            const newValue =
+              typeof props.value === 'number'
+                ? Number(e.target.value)
+                : e.target.value
 
             if (props.isMultiple) {
               const value = props.value

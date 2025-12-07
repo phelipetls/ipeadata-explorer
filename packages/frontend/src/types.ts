@@ -26,9 +26,5 @@ export type IbgeGeoJson = FeatureCollection<
   {
     code: number
     name: string
-    stateCode: number | null
-    stateName: string | null
-    regionCode: number | null
-    regionName: string | null
   }
 >

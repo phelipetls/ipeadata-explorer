@@ -1,5 +1,6 @@
 import * as d3 from 'd3'
 import type { FeatureCollection } from 'geojson'
+import { getContainingLocations } from '../utils/get-containing-locations'
 
 export type MapRendererMessage =
   | {
@@ -17,7 +18,7 @@ export type MapRendererMessage =
         width: number
         height: number
         marginBottom: number
-        selectedRegionCode: string
+        regionCode: number
         colorScheme: readonly string[]
         legendLabel: string
         outlineColor: string
@@ -90,7 +91,7 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
     width,
     height,
     marginBottom,
-    selectedRegionCode,
+    regionCode,
     colorScheme,
     legendLabel,
     dpr,
@@ -114,11 +115,9 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
   const filteredGeoJson: FeatureCollection = {
     ...geojson,
     features: geojson.features.filter((feature) => {
-      return (
-        selectedRegionCode === 'brazil' ||
-        feature.properties?.['stateCode'] === Number(selectedRegionCode) ||
-        feature.properties?.['regionCode'] === Number(selectedRegionCode)
-      )
+      const visibleLocations = getContainingLocations(regionCode)
+      const locationCode = feature.properties?.['code']
+      return visibleLocations.has(locationCode)
     }),
   }
 

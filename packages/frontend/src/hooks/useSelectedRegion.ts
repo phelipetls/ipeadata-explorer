@@ -1,5 +1,5 @@
-import { parseAsString, useQueryState } from 'nuqs'
+import { parseAsInteger, useQueryState } from 'nuqs'
 
 export function useSelectedRegion() {
-  return useQueryState('region', parseAsString.withDefault('brazil'))
+  return useQueryState('region', parseAsInteger.withDefault(0))
 }

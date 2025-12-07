@@ -22,14 +22,14 @@ type Props = {
   startDate: Date
   endDate: Date
   regionalDivision: RegionalLevel
-  region: string
+  regionCode: number
   title?: string
   className?: string
 }
 
 export function SeriesChart({
   code,
-  region,
+  regionCode,
   regionalDivision,
   startDate,
   endDate,
@@ -147,7 +147,7 @@ export function SeriesChart({
         title={title}
         data={data}
         geojson={deferredGeoJson}
-        selectedRegionCode={region}
+        regionCode={regionCode}
       />
     </div>
   )

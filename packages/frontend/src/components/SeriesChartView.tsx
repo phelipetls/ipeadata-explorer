@@ -217,7 +217,7 @@ export function SeriesChartView({ code }: Props) {
             endDate={dateFilter.endDate}
             regionalDivision={selectedRegionalDivision}
             title={metadata.name}
-            region={selectedRegion}
+            regionCode={selectedRegion}
           />
         </div>
       </ChartContext.Provider>

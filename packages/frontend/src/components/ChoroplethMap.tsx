@@ -12,6 +12,7 @@ import type { IbgeGeoJson } from '../types'
 import { getCssVariable } from '../utils/get-css-variable'
 import { LoadingIndicator } from './LoadingIndicator'
 import { ChartCanvas } from './ChartCanvas'
+import { getContainingLocations } from '../utils/get-containing-locations'
 
 interface ChoroplethMapProps extends React.ComponentPropsWithRef<'div'> {
   data: {
@@ -23,7 +24,7 @@ interface ChoroplethMapProps extends React.ComponentPropsWithRef<'div'> {
   title?: string
   tooltipValueFormatter: (value: number) => string
   legendLabel: string
-  selectedRegionCode: string
+  regionCode: number
   colorScheme: readonly string[]
 }
 
@@ -34,7 +35,7 @@ export function ChoroplethMap({
   tooltipValueFormatter,
   legendLabel,
   colorScheme,
-  selectedRegionCode,
+  regionCode,
   ...rest
 }: ChoroplethMapProps) {
   const chartContext = useChartContext()
@@ -67,7 +68,7 @@ export function ChoroplethMap({
         marginBottom: chartContext.marginBottom,
         legendLabel,
         colorScheme,
-        selectedRegionCode,
+        regionCode,
         outlineColor: getCssVariable('--color-chart-map-outline'),
         fontFamily: getCssVariable('--font-sans'),
         backgroundColor: chartContext.backgroundColor,
@@ -107,23 +108,24 @@ export function ChoroplethMap({
     chartContext.backgroundColor,
     legendLabel,
     colorScheme,
-    selectedRegionCode,
+    regionCode,
   ])
 
   const hoveredFeature = pointer
     ? geojson.features.find((feature) => {
+        const containingLocations = getContainingLocations(regionCode)
         return (
-          (selectedRegionCode === 'brazil' ||
-            feature.properties.stateCode === Number(selectedRegionCode) ||
-            feature.properties.regionCode === Number(selectedRegionCode)) &&
+          containingLocations.has(feature.properties.code) &&
           d3.geoContains(feature, [pointer.x, pointer.y])
         )
       })
     : null
 
   const hoveredFeatureData = hoveredFeature
-    ? (data.find(
-        (item) => item.region?.code === hoveredFeature.properties.code,
+    ? (data.find((item) =>
+        item.region
+          ? item.region?.code === hoveredFeature.properties.code
+          : false,
       ) ?? null)
     : null
 

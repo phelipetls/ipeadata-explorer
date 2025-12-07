@@ -1,0 +1,218 @@
+[
+  {
+    "code": 11,
+    "name": "Rondônia",
+    "region": {
+      "code": 1,
+      "name": "Norte"
+    }
+  },
+  {
+    "code": 12,
+    "name": "Acre",
+    "region": {
+      "code": 1,
+      "name": "Norte"
+    }
+  },
+  {
+    "code": 13,
+    "name": "Amazonas",
+    "region": {
+      "code": 1,
+      "name": "Norte"
+    }
+  },
+  {
+    "code": 14,
+    "name": "Roraima",
+    "region": {
+      "code": 1,
+      "name": "Norte"
+    }
+  },
+  {
+    "code": 15,
+    "name": "Pará",
+    "region": {
+      "code": 1,
+      "name": "Norte"
+    }
+  },
+  {
+    "code": 16,
+    "name": "Amapá",
+    "region": {
+      "code": 1,
+      "name": "Norte"
+    }
+  },
+  {
+    "code": 17,
+    "name": "Tocantins",
+    "region": {
+      "code": 1,
+      "name": "Norte"
+    }
+  },
+  {
+    "code": 21,
+    "name": "Maranhão",
+    "region": {
+      "code": 2,
+      "name": "Nordeste"
+    }
+  },
+  {
+    "code": 22,
+    "name": "Piauí",
+    "region": {
+      "code": 2,
+      "name": "Nordeste"
+    }
+  },
+  {
+    "code": 23,
+    "name": "Ceará",
+    "region": {
+      "code": 2,
+      "name": "Nordeste"
+    }
+  },
+  {
+    "code": 24,
+    "name": "Rio Grande do Norte",
+    "region": {
+      "code": 2,
+      "name": "Nordeste"
+    }
+  },
+  {
+    "code": 25,
+    "name": "Paraíba",
+    "region": {
+      "code": 2,
+      "name": "Nordeste"
+    }
+  },
+  {
+    "code": 26,
+    "name": "Pernambuco",
+    "region": {
+      "code": 2,
+      "name": "Nordeste"
+    }
+  },
+  {
+    "code": 27,
+    "name": "Alagoas",
+    "region": {
+      "code": 2,
+      "name": "Nordeste"
+    }
+  },
+  {
+    "code": 28,
+    "name": "Sergipe",
+    "region": {
+      "code": 2,
+      "name": "Nordeste"
+    }
+  },
+  {
+    "code": 29,
+    "name": "Bahia",
+    "region": {
+      "code": 2,
+      "name": "Nordeste"
+    }
+  },
+  {
+    "code": 31,
+    "name": "Minas Gerais",
+    "region": {
+      "code": 3,
+      "name": "Sudeste"
+    }
+  },
+  {
+    "code": 32,
+    "name": "Espírito Santo",
+    "region": {
+      "code": 3,
+      "name": "Sudeste"
+    }
+  },
+  {
+    "code": 33,
+    "name": "Rio de Janeiro",
+    "region": {
+      "code": 3,
+      "name": "Sudeste"
+    }
+  },
+  {
+    "code": 35,
+    "name": "São Paulo",
+    "region": {
+      "code": 3,
+      "name": "Sudeste"
+    }
+  },
+  {
+    "code": 41,
+    "name": "Paraná",
+    "region": {
+      "code": 4,
+      "name": "Sul"
+    }
+  },
+  {
+    "code": 42,
+    "name": "Santa Catarina",
+    "region": {
+      "code": 4,
+      "name": "Sul"
+    }
+  },
+  {
+    "code": 43,
+    "name": "Rio Grande do Sul",
+    "region": {
+      "code": 4,
+      "name": "Sul"
+    }
+  },
+  {
+    "code": 50,
+    "name": "Mato Grosso do Sul",
+    "region": {
+      "code": 5,
+      "name": "Centro-Oeste"
+    }
+  },
+  {
+    "code": 51,
+    "name": "Mato Grosso",
+    "region": {
+      "code": 5,
+      "name": "Centro-Oeste"
+    }
+  },
+  {
+    "code": 52,
+    "name": "Goiás",
+    "region": {
+      "code": 5,
+      "name": "Centro-Oeste"
+    }
+  },
+  {
+    "code": 53,
+    "name": "Distrito Federal",
+    "region": {
+      "code": 5,
+      "name": "Centro-Oeste"
+    }
+  }
+]

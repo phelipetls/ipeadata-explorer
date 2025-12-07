@@ -1,0 +1,91 @@
+#!/usr/bin/env node
+// @ts-check
+
+import { writeFile, mkdir } from 'fs/promises'
+import { existsSync } from 'fs'
+import { join, dirname } from 'path'
+import { fileURLToPath } from 'url'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+const data = [
+  {
+    filename: join(__dirname, '..', 'src', 'assets', 'regions.json'),
+    url: 'https://servicodados.ibge.gov.br/api/v1/localidades/regioes',
+  },
+  {
+    filename: join(__dirname, '..', 'src', 'assets', 'states.json'),
+    url: 'https://servicodados.ibge.gov.br/api/v1/localidades/estados',
+  },
+  {
+    filename: join(__dirname, '..', 'src', 'assets', 'municipalities.json'),
+    url: 'https://servicodados.ibge.gov.br/api/v1/localidades/municipios',
+  },
+]
+
+for (const { url, filename } of data) {
+  try {
+    const data = await fetchJSON(url)
+    console.log(`✓ Fetched metadata for ${filename}`)
+
+    const isMunicipality = filename.endsWith('municipalities.json')
+    const isState = filename.endsWith('states.json')
+
+    const result = []
+
+    for (const item of data) {
+      const obj = {
+        code: item.id,
+        name: item.nome,
+      }
+
+      if (isMunicipality) {
+        const state = item['regiao-imediata']['regiao-intermediaria']['UF']
+        obj['state'] = {
+          code: state.id,
+          name: state.nome,
+        }
+
+        const region = state['regiao']
+        obj['region'] = {
+          code: region.id,
+          name: region.nome,
+        }
+      }
+
+      if (isState) {
+        const region = item['regiao']
+        obj['region'] = {
+          code: region.id,
+          name: region.nome,
+        }
+      }
+
+      result.push(obj)
+    }
+
+    const dir = dirname(filename)
+
+    if (!existsSync(dir)) {
+      await mkdir(dir, { recursive: true })
+    }
+
+    await writeFile(filename, JSON.stringify(result, null, 2))
+    console.log(`✓ Saved to ${filename}\n`)
+  } catch (err) {
+    console.error(`✗ Error processing ${filename}: ${err.message}\n`)
+    throw err
+  }
+}
+
+async function fetchJSON(url) {
+  console.log(`Fetching: ${url}`)
+  const response = await fetch(url)
+
+  if (!response.ok) {
+    throw new Error(`HTTP ${response.status}: ${response.statusText}`)
+  }
+
+  return response.json()
+}

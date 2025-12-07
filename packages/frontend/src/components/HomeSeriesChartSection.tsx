@@ -11,6 +11,7 @@ import clsx from 'clsx'
 import { getCssVariable } from '../utils/get-css-variable'
 import { formatDateByPeriodicity } from '../utils/format-date-by-periodicity'
 import { formatDateRange } from '../utils/format-date-range'
+import { BRAZIL_LOCATION_CODE } from '../consts'
 
 interface Props {
   selectedSeries: SeriesItem
@@ -104,7 +105,7 @@ export function HomeSeriesChartSection({
                 startDate={dateRange?.startDate ?? metadata.minDate}
                 endDate={dateRange?.endDate ?? metadata.maxDate}
                 regionalDivision={regionalDivision}
-                region='brazil'
+                regionCode={BRAZIL_LOCATION_CODE}
               />
             </ChartContext.Provider>
           </SeriesMetadataProvider>

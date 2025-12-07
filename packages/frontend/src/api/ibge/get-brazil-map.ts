@@ -18,10 +18,6 @@ type Data = FeatureCollection<
     code: number
     name: string
     value: number
-    stateCode: number | null
-    stateName: string | null
-    regionCode: number | null
-    regionName: string | null
   }
 >
 

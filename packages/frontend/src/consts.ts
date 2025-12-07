@@ -1,3 +1,5 @@
+export const BRAZIL_LOCATION_CODE = 0
+
 export const REGIONAL_LEVELS = [
   'brazil',
   'regions',

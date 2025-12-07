@@ -19,6 +19,9 @@ import { FILTER_LABELS } from '../consts'
 import { SeriesDataFilterItemLabel } from './SeriesDataFilterItemLabel'
 import { LoadingIndicator } from './LoadingIndicator'
 import clsx from 'clsx'
+import { RegionSelect } from './RegionSelect'
+import { useSelectedRegion } from '../hooks/useSelectedRegion'
+import { getContainingLocations } from '../utils/get-containing-locations'
 
 interface Props {
   code: string
@@ -30,6 +33,7 @@ export function SeriesTableView({ code }: Props) {
 
   const [selectedRegionalDivision, setSelectedRegionalDivision] =
     useSelectedRegionalDivision(metadata.regionalLevels[0] ?? 'brazil')
+  const [selectedRegion, setSelectedRegion] = useSelectedRegion()
 
   const dateRangePresets = getDateRangePresets({
     periodicity: metadata.periodicity,
@@ -69,7 +73,12 @@ export function SeriesTableView({ code }: Props) {
   })
 
   const data = dataQuery.data ?? []
-  const deferredData = useDeferredValue(data)
+  let deferredData = useDeferredValue(data)
+  deferredData = deferredData.filter((item) => {
+    return item.region
+      ? getContainingLocations(selectedRegion).has(item.region.code)
+      : true
+  })
 
   let tableRows: (string | Date | number | null)[][] = []
 
@@ -146,6 +155,23 @@ export function SeriesTableView({ code }: Props) {
                 </SegmentGroupItem>
               ))}
             </SegmentGroup>
+          </SeriesDataFilterItem>
+        )}
+
+        {['municipalities', 'states'].includes(selectedRegionalDivision) && (
+          <SeriesDataFilterItem>
+            <SeriesDataFilterItemLabel>
+              {FILTER_LABELS.region}
+            </SeriesDataFilterItemLabel>
+            <RegionSelect
+              value={selectedRegion}
+              regionalDivision={selectedRegionalDivision}
+              onChange={(value) => {
+                startTransition(() => {
+                  setSelectedRegion(value)
+                })
+              }}
+            />
           </SeriesDataFilterItem>
         )}
 

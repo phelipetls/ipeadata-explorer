@@ -13,7 +13,7 @@ type Props = {
     value: number | null
     region?: { name: string; code: number }
   }[]
-  selectedRegionCode: string
+  regionCode: number
 }
 
 export function SeriesChoroplethMapView({
@@ -21,7 +21,7 @@ export function SeriesChoroplethMapView({
   title,
   data,
   geojson,
-  selectedRegionCode,
+  regionCode,
 }: Props) {
   const metadata = useSeriesMetadataContext()
 
@@ -60,7 +60,7 @@ export function SeriesChoroplethMapView({
       legendLabel={legendLabel}
       data={data}
       geojson={geojson}
-      selectedRegionCode={selectedRegionCode}
+      regionCode={regionCode}
       colorScheme={colorScheme}
     />
   )
