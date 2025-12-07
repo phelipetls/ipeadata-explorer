@@ -10,7 +10,7 @@ export function Table({ children, className, ...rest }: Props) {
   return (
     <table
       className={clsx(
-        'table-auto border-separate border-spacing-0 w-full',
+        'table-fixed border-separate border-spacing-0 w-full',
         className,
       )}
       {...rest}
