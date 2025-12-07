@@ -1,5 +1,5 @@
 import * as d3 from 'd3'
-import { ChartContext } from '../context/ChartContext'
+import { ChartContext, useChartContext } from '../context/ChartContext'
 import { ChartXAxis } from './ChartXAxis'
 import { ChartXTick } from './ChartXTick'
 import { ChartYTick } from './ChartYTick'
@@ -63,11 +63,24 @@ export function MultiTimeSeriesLineChart({
     }[]
   >([])
 
-  const { chartContext, titleRef, legendRef, yAxisLabelRef, yAxisTicksRef } =
-    useAdjustedChartDimensions()
+  const chartContext = useChartContext()
+  const {
+    dimensions: adjustedDimensions,
+    titleRef,
+    legendRef,
+    yAxisLabelRef,
+    yAxisTicksRef,
+  } = useAdjustedChartDimensions({
+    width: chartContext.width,
+    height: chartContext.height,
+    marginTop: chartContext.marginTop,
+    marginLeft: chartContext.marginLeft,
+    marginBottom: chartContext.marginBottom,
+    marginRight: chartContext.marginRight,
+  })
 
   const flattenedData = Object.values(data).flat()
-  const [x, y] = getTimeSeriesScales(flattenedData, chartContext, {
+  const [x, y] = getTimeSeriesScales(flattenedData, adjustedDimensions, {
     yAxisStartsAtZero,
   })
 
@@ -82,7 +95,9 @@ export function MultiTimeSeriesLineChart({
   ).map((timestamp) => new Date(timestamp))
 
   const chartWidth =
-    chartContext.width - chartContext.marginLeft - chartContext.marginRight
+    adjustedDimensions.width -
+    adjustedDimensions.marginLeft -
+    adjustedDimensions.marginRight
   const xTicks = createDateTicks(x, dates, chartWidth)
   const yTicks = y.ticks()
 
@@ -90,7 +105,7 @@ export function MultiTimeSeriesLineChart({
   const yTickFormatter = yAxisTickFormatter
 
   return (
-    <ChartContext.Provider value={chartContext}>
+    <ChartContext.Provider value={{ ...chartContext, ...adjustedDimensions }}>
       <ChartSVG
         ref={chartRef}
         onMouseMove={(e) => {

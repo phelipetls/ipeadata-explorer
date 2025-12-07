@@ -1,14 +1,18 @@
 import { useLayoutEffect, useRef, useState } from 'react'
-import { useChartContext } from '../context/ChartContext'
 
-export function useAdjustedChartDimensions() {
+export function useAdjustedChartDimensions(dimensions: {
+  width: number
+  height: number
+  marginTop: number
+  marginLeft: number
+  marginBottom: number
+  marginRight: number
+}) {
   const yAxisTicksRef = useRef<SVGGElement[]>([])
   const yAxisLabelRef = useRef<SVGTextElement | null>(null)
   const xAxisTicksRef = useRef<SVGGElement[]>([])
   const titleRef = useRef<SVGForeignObjectElement | null>(null)
   const legendRef = useRef<HTMLUListElement | null>(null)
-
-  const chartContext = useChartContext()
 
   const [maxYAxisTickWidth, setMaxYAxisTickWidth] = useState(0)
   const [yAxisLabelHeight, setYAxisLabelHeight] = useState(0)
@@ -59,19 +63,19 @@ export function useAdjustedChartDimensions() {
 
   const gap = 8
 
-  let marginLeft = Math.max(chartContext.marginLeft, maxYAxisTickWidth)
+  let marginLeft = Math.max(dimensions.marginLeft, maxYAxisTickWidth)
   if (yAxisLabelHeight) {
     marginLeft = maxYAxisTickWidth + gap + yAxisLabelHeight
   }
 
-  const marginTop = titleHeight ? titleHeight + gap * 2 : chartContext.marginTop
+  const marginTop = titleHeight ? titleHeight + gap * 2 : dimensions.marginTop
 
-  let marginBottom = Math.max(chartContext.marginBottom, maxXAxisTickHeight)
+  let marginBottom = Math.max(dimensions.marginBottom, maxXAxisTickHeight)
   if (legendHeight) {
     marginBottom = marginBottom + legendHeight
   }
 
-  const height = chartContext.height + legendHeight + titleHeight
+  const height = dimensions.height + legendHeight + titleHeight
 
   return {
     yAxisTicksRef,
@@ -80,7 +84,7 @@ export function useAdjustedChartDimensions() {
     legendRef,
     titleRef,
     dimensions: {
-      ...chartContext,
+      ...dimensions,
       height,
       marginTop,
       marginLeft,

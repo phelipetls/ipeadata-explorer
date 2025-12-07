@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import * as d3 from 'd3'
-import { ChartContext } from '../context/ChartContext'
+import { ChartContext, useChartContext } from '../context/ChartContext'
 import { useChartPosition } from '../hooks/useChartPosition'
 import { ChartXAxis } from './ChartXAxis'
 import { ChartXTick } from './ChartXTick'
@@ -58,20 +58,28 @@ export function TimeSeriesLineChart({
     (typeof data)[number] | null
   >(null)
 
+  const chartContext = useChartContext()
   const {
-    dimensions,
+    dimensions: adjustedDimensions,
     yAxisTicksRef,
     yAxisLabelRef,
     xAxisTicksRef,
     titleRef,
     legendRef,
-  } = useAdjustedChartDimensions()
+  } = useAdjustedChartDimensions({
+    width: chartContext.width,
+    height: chartContext.height,
+    marginTop: chartContext.marginTop,
+    marginLeft: chartContext.marginLeft,
+    marginBottom: chartContext.marginBottom,
+    marginRight: chartContext.marginRight,
+  })
 
   const position = useChartPosition(chartRef)
 
   const dates = data.map((item) => item.date)
 
-  const [x, y] = getTimeSeriesScales(data, dimensions, {
+  const [x, y] = getTimeSeriesScales(data, adjustedDimensions, {
     yAxisStartsAtZero,
   })
 
@@ -82,7 +90,9 @@ export function TimeSeriesLineChart({
     .y((d) => y(d.value as number))
 
   const chartWidth =
-    dimensions.width - dimensions.marginLeft - dimensions.marginRight
+    adjustedDimensions.width -
+    adjustedDimensions.marginLeft -
+    adjustedDimensions.marginRight
   const xTicks = createDateTicks(x, dates, chartWidth)
 
   const yTicks = y.ticks()
@@ -91,7 +101,7 @@ export function TimeSeriesLineChart({
   const yTickFormatter = yAxisTickFormatter
 
   return (
-    <ChartContext.Provider value={dimensions}>
+    <ChartContext.Provider value={{ ...chartContext, ...adjustedDimensions }}>
       <ChartSVG
         className='relative'
         ref={chartRef}
