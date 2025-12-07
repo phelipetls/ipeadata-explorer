@@ -114,7 +114,7 @@ export function SeriesChartView({ code }: Props) {
           marginTop: 30,
           marginBottom: 30,
           marginLeft: 40,
-          marginRight: 0,
+          marginRight: 30,
         }
 
   return (
