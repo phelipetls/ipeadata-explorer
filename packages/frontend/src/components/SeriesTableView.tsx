@@ -1,7 +1,4 @@
 import { SeriesTable } from './SeriesTable'
-import { format, compareDesc } from 'date-fns'
-import { ptBR } from 'date-fns/locale'
-import type { SeriesPeriodicity } from '../types'
 import { useSeriesMetadataContext } from '../context/SeriesMetadataContext'
 import { useDeferredValue, useTransition } from 'react'
 import { displayRegionalLevel } from '../utils/display-regional-level'
@@ -22,6 +19,9 @@ import clsx from 'clsx'
 import { RegionSelect } from './RegionSelect'
 import { useSelectedRegion } from '../hooks/useSelectedRegion'
 import { getContainingLocations } from '../utils/get-containing-locations'
+import { SeriesTableCellContent } from './SeriesTableCellContent'
+import { SeriesTableCellSortableContent } from './SeriesTableCellSortableContent'
+import { parseAsString, parseAsStringLiteral, useQueryStates } from 'nuqs'
 
 interface Props {
   code: string
@@ -34,6 +34,13 @@ export function SeriesTableView({ code }: Props) {
   const [selectedRegionalDivision, setSelectedRegionalDivision] =
     useSelectedRegionalDivision(metadata.regionalLevels[0] ?? 'brazil')
   const [selectedRegion, setSelectedRegion] = useSelectedRegion()
+
+  const [sortConfig, setSortConfig] = useQueryStates({
+    sortBy: parseAsString.withDefault('date'),
+    sortDirection: parseAsStringLiteral(['asc', 'desc', 'none']).withDefault(
+      'asc',
+    ),
+  })
 
   const dateRangePresets = getDateRangePresets({
     periodicity: metadata.periodicity,
@@ -80,52 +87,217 @@ export function SeriesTableView({ code }: Props) {
       : true
   })
 
-  let tableRows: (string | Date | number | null)[][] = []
+  let tableRows = []
 
-  const regionNames = deferredData.flatMap((item) =>
-    item.region ? [item.region.name] : [],
-  )
+  const regionNames = [
+    ...new Set(
+      deferredData.flatMap((item) => (item.region ? [item.region.name] : [])),
+    ),
+  ]
+
+  const timestamps = [
+    ...new Set(deferredData.map((item) => item.date.getTime())),
+  ]
 
   if (regionNames.length > 1) {
-    const dataMap = new Map<`${number}:${string}`, number | null>()
+    const dataMap = new Map<`${number}-${string}`, number | null>()
 
     for (const item of deferredData) {
       dataMap.set(
-        `${item.date.getTime()}:${item.region?.name ?? 'default'}`,
+        `${item.date.getTime()}-${item.region?.name ?? 'default'}`,
         item.value,
       )
     }
 
-    const timestamps = [
-      ...new Set(deferredData.map((item) => item.date.getTime())),
-    ].sort((a, b) => a - b)
+    const sortedRegionNames = regionNames.sort((regionA, regionB) => {
+      if (sortConfig.sortBy === 'region') {
+        if (sortConfig.sortDirection === 'asc') {
+          return regionA.localeCompare(regionB)
+        }
+        if (sortConfig.sortDirection === 'desc') {
+          return regionB.localeCompare(regionA)
+        }
+      }
+
+      if (sortConfig.sortBy.startsWith('date:')) {
+        const timestamp = Number(sortConfig.sortBy.split(':')[1])
+        if (Number.isNaN(timestamp)) {
+          return 0
+        }
+
+        const valueA = dataMap.get(`${timestamp}-${regionA}`) ?? 0
+        const valueB = dataMap.get(`${timestamp}-${regionB}`) ?? 0
+
+        if (sortConfig.sortDirection === 'asc') {
+          return valueA - valueB
+        }
+        if (sortConfig.sortDirection === 'desc') {
+          return valueB - valueA
+        }
+      }
+
+      return 0
+    })
+
+    const selectedRegionalDivisionLabel = displayRegionalLevel(
+      selectedRegionalDivision,
+      {
+        plural: false,
+      },
+    )
 
     tableRows = [
-      [
-        displayRegionalLevel(selectedRegionalDivision, { plural: false }),
-        ...timestamps.map((timestamp) =>
-          formatHtmlCell(new Date(timestamp), metadata),
-        ),
-      ],
-      ...regionNames.map((regionName) => [
-        formatHtmlCell(regionName, metadata),
-        ...timestamps.map((timestamp) =>
-          formatHtmlCell(
-            dataMap.get(`${timestamp}:${regionName}`) ?? null,
-            metadata,
-          ),
-        ),
-      ]),
+      {
+        id: 'header',
+        cells: [
+          {
+            id: `header-region-${selectedRegionalDivisionLabel}`,
+            element: (
+              <SeriesTableCellSortableContent
+                value={
+                  sortConfig.sortBy === 'region'
+                    ? sortConfig.sortDirection
+                    : 'none'
+                }
+                onChange={(dir) =>
+                  setSortConfig({ sortBy: 'region', sortDirection: dir })
+                }
+              >
+                <SeriesTableCellContent>
+                  {selectedRegionalDivisionLabel}
+                </SeriesTableCellContent>
+              </SeriesTableCellSortableContent>
+            ),
+          },
+          ...timestamps.map((timestamp) => ({
+            id: `header-${timestamp}`,
+            element: (
+              <SeriesTableCellSortableContent
+                value={
+                  sortConfig.sortBy === `date:${timestamp}`
+                    ? sortConfig.sortDirection
+                    : 'none'
+                }
+                onChange={(dir) =>
+                  setSortConfig({
+                    sortBy: `date:${timestamp}`,
+                    sortDirection: dir,
+                  })
+                }
+              >
+                <SeriesTableCellContent>
+                  {new Date(timestamp)}
+                </SeriesTableCellContent>
+              </SeriesTableCellSortableContent>
+            ),
+          })),
+        ],
+      },
+      ...sortedRegionNames.map((regionName) => ({
+        id: regionName,
+        cells: [
+          {
+            id: `header-${regionName}`,
+            element: (
+              <SeriesTableCellContent>{regionName}</SeriesTableCellContent>
+            ),
+          },
+          ...timestamps.map((timestamp) => ({
+            id: `value-${timestamp}-${regionName}`,
+            element: (
+              <SeriesTableCellContent>
+                {dataMap.get(`${timestamp}-${regionName}`) ?? null}
+              </SeriesTableCellContent>
+            ),
+          })),
+        ],
+      })),
     ]
   } else {
     tableRows = [
-      ['Data', `${metadata.name} ${metadata.unit}`],
+      {
+        id: 'header',
+        cells: [
+          {
+            id: 'header-date',
+            element: (
+              <SeriesTableCellSortableContent
+                value={
+                  sortConfig.sortBy === 'date'
+                    ? sortConfig.sortDirection
+                    : 'none'
+                }
+                onChange={(dir) =>
+                  setSortConfig({ sortBy: 'date', sortDirection: dir })
+                }
+              >
+                <SeriesTableCellContent>Data</SeriesTableCellContent>
+              </SeriesTableCellSortableContent>
+            ),
+          },
+          {
+            id: 'header-value',
+            element: (
+              <SeriesTableCellSortableContent
+                value={
+                  sortConfig.sortBy === 'value'
+                    ? sortConfig.sortDirection
+                    : 'none'
+                }
+                onChange={(dir) =>
+                  setSortConfig({ sortBy: 'value', sortDirection: dir })
+                }
+              >
+                <SeriesTableCellContent>
+                  {`${metadata.name} ${metadata.unit}`}
+                </SeriesTableCellContent>
+              </SeriesTableCellSortableContent>
+            ),
+          },
+        ],
+      },
       ...deferredData
-        .sort((a, b) => compareDesc(a.date, b.date))
-        .map((item) => [
-          formatHtmlCell(item.date, metadata),
-          formatHtmlCell(item.value, metadata),
-        ]),
+        .sort((a, b) => {
+          if (sortConfig.sortBy === 'value') {
+            const valueA = a.value ?? 0
+            const valueB = a.value ?? 0
+
+            if (sortConfig.sortDirection === 'asc') {
+              return valueA - valueB
+            }
+            if (sortConfig.sortDirection === 'desc') {
+              return valueB - valueA
+            }
+          }
+
+          if (sortConfig.sortBy === 'date') {
+            if (sortConfig.sortDirection === 'asc') {
+              return a.date.getTime() - b.date.getTime()
+            }
+            if (sortConfig.sortDirection === 'desc') {
+              return b.date.getTime() - a.date.getTime()
+            }
+          }
+
+          return 0
+        })
+        .map((item) => ({
+          id: item.date.toISOString(),
+          cells: [
+            {
+              id: `header-${item.date.getTime()}`,
+              element: (
+                <SeriesTableCellContent>{item.date}</SeriesTableCellContent>
+              ),
+            },
+            {
+              id: `data-${item.date.getTime()}-${item.value}`,
+              element: (
+                <SeriesTableCellContent>{item.value}</SeriesTableCellContent>
+              ),
+            },
+          ],
+        })),
     ]
   }
 
@@ -201,59 +373,9 @@ export function SeriesTableView({ code }: Props) {
       ) : (
         <SeriesTable
           className={clsx((isPending || data !== deferredData) && 'opacity-75')}
-          rows={tableRows.map((row) =>
-            row.map((v) => formatHtmlCell(v, metadata)),
-          )}
+          rows={tableRows}
         />
       )}
     </>
   )
-}
-
-function formatHtmlCell(
-  cell: string | Date | number | null,
-  metadata: {
-    decimalPlaces: number
-    unit: string
-    periodicity: SeriesPeriodicity
-  },
-) {
-  if (cell === null) {
-    return '-'
-  }
-  if (typeof cell === 'string') {
-    return cell
-  }
-  if (cell instanceof Date) {
-    const periodicity = metadata.periodicity
-
-    switch (periodicity) {
-      case 'decennial':
-      case 'quadrennial':
-      case 'yearly':
-        return format(cell, 'yyyy', { locale: ptBR })
-      case 'quarterly':
-        return format(cell, 'QQQ yyyy', { locale: ptBR })
-      case 'monthly':
-        return format(cell, 'MMM yyyy', { locale: ptBR })
-      case 'daily':
-        return format(cell, 'dd MMM yyyy', { locale: ptBR })
-      default:
-        periodicity satisfies never
-    }
-
-    return format(cell, 'yyyy-MM-dd')
-  }
-  if (typeof cell === 'number') {
-    const numberFormatter = new Intl.NumberFormat('pt-BR', {
-      minimumFractionDigits: metadata.decimalPlaces,
-      maximumFractionDigits: metadata.decimalPlaces,
-    })
-    const formattedNumber = numberFormatter.format(cell)
-    if (metadata.unit.includes('%')) {
-      return formattedNumber + '%'
-    }
-    return formattedNumber
-  }
-  return '-'
 }

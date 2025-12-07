@@ -8,7 +8,9 @@ interface Props {
 
 export function TableCell({ children, className }: Props) {
   return (
-    <td className={clsx('px-4 w-min whitespace-nowrap', className)}>
+    <td
+      className={clsx('px-4 w-min whitespace-nowrap tabular-nums', className)}
+    >
       {children}
     </td>
   )

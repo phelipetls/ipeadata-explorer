@@ -6,11 +6,11 @@ import { TableCell } from './table/TableCell'
 import { TableHeaderCell } from './table/TableHeaderCell'
 import { TableBody } from './table/TableBody'
 import { notUndefined, useVirtualizer } from '@tanstack/react-virtual'
-import { useRef } from 'react'
+import { useRef, type ReactNode } from 'react'
 import clsx from 'clsx'
 
 interface Props {
-  rows: string[][]
+  rows: { id: string; cells: { id: string; element: ReactNode }[] }[]
   className?: string
 }
 
@@ -19,13 +19,14 @@ const VISIBLE_ROWS = 10
 const BORDER_WIDTH = 1
 
 export function SeriesTable({ rows, className }: Props) {
-  const [header = [], ...dataRows] = rows
+  const [header, ...dataRows] = rows
+  const headerCells = header?.cells ?? []
 
   const parentRef = useRef<HTMLDivElement | null>(null)
   const scrollContainerRef = useRef<HTMLDivElement | null>(null)
 
   const virtualizer = useVirtualizer({
-    count: rows.length,
+    count: dataRows.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => ROW_HEIGHT,
     overscan: 5,
@@ -64,21 +65,24 @@ export function SeriesTable({ rows, className }: Props) {
       >
         <Table>
           <colgroup>
-            {header.map((_, index) => (
-              <col className={clsx({ 'min-w-[160px]': index === 0 })} />
+            {headerCells.map((_, index) => (
+              <col
+                key={index}
+                className={clsx({ 'min-w-[160px]': index === 0 })}
+              />
             ))}
           </colgroup>
 
-          {header.length > 0 && (
+          {headerCells.length > 0 && (
             <TableHead>
               <TableRow>
-                {header.map((value) => (
+                {headerCells.map((cell) => (
                   <TableHeaderCell
-                    key={value}
+                    key={cell.id}
                     className='sticky top-0 box-border h-(--cell-height)'
                     {...(hasScrolled && { 'data-sticky': '' })}
                   >
-                    {value}
+                    {cell.element}
                   </TableHeaderCell>
                 ))}
               </TableRow>
@@ -88,23 +92,23 @@ export function SeriesTable({ rows, className }: Props) {
           <TableBody>
             {before > 0 && (
               <tr>
-                <td colSpan={header.length} style={{ height: before }} />
+                <td colSpan={headerCells.length} style={{ height: before }} />
               </tr>
             )}
 
-            {virtualRows.map((virtualRow, rowIndex) => {
+            {virtualRows.map((virtualRow) => {
               const row = dataRows[virtualRow.index]
               if (!row) {
                 return null
               }
               return (
-                <TableRow key={String(row[0])}>
-                  {row.map((cell, columnIndex) => (
+                <TableRow key={row.id}>
+                  {row.cells.map((cell) => (
                     <TableCell
-                      key={`row-${rowIndex}-column-${columnIndex}-value:${String(cell)}`}
+                      key={cell.id}
                       className='box-border h-(--cell-height)'
                     >
-                      {cell}
+                      {cell.element}
                     </TableCell>
                   ))}
                 </TableRow>
@@ -113,7 +117,7 @@ export function SeriesTable({ rows, className }: Props) {
 
             {after > 0 && (
               <tr>
-                <td colSpan={header.length} style={{ height: after }} />
+                <td colSpan={headerCells.length} style={{ height: after }} />
               </tr>
             )}
           </TableBody>
