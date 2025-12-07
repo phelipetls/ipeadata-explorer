@@ -33,7 +33,10 @@ export function SeriesLineChartView({ data, title }: SeriesLineChartViewProps) {
 
   const yAxisLabel = metadata.unit
 
-  if (data.some((item) => item.region != null)) {
+  const regions = new Set(
+    data.flatMap((d) => (d.region ? [d.region?.name] : [])),
+  )
+  if (regions.size > 1) {
     const groupedByData = groupBy(
       data,
       (item) => item.region?.name ?? 'default',
