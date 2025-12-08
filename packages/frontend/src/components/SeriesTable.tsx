@@ -26,7 +26,7 @@ export function SeriesTable({ rows, className }: Props) {
   const scrollContainerRef = useRef<HTMLDivElement | null>(null)
 
   const virtualizer = useVirtualizer({
-    count: dataRows.length,
+    count: rows.length,
     getScrollElement: () => parentRef.current,
     estimateSize: () => ROW_HEIGHT,
     overscan: 5,
