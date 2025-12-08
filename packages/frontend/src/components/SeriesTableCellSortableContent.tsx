@@ -1,24 +1,48 @@
-import { ArrowUp, ArrowDown, ChevronsUpDown } from 'lucide-react'
+import {
+  ArrowUpDown,
+  ArrowUp10,
+  ArrowDown01,
+  ArrowUpAZ,
+  ArrowDownZA,
+  ArrowDownNarrowWide,
+  ArrowUpNarrowWide,
+} from 'lucide-react'
+import type { ReactNode } from 'react'
 
-type SortType = 'asc' | 'desc' | 'none'
+type SortDirection = 'asc' | 'desc' | 'none'
+type DataType = 'any' | 'string' | 'number'
 
 type Props = {
-  value: SortType
-  onChange: (value: SortType) => void
+  value: SortDirection
+  onChange: (value: SortDirection) => void
+  dataType: DataType
   children?: React.ReactNode
 }
 
 const cycle = ['asc', 'desc', 'none'] as const
 
-const sortTypeIconMap = {
-  asc: <ArrowUp className='w-4 h-4' />,
-  desc: <ArrowDown className='w-4 h-4' />,
-  none: <ChevronsUpDown className='w-4 h-4 opacity-50' />,
+const sortIconMap: Record<DataType, Record<SortDirection, ReactNode>> = {
+  any: {
+    asc: <ArrowUpNarrowWide />,
+    desc: <ArrowDownNarrowWide />,
+    none: <ArrowUpDown />,
+  },
+  string: {
+    asc: <ArrowUpAZ />,
+    desc: <ArrowDownZA />,
+    none: <ArrowUpDown />,
+  },
+  number: {
+    asc: <ArrowUp10 />,
+    desc: <ArrowDown01 />,
+    none: <ArrowUpDown />,
+  },
 }
 
 export function SeriesTableCellSortableContent({
   value,
   onChange,
+  dataType,
   children,
 }: Props) {
   return (
@@ -30,7 +54,9 @@ export function SeriesTableCellSortableContent({
       }}
     >
       {children}
-      {sortTypeIconMap[value]}
+      <div className='shrink-0 [&_svg]:w-4 [&_svg]:h-4'>
+        {sortIconMap[dataType][value]}
+      </div>
     </button>
   )
 }

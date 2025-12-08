@@ -154,6 +154,7 @@ export function SeriesTableView({ code }: Props) {
             id: `header-region-${selectedRegionalDivisionLabel}`,
             element: (
               <SeriesTableCellSortableContent
+                dataType='string'
                 value={
                   sortConfig.sortBy === 'region'
                     ? sortConfig.sortDirection
@@ -173,6 +174,7 @@ export function SeriesTableView({ code }: Props) {
             id: `header-${timestamp}`,
             element: (
               <SeriesTableCellSortableContent
+                dataType='number'
                 value={
                   sortConfig.sortBy === `date:${timestamp}`
                     ? sortConfig.sortDirection
@@ -222,6 +224,7 @@ export function SeriesTableView({ code }: Props) {
             id: 'header-date',
             element: (
               <SeriesTableCellSortableContent
+                dataType='any'
                 value={
                   sortConfig.sortBy === 'date'
                     ? sortConfig.sortDirection
@@ -239,6 +242,7 @@ export function SeriesTableView({ code }: Props) {
             id: 'header-value',
             element: (
               <SeriesTableCellSortableContent
+                dataType='number'
                 value={
                   sortConfig.sortBy === 'value'
                     ? sortConfig.sortDirection
