@@ -9,10 +9,7 @@ interface Props extends React.ComponentPropsWithoutRef<'table'> {
 export function Table({ children, className, ...rest }: Props) {
   return (
     <table
-      className={clsx(
-        'table-fixed border-separate border-spacing-0 w-full',
-        className,
-      )}
+      className={clsx('border-separate border-spacing-0 w-full', className)}
       {...rest}
     >
       {children}
