@@ -21,7 +21,7 @@ import { useSelectedRegion } from '../hooks/useSelectedRegion'
 import { getContainingLocations } from '../utils/get-containing-locations'
 import { SeriesTableCellContent } from './SeriesTableCellContent'
 import { SeriesTableCellSortableContent } from './SeriesTableCellSortableContent'
-import { parseAsString, parseAsStringLiteral, useQueryStates } from 'nuqs'
+import { parseAsInteger, parseAsStringLiteral, useQueryStates } from 'nuqs'
 
 interface Props {
   code: string
@@ -36,7 +36,7 @@ export function SeriesTableView({ code }: Props) {
   const [selectedRegion, setSelectedRegion] = useSelectedRegion()
 
   const [sortConfig, setSortConfig] = useQueryStates({
-    sortBy: parseAsString.withDefault('date'),
+    sortByColumnIndex: parseAsInteger.withDefault(0),
     sortDirection: parseAsStringLiteral(['asc', 'desc', 'none']).withDefault(
       'asc',
     ),
@@ -118,7 +118,7 @@ export function SeriesTableView({ code }: Props) {
     }
 
     const sortedRegionNames = regionNames.sort((regionA, regionB) => {
-      if (sortConfig.sortBy === 'region') {
+      if (sortConfig.sortByColumnIndex === 0) {
         if (sortConfig.sortDirection === 'asc') {
           return regionA.localeCompare(regionB)
         }
@@ -127,12 +127,10 @@ export function SeriesTableView({ code }: Props) {
         }
       }
 
-      if (sortConfig.sortBy.startsWith('date:')) {
-        const timestamp = Number(sortConfig.sortBy.split(':')[1])
-        if (Number.isNaN(timestamp)) {
-          return 0
-        }
-
+      const dateIndex = sortConfig.sortByColumnIndex - 1
+      const date = dates[dateIndex]
+      if (date) {
+        const timestamp = date.getTime()
         const valueA = dataMap.get(`${timestamp}-${regionA}`) ?? 0
         const valueB = dataMap.get(`${timestamp}-${regionB}`) ?? 0
 
@@ -163,12 +161,12 @@ export function SeriesTableView({ code }: Props) {
             element: (
               <SeriesTableCellSortableContent
                 value={
-                  sortConfig.sortBy === 'region'
+                  sortConfig.sortByColumnIndex === 0
                     ? sortConfig.sortDirection
                     : 'none'
                 }
                 onChange={(dir) =>
-                  setSortConfig({ sortBy: 'region', sortDirection: dir })
+                  setSortConfig({ sortByColumnIndex: 0, sortDirection: dir })
                 }
               >
                 <SeriesTableCellContent>
@@ -177,20 +175,21 @@ export function SeriesTableView({ code }: Props) {
               </SeriesTableCellSortableContent>
             ),
           },
-          ...dates.map((date) => {
+          ...dates.map((date, index) => {
+            const columnIndex = index + 1
             const timestamp = date.getTime()
             return {
               id: `header-${timestamp}`,
               element: (
                 <SeriesTableCellSortableContent
                   value={
-                    sortConfig.sortBy === `date:${timestamp}`
+                    sortConfig.sortByColumnIndex === columnIndex
                       ? sortConfig.sortDirection
                       : 'none'
                   }
                   onChange={(dir) =>
                     setSortConfig({
-                      sortBy: `date:${timestamp}`,
+                      sortByColumnIndex: columnIndex,
                       sortDirection: dir,
                     })
                   }
@@ -232,12 +231,12 @@ export function SeriesTableView({ code }: Props) {
             element: (
               <SeriesTableCellSortableContent
                 value={
-                  sortConfig.sortBy === 'date'
+                  sortConfig.sortByColumnIndex === 0
                     ? sortConfig.sortDirection
                     : 'none'
                 }
                 onChange={(dir) =>
-                  setSortConfig({ sortBy: 'date', sortDirection: dir })
+                  setSortConfig({ sortByColumnIndex: 0, sortDirection: dir })
                 }
               >
                 <SeriesTableCellContent>Data</SeriesTableCellContent>
@@ -249,12 +248,12 @@ export function SeriesTableView({ code }: Props) {
             element: (
               <SeriesTableCellSortableContent
                 value={
-                  sortConfig.sortBy === 'value'
+                  sortConfig.sortByColumnIndex === 1
                     ? sortConfig.sortDirection
                     : 'none'
                 }
                 onChange={(dir) =>
-                  setSortConfig({ sortBy: 'value', sortDirection: dir })
+                  setSortConfig({ sortByColumnIndex: 1, sortDirection: dir })
                 }
               >
                 <SeriesTableCellContent>
@@ -267,9 +266,9 @@ export function SeriesTableView({ code }: Props) {
       },
       ...deferredData
         .sort((a, b) => {
-          if (sortConfig.sortBy === 'value') {
+          if (sortConfig.sortByColumnIndex === 1) {
             const valueA = a.value ?? 0
-            const valueB = a.value ?? 0
+            const valueB = b.value ?? 0
 
             if (sortConfig.sortDirection === 'asc') {
               return valueA - valueB
@@ -279,7 +278,7 @@ export function SeriesTableView({ code }: Props) {
             }
           }
 
-          if (sortConfig.sortBy === 'date') {
+          if (sortConfig.sortByColumnIndex === 0) {
             if (sortConfig.sortDirection === 'asc') {
               return a.date.getTime() - b.date.getTime()
             }
