@@ -89,15 +89,23 @@ export function SeriesTableView({ code }: Props) {
 
   let tableRows = []
 
-  const regionNames = [
-    ...new Set(
-      deferredData.flatMap((item) => (item.region ? [item.region.name] : [])),
-    ),
-  ]
+  const regionNamesSet = new Set<string>()
+  const dates: Date[] = []
+  const seenTimestamps = new Set<number>()
 
-  const timestamps = [
-    ...new Set(deferredData.map((item) => item.date.getTime())),
-  ]
+  for (const item of deferredData) {
+    if (item.region) {
+      regionNamesSet.add(item.region.name)
+    }
+
+    const time = item.date.getTime()
+    if (!seenTimestamps.has(time)) {
+      seenTimestamps.add(time)
+      dates.push(item.date)
+    }
+  }
+
+  const regionNames = [...regionNamesSet]
 
   if (regionNames.length > 1) {
     const dataMap = new Map<`${number}-${string}`, number | null>()
@@ -169,28 +177,29 @@ export function SeriesTableView({ code }: Props) {
               </SeriesTableCellSortableContent>
             ),
           },
-          ...timestamps.map((timestamp) => ({
-            id: `header-${timestamp}`,
-            element: (
-              <SeriesTableCellSortableContent
-                value={
-                  sortConfig.sortBy === `date:${timestamp}`
-                    ? sortConfig.sortDirection
-                    : 'none'
-                }
-                onChange={(dir) =>
-                  setSortConfig({
-                    sortBy: `date:${timestamp}`,
-                    sortDirection: dir,
-                  })
-                }
-              >
-                <SeriesTableCellContent>
-                  {new Date(timestamp)}
-                </SeriesTableCellContent>
-              </SeriesTableCellSortableContent>
-            ),
-          })),
+          ...dates.map((date) => {
+            const timestamp = date.getTime()
+            return {
+              id: `header-${timestamp}`,
+              element: (
+                <SeriesTableCellSortableContent
+                  value={
+                    sortConfig.sortBy === `date:${timestamp}`
+                      ? sortConfig.sortDirection
+                      : 'none'
+                  }
+                  onChange={(dir) =>
+                    setSortConfig({
+                      sortBy: `date:${timestamp}`,
+                      sortDirection: dir,
+                    })
+                  }
+                >
+                  <SeriesTableCellContent>{date}</SeriesTableCellContent>
+                </SeriesTableCellSortableContent>
+              ),
+            }
+          }),
         ],
       },
       ...sortedRegionNames.map((regionName) => ({
@@ -202,11 +211,11 @@ export function SeriesTableView({ code }: Props) {
               <SeriesTableCellContent>{regionName}</SeriesTableCellContent>
             ),
           },
-          ...timestamps.map((timestamp) => ({
-            id: `value-${timestamp}-${regionName}`,
+          ...dates.map((date) => ({
+            id: `value-${date.getTime()}-${regionName}`,
             element: (
               <SeriesTableCellContent>
-                {dataMap.get(`${timestamp}-${regionName}`) ?? null}
+                {dataMap.get(`${date.getTime()}-${regionName}`) ?? null}
               </SeriesTableCellContent>
             ),
           })),
