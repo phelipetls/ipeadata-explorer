@@ -122,34 +122,6 @@ export function SeriesTableView({ code }: Props) {
       )
     }
 
-    const sortedRegionNames = regionNames.sort((regionA, regionB) => {
-      if (sortConfig.sortByColumnIndex === 0) {
-        if (sortConfig.sortDirection === 'asc') {
-          return regionA.localeCompare(regionB)
-        }
-        if (sortConfig.sortDirection === 'desc') {
-          return regionB.localeCompare(regionA)
-        }
-      }
-
-      const dateIndex = sortConfig.sortByColumnIndex - 1
-      const date = dates[dateIndex]
-      if (date) {
-        const timestamp = date.getTime()
-        const valueA = dataMap.get(`${timestamp}-${regionA}`) ?? 0
-        const valueB = dataMap.get(`${timestamp}-${regionB}`) ?? 0
-
-        if (sortConfig.sortDirection === 'asc') {
-          return valueA - valueB
-        }
-        if (sortConfig.sortDirection === 'desc') {
-          return valueB - valueA
-        }
-      }
-
-      return 0
-    })
-
     const selectedRegionalDivisionLabel = displayRegionalLevel(
       selectedRegionalDivision,
       {
@@ -174,7 +146,7 @@ export function SeriesTableView({ code }: Props) {
           }),
         ],
       },
-      ...sortedRegionNames.map((regionName) => ({
+      ...regionNames.map((regionName) => ({
         id: regionName,
         cells: [
           {
@@ -203,46 +175,56 @@ export function SeriesTableView({ code }: Props) {
           },
         ],
       },
-      ...deferredData
-        .sort((a, b) => {
-          if (sortConfig.sortByColumnIndex === 1) {
-            const valueA = a.value ?? 0
-            const valueB = b.value ?? 0
-
-            if (sortConfig.sortDirection === 'asc') {
-              return valueA - valueB
-            }
-            if (sortConfig.sortDirection === 'desc') {
-              return valueB - valueA
-            }
-          }
-
-          if (sortConfig.sortByColumnIndex === 0) {
-            if (sortConfig.sortDirection === 'asc') {
-              return a.date.getTime() - b.date.getTime()
-            }
-            if (sortConfig.sortDirection === 'desc') {
-              return b.date.getTime() - a.date.getTime()
-            }
-          }
-
-          return 0
-        })
-        .map((item) => ({
-          id: item.date.toISOString(),
-          cells: [
-            {
-              id: `header-${item.date.getTime()}`,
-              value: item.date,
-            },
-            {
-              id: `data-${item.date.getTime()}-${item.value}`,
-              value: item.value,
-            },
-          ],
-        })),
+      ...deferredData.map((item) => ({
+        id: item.date.toISOString(),
+        cells: [
+          {
+            id: `header-${item.date.getTime()}`,
+            value: item.date,
+          },
+          {
+            id: `data-${item.date.getTime()}-${item.value}`,
+            value: item.value,
+          },
+        ],
+      })),
     ]
   }
+
+  const [header, ...body] = grid
+
+  const sortedBody = body.sort((rowA, rowB) => {
+    const cellA = rowA.cells[sortConfig.sortByColumnIndex]
+    const cellB = rowB.cells[sortConfig.sortByColumnIndex]
+    const valueA = cellA?.value
+    const valueB = cellB?.value
+
+    if (valueA === valueB) return 0
+    if (valueA === null || valueA === undefined) return 1
+    if (valueB === null || valueB === undefined) return -1
+
+    if (typeof valueA === 'number' && typeof valueB === 'number') {
+      return sortConfig.sortDirection === 'asc'
+        ? valueA - valueB
+        : valueB - valueA
+    }
+
+    if (valueA instanceof Date && valueB instanceof Date) {
+      return sortConfig.sortDirection === 'asc'
+        ? valueA.getTime() - valueB.getTime()
+        : valueB.getTime() - valueA.getTime()
+    }
+
+    if (typeof valueA === 'string' && typeof valueB === 'string') {
+      return sortConfig.sortDirection === 'asc'
+        ? valueA.localeCompare(valueB)
+        : valueB.localeCompare(valueA)
+    }
+
+    return 0
+  })
+
+  grid = header ? [header, ...sortedBody] : sortedBody
 
   const tableRows = grid.map((row, rowIndex) => ({
     id: row.id,
