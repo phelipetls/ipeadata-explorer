@@ -27,6 +27,11 @@ interface Props {
   code: string
 }
 
+type GridRow = {
+  id: string
+  cells: { id: string; value: string | number | Date | null }[]
+}
+
 export function SeriesTableView({ code }: Props) {
   const [isPending, startTransition] = useTransition()
   const metadata = useSeriesMetadataContext()
@@ -87,7 +92,7 @@ export function SeriesTableView({ code }: Props) {
       : true
   })
 
-  let tableRows = []
+  let grid: GridRow[] = []
 
   const regionNamesSet = new Set<string>()
   const dates: Date[] = []
@@ -152,51 +157,19 @@ export function SeriesTableView({ code }: Props) {
       },
     )
 
-    tableRows = [
+    grid = [
       {
         id: 'header',
         cells: [
           {
             id: `header-region-${selectedRegionalDivisionLabel}`,
-            element: (
-              <SeriesTableCellSortableContent
-                value={
-                  sortConfig.sortByColumnIndex === 0
-                    ? sortConfig.sortDirection
-                    : 'none'
-                }
-                onChange={(dir) =>
-                  setSortConfig({ sortByColumnIndex: 0, sortDirection: dir })
-                }
-              >
-                <SeriesTableCellContent>
-                  {selectedRegionalDivisionLabel}
-                </SeriesTableCellContent>
-              </SeriesTableCellSortableContent>
-            ),
+            value: selectedRegionalDivisionLabel,
           },
-          ...dates.map((date, index) => {
-            const columnIndex = index + 1
+          ...dates.map((date) => {
             const timestamp = date.getTime()
             return {
               id: `header-${timestamp}`,
-              element: (
-                <SeriesTableCellSortableContent
-                  value={
-                    sortConfig.sortByColumnIndex === columnIndex
-                      ? sortConfig.sortDirection
-                      : 'none'
-                  }
-                  onChange={(dir) =>
-                    setSortConfig({
-                      sortByColumnIndex: columnIndex,
-                      sortDirection: dir,
-                    })
-                  }
-                >
-                  <SeriesTableCellContent>{date}</SeriesTableCellContent>
-                </SeriesTableCellSortableContent>
-              ),
+              value: date,
             }
           }),
         ],
@@ -206,61 +179,27 @@ export function SeriesTableView({ code }: Props) {
         cells: [
           {
             id: `header-${regionName}`,
-            element: (
-              <SeriesTableCellContent>{regionName}</SeriesTableCellContent>
-            ),
+            value: regionName,
           },
           ...dates.map((date) => ({
             id: `value-${date.getTime()}-${regionName}`,
-            element: (
-              <SeriesTableCellContent>
-                {dataMap.get(`${date.getTime()}-${regionName}`) ?? null}
-              </SeriesTableCellContent>
-            ),
+            value: dataMap.get(`${date.getTime()}-${regionName}`) ?? null,
           })),
         ],
       })),
     ]
   } else {
-    tableRows = [
+    grid = [
       {
         id: 'header',
         cells: [
           {
             id: 'header-date',
-            element: (
-              <SeriesTableCellSortableContent
-                value={
-                  sortConfig.sortByColumnIndex === 0
-                    ? sortConfig.sortDirection
-                    : 'none'
-                }
-                onChange={(dir) =>
-                  setSortConfig({ sortByColumnIndex: 0, sortDirection: dir })
-                }
-              >
-                <SeriesTableCellContent>Data</SeriesTableCellContent>
-              </SeriesTableCellSortableContent>
-            ),
+            value: 'Data',
           },
           {
             id: 'header-value',
-            element: (
-              <SeriesTableCellSortableContent
-                value={
-                  sortConfig.sortByColumnIndex === 1
-                    ? sortConfig.sortDirection
-                    : 'none'
-                }
-                onChange={(dir) =>
-                  setSortConfig({ sortByColumnIndex: 1, sortDirection: dir })
-                }
-              >
-                <SeriesTableCellContent>
-                  {`${metadata.name} ${metadata.unit}`}
-                </SeriesTableCellContent>
-              </SeriesTableCellSortableContent>
-            ),
+            value: `${metadata.name} ${metadata.unit}`,
           },
         ],
       },
@@ -294,20 +233,49 @@ export function SeriesTableView({ code }: Props) {
           cells: [
             {
               id: `header-${item.date.getTime()}`,
-              element: (
-                <SeriesTableCellContent>{item.date}</SeriesTableCellContent>
-              ),
+              value: item.date,
             },
             {
               id: `data-${item.date.getTime()}-${item.value}`,
-              element: (
-                <SeriesTableCellContent>{item.value}</SeriesTableCellContent>
-              ),
+              value: item.value,
             },
           ],
         })),
     ]
   }
+
+  const tableRows = grid.map((row, rowIndex) => ({
+    id: row.id,
+    cells: row.cells.map((cell, colIndex) => {
+      if (rowIndex === 0) {
+        return {
+          id: cell.id,
+          element: (
+            <SeriesTableCellSortableContent
+              value={
+                sortConfig.sortByColumnIndex === colIndex
+                  ? sortConfig.sortDirection
+                  : 'none'
+              }
+              onChange={(dir) =>
+                setSortConfig({
+                  sortByColumnIndex: colIndex,
+                  sortDirection: dir,
+                })
+              }
+            >
+              <SeriesTableCellContent>{cell.value}</SeriesTableCellContent>
+            </SeriesTableCellSortableContent>
+          ),
+        }
+      }
+
+      return {
+        id: cell.id,
+        element: <SeriesTableCellContent>{cell.value}</SeriesTableCellContent>,
+      }
+    }),
+  }))
 
   const shouldShowRegionalLevelFilter = metadata.regionalLevels.length > 1
 
