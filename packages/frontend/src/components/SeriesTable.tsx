@@ -64,15 +64,6 @@ export function SeriesTable({ rows, className }: Props) {
         }}
       >
         <Table>
-          <colgroup>
-            {headerCells.map((_, index) => (
-              <col
-                key={index}
-                className={clsx({ 'min-w-[160px]': index === 0 })}
-              />
-            ))}
-          </colgroup>
-
           {headerCells.length > 0 && (
             <TableHead>
               <TableRow>
