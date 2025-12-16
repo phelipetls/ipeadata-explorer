@@ -25,7 +25,7 @@ jobs:
         run: npm run build
         env:
           VITE_APP_BASENAME: /ipeadata-explorer/
-          VITE_API_URL: https://h4t158c3zf.execute-api.us-east-2.amazonaws.com/v1
+          VITE_API_URL: https://ipeadata.gov.br/api/v1
 
       - name: Deploy to GitHub Pages
         uses: crazy-max/ghaction-github-pages@v2
