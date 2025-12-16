@@ -29,7 +29,7 @@ export function Button({
       {
         className: twMerge(
           clsx(
-            'rounded-lg font-medium transition-colors',
+            'rounded-full font-medium transition-colors',
             'disabled:cursor-not-allowed',
             'flex items-center justify-center gap-2',
             {
@@ -45,7 +45,7 @@ export function Button({
                 variant === 'solid',
               'text-text-on-solid-button disabled:text-text-on-solid-button-disabled':
                 variant === 'solid',
-              'bg-button-subtle hover:bg-button-subtle-hover active:bg-button-subtle-active disabled:bg-button-subtle-disabled':
+              'bg-button-subtle hover:bg-button-subtle-hover active:bg-button-subtle-active disabled:bg-button-subtle-disabled shadow-sm':
                 variant === 'subtle',
               'text-text-on-subtle-button disabled:text-text-on-subtle-button-disabled':
                 variant === 'subtle',
