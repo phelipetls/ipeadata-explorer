@@ -21,7 +21,15 @@ import { useSelectedRegion } from '../hooks/useSelectedRegion'
 import { getContainingLocations } from '../utils/get-containing-locations'
 import { SeriesTableCellContent } from './SeriesTableCellContent'
 import { SeriesTableCellSortableContent } from './SeriesTableCellSortableContent'
-import { parseAsInteger, parseAsStringLiteral, useQueryStates } from 'nuqs'
+import {
+  parseAsBoolean,
+  parseAsInteger,
+  parseAsStringLiteral,
+  useQueryState,
+  useQueryStates,
+} from 'nuqs'
+import { Button } from './Button'
+import { ArrowLeftRight } from 'lucide-react'
 
 interface Props {
   code: string
@@ -46,6 +54,11 @@ export function SeriesTableView({ code }: Props) {
       'asc',
     ),
   })
+
+  const [isTransposed, setIsTransposed] = useQueryState(
+    'transpose',
+    parseAsBoolean.withDefault(false),
+  )
 
   const dateRangePresets = getDateRangePresets({
     periodicity: metadata.periodicity,
@@ -112,7 +125,10 @@ export function SeriesTableView({ code }: Props) {
 
   const regionNames = [...regionNamesSet]
 
-  if (regionNames.length > 1) {
+  const isRegionalData = regionNames.length > 1
+  const canTranspose = isRegionalData
+
+  if (isRegionalData) {
     const dataMap = new Map<`${number}-${string}`, number | null>()
 
     for (const item of deferredData) {
@@ -122,44 +138,74 @@ export function SeriesTableView({ code }: Props) {
       )
     }
 
-    const selectedRegionalDivisionLabel = displayRegionalLevel(
-      selectedRegionalDivision,
-      {
-        plural: false,
-      },
-    )
+    const regionLabel = displayRegionalLevel(selectedRegionalDivision, {
+      plural: false,
+    })
 
-    grid = [
-      {
-        id: 'header',
-        cells: [
-          {
-            id: `header-region-${selectedRegionalDivisionLabel}`,
-            value: selectedRegionalDivisionLabel,
-          },
-          ...dates.map((date) => {
-            const timestamp = date.getTime()
-            return {
-              id: `header-${timestamp}`,
+    if (isTransposed) {
+      grid = [
+        {
+          id: 'header',
+          cells: [
+            {
+              id: `header-date`,
+              value: 'Data',
+            },
+            ...regionNames.map((regionName) => {
+              return {
+                id: `header-region-${regionName}`,
+                value: regionName,
+              }
+            }),
+          ],
+        },
+        ...dates.map((date) => ({
+          id: date.toISOString(),
+          cells: [
+            {
+              id: `header-date-${date.toISOString()}`,
               value: date,
-            }
-          }),
-        ],
-      },
-      ...regionNames.map((regionName) => ({
-        id: regionName,
-        cells: [
-          {
-            id: `header-${regionName}`,
-            value: regionName,
-          },
-          ...dates.map((date) => ({
-            id: `value-${date.getTime()}-${regionName}`,
-            value: dataMap.get(`${date.getTime()}-${regionName}`) ?? null,
-          })),
-        ],
-      })),
-    ]
+            },
+            ...regionNames.map((regionName) => ({
+              id: `value-${date.getTime()}-${regionName}`,
+              value: dataMap.get(`${date.getTime()}-${regionName}`) ?? null,
+            })),
+          ],
+        })),
+      ]
+    } else {
+      grid = [
+        {
+          id: 'header',
+          cells: [
+            {
+              id: `header-region-${regionLabel}`,
+              value: regionLabel,
+            },
+            ...dates.map((date) => {
+              const timestamp = date.getTime()
+              return {
+                id: `header-date-${timestamp}`,
+                value: date,
+              }
+            }),
+          ],
+        },
+        ...regionNames.map((regionName) => ({
+          id: regionName,
+          cells: [
+            {
+              id: `region-${regionName}`,
+              value: regionName,
+            },
+            ...dates.map((date) => ({
+              id: `value-${date.getTime()}-${regionName}`,
+              value: dataMap.get(`${date.getTime()}-${regionName}`) ?? null,
+            })),
+          ],
+        })),
+      ]
+    }
   } else {
     grid = [
       {
@@ -322,6 +368,17 @@ export function SeriesTableView({ code }: Props) {
             maxDate={metadata.maxDate}
           />
         </SeriesDataFilterItem>
+
+        {canTranspose && (
+          <Button
+            variant='subtle'
+            onClick={() => setIsTransposed(!isTransposed)}
+            className='ml-auto self-end'
+            startIcon={<ArrowLeftRight />}
+          >
+            Tranpose
+          </Button>
+        )}
       </SeriesDataFilterGroup>
 
       {dataQuery.isLoading ? (
