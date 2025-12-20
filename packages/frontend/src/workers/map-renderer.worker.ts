@@ -238,10 +238,6 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
   context.fillText(legendLabel, legendX, legendY)
 
   drawLegend(context, {
-    x: legendX,
-    y: legendY + legendLabelHeight + legendLabelSpacing,
-    width: legendWidth,
-    height: legendBinHeight,
     bins: bins.map((bin, index) => {
       return {
         color: bin.color,
@@ -275,8 +271,6 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
 
       return [minTick]
     }),
-    label: legendLabel,
-    labelSpacing: legendLabelSpacing,
     fontFamily,
   })
 
@@ -289,10 +283,6 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
 function drawLegend(
   context: OffscreenCanvasRenderingContext2D,
   props: {
-    x: number
-    y: number
-    width: number
-    height: number
     bins: {
       color: string
       x: number
@@ -307,8 +297,6 @@ function drawLegend(
       height: number
       textY: number
     }[]
-    label: string
-    labelSpacing: number
     fontFamily: string
   },
 ) {
