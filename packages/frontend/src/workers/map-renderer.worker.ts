@@ -91,7 +91,6 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
     data,
     width,
     height,
-    marginBottom,
     regionCode,
     colorScheme,
     legendLabel,
@@ -101,6 +100,7 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
     backgroundColor,
     legendTickDecimalPlaces,
   } = message.payload
+  let { marginBottom } = message.payload
 
   const offscreenCanvas = new OffscreenCanvas(width, height)
   const context = offscreenCanvas.getContext('2d', { alpha: false })
@@ -149,6 +149,8 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
   const legendTickLabelSpacing = 6
 
   const marginTop = titleHeight
+  const legendMarginTop = 10
+  marginBottom += legendMarginTop
 
   projection = d3.geoMercator().fitExtent(
     [
@@ -246,7 +248,7 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
   const legendBinWidth = legendWidth / bins.length
 
   const legendX = centerX(legendWidth)
-  const legendY = height - marginBottom
+  const legendY = height - marginBottom + legendMarginTop
   context.fillText(legendLabel, legendX, legendY)
 
   drawLegend(context, {
