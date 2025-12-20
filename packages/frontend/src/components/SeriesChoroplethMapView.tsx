@@ -25,12 +25,13 @@ export function SeriesChoroplethMapView({
 }: Props) {
   const metadata = useSeriesMetadataContext()
 
+  const numericValueFormatter = new Intl.NumberFormat('pt-BR', {
+    notation: 'compact',
+    minimumFractionDigits: metadata.decimalPlaces,
+  })
+
   const tooltipValueFormatter = (value: number) => {
-    const numFormatter = new Intl.NumberFormat('pt-BR', {
-      notation: 'compact',
-      maximumFractionDigits: 1,
-    })
-    const formatted = numFormatter.format(value)
+    const formatted = numericValueFormatter.format(value)
     return metadata.unit ? `${formatted} - ${metadata.unit}` : formatted
   }
 
