@@ -163,17 +163,20 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
   const bounds = path.bounds(filteredGeoJson)
   const [[x0], [x1]] = bounds
   const mapWidth = x1 - x0
-  const legendMarginInline = 30
-  const legendWidth = Math.min(mapWidth - legendMarginInline, 400)
-  const legendX = x0 + (mapWidth - legendWidth) / 2
-  const legendY = height - marginBottom
+
+  const centerX = (elementWidth: number) => {
+    return x0 + mapWidth / 2 - elementWidth / 2
+  }
 
   if (title) {
     context.fillStyle = '#000000'
     context.font = `bold 14px ${fontFamily}`
-    context.textAlign = 'center'
+    context.textAlign = 'left'
     context.textBaseline = 'top'
-    context.fillText(title, width / 2, 0)
+    const titleMetrics = context.measureText(title)
+    const titleWidth = titleMetrics.width
+    const titleX = centerX(titleWidth)
+    context.fillText(title, titleX, 0)
   }
 
   const dataMap = new Map<number, number | null>()
@@ -226,17 +229,24 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
     return { color, min, max }
   })
 
-  const legendBinWidth = legendWidth / bins.length
+  const legendMarginInline = 30
 
   context.fillStyle = '#000000'
   context.font = `bold 14px ${fontFamily}`
   context.textAlign = 'left'
   context.textBaseline = 'hanging'
+
+  const legendWidth = Math.min(mapWidth - legendMarginInline, 400)
+
   const legendLabelMetrics = context.measureText(legendLabel)
   const legendLabelHeight =
     legendLabelMetrics.actualBoundingBoxAscent +
     legendLabelMetrics.actualBoundingBoxDescent
 
+  const legendBinWidth = legendWidth / bins.length
+
+  const legendX = centerX(legendWidth)
+  const legendY = height - marginBottom
   context.fillText(legendLabel, legendX, legendY)
 
   drawLegend(context, {
