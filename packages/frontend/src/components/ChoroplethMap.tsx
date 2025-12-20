@@ -24,6 +24,7 @@ interface ChoroplethMapProps extends React.ComponentPropsWithRef<'div'> {
   title?: string
   tooltipValueFormatter: (value: number) => string
   legendLabel: string
+  legendTickDecimalPlaces: number
   regionCode: number
   colorScheme: readonly string[]
 }
@@ -36,6 +37,7 @@ export function ChoroplethMap({
   legendLabel,
   colorScheme,
   regionCode,
+  legendTickDecimalPlaces,
   ...rest
 }: ChoroplethMapProps) {
   const chartContext = useChartContext()
@@ -72,6 +74,7 @@ export function ChoroplethMap({
         outlineColor: getCssVariable('--color-chart-map-outline'),
         fontFamily: getCssVariable('--font-sans'),
         backgroundColor: chartContext.backgroundColor,
+        legendTickDecimalPlaces,
       },
     })
 
@@ -109,6 +112,7 @@ export function ChoroplethMap({
     legendLabel,
     colorScheme,
     regionCode,
+    legendTickDecimalPlaces,
   ])
 
   const hoveredFeature = pointer

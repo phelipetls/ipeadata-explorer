@@ -59,6 +59,7 @@ export function SeriesChoroplethMapView({
       title={title}
       tooltipValueFormatter={tooltipValueFormatter}
       legendLabel={legendLabel}
+      legendTickDecimalPlaces={metadata.decimalPlaces}
       data={data}
       geojson={geojson}
       regionCode={regionCode}

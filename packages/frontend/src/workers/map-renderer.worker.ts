@@ -21,6 +21,7 @@ export type MapRendererMessage =
         regionCode: number
         colorScheme: readonly string[]
         legendLabel: string
+        legendTickDecimalPlaces: number
         outlineColor: string
         fontFamily: string
         backgroundColor: string
@@ -98,6 +99,7 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
     outlineColor,
     fontFamily,
     backgroundColor,
+    legendTickDecimalPlaces,
   } = message.payload
 
   const offscreenCanvas = new OffscreenCanvas(width, height)
@@ -238,6 +240,7 @@ function render(message: Extract<MapRendererMessage, { type: 'render' }>) {
   context.fillText(legendLabel, legendX, legendY)
 
   drawLegend(context, {
+    legendTickDecimalPlaces,
     bins: bins.map((bin, index) => {
       return {
         color: bin.color,
@@ -298,9 +301,10 @@ function drawLegend(
       textY: number
     }[]
     fontFamily: string
+    legendTickDecimalPlaces: number
   },
 ) {
-  const { bins, ticks, fontFamily } = props
+  const { bins, ticks, fontFamily, legendTickDecimalPlaces } = props
 
   bins.forEach((bin) => {
     context.fillStyle = bin.color
@@ -310,7 +314,7 @@ function drawLegend(
   const formatTick = (value: number) => {
     return new Intl.NumberFormat('pt-BR', {
       notation: 'compact',
-      maximumFractionDigits: 1,
+      minimumFractionDigits: legendTickDecimalPlaces,
     }).format(value)
   }
 
