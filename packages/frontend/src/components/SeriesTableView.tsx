@@ -376,7 +376,7 @@ export function SeriesTableView({ code }: Props) {
             className='ml-auto self-end'
             startIcon={<ArrowLeftRight />}
           >
-            Tranpose
+            Transpor
           </Button>
         )}
       </SeriesDataFilterGroup>
