@@ -22,13 +22,13 @@ export function SeriesDescription({ children, className, ...rest }: Props) {
     for (const elem of tabbableElems) {
       elem.tabIndex = isExpanded ? 0 : -1
     }
-  }, [isExpanded])
+  }, [isExpanded, children])
 
   useEffect(() => {
     if (!paragraphRef.current) return
     const node = paragraphRef.current
     setIsClamped(node.clientHeight < node.scrollHeight)
-  }, [])
+  }, [children])
 
   return (
     <div className={clsx('relative leading-relaxed', className)} {...rest}>
