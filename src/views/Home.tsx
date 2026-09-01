@@ -8,8 +8,8 @@ import { HomeSeriesChartSection } from '../components/HomeSeriesChartSection'
 import { Link } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 import { format, subYears } from 'date-fns'
-import { useQuery } from '@tanstack/react-query'
 import useMediaQuery from '../hooks/useMediaQuery'
+import { useSeriesDateRange } from '../hooks/useSeriesDateRange'
 import { getCssVariable } from '../utils/get-css-variable'
 
 export type SeriesItem = {
@@ -218,18 +218,11 @@ export function Home() {
 
   const isPending = selectedSeries !== deferredSelectedSeries
 
-  const { data: metadata } = useQuery({
-    queryKey: ['seriesMetadata', deferredSelectedSeries?.code],
-    queryFn: ({ signal }) =>
-      deferredSelectedSeries
-        ? getSeriesMetadata(deferredSelectedSeries.code, { signal })
-        : null,
-    enabled: !!deferredSelectedSeries,
-  })
+  const { maxDate } = useSeriesDateRange(deferredSelectedSeries?.code ?? '')
 
   const dateRange =
-    deferredSelectedSeries && metadata
-      ? deferredSelectedSeries.getDateRange(metadata.maxDate)
+    deferredSelectedSeries && maxDate
+      ? deferredSelectedSeries.getDateRange(maxDate)
       : null
 
   let seriesDetailsUrl = `/series/${deferredSelectedSeries?.code}`
