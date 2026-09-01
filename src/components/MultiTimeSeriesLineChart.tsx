@@ -198,6 +198,7 @@ export function MultiTimeSeriesLineChart({
         {hoveredPoints.length > 0 &&
           hoveredPoints.map((point) => (
             <circle
+              key={`${point.category}-${point.date.getTime()}`}
               transform={`translate(${x(point.date)}, ${y(point.value)})`}
               r='4'
               fill={point.color}

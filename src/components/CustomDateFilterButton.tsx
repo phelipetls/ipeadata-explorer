@@ -72,7 +72,6 @@ export function CustomDateFilterButton({
                   <Form
                     className='p-4'
                     errors={errors}
-                    onClearErrors={() => setErrors({})}
                     onSubmit={(e) => {
                       e.preventDefault()
 

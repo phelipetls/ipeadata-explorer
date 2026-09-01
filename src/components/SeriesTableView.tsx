@@ -311,7 +311,7 @@ export function SeriesTableView({ code }: Props) {
             </SeriesDataFilterItemLabel>
 
             <SegmentGroup>
-              {metadata.regionalLevels.map((regionalLevel) => (
+              {regionalLevels.map((regionalLevel) => (
                 <SegmentGroupItem
                   key={regionalLevel}
                   isSelected={regionalLevel === selectedRegionalDivision}
