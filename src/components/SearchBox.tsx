@@ -5,7 +5,7 @@ import {
   useTransition,
   type ReactElement,
 } from 'react'
-import { getAllMetadata } from '../api/ipea/get-all-metadata'
+import { getAllSeriesMetadata } from '../api/ipea/get-all-metadata'
 import { filterSeries } from '../utils/filter-series'
 import { parseAsString, useQueryState } from 'nuqs'
 import { useQuery } from '@tanstack/react-query'
@@ -64,7 +64,7 @@ export function SearchBox<ItemValue>({
 
   const metadataQuery = useQuery({
     queryKey: ['metadata'],
-    queryFn: ({ signal }) => getAllMetadata({ signal }),
+    queryFn: ({ signal }) => getAllSeriesMetadata({ signal }),
     enabled: open,
     staleTime: Infinity,
   })

@@ -1,6 +1,6 @@
 import * as z from 'zod'
 
-const metadataItemSchema = z.object({
+const seriesMetadataSchema = z.object({
   SERCODIGO: z.string(),
   SERNOME: z.string(),
   SERCOMENTARIO: z.string().nullable().optional(),
@@ -18,15 +18,15 @@ const metadataItemSchema = z.object({
   SERNUMERICA: z.boolean().nullable().optional(),
 })
 
-export type MetadataItem = z.infer<typeof metadataItemSchema>
+export type SeriesMetadata = z.infer<typeof seriesMetadataSchema>
 
 const dataSchema = z.object({
-  value: z.array(metadataItemSchema),
+  value: z.array(seriesMetadataSchema),
 })
 
-export async function getAllMetadata(options?: {
+export async function getAllSeriesMetadata(options?: {
   signal?: AbortSignal
-}): Promise<MetadataItem[]> {
+}): Promise<SeriesMetadata[]> {
   const url = `${import.meta.env.VITE_API_URL}/Metadados`
   const response = await fetch(url, { signal: options?.signal })
   if (!response.ok) {

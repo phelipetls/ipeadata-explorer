@@ -1,52 +1,42 @@
-import type { MetadataItem } from '../api/ipea/get-all-metadata'
+import Fuse from 'fuse.js'
+import type { SeriesMetadata } from '../api/ipea/get-all-metadata'
 
 type SearchItem = {
   code: string
   name: string
 }
 
-function normalizeStr(str: string): string {
-  return str
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
+const WEIGHTS = {
+  name: 0.75,
+  code: 0.25,
 }
 
 export function filterSeries(
-  metadata: MetadataItem[],
+  series: SeriesMetadata[],
   query: string,
+  limit = 50,
 ): SearchItem[] {
-  const words = query.trim() ? normalizeStr(query).split(/\s+/) : []
-  const results: SearchItem[] = []
-
-  for (const item of metadata) {
-    if (item.SERNUMERICA === false) {
-      continue
-    }
-
-    if (words.length > 0) {
-      const normalizedName = normalizeStr(item.SERNOME)
-      const normalizedCode = normalizeStr(item.SERCODIGO)
-
-      const matchesAllWords = words.every(
-        (word) =>
-          normalizedName.includes(word) || normalizedCode.includes(word),
-      )
-
-      if (!matchesAllWords) {
-        continue
-      }
-    }
-
-    results.push({
+  const searchable = series
+    .filter((item) => item.SERNUMERICA !== false)
+    .map((item) => ({
       code: item.SERCODIGO,
       name: item.SERNOME,
-    })
+    }))
 
-    if (words.length > 0 && results.length >= 50) {
-      break
-    }
-  }
+  const fuse = new Fuse(searchable, {
+    keys: [
+      { name: 'name', weight: WEIGHTS.name },
+      { name: 'code', weight: WEIGHTS.code },
+    ],
+    threshold: 0.4,
+    ignoreLocation: true,
+    ignoreFieldNorm: true,
+    shouldSort: true,
+    minMatchCharLength: 2,
+  })
 
-  return results
+  return fuse
+    .search(query.trim())
+    .slice(0, limit)
+    .map((result) => result.item)
 }
