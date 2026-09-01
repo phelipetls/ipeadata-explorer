@@ -9,7 +9,6 @@ import { Link } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 import { format, subYears } from 'date-fns'
 import { useQuery } from '@tanstack/react-query'
-import { getSeriesMetadata } from '../api/ipea/get-series-metadata'
 import useMediaQuery from '../hooks/useMediaQuery'
 import { getCssVariable } from '../utils/get-css-variable'
 

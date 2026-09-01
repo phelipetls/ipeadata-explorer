@@ -5,8 +5,11 @@ import { displayRegionalLevel } from '../utils/display-regional-level'
 import { SegmentGroup } from './SegmentGroup'
 import { SegmentGroupItem } from './SegmentGroupItem'
 import { useDateFilters } from '../hooks/useDateFilters'
-import { useQuery } from '@tanstack/react-query'
-import { getSeriesValues } from '../api/ipea/get-series-values'
+import { useSeriesValues } from '../hooks/useSeriesValues'
+import { useSeriesRawValuesQuery } from '../hooks/useSeriesRawValuesQuery'
+import { getSeriesRegionalLevels } from '../utils/series-metadata-helpers'
+import type { RegionalLevel } from '../types'
+import { useSeriesDateRange } from '../hooks/useSeriesDateRange'
 import { DateRangeFilter } from './DateRangeFilter'
 import { getDateRangePresets } from '../utils/get-date-ranges-presets'
 import { SeriesDataFilterGroup } from './SeriesDataFilterGroup'
@@ -43,9 +46,14 @@ type GridRow = {
 export function SeriesTableView({ code }: Props) {
   const [isPending, startTransition] = useTransition()
   const metadata = useSeriesMetadataContext()
+  const valuesQuery = useSeriesRawValuesQuery(code)
+  const regionalLevels: RegionalLevel[] = valuesQuery.data
+    ? getSeriesRegionalLevels(valuesQuery.data)
+    : ['brazil']
+  const { minDate, maxDate } = useSeriesDateRange(code)
 
   const [selectedRegionalDivision, setSelectedRegionalDivision] =
-    useSelectedRegionalDivision(metadata.regionalLevels[0] ?? 'brazil')
+    useSelectedRegionalDivision(regionalLevels[0] ?? 'brazil')
   const [selectedRegion, setSelectedRegion] = useSelectedRegion()
 
   const [sortConfig, setSortConfig] = useQueryStates({
@@ -62,39 +70,25 @@ export function SeriesTableView({ code }: Props) {
 
   const dateRangePresets = getDateRangePresets({
     periodicity: metadata.periodicity,
-    minDate: metadata.minDate,
-    maxDate: metadata.maxDate,
+    minDate,
+    maxDate,
   })
 
   const { dateFilter, setDateFilter } = useDateFilters({
     defaultValue: {
-      startDate: dateRangePresets[0]?.startDate ?? metadata.minDate,
-      endDate: dateRangePresets[0]?.endDate ?? metadata.maxDate,
+      startDate: dateRangePresets[0]?.startDate ?? minDate,
+      endDate: dateRangePresets[0]?.endDate ?? maxDate,
       preset: dateRangePresets[0]?.label ?? 'custom',
     },
   })
 
-  const dataQuery = useQuery({
-    queryKey: [
-      'seriesData',
-      code,
-      selectedRegionalDivision,
-      dateFilter.startDate.getTime(),
-      dateFilter.endDate.getTime(),
-      'table',
-    ],
-    queryFn: ({ signal }) =>
-      getSeriesValues(code, {
-        signal,
-        regionalLevel:
-          metadata.database === 'macroeconomic'
-            ? undefined
-            : selectedRegionalDivision,
-        startDate: dateFilter.startDate,
-        endDate: dateFilter.endDate,
-      }),
-    enabled: code !== '',
-    placeholderData: (prev) => prev,
+  const dataQuery = useSeriesValues(code, {
+    regionalLevel:
+      metadata.database === 'macroeconomic'
+        ? undefined
+        : selectedRegionalDivision,
+    startDate: dateFilter.startDate,
+    endDate: dateFilter.endDate,
   })
 
   const data = dataQuery.data ?? []
@@ -305,7 +299,7 @@ export function SeriesTableView({ code }: Props) {
     }),
   }))
 
-  const shouldShowRegionalLevelFilter = metadata.regionalLevels.length > 1
+  const shouldShowRegionalLevelFilter = regionalLevels.length > 1
 
   return (
     <>
@@ -364,8 +358,8 @@ export function SeriesTableView({ code }: Props) {
                 setDateFilter(value)
               })
             }}
-            minDate={metadata.minDate}
-            maxDate={metadata.maxDate}
+            minDate={minDate}
+            maxDate={maxDate}
           />
         </SeriesDataFilterItem>
 

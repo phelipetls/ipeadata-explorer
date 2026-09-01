@@ -1,11 +1,11 @@
-import { useQuery } from '@tanstack/react-query'
 import { SeriesChart } from './SeriesChart'
 import { LoadingIndicator } from './LoadingIndicator'
 import { ErrorState } from './ErrorState'
 import { SeriesMetadataProvider } from '../context/SeriesMetadataContext'
 import { ChartContext } from '../context/ChartContext'
 import { useContainerWidth } from '../hooks/useContainerWidth'
-import { getSeriesMetadata } from '../api/ipea/get-series-metadata'
+import { useSeriesMetadataQuery } from '../hooks/useSeriesMetadataQuery'
+import { useSeriesDateRange } from '../hooks/useSeriesDateRange'
 import type { SeriesItem } from '../views/Home'
 import clsx from 'clsx'
 import { getCssVariable } from '../utils/get-css-variable'
@@ -32,25 +32,22 @@ export function HomeSeriesChartSection({
 }: Props) {
   const { width, containerRef } = useContainerWidth()
 
-  const seriesMetadataQuery = useQuery({
-    queryKey: ['seriesMetadata', selectedSeries.code],
-    queryFn: ({ signal }) => getSeriesMetadata(selectedSeries.code, { signal }),
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
-  })
+  const metadataQuery = useSeriesMetadataQuery(selectedSeries.code)
+  const { minDate, maxDate, isLoading: isDateRangeLoading, error: dateRangeError } =
+    useSeriesDateRange(selectedSeries.code)
 
-  const metadata = seriesMetadataQuery.data
+  const metadata = metadataQuery.data
   const regionalDivision = selectedSeries.regionalDivision
 
   const dateRange =
     metadata && selectedSeries.getDateRange
-      ? selectedSeries.getDateRange(metadata.maxDate)
+      ? selectedSeries.getDateRange(maxDate)
       : null
 
   const formattedDateRange = metadata
     ? formatDateRange(
-        dateRange?.startDate ?? metadata.minDate,
-        dateRange?.endDate ?? metadata.maxDate,
+        dateRange?.startDate ?? minDate,
+        dateRange?.endDate ?? maxDate,
         (date) => formatDateByPeriodicity(date, metadata.periodicity),
       )
     : ''
@@ -65,13 +62,16 @@ export function HomeSeriesChartSection({
     ...dimensions,
   }
 
+  const isError = metadataQuery.isError || !!dateRangeError
+  const isLoading = metadataQuery.isLoading || isDateRangeLoading || !metadata
+
   return (
     <div
       style={{ backgroundColor: chartBackgroundColor }}
       className={clsx('rounded-xl', className)}
     >
       <div ref={containerRef} className='w-full'>
-        {seriesMetadataQuery.isError ? (
+        {isError ? (
           <div
             className='grid place-items-center'
             style={{
@@ -83,10 +83,10 @@ export function HomeSeriesChartSection({
               isCentered
               title='Ocorreu um erro'
               description='Não foi possível obter os metadados da série. Por favor, tente novamente mais tarde.'
-              retry={() => seriesMetadataQuery.refetch()}
+              retry={() => metadataQuery.refetch()}
             />
           </div>
-        ) : seriesMetadataQuery.isLoading || !metadata ? (
+        ) : isLoading ? (
           <div
             className='grid place-items-center'
             style={{
@@ -102,8 +102,8 @@ export function HomeSeriesChartSection({
               <SeriesChart
                 code={selectedSeries.code}
                 title={chartTitle}
-                startDate={dateRange?.startDate ?? metadata.minDate}
-                endDate={dateRange?.endDate ?? metadata.maxDate}
+                startDate={dateRange?.startDate ?? minDate}
+                endDate={dateRange?.endDate ?? maxDate}
                 regionalDivision={regionalDivision}
                 regionCode={BRAZIL_LOCATION_CODE}
               />

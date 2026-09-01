@@ -3,6 +3,11 @@ import { useSelectedRegionalDivision } from '../hooks/useSelectedRegionalLevel'
 import { useSelectedRegion } from '../hooks/useSelectedRegion'
 import { useTransition } from 'react'
 import { useDateFilters } from '../hooks/useDateFilters'
+import { useSeriesRawValuesQuery } from '../hooks/useSeriesRawValuesQuery'
+import { useSeriesDateRange } from '../hooks/useSeriesDateRange'
+import { getSeriesRegionalLevels } from '../utils/series-metadata-helpers'
+import { getSeriesPossibleDates } from '../utils/series-metadata-helpers'
+import type { RegionalLevel } from '../types'
 import { getDateRangePresets } from '../utils/get-date-ranges-presets'
 import { formatDateByPeriodicity } from '../utils/format-date-by-periodicity'
 import { RegionSelect } from './RegionSelect'
@@ -31,9 +36,17 @@ interface Props {
 export function SeriesChartView({ code }: Props) {
   const [, startTransition] = useTransition()
   const metadata = useSeriesMetadataContext()
+  const valuesQuery = useSeriesRawValuesQuery(code)
+  const regionalLevels: RegionalLevel[] = valuesQuery.data
+    ? getSeriesRegionalLevels(valuesQuery.data)
+    : ['brazil']
+  const possibleDates = valuesQuery.data
+    ? getSeriesPossibleDates(valuesQuery.data)
+    : []
+  const { minDate, maxDate } = useSeriesDateRange(code)
 
   const [selectedRegionalDivision, setSelectedRegionalLevel] =
-    useSelectedRegionalDivision(metadata.regionalLevels[0] ?? 'brazil')
+    useSelectedRegionalDivision(regionalLevels[0] ?? 'brazil')
 
   const [selectedRegion, setSelectedRegion] = useSelectedRegion()
 
@@ -47,8 +60,8 @@ export function SeriesChartView({ code }: Props) {
 
   const dateRangePresets = getDateRangePresets({
     periodicity: metadata.periodicity,
-    minDate: metadata.minDate,
-    maxDate: metadata.maxDate,
+    minDate,
+    maxDate,
   })
 
   const shouldShowDateRange = (
@@ -67,9 +80,9 @@ export function SeriesChartView({ code }: Props) {
     defaultValue: getDefaultDateFilter({
       chartType,
       periodicity: metadata.periodicity,
-      minDate: metadata.minDate,
-      maxDate: metadata.maxDate,
-      possibleDates: metadata.possibleDates,
+      minDate,
+      maxDate,
+      possibleDates,
     }),
   })
 
@@ -78,7 +91,7 @@ export function SeriesChartView({ code }: Props) {
 
   if (chartType === 'map') {
     const closestDate =
-      findClosestDate(metadata.possibleDates, startDate) ?? metadata.maxDate
+      findClosestDate(possibleDates, startDate) ?? maxDate
     startDate = closestDate
     endDate = closestDate
   }
@@ -89,7 +102,7 @@ export function SeriesChartView({ code }: Props) {
     preset: dateFilterValue.preset,
   }
 
-  const shouldShowRegionalLevelFilter = metadata.regionalLevels.length > 1
+  const shouldShowRegionalLevelFilter = regionalLevels.length > 1
 
   const isLargeScreen = useMediaQuery(
     `(min-width: ${getCssVariable('--breakpoint-lg')})`,
@@ -127,7 +140,7 @@ export function SeriesChartView({ code }: Props) {
             </SeriesDataFilterItemLabel>
 
             <SegmentGroup>
-              {metadata.regionalLevels.map((regionalLevel) => (
+              {regionalLevels.map((regionalLevel) => (
                 <SegmentGroupItem
                   key={regionalLevel}
                   isSelected={regionalLevel === selectedRegionalDivision}
@@ -138,9 +151,9 @@ export function SeriesChartView({ code }: Props) {
                         getDefaultDateFilter({
                           chartType: chartType,
                           periodicity: metadata.periodicity,
-                          minDate: metadata.minDate,
-                          maxDate: metadata.maxDate,
-                          possibleDates: metadata.possibleDates,
+                          minDate,
+                          maxDate,
+                          possibleDates,
                         }),
                       )
                     })
@@ -184,13 +197,13 @@ export function SeriesChartView({ code }: Props) {
                   setDateFilter(value)
                 })
               }}
-              minDate={metadata.minDate}
-              maxDate={metadata.maxDate}
+              minDate={minDate}
+              maxDate={maxDate}
             />
           ) : (
             <Select
               isMultiple={false}
-              options={metadata.possibleDates.map((date) => ({
+              options={possibleDates.map((date) => ({
                 value: String(date.getTime()),
                 label: formatDateByPeriodicity(date, metadata.periodicity),
               }))}

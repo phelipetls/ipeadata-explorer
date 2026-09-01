@@ -1,5 +1,5 @@
-import { useQuery } from '@tanstack/react-query'
-import { getSeriesMetadata } from '../api/ipea/get-series-metadata'
+import { useSeriesMetadataQuery } from '../hooks/useSeriesMetadataQuery'
+import { useThemesQuery } from '../hooks/useThemesQuery'
 import { Tag } from '../components/Tag'
 import { useParams } from 'react-router'
 import * as z from 'zod'
@@ -13,7 +13,6 @@ import { SeriesDescription } from '../components/SeriesDescription'
 import { SeriesSource } from '../components/SeriesSource'
 import { SeriesLastUpdateStatus } from '../components/SeriesLastUpdateStatus'
 import { ErrorState } from '../components/ErrorState'
-
 import { SeriesMetadataProvider } from '../context/SeriesMetadataContext'
 import clsx from 'clsx'
 import { displayCountry } from '../utils/display-country'
@@ -22,22 +21,22 @@ export function SeriesDetails() {
   const { code: codeParam } = useParams()
   const code = z.string().catch('').parse(codeParam)
 
-  const seriesMetadataQuery = useQuery({
-    queryKey: ['seriesMetadata', code],
-    queryFn: ({ signal }) => getSeriesMetadata(code, { signal }),
-    enabled: code !== '',
-  })
+  const metadataQuery = useSeriesMetadataQuery(code)
+  const themesQuery = useThemesQuery()
 
-  const metadata = seriesMetadataQuery.data
+  const metadata = metadataQuery.data
+  const themeName = metadata?.themeCode != null
+    ? (themesQuery.data?.[metadata.themeCode] ?? '')
+    : ''
 
-  const error = seriesMetadataQuery.error || null
+  const error = metadataQuery.error || null
   if (error) {
     return (
       <div className='grid items-center'>
         <ErrorState
           title='Ocorreu um erro'
           description='Não foi possível obter os metadados da série. Por favor, tente novamente mais tarde.'
-          retry={() => seriesMetadataQuery.refetch()}
+          retry={() => metadataQuery.refetch()}
         />
       </div>
     )
@@ -69,7 +68,7 @@ export function SeriesDetails() {
         )}
 
         {metadata ? (
-          <Tag>Tema: {metadata.theme}</Tag>
+          <Tag>Tema: {themeName}</Tag>
         ) : (
           <Skeleton className='w-[10ch]' />
         )}

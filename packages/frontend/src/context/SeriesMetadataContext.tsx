@@ -1,8 +1,6 @@
 import { createContext, useContext } from 'react'
 import type { ReactNode } from 'react'
-import type { getSeriesMetadata } from '../api/ipea/get-series-metadata'
-
-type SeriesMetadata = Awaited<ReturnType<typeof getSeriesMetadata>>
+import type { SeriesMetadata } from '../utils/format-series-metadata'
 
 const SeriesMetadataContext = createContext<SeriesMetadata | null>(null)
 

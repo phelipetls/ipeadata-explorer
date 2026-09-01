@@ -1,82 +1,27 @@
 import * as z from 'zod'
-import { format } from 'date-fns'
-import type { RegionalLevel } from '../../types'
 
 const dataSchema = z.object({
   value: z.array(
     z.object({
+      SERCODIGO: z.string().optional(),
+      VALDATA: z.string(),
       VALVALOR: z.number().nullable(),
-      ANO: z.number(),
-      MES: z.number(),
-      DIA: z.number(),
-      TERNOME: z.string().nullish(),
-      TERCODIGO: z.string().nullish(),
+      NIVNOME: z.string().nullable().optional(),
+      TERCODIGO: z.string().nullable().optional(),
     }),
   ),
 })
 
-const formatStartDate = (date: Date): string =>
-  format(date, "yyyy-MM-dd'T00:00:00Z'")
-
-const formatEndDate = (date: Date): string =>
-  format(date, "yyyy-MM-dd'T00:00:00-03:00'")
-
-const mapToIpeaRegionalLevel: Record<RegionalLevel, string> = {
-  brazil: 'Brasil',
-  regions: 'Regiões',
-  states: 'Estados',
-  municipalities: 'Municípios',
-}
-
-type Options = {
-  signal: AbortSignal
-  regionalLevel?: RegionalLevel
-  regions?: string[]
-  startDate?: Date
-  endDate?: Date
-}
-
-type Value = {
-  date: Date
-  value: number | null
-  region?: {
-    name: string
-    code: number
-  }
-}
+export type RawSeriesValue = z.infer<typeof dataSchema>['value'][number]
 
 export async function getSeriesValues(
   code: string,
-  { signal, startDate, endDate, regions = [], regionalLevel }: Options,
-): Promise<Value[]> {
-  const url = new URL(
-    `${import.meta.env.VITE_API_URL}/Metadados('${code}')/Valores`,
-  )
-
-  url.searchParams.set('$select', 'VALVALOR,ANO,MES,DIA,TERNOME,TERCODIGO')
-
-  const filterParts: string[] = []
-  if (regionalLevel) {
-    filterParts.push(`NIVNOME eq '${mapToIpeaRegionalLevel[regionalLevel]}'`)
-  }
-
-  if (regions.length > 0) {
-    const regionFilters = regions.map((region) => `TERNOME eq '${region}'`)
-    filterParts.push(`(${regionFilters.join(' or ')})`)
-  }
-
-  if (startDate || endDate) {
-    if (startDate) filterParts.push(`VALDATA ge ${formatStartDate(startDate)}`)
-    if (endDate) filterParts.push(`VALDATA le ${formatEndDate(endDate)}`)
-  }
-
-  if (filterParts.length > 0) {
-    url.searchParams.set('$filter', filterParts.join(' and '))
-  }
-
+  { signal }: { signal: AbortSignal },
+): Promise<RawSeriesValue[]> {
+  const url = `${import.meta.env.VITE_API_URL}/Metadados('${code}')/Valores`
   const response = await fetch(url, { signal })
   if (!response.ok) {
-    throw new Error('Failed to fetch series')
+    throw new Error('Failed to fetch series values')
   }
 
   const json = await response.json()
@@ -85,16 +30,5 @@ export async function getSeriesValues(
     throw new Error(`Unexpected data format: ${result.error}`)
   }
 
-  return result.data.value.map((item) => {
-    const value: Value = {
-      date: new Date(item.ANO, item.MES - 1, item.DIA),
-      value: item.VALVALOR,
-    }
-
-    if (item.TERNOME && item.TERCODIGO) {
-      value.region = { name: item.TERNOME, code: Number(item.TERCODIGO) }
-    }
-
-    return value
-  })
+  return result.data.value
 }

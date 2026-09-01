@@ -1,7 +1,6 @@
-import { useQuery } from '@tanstack/react-query'
 import { useDeferredValue } from 'react'
 import { getBrazilMap } from '../api/ibge/get-brazil-map'
-import { getSeriesValues } from '../api/ipea/get-series-values'
+import { useSeriesValues } from '../hooks/useSeriesValues'
 import { useSeriesMetadataContext } from '../context/SeriesMetadataContext'
 import type { IbgeGeoJson, RegionalLevel } from '../types'
 import { getChartType } from '../utils/get-chart-type'
@@ -11,6 +10,7 @@ import { SeriesChoroplethMapView } from './SeriesChoroplethMapView'
 import clsx from 'clsx'
 import { SeriesLineChartView } from './SeriesLineChartView'
 import { useChartContext } from '../context/ChartContext'
+import { useQuery } from '@tanstack/react-query'
 
 const EMPTY_GEO_JSON: IbgeGeoJson = {
   type: 'FeatureCollection',
@@ -44,26 +44,11 @@ export function SeriesChart({
     regionalDivision: regionalDivision,
   })
 
-  const dataQuery = useQuery({
-    queryKey: [
-      'seriesData',
-      code,
-      regionalDivision,
-      startDate.getTime(),
-      endDate.getTime(),
-      'chart',
-    ],
-    queryFn: ({ signal }) =>
-      getSeriesValues(code, {
-        signal,
-        regionalLevel:
-          metadata.database === 'macroeconomic' ? undefined : regionalDivision,
-        startDate,
-        endDate,
-      }),
-    enabled: code !== '',
-    staleTime: Infinity,
-    refetchOnWindowFocus: false,
+  const dataQuery = useSeriesValues(code, {
+    regionalLevel:
+      metadata.database === 'macroeconomic' ? undefined : regionalDivision,
+    startDate,
+    endDate,
   })
 
   const data = dataQuery.data ?? []

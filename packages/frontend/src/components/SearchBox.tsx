@@ -1,5 +1,6 @@
-import { useRef, useState, useTransition, type ReactElement } from 'react'
-import { search } from '../api/ipea/search'
+import { useMemo, useRef, useState, useTransition, type ReactElement } from 'react'
+import { getAllMetadata } from '../api/ipea/get-all-metadata'
+import { filterSeries } from '../utils/filter-series'
 import { parseAsString, useQueryState } from 'nuqs'
 import { useQuery } from '@tanstack/react-query'
 import { Autocomplete, mergeProps, useRender } from '@base-ui-components/react'
@@ -53,20 +54,24 @@ export function SearchBox<ItemValue>({
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  const searchQuery = useQuery({
-    queryKey: ['search', query],
-    queryFn: ({ signal }) => search(query, { signal }),
-    enabled: open && query !== '',
+  const metadataQuery = useQuery({
+    queryKey: ['metadata'],
+    queryFn: ({ signal }) => getAllMetadata({ signal }),
+    enabled: open,
+    staleTime: Infinity,
   })
 
-  const searchData = searchQuery.data ?? []
+  const searchData = useMemo(() => {
+    if (!metadataQuery.data || !query) return []
+    return filterSeries(metadataQuery.data, query)
+  }, [metadataQuery.data, query])
 
   let status = ''
   if (query === '') {
     status = 'Digite para começar a pesquisar'
-  } else if (searchQuery.isLoading) {
+  } else if (metadataQuery.isLoading) {
     status = `Carregando resultados de pesquisa...`
-  } else if (searchQuery.error) {
+  } else if (metadataQuery.error) {
     status = `Ocorreu um erro inesperado ao pesquisar`
   } else if (searchData.length > 0) {
     status = `${searchData.length} resultados encontrados`
@@ -224,14 +229,14 @@ export function SearchBox<ItemValue>({
                   )
                 }}
               </Autocomplete.List>
-            ) : searchQuery.isLoading ? (
+            ) : metadataQuery.isLoading ? (
               <div className='grid place-items-center h-full'>
                 <LoadingIndicator />
               </div>
             ) : (
               <Autocomplete.Empty className='grid place-items-center text-sm text-text-secondary'>
                 {query === '' ? (
-                  <span>Digite para começar a pequisar</span>
+                  <span>Digite para começar a pesquisar</span>
                 ) : (
                   <span>Nenhum resultado encontrado para "{query}"</span>
                 )}
