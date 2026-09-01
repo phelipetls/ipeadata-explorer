@@ -7,6 +7,15 @@ export default defineConfig(({ mode }) => {
 
   return {
     base: env['VITE_APP_BASENAME'],
+    server: {
+      proxy: {
+        '/api/odata4': {
+          target: 'https://www.ipeadata.gov.br',
+          changeOrigin: true,
+          secure: false,
+        },
+      },
+    },
     plugins: [
       react({
         babel: {
