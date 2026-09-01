@@ -24,6 +24,8 @@ const dataSchema = z.object({
 
 export type RawSeriesMetadata = z.infer<typeof dataSchema>['value'][number]
 
+const compiledDataSchema = z.compile(dataSchema)
+
 export async function getSeriesMetadata(
   code: string,
   { signal }: { signal: AbortSignal },
@@ -35,7 +37,7 @@ export async function getSeriesMetadata(
   }
 
   const json = await response.json()
-  const result = dataSchema.safeParse(json)
+  const result = compiledDataSchema.safeParse(json)
   if (!result.success) {
     throw new Error(`Unexpected data format: ${result.error}`)
   }

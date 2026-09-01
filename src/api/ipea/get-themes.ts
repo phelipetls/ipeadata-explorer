@@ -1,13 +1,15 @@
 import * as z from 'zod'
 
-const themesSchema = z.object({
-  value: z.array(
-    z.object({
-      TEMCODIGO: z.number(),
-      TEMNOME: z.string().nullable(),
-    }),
-  ),
-})
+const compiledThemesSchema = z.compile(
+  z.object({
+    value: z.array(
+      z.object({
+        TEMCODIGO: z.number(),
+        TEMNOME: z.string().nullable(),
+      }),
+    ),
+  }),
+)
 
 type ThemesMap = Record<number, string>
 
@@ -21,7 +23,7 @@ export async function getThemes(options?: {
   }
 
   const json = await response.json()
-  const result = themesSchema.safeParse(json)
+  const result = compiledThemesSchema.safeParse(json)
   if (!result.success) {
     throw new Error(`Unexpected themes format: ${result.error}`)
   }

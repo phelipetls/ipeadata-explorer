@@ -4,6 +4,8 @@ import { Tag } from '../components/Tag'
 import { useParams } from 'react-router'
 import * as z from 'zod'
 import type { SeriesPeriodicity } from '../types'
+
+const compiledCodeParamSchema = z.compile(z.string().catch(''))
 import { SeriesDataTabs } from '../components/SeriesDataTabs'
 import { SeriesChartView } from '../components/SeriesChartView'
 import { SeriesTableView } from '../components/SeriesTableView'
@@ -19,7 +21,7 @@ import { displayCountry } from '../utils/display-country'
 
 export function SeriesDetails() {
   const { code: codeParam } = useParams()
-  const code = z.string().catch('').parse(codeParam)
+  const code = compiledCodeParamSchema.parse(codeParam)
 
   const metadataQuery = useSeriesMetadataQuery(code)
   const themesQuery = useThemesQuery()

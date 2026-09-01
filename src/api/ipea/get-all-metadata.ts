@@ -20,9 +20,11 @@ const seriesMetadataSchema = z.object({
 
 export type SeriesMetadata = z.infer<typeof seriesMetadataSchema>
 
-const dataSchema = z.object({
-  value: z.array(seriesMetadataSchema),
-})
+const compiledDataSchema = z.compile(
+  z.object({
+    value: z.array(seriesMetadataSchema),
+  }),
+)
 
 export async function getAllSeriesMetadata(options?: {
   signal?: AbortSignal
@@ -34,7 +36,7 @@ export async function getAllSeriesMetadata(options?: {
   }
 
   const json = await response.json()
-  const result = dataSchema.safeParse(json)
+  const result = compiledDataSchema.safeParse(json)
   if (!result.success) {
     throw new Error(`Unexpected metadata format: ${result.error}`)
   }

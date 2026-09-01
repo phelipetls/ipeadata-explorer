@@ -1,14 +1,16 @@
 import * as z from 'zod'
 
-const territorySchema = z.object({
-  value: z.array(
-    z.object({
-      NIVNOME: z.string(),
-      TERCODIGO: z.string(),
-      TERNOME: z.string().nullable(),
-    }),
-  ),
-})
+const compiledTerritorySchema = z.compile(
+  z.object({
+    value: z.array(
+      z.object({
+        NIVNOME: z.string(),
+        TERCODIGO: z.string(),
+        TERNOME: z.string().nullable(),
+      }),
+    ),
+  }),
+)
 
 type RegionsMap = Record<string, string>
 
@@ -22,7 +24,7 @@ export async function getRegions(options?: {
   }
 
   const json = await response.json()
-  const result = territorySchema.safeParse(json)
+  const result = compiledTerritorySchema.safeParse(json)
   if (!result.success) {
     throw new Error(`Unexpected regions format: ${result.error}`)
   }
