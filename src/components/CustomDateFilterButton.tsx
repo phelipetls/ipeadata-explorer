@@ -8,6 +8,8 @@ import z from 'zod'
 import { useState } from 'react'
 import { Form } from '@base-ui-components/react'
 
+type FormValues = Record<string, any>
+
 type BaseProps = {
   open: boolean
   onOpenChange: (open: boolean) => void
@@ -40,13 +42,10 @@ export function CustomDateFilterButton({
   const [endDate, setEndDate] = React.useState(
     formatDateAsInputValue(defaultValue[1]),
   )
-  const [errors, setErrors] = useState<Record<string, string[]>>({
-    startDate: [''],
-    endDate: [''],
-  })
+  const [errors, setErrors] = useState<Record<string, string[]>>({})
 
   const dateUnderflowErrorMessage = `Mínimo: ${displayDate(minDate)}`
-  const dateOverflowErrorMessage = `Máximo: ${displayDate(minDate)}`
+  const dateOverflowErrorMessage = `Máximo: ${displayDate(maxDate)}`
 
   const formSchema = z.object({
     startDate: z
@@ -58,6 +57,22 @@ export function CustomDateFilterButton({
       .min(minDate, { error: dateUnderflowErrorMessage })
       .max(maxDate, { error: dateOverflowErrorMessage }),
   })
+
+  const handleSubmit = (formValues: FormValues, onSuccess: typeof onSubmit) => {
+    const result = formSchema.safeParse({
+      startDate: parseDateInputValue(formValues['startDate']),
+      endDate: parseDateInputValue(formValues['endDate']),
+    })
+
+    if (!result.success) {
+      return {
+        errors: z.flattenError(result.error).fieldErrors,
+      }
+    }
+
+    onSuccess([result.data.startDate, result.data.endDate])
+    return { errors: {} }
+  }
 
   return (
     <Popover.Root open={open} onOpenChange={onOpenChange}>
@@ -72,27 +87,12 @@ export function CustomDateFilterButton({
                   <Form
                     className='p-4'
                     errors={errors}
-                    onSubmit={(e) => {
-                      e.preventDefault()
-
-                      const formData = new FormData(e.currentTarget)
-                      const formValues = Object.fromEntries(
-                        [...formData].map(([key, value]) => [
-                          key,
-                          parseDateInputValue(value as string),
-                        ]),
-                      )
-
-                      const result = formSchema.safeParse(formValues)
-
-                      if (result.error) {
-                        const { fieldErrors } = z.flattenError(result.error)
-                        setErrors(fieldErrors)
-                        return
-                      }
-
-                      onSubmit([result.data.startDate, result.data.endDate])
-                      onOpenChange(false)
+                    onFormSubmit={(formValues) => {
+                      const response = handleSubmit(formValues, (data) => {
+                        onOpenChange(false)
+                        onSubmit(data)
+                      })
+                      setErrors(response.errors)
                     }}
                   />
                 }
@@ -110,7 +110,6 @@ export function CustomDateFilterButton({
                 type='date'
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                errorMessage={errors['startDate']?.[0] ?? ''}
               />
 
               <Input
@@ -119,7 +118,6 @@ export function CustomDateFilterButton({
                 type='date'
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                errorMessage={errors['endDate']?.[0] ?? ''}
               />
             </div>
 
