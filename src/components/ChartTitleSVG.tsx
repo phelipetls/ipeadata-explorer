@@ -2,8 +2,10 @@ import React from 'react'
 import { useChartContext } from '../context/ChartContext'
 import { ChartTitle } from './ChartTitle'
 
-interface Props
-  extends Omit<React.ComponentPropsWithRef<'foreignObject'>, 'children'> {
+interface Props extends Omit<
+  React.ComponentPropsWithRef<'foreignObject'>,
+  'children'
+> {
   children: string
 }
 

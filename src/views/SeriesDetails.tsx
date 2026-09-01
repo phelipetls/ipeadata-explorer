@@ -25,9 +25,10 @@ export function SeriesDetails() {
   const themesQuery = useThemesQuery()
 
   const metadata = metadataQuery.data
-  const themeName = metadata?.themeCode != null
-    ? (themesQuery.data?.[metadata.themeCode] ?? '')
-    : ''
+  const themeName =
+    metadata?.themeCode != null
+      ? (themesQuery.data?.[metadata.themeCode] ?? '')
+      : ''
 
   const error = metadataQuery.error || null
   if (error) {

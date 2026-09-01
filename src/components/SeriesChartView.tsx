@@ -90,8 +90,7 @@ export function SeriesChartView({ code }: Props) {
   let endDate = dateFilterValue.endDate
 
   if (chartType === 'map') {
-    const closestDate =
-      findClosestDate(possibleDates, startDate) ?? maxDate
+    const closestDate = findClosestDate(possibleDates, startDate) ?? maxDate
     startDate = closestDate
     endDate = closestDate
   }

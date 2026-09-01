@@ -33,8 +33,12 @@ export function HomeSeriesChartSection({
   const { width, containerRef } = useContainerWidth()
 
   const metadataQuery = useSeriesMetadataQuery(selectedSeries.code)
-  const { minDate, maxDate, isLoading: isDateRangeLoading, error: dateRangeError } =
-    useSeriesDateRange(selectedSeries.code)
+  const {
+    minDate,
+    maxDate,
+    isLoading: isDateRangeLoading,
+    error: dateRangeError,
+  } = useSeriesDateRange(selectedSeries.code)
 
   const metadata = metadataQuery.data
   const regionalDivision = selectedSeries.regionalDivision

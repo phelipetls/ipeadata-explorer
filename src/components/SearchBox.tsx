@@ -1,4 +1,10 @@
-import { useMemo, useRef, useState, useTransition, type ReactElement } from 'react'
+import {
+  useMemo,
+  useRef,
+  useState,
+  useTransition,
+  type ReactElement,
+} from 'react'
 import { getAllMetadata } from '../api/ipea/get-all-metadata'
 import { filterSeries } from '../utils/filter-series'
 import { parseAsString, useQueryState } from 'nuqs'
@@ -11,8 +17,10 @@ import clsx from 'clsx'
 import { Search } from 'lucide-react'
 import { useNavigate } from 'react-router'
 
-interface Props<ItemValue>
-  extends Pick<Autocomplete.Root.Props<ItemValue>, 'open' | 'onOpenChange'> {
+interface Props<ItemValue> extends Pick<
+  Autocomplete.Root.Props<ItemValue>,
+  'open' | 'onOpenChange'
+> {
   renderInput?: ReactElement<Record<string, unknown>>
   renderBox?: ReactElement<Record<string, unknown>>
   renderTriggerButton?: ReactElement<Record<string, unknown>>

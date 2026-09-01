@@ -21,7 +21,9 @@ export function getSeriesMaxDate(rawValues: RawSeriesValue[]): Date {
 export function getSeriesRegionalLevels(
   rawValues: RawSeriesValue[],
 ): RegionalLevel[] {
-  const set = new Set<RegionalLevel>(rawValues.map((item) => getIpeaRegionalLevel(item.NIVNOME)))
+  const set = new Set<RegionalLevel>(
+    rawValues.map((item) => getIpeaRegionalLevel(item.NIVNOME)),
+  )
   if (set.size === 0) set.add('brazil')
   return Array.from(set)
 }

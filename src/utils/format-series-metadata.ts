@@ -38,7 +38,9 @@ export type SeriesMetadata = {
   decimalPlaces: number
 }
 
-export function formatSeriesMetadata(rawMeta: RawSeriesMetadata): SeriesMetadata {
+export function formatSeriesMetadata(
+  rawMeta: RawSeriesMetadata,
+): SeriesMetadata {
   const database = mapDatabase(rawMeta.BASNOME || '')
 
   return {
@@ -61,5 +63,3 @@ export function formatSeriesMetadata(rawMeta: RawSeriesMetadata): SeriesMetadata
     decimalPlaces: 2,
   }
 }
-
-
