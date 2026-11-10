@@ -26,7 +26,9 @@ export async function search(
   if (name) {
     const words = name.split(/\s+/)
     for (const word of words) {
-      filters.push(`indexof(SERNOME,'${word.replace(/'/g, "''")}') ge 0`)
+      filters.push(
+        `indexof(tolower(SERNOME),'${word.toLowerCase().replace(/'/g, "''")}') ge 0`,
+      )
     }
   }
 
