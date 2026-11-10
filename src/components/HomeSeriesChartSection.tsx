@@ -35,10 +35,12 @@ export function HomeSeriesChartSection({
   const metadataQuery = useSeriesMetadataQuery(selectedSeries.code)
   const {
     minDate,
-    maxDate,
+    maxDate: seriesMaxDate,
     isLoading: isDateRangeLoading,
     error: dateRangeError,
   } = useSeriesDateRange(selectedSeries.code)
+
+  const maxDate = selectedSeries.overridenMaxDate ?? seriesMaxDate
 
   const metadata = metadataQuery.data
   const regionalDivision = selectedSeries.regionalDivision

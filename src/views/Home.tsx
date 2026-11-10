@@ -17,6 +17,7 @@ export type SeriesItem = {
   code: string
   regionalDivision: 'brazil' | 'regions' | 'states' | 'municipalities'
   getDateRange: (maxDate: Date) => { startDate: Date; endDate: Date }
+  overridenMaxDate?: Date
   chartType: 'line' | 'map'
 }
 
@@ -109,6 +110,7 @@ const regionalSeries: SeriesItem[] = [
     code: 'POPTOT',
     regionalDivision: 'municipalities',
     getDateRange: getSingleDateRange,
+    overridenMaxDate: new Date(2022, 0, 1),
     chartType: 'map',
   },
 ]
@@ -218,7 +220,11 @@ export function Home() {
 
   const isPending = selectedSeries !== deferredSelectedSeries
 
-  const { maxDate } = useSeriesDateRange(deferredSelectedSeries?.code ?? '')
+  const { maxDate: seriesMaxDate } = useSeriesDateRange(
+    deferredSelectedSeries?.code ?? '',
+  )
+
+  const maxDate = deferredSelectedSeries?.overridenMaxDate ?? seriesMaxDate
 
   const dateRange =
     deferredSelectedSeries && maxDate
