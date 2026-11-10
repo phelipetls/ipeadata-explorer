@@ -18,6 +18,7 @@ import { useSelectedRegionalDivision } from '../hooks/useSelectedRegionalLevel'
 import { FILTER_LABELS } from '../consts'
 import { SeriesDataFilterItemLabel } from './SeriesDataFilterItemLabel'
 import { LoadingIndicator } from './LoadingIndicator'
+import { EmptyState } from './EmptyState'
 import clsx from 'clsx'
 import { RegionSelect } from './RegionSelect'
 import { useSelectedRegion } from '../hooks/useSelectedRegion'
@@ -378,6 +379,14 @@ export function SeriesTableView({ code }: Props) {
       {dataQuery.isLoading ? (
         <div className='h-[400px] grid place-items-center'>
           <LoadingIndicator />
+        </div>
+      ) : deferredData.length === 0 ? (
+        <div className='h-[400px] grid place-items-center'>
+          <EmptyState
+            isCentered
+            title='Nenhum dado encontrado'
+            description='Nenhum valor foi encontrado para a série com os filtros selecionados. Tente ajustar o período ou a região.'
+          />
         </div>
       ) : (
         <SeriesTable
