@@ -1,12 +1,5 @@
-import {
-  useMemo,
-  useRef,
-  useState,
-  useTransition,
-  type ReactElement,
-} from 'react'
-import { getAllSeriesMetadata } from '../api/ipea/get-all-metadata'
-import { filterSeries } from '../utils/filter-series'
+import { useRef, useState, useTransition, type ReactElement } from 'react'
+import { search } from '../api/ipea/search'
 import { parseAsString, useQueryState } from 'nuqs'
 import { useQuery } from '@tanstack/react-query'
 import { Autocomplete, mergeProps, useRender } from '@base-ui-components/react'
@@ -62,24 +55,20 @@ export function SearchBox<ItemValue>({
 
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  const metadataQuery = useQuery({
-    queryKey: ['metadata'],
-    queryFn: ({ signal }) => getAllSeriesMetadata({ signal }),
-    enabled: open,
-    staleTime: Infinity,
+  const searchQuery = useQuery({
+    queryKey: ['search', query],
+    queryFn: ({ signal }) => search(query, { signal }),
+    enabled: open && query !== '',
   })
 
-  const searchData = useMemo(() => {
-    if (!metadataQuery.data || !query) return []
-    return filterSeries(metadataQuery.data, query)
-  }, [metadataQuery.data, query])
+  const searchData = searchQuery.data ?? []
 
   let status = ''
   if (query === '') {
     status = 'Digite para começar a pesquisar'
-  } else if (metadataQuery.isLoading) {
+  } else if (searchQuery.isLoading) {
     status = `Carregando resultados de pesquisa...`
-  } else if (metadataQuery.error) {
+  } else if (searchQuery.error) {
     status = `Ocorreu um erro inesperado ao pesquisar`
   } else if (searchData.length > 0) {
     status = `${searchData.length} resultados encontrados`
@@ -237,7 +226,7 @@ export function SearchBox<ItemValue>({
                   )
                 }}
               </Autocomplete.List>
-            ) : metadataQuery.isLoading ? (
+            ) : searchQuery.isLoading ? (
               <div className='grid place-items-center h-full'>
                 <LoadingIndicator />
               </div>
