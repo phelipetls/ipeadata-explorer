@@ -7,8 +7,6 @@ export function useRegionsQuery() {
     queryKey: ['regions'],
     queryFn: ({ signal }) => getRegions({ signal }),
     staleTime: Infinity,
-    placeholderData: Object.fromEntries(
-      territories as Array<[string, string]>,
-    ),
+    placeholderData: Object.fromEntries(territories as Array<[string, string]>),
   })
 }
